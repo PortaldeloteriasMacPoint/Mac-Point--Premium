@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -66,34 +64,34 @@
       background-color: #228B22;
     }
 
-    @media (max-width: 768px) {
-      .content {
-        padding: 15px;
-      }
-
-      .content h2 {
-        font-size: 1.5rem;
-      }
-
-      .content button {
-        font-size: 0.9rem;
-        padding: 8px 16px;
-      }
-    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Conteúdo Exclusivo</h1>
-    <div class="content">
+    <div class="content" id="protectedContent" style="display: none;">
       <h2>Bem-vindo ao conteúdo premium!</h2>
       <p>Aqui você tem acesso a materiais exclusivos disponíveis para os nossos assinantes.</p>
       <p>Obrigado por escolher um dos nossos planos. Aproveite ao máximo o seu acesso!</p>
       <button onclick="window.location.href='paginaprincipal.html'">Voltar à página principal</button>
     </div>
   </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <script src="/js/config-firebase.js"></script>
+  <script>
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        document.getElementById('protectedContent').style.display = 'block';
+      } else {
+        window.location.href = "login.html";
+      }
+    });
+  </script>
 </body>
 </html>
+
 
 
 

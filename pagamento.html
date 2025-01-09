@@ -1,0 +1,154 @@
+
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página de Pagamento</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #000;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      background-image: url('/path/to/your/background.jpg'); /* Substitua pela sua imagem de fundo */
+      background-size: cover;
+      background-position: center;
+    }
+
+    .container {
+      text-align: center;
+      max-width: 800px;
+      width: 100%;
+    }
+
+    .plan {
+      background-color: #013220; /* Verde escuro */
+      border: 2px solid #32CD32; /* Verde claro */
+      border-radius: 8px;
+      padding: 20px;
+      margin: 10px auto;
+      text-align: center;
+      position: relative;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .plan:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px #32CD32;
+    }
+
+    .price {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #32CD32; /* Verde claro */
+    }
+
+    .discount {
+      font-size: 0.9rem;
+      margin-top: 5px;
+      color: #ff4500; /* Vermelho para destaque */
+    }
+
+    .plan h2 {
+      margin: 0 0 10px;
+      color: #fff;
+    }
+
+    .plan button {
+      background-color: #32CD32; /* Verde claro */
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .plan button:hover {
+      background-color: #228B22; /* Verde médio */
+    }
+
+    .plan img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+
+    @media (max-width: 768px) {
+      .plan {
+        padding: 15px;
+      }
+
+      .price {
+        font-size: 1.5rem;
+      }
+
+      .plan button {
+        font-size: 0.9rem;
+        padding: 8px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Escolha Seu Plano</h1>
+    <p>Selecione o plano ideal para você e aproveite!</p>
+
+    <!-- Plano Mensal -->
+    <div class="plan">
+      <h2>Plano Mensal</h2>
+      <p class="price">R$ <span style="font-size: 2.5rem;">19,90</span></p>
+      <p class="discount">De R$29,90 por R$19,90 (33% OFF)</p>
+      <button onclick="window.location.href='https://www.mercadopago.com.br/link_plano_mensal'">
+        Comprar
+      </button>
+    </div>
+
+    <!-- Plano Trimestral -->
+    <div class="plan">
+      <h2>Plano Trimestral</h2>
+      <p class="price">R$ 79,90</p>
+      <p class="discount">Sem desconto</p>
+      <button onclick="window.location.href='https://www.mercadopago.com.br/link_plano_trimestral'">
+        Comprar
+      </button>
+    </div>
+
+    <!-- Plano Anual -->
+    <div class="plan">
+      <h2>Plano Anual</h2>
+      <p class="price">R$ 299,90</p>
+      <p class="discount">Sem desconto</p>
+      <button onclick="window.location.href='https://www.mercadopago.com.br/link_plano_anual'">
+        Comprar
+      </button>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+  <script src="/js/config-firebase.js"></script>
+  <script>
+    // Verificar autenticação no Firebase
+    firebase.auth().onAuthStateChanged((user) => {
+      if (!user) {
+        alert("Você precisa estar logado para acessar esta página.");
+        window.location.href = "login.html";
+      }
+    });
+  </script>
+</body>
+</html>
+

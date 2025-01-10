@@ -4,20 +4,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta property="og:description" content="O Portal de Loterias Mac Point é um site que oferece ferramentas exclusivas para aprimorar suas apostas nas loterias brasileiras. Contendo recursos como análises e estatísticas, geradores de números inteligentes. O Mac Point visa potencializar suas chances de sucesso de forma prática e eficiente.">
+  <meta property="og:description" content="O Portal de Loterias Mac Point é um site que oferece ferramentas exclusivas para aprimorar suas apostas nas loterias brasileiras.">
   <meta property="og:image" content="https://i.postimg.cc/Rhm99szc/Screenshot-20241228-214554-1.jpg">
   <meta property="og:url" content="https://portaldeloteriasmacpoint.github.io/Premium/">
-  <meta name="twitter:image" content="https://i.postimg.cc/Rhm99szc/Screenshot-20241228-214554-1.jpg">
   <title>Portal de Loterias - Mac Point</title>
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background-image: url('Screenshot_20241228-214608-1.jpg');
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
+      background-color: #013220;
       color: #fff;
+    }
+
+    #loadingMessage {
+      text-align: center;
+      color: white;
+      font-size: 1.5rem;
+      padding: 20px;
+      margin-top: 20%;
     }
 
     .menu-hamburguer {
@@ -108,12 +112,6 @@
       box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.7);
     }
 
-    .quadro img.capa {
-      width: 100%;
-      height: auto;
-      border-radius: 10px;
-    }
-
     footer {
       text-align: center;
       padding: 20px;
@@ -132,6 +130,7 @@
       padding: 20px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
       text-align: center;
+      display: none;
     }
 
     .content h2 {
@@ -182,51 +181,74 @@
   </nav>
 
   <main>
+    <div id="loadingMessage">Verificando autenticação e status de assinatura...</div>
+
     <div class="home">
-      <div class="quadro">
-        <h1>Bem-vindo ao Portal de Loterias - Mac Point</h1>
-      </div>
-
-      <div class="quadro">
-        <img src="Screenshot_20241228-214554-1.jpg" alt="Imagem de Capa" class="capa">
-      </div>
-
-      <div class="quadro">
-        <p>Nosso portal oferece conteúdo exclusivo para ajudá-lo a entender melhor as estatísticas e estratégias por trás das principais modalidades de loterias brasileiras. Aproveite!</p>
-      </div>
-
-      <div class="content" id="protectedContent" style="display: none;">
-        <h2>Conteúdo Exclusivo</h2>
-        <p>Bem-vindo ao conteúdo premium! Aqui você tem acesso a materiais exclusivos disponíveis para os nossos assinantes.</p>
-        <p>Obrigado por escolher um dos nossos planos. Aproveite ao máximo o seu acesso!</p>
+      <div class="content" id="protectedContent">
+        <h2>Bem-vindo ao Portal de Loterias Mac Point!</h2>
+        <p>Você tem acesso ao conteúdo premium!</p>
         <button onclick="window.location.href='index.html'">Voltar à página principal</button>
       </div>
     </div>
   </main>
 
   <footer>
-    <p>Mac Point é um site independente dedicado a fornecer análises, ferramentas e informações sobre as loterias brasileiras. Não temos vínculo com a Caixa Econômica Federal ou qualquer outra entidade governamental. Para resultados oficiais, consulte os canais oficiais de cada loteria.</p>
+    <p>Mac Point é um site independente dedicado a fornecer análises, ferramentas e informações sobre as loterias brasileiras. Não temos vínculo com a Caixa Econômica Federal ou qualquer outra entidade governamental.</p>
     <p>© 2024 Portal de Loterias - Mac Point. Todos os direitos reservados.</p>
   </footer>
 
+  <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-firestore.js"></script>
+
   <script>
-    function toggleMenu() {
-      const menu = document.getElementById('menuLateral');
-      menu.classList.toggle('aberto');
-    }
+    const firebaseConfig = {
+      apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+      authDomain: "mac-projeto-4e552.firebaseapp.com",
+      projectId: "mac-projeto-4e552",
+      storageBucket: "mac-projeto-4e552.appspot.com",
+      messagingSenderId: "537330451519",
+      appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
+    };
 
-    function closeMenu() {
-      const menu = document.getElementById('menuLateral');
-      menu.classList.remove('aberto');
-    }
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-    firebase.auth().onAuthStateChanged(function(user) {
+    firebase.auth().onAuthStateChanged(async (user) => {
+      const loadingMessage = document.getElementById('loadingMessage');
+      const protectedContent = document.getElementById('protectedContent');
+
       if (user) {
-        document.getElementById('protectedContent').style.display = 'block';
+        try {
+          const userDoc = await db.collection("users").doc(user.uid).get();
+
+          if (userDoc.exists) {
+            const data = userDoc.data();
+            const currentDate = new Date();
+            const subscriptionEndDate = data.subscriptionEndDate.toDate();
+
+            if (data.subscriptionActive && subscriptionEndDate > currentDate) {
+              loadingMessage.style.display = 'none';
+              protectedContent.style.display = 'block';
+            } else {
+              window.location.href = "pagamento.html";
+            }
+          } else {
+            window.location.href = "cadastro.html";
+          }
+        } catch (error) {
+          console.error("Erro ao verificar status:", error);
+          window.location.href = "erro.html";
+        }
       } else {
         window.location.href = "cadastro.html";
       }
     });
+
+    function toggleMenu() {
+      const menu = document.getElementById('menuLateral');
+      menu.classList.toggle('aberto');
+    }
   </script>
 </body>
 

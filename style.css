@@ -7,81 +7,73 @@
 }
 
 body {
-  font-family: Arial, sans-serif;
-  background-image: url('caminho/para/sua/imagem.jpg');
-  background-size: cover;
-  background-position: center;
-  color: #fff;
+  background-color: #000;
+  font-family: 'Roboto', sans-serif;
+}
+
+.container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
 }
 
-.container {
+.form-container {
+  background-color: #2d3d2b;
+  border: 2px solid #4CAF50;
+  padding: 30px;
   width: 100%;
   max-width: 400px;
-  margin: 0 auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.form-box {
-  background-color: #2c3e50;
-  padding: 20px;
-  border-radius: 8px;
-  border: 2px solid #16a085;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-}
-
-h1 {
+h2 {
   text-align: center;
+  color: white;
   margin-bottom: 20px;
 }
 
 label {
+  color: white;
+  font-size: 14px;
+  margin-bottom: 8px;
   display: block;
-  margin: 10px 0 5px;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="password"] {
+input {
   width: 100%;
   padding: 10px;
   margin-bottom: 15px;
+  border: 1px solid #4CAF50;
   border-radius: 5px;
-  border: 1px solid #34495e;
-  background-color: #2c3e50;
-  color: #fff;
-}
-
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus {
-  border-color: #16a085;
-  outline: none;
-}
-
-button {
-  width: 100%;
-  padding: 10px;
-  background-color: #16a085;
-  border: none;
-  border-radius: 5px;
+  background-color: #000;
   color: white;
   font-size: 16px;
 }
 
+button {
+  width: 100%;
+  padding: 12px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
 button:hover {
-  background-color: #1abc9c;
+  background-color: #45a049;
 }
 
 p {
   text-align: center;
-  margin-top: 15px;
+  color: white;
 }
 
 a {
-  color: #16a085;
+  color: #4CAF50;
   text-decoration: none;
 }
 
@@ -89,3 +81,4 @@ a:hover {
   text-decoration: underline;
 }
 
+ 

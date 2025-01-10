@@ -1,146 +1,153 @@
 
 
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta property="og:description" content="O Portal de Loterias Mac Point é um site que oferece ferramentas exclusivas para aprimorar suas apostas nas loterias brasileiras. Contendo recursos como análises e estatísticas, geradores de números inteligentes. O Mac Point visa potencializar suas chances de sucesso de forma prática e eficiente.">
-  <meta property="og:image" content="https://i.postimg.cc/Rhm99szc/Screenshot-20241228-214554-1.jpg">
-  <meta property="og:url" content="https://portaldeloteriasmacpoint.github.io/Premium/">
-  <meta name="twitter:image" content="https://i.postimg.cc/Rhm99szc/Screenshot-20241228-214554-1.jpg">
-  <title>Portal de Loterias - Mac Point</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-image: url('Screenshot_20241228-214608-1.jpg');
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-      color: #fff;
-    }
+   <meta property="og:description" content="Descrição da página principal do site.">
+   <meta property="og:image" content="https://meusite.github.io/imagens/imagem-principal.jpg">
+   <meta property="og:url" content="https://meusite.github.io">
+  
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Portal de Loterias - Mac Point</title>
+   <style>
+     /* Estilos globais */
+     body {
+       margin: 0;
+       font-family: Arial, sans-serif;
+       background-color: #000; /* Plano de fundo preto */
+       color: #fff;
+       position: relative;
+     }
 
-    #loadingMessage {
-      text-align: center;
-      color: white;
-      font-size: 1.5rem;
-      padding: 20px;
-    }
+     /* Menu Hambúrguer */
+     .menu-hamburguer {
+       position: fixed;
+       top: 10px;
+       left: 10px;
+       z-index: 1000;
+     }
 
-    .menu-hamburguer {
-      position: fixed;
-      top: 10px;
-      left: 10px;
-      z-index: 1000;
-    }
+     .menu-hamburguer button {
+       background-color: #000; /* Preto */
+       color: white; /* Escrita branca */
+       border: none;
+       padding: 5px;
+       border-radius: 5px;
+       cursor: pointer;
+       font-size: 1.2em;
+       transition: background-color 0.3s;
+     }
+     .menu-hamburguer button:hover {
+       background-color: #004d00; /* Verde escuro ao passar o mouse */
+     }
 
-    .menu-hamburguer button {
-      background-color: #000;
-      color: white;
-      border: none;
-      padding: 10px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 1.5em;
-      transition: background-color 0.3s;
-    }
+     /* Menu Lateral */
+     .menu-lateral {
+       position: fixed;
+       top: 0;
+       left: 0;
+       height: 100%;
+       width: 250px;
+       background-color: darkgreen;
+       box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+       padding: 5px;
+       transform: translateX(-100%);
+       transition: transform 0.3s ease-in-out;
+       z-index: 1100;
+     }
 
-    .menu-hamburguer button:hover {
-      background-color: #004d00;
-    }
+     .menu-lateral ul {
+       list-style: none;
+       padding: 0;
+       margin: 0;
+     }
 
-    .menu-lateral {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 250px;
-      background-color: #013220;
-      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
-      padding: 20px;
-      transform: translateX(-100%);
-      transition: transform 0.3s ease-in-out;
-      z-index: 1100;
-    }
+     .menu-lateral ul li {
+       margin-bottom: 15px;
+     }
 
-    .menu-lateral ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
+     .menu-lateral ul li a {
+       text-decoration: none;
+       text-align: center; /* Centraliza o texto */
+       color: black; /* Escrito em preto */
+       background-color: white;
+       padding: 10px 15px;
+       border-radius: 10px;
+       display: block;
+       transition: all 0.3s ease-in-out;
+     }
 
-    .menu-lateral ul li {
-      margin-bottom: 15px;
-    }
+     .menu-lateral ul li a:hover {
+       background-color: #00b300; /* Verde ao passar o mouse */
+     }
 
-    .menu-lateral ul li a {
-      text-decoration: none;
-      color: white;
-      font-weight: bold;
-      background-color: black;
-      border: 2px solid #32CD32;
-      padding: 10px 15px;
-      border-radius: 10px;
-      display: block;
-      transition: all 0.3s ease-in-out;
-    }
+     .menu-lateral.aberto {
+       transform: translateX(0);
+     }
 
-    .menu-lateral ul li a:hover {
-      background-color: #32CD32;
-    }
+     /* Página inicial */
+     .home {
+       text-align: center;
+       padding: 40px 20px;
+       position: relative;
+       z-index: 100;
+     }
 
-    .menu-lateral.aberto {
-      transform: translateX(0);
-    }
+     .home img {
+       width: 100%;
+       height: 100vh; /* 100% da altura da tela */
+       object-fit: cover; /* A imagem se ajusta para cobrir toda a área */
+       margin-top: 0;
+       border-radius: 0;
+       box-shadow: none;
+     }
 
-    main {
-      padding: 60px 20px 20px;
-      text-align: center;
-    }
+     .subcapa {
+       position: absolute;
+       top: 0;
+       left: 0;
+       width: 100%;
+       height: 100%;
+       background-image: url('https://i.postimg.cc/4yKFS9j4/Screenshot-20241129-232703-1.jpg'); /* Subcapa */
+       background-size: cover;
+       background-position: center;
+       opacity: 0.6;
+       z-index: 90;
+     }
 
-    .home {
-      margin: 0 auto;
-      max-width: 1000px;
-    }
+     .conteudo-principal {
+       position: relative;
+       z-index: 100;
+       background-color: darkgreen;
+       padding: 20px;
+       display: inline-block;
+       max-width: 80%;
+       border-radius: 10px;
+     }
 
-    .quadro {
-      background-color: #013220;
-      border: 3px solid #32CD32;
-      border-radius: 10px;
-      margin: 20px 0;
-      padding: 20px;
-      max-width: 80%;
-      text-align: center;
-      box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.7);
-      position: relative;
-    }
+     .home p {
+       font-size: 1.5em;
+       background-color: rgba(0, 0, 0, 0.5);
+       padding: 10px;
+       border-radius: 5px;
+     }
 
-    .foto-capa {
-      width: 100%;
-      height: auto;
-      border-radius: 5px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
-    }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      background-color: #000;
-      color: #fff;
-    }
-
-    footer p {
-      margin: 5px 0;
-    }
-  </style>
+     footer {
+       text-align: center;
+       padding: 20px;
+       background-color: #222;
+       color: #fff;
+     }
+   </style>
 </head>
-
 <body>
+  <!-- Menu Hambúrguer -->
   <div class="menu-hamburguer">
     <button onclick="toggleMenu()">☰</button>
   </div>
 
+  <!-- Menu Lateral -->
   <nav class="menu-lateral" id="menuLateral">
     <ul>
       <li><a href="index.html">Início</a></li>
@@ -155,52 +162,42 @@
     </ul>
   </nav>
 
-  <main>
-    <div id="loadingMessage">Verificando autenticação...</div>
-    <!-- Quadro com foto de capa dentro -->
-    <div class="quadro">
-      <img class="foto-capa" src="https://i.postimg.cc/Rhm99szc/Screenshot-20241228-214554-1.jpg" alt="Capa do Portal">
+  <!-- Página Inicial -->
+  <main class="home">
+    <div class="subcapa"></div> <!-- Subcapa -->
+    <div class="conteudo-principal">
+      <h1>Bem-vindo ao Portal de Loterias - Mac Point</h1>
+      <img src="https://i.postimg.cc/vTmmYCpy/Screenshot-20241221-151605-1-1.jpg" alt="Imagem de Capa">
+      <p>Nosso portal oferece conteúdo exclusivo para ajudá-lo a entender melhor as estatísticas e estratégias por trás das principais modalidades de loterias brasileiras. Aproveite!</p>
     </div>
   </main>
 
+  <!-- Rodapé -->
   <footer>
     <p>Mac Point é um site independente dedicado a fornecer análises, ferramentas e informações sobre as loterias brasileiras. Não temos vínculo com a Caixa Econômica Federal ou qualquer outra entidade governamental. Para resultados oficiais, consulte os canais oficiais de cada loteria.</p>
-    <p>© 2024 Portal de Loterias - Mac Point. Todos os direitos reservados.</p>
+    <p>© 2024 Portal de Loterias-Mac Point . Todos os direitos reservados.</p>
   </footer>
 
-  <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-firestore.js"></script>
+  <!-- Script para o Menu -->
   <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
-      authDomain: "mac-projeto-4e552.firebaseapp.com",
-      projectId: "mac-projeto-4e552",
-      storageBucket: "mac-projeto-4e552.appspot.com",
-      messagingSenderId: "537330451519",
-      appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-
-    // Verificação de autenticação
-    firebase.auth().onAuthStateChanged(function (user) {
-      const loadingMessage = document.getElementById('loadingMessage');
-      loadingMessage.style.display = 'none'; // Esconde a mensagem de carregamento
-
-      if (!user) {
-        window.location.href = "cadastro.html"; // Redireciona para a página de cadastro
-      } else {
-        console.log("Usuário autenticado:", user.email);
-        window.location.href = "pagamento.html"; // Redireciona para a página de pagamento após login
-      }
-    });
-
     function toggleMenu() {
       const menu = document.getElementById('menuLateral');
       menu.classList.toggle('aberto');
     }
+
+    // Fechar o menu se clicar fora dele
+    document.addEventListener('click', function(event) {
+      const menu = document.getElementById('menuLateral');
+      const menuButton = document.querySelector('.menu-hamburguer button');
+      if (!menu.contains(event.target) && !menuButton.contains(event.target)) {
+        menu.classList.remove('aberto');
+      }
+    });
   </script>
 </body>
 </html>
+
+
+
+
 

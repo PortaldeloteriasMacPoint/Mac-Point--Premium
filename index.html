@@ -1,31 +1,126 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cadastro</title>
-  <link rel="stylesheet" href="style.css">
-  <script src=cadastro.js" defer></script>
+  <style>
+    body {
+      margin: 0;
+      background-image: url('sua-imagem-de-fundo.jpg');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .form-container {
+      background-color: #064e3b;
+      color: white;
+      padding: 20px;
+      border: 3px solid #00ff7f;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+    }
+    .form-container input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      background-color: black;
+      color: white;
+      border-radius: 5px;
+    }
+    .form-container button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      background-color: #00ff7f;
+      color: black;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .form-container a {
+      display: block;
+      margin-top: 10px;
+      color: #00ff7f;
+      text-decoration: none;
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <div class="form-box">
-      <h1>Cadastro</h1>
-      <form id="cadastro-form">
-        <label for="nome">Nome:</label>
-        <input type="text" id="nome" placeholder="Digite seu nome" required>
-        <br>
-        <label for="email">Email:</label>
-        <input type="email" id="email" placeholder="Digite seu email" required>
-        <br>
-        <label for="senha">Senha:</label>
-        <input type="password" id="senha" placeholder="Digite sua senha" required>
-        <br>
-        <button type="submit">Cadastrar</button>
-      </form>
-      <p>Já tem uma conta? <a href="login.html">Faça login</a></p>
-    </div>
+  <div class="form-container">
+    <h1>Cadastro</h1>
+    <form id="cadastro-form">
+      <input type="text" id="nome" placeholder="Nome" required>
+      <input type="email" id="email" placeholder="E-mail" required>
+      <input type="password" id="senha" placeholder="Senha" required>
+      <input type="password" id="confirma-senha" placeholder="Confirme a Senha" required>
+      <button type="submit">Cadastrar</button>
+    </form>
+    <a href="login.html">Faça Login</a>
   </div>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+      authDomain: "mac-projeto-4e552.firebaseapp.com",
+      projectId: "mac-projeto-4e552",
+      storageBucket: "mac-projeto-4e552.appspot.com",
+      messagingSenderId: "537330451519",
+      appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
+    };
+
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    document.getElementById("cadastro-form").addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const nome = document.getElementById("nome").value;
+      const email = document.getElementById("email").value;
+      const senha = document.getElementById("senha").value;
+      const confirmaSenha = document.getElementById("confirma-senha").value;
+
+      if (senha !== confirmaSenha) {
+        alert("As senhas não coincidem.");
+        return;
+      }
+
+      auth.createUserWithEmailAndPassword(email, senha)
+        .then((userCredential) => {
+          const user = userCredential.user;
+
+          db.collection("users").doc(user.uid).set({
+            nome: nome,
+            email: email,
+            status: "pendente",
+            subscriptionActive: false,
+            subscriptionEndDate: null
+          })
+          .then(() => {
+            alert("Cadastro realizado com sucesso!");
+            window.location.href = "login.html";
+          })
+          .catch((error) => {
+            console.error("Erro ao salvar dados: ", error);
+            alert("Erro ao salvar seus dados. Tente novamente.");
+          });
+        })
+        .catch((error) => {
+          console.error("Erro ao criar usuário: ", error.message);
+          alert("Erro ao cadastrar. Verifique os dados e tente novamente.");
+        });
+    });
+  </script>
 </body>
 </html>
 

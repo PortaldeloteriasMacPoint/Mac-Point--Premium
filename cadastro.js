@@ -1,38 +1,41 @@
 const formCadastro = document.getElementById("form-cadastro");
 
-formCadastro.addEventListener("submit", (e) => {
+formCadastro.addEventListener("submit", async (e) => {
   e.preventDefault();
-  
-  const nome = document.getElementById("nome").value;
-  const email = document.getElementById("email").value;
-  const senha = document.getElementById("senha").value;
-  const confirmacaoSenha = document.getElementById("confirmacao-senha").value;
 
-  if (senha === confirmacaoSenha) {
-    // Criar usuário no Firebase Authentication
-    firebase.auth().createUserWithEmailAndPassword(email, senha)
-      .then((userCredential) => {
-        const user = userCredential.user;
+  const nome = document.getElementById("nome").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const senha = document.getElementById("senha").value.trim();
+  const confirmacaoSenha = document.getElementById("confirmacao-senha").value.trim();
 
-        // Salvar dados adicionais no Firestore
-        db.collection("users").doc(user.uid).set({
-          nome: nome,
-          email: email,
-          status: "pendente",
-          subscriptionActive: false,
-          subscriptionEndDate: null
-        })
-        .then(() => {
-          console.log("Dados do usuário salvos no Firestore!");
-        })
-        .catch((error) => {
-          console.error("Erro ao salvar no Firestore:", error);
-        });
-      })
-      .catch((error) => {
-        console.error("Erro ao criar usuário:", error);
-      });
-  } else {
-    console.log("As senhas não coincidem!");
+  if (!nome || !email || !senha || !confirmacaoSenha) {
+    console.error("Todos os campos devem ser preenchidos!");
+    return;
+  }
+
+  if (senha !== confirmacaoSenha) {
+    console.error("As senhas não coincidem!");
+    return;
+  }
+
+  try {
+    const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, senha);
+    const user = userCredential.user;
+
+    await db.collection("users").doc(user.uid).set({
+      nome: nome,
+      email: email,
+      status: "pendente",
+      subscriptionActive: false,
+      subscriptionEndDate: null
+    });
+
+    console.log("Cadastro realizado com sucesso!");
+    alert("Cadastro realizado com sucesso!");
+    window.location.href = "login.html";
+  } catch (error) {
+    console.error("Erro ao realizar o cadastro:", error.message);
+    alert("Erro ao realizar o cadastro: " + error.message);
   }
 });
+

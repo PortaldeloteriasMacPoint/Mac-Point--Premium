@@ -9,7 +9,6 @@
   <meta name="twitter:image" content="https://i.postimg.cc/Rhm99szc/Screenshot-20241228-214554-1.jpg">
   <title>Portal de Loterias - Mac Point</title>
   <style>
-    /* Seus estilos para o layout, sem alterações */
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -75,7 +74,6 @@
 
     .menu-lateral ul li a {
       text-decoration: none;
-      text-align: center;
       color: white;
       font-weight: bold;
       background-color: black;
@@ -210,20 +208,15 @@
   <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-auth.js"></script>
   <script>
     const firebaseConfig = {
-      apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
-      authDomain: "mac-projeto-4e552.firebaseapp.com",
-      projectId: "mac-projeto-4e552",
-      storageBucket: "mac-projeto-4e552.appspot.com",
-      messagingSenderId: "537330451519",
-      appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
+      apiKey: "sua-chave-api",
+      authDomain: "seu-projeto.firebaseapp.com",
+      projectId: "seu-projeto",
+      storageBucket: "seu-projeto.appspot.com",
+      messagingSenderId: "seu-id",
+      appId: "seu-app-id"
     };
 
     firebase.initializeApp(firebaseConfig);
-
-    function toggleMenu() {
-      const menu = document.getElementById('menuLateral');
-      menu.classList.toggle('aberto');
-    }
 
     firebase.auth().onAuthStateChanged(function (user) {
       const loadingMessage = document.getElementById('loadingMessage');
@@ -232,30 +225,15 @@
       loadingMessage.style.display = 'none';
 
       if (user) {
-        checkPaymentStatus(user);
+        protectedContent.style.display = 'block';
       } else {
-        window.location.href = "cadastro.html";  // Redireciona para a página de cadastro
+        window.location.href = "cadastro.html";
       }
     });
 
-    function checkPaymentStatus(user) {
-      const db = firebase.firestore();
-      const userRef = db.collection("users").doc(user.uid);
-
-      userRef.get().then((doc) => {
-        const userData = doc.data();
-        const subscriptionEndDate = userData.subscriptionEndDate.toDate();
-        const currentDate = new Date();
-
-        if (userData.subscriptionActive && subscriptionEndDate > currentDate) {
-          document.getElementById('protectedContent').style.display = 'block';
-        } else {
-          window.location.href = "pagamento.html";  // Redireciona para a página de pagamento
-        }
-      }).catch((error) => {
-        console.error("Erro ao verificar status de pagamento:", error);
-        window.location.href = "pagamento.html";  // Redireciona para a página de pagamento
-      });
+    function toggleMenu() {
+      const menu = document.getElementById('menuLateral');
+      menu.classList.toggle('aberto');
     }
   </script>
 </body>

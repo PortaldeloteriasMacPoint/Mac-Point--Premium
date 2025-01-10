@@ -1,18 +1,24 @@
+
+
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta property="og:description" content="O Portal de Loterias Mac Point é um site que oferece ferramentas exclusivas para aprimorar suas apostas nas loterias brasileiras.">
+  <meta property="og:description" content="O Portal de Loterias Mac Point é um site que oferece ferramentas exclusivas para aprimorar suas apostas nas loterias brasileiras. Contendo recursos como análises e estatísticas, geradores de números inteligentes. O Mac Point visa potencializar suas chances de sucesso de forma prática e eficiente.">
   <meta property="og:image" content="https://i.postimg.cc/Rhm99szc/Screenshot-20241228-214554-1.jpg">
   <meta property="og:url" content="https://portaldeloteriasmacpoint.github.io/Premium/">
+  <meta name="twitter:image" content="https://i.postimg.cc/Rhm99szc/Screenshot-20241228-214554-1.jpg">
   <title>Portal de Loterias - Mac Point</title>
   <style>
+    /* Seus estilos para o layout, sem alterações */
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background-color: #013220;
+      background-image: url('Screenshot_20241228-214608-1.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
       color: #fff;
     }
 
@@ -21,7 +27,6 @@
       color: white;
       font-size: 1.5rem;
       padding: 20px;
-      margin-top: 20%;
     }
 
     .menu-hamburguer {
@@ -112,6 +117,12 @@
       box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.7);
     }
 
+    .quadro img.capa {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+    }
+
     footer {
       text-align: center;
       padding: 20px;
@@ -130,7 +141,6 @@
       padding: 20px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
       text-align: center;
-      display: none;
     }
 
     .content h2 {
@@ -181,26 +191,25 @@
   </nav>
 
   <main>
-    <div id="loadingMessage">Verificando autenticação e status de assinatura...</div>
+    <div id="loadingMessage">Verificando autenticação...</div>
 
     <div class="home">
-      <div class="content" id="protectedContent">
-        <h2>Bem-vindo ao Portal de Loterias Mac Point!</h2>
-        <p>Você tem acesso ao conteúdo premium!</p>
+      <div class="content" id="protectedContent" style="display: none;">
+        <h2>Conteúdo Exclusivo</h2>
+        <p>Bem-vindo ao conteúdo premium! Aqui você tem acesso a materiais exclusivos disponíveis para os nossos assinantes.</p>
+        <p>Obrigado por escolher um dos nossos planos. Aproveite ao máximo o seu acesso!</p>
         <button onclick="window.location.href='index.html'">Voltar à página principal</button>
       </div>
     </div>
   </main>
 
   <footer>
-    <p>Mac Point é um site independente dedicado a fornecer análises, ferramentas e informações sobre as loterias brasileiras. Não temos vínculo com a Caixa Econômica Federal ou qualquer outra entidade governamental.</p>
+    <p>Mac Point é um site independente dedicado a fornecer análises, ferramentas e informações sobre as loterias brasileiras. Não temos vínculo com a Caixa Econômica Federal ou qualquer outra entidade governamental. Para resultados oficiais, consulte os canais oficiais de cada loteria.</p>
     <p>© 2024 Portal de Loterias - Mac Point. Todos os direitos reservados.</p>
   </footer>
 
   <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-firestore.js"></script>
-
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
@@ -212,44 +221,45 @@
     };
 
     firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    firebase.auth().onAuthStateChanged(async (user) => {
-      const loadingMessage = document.getElementById('loadingMessage');
-      const protectedContent = document.getElementById('protectedContent');
-
-      if (user) {
-        try {
-          const userDoc = await db.collection("users").doc(user.uid).get();
-
-          if (userDoc.exists) {
-            const data = userDoc.data();
-            const currentDate = new Date();
-            const subscriptionEndDate = data.subscriptionEndDate.toDate();
-
-            if (data.subscriptionActive && subscriptionEndDate > currentDate) {
-              loadingMessage.style.display = 'none';
-              protectedContent.style.display = 'block';
-            } else {
-              window.location.href = "pagamento.html";
-            }
-          } else {
-            window.location.href = "cadastro.html";
-          }
-        } catch (error) {
-          console.error("Erro ao verificar status:", error);
-          window.location.href = "erro.html";
-        }
-      } else {
-        window.location.href = "cadastro.html";
-      }
-    });
 
     function toggleMenu() {
       const menu = document.getElementById('menuLateral');
       menu.classList.toggle('aberto');
     }
+
+    firebase.auth().onAuthStateChanged(function (user) {
+      const loadingMessage = document.getElementById('loadingMessage');
+      const protectedContent = document.getElementById('protectedContent');
+
+      loadingMessage.style.display = 'none';
+
+      if (user) {
+        checkPaymentStatus(user);
+      } else {
+        window.location.href = "cadastro.html";  // Redireciona para a página de cadastro
+      }
+    });
+
+    function checkPaymentStatus(user) {
+      const db = firebase.firestore();
+      const userRef = db.collection("users").doc(user.uid);
+
+      userRef.get().then((doc) => {
+        const userData = doc.data();
+        const subscriptionEndDate = userData.subscriptionEndDate.toDate();
+        const currentDate = new Date();
+
+        if (userData.subscriptionActive && subscriptionEndDate > currentDate) {
+          document.getElementById('protectedContent').style.display = 'block';
+        } else {
+          window.location.href = "pagamento.html";  // Redireciona para a página de pagamento
+        }
+      }).catch((error) => {
+        console.error("Erro ao verificar status de pagamento:", error);
+        window.location.href = "pagamento.html";  // Redireciona para a página de pagamento
+      });
+    }
   </script>
 </body>
-
 </html>
+

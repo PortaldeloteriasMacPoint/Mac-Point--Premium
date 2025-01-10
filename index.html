@@ -113,6 +113,14 @@
       max-width: 80%;
       text-align: center;
       box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.7);
+      position: relative;
+    }
+
+    .foto-capa {
+      width: 100%;
+      height: auto;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
     }
 
     footer {
@@ -149,6 +157,10 @@
 
   <main>
     <div id="loadingMessage">Verificando autenticação...</div>
+    <!-- Quadro com foto de capa dentro -->
+    <div class="quadro">
+      <img class="foto-capa" src="https://i.postimg.cc/Rhm99szc/Screenshot-20241228-214554-1.jpg" alt="Capa do Portal">
+    </div>
   </main>
 
   <footer>
@@ -180,6 +192,7 @@
         window.location.href = "cadastro.html"; // Redireciona para a página de cadastro
       } else {
         console.log("Usuário autenticado:", user.email);
+        window.location.href = "pagamento.html"; // Redireciona para a página de pagamento após login
       }
     });
 
@@ -191,4 +204,3 @@
 </body>
 </html>
 
- 

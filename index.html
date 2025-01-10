@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -11,26 +9,22 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Portal de Loterias - Mac Point</title>
    <style>
-     /* Estilos globais */
      body {
        margin: 0;
        font-family: Arial, sans-serif;
-       background-color: #000; /* Plano de fundo preto */
+       background-color: #000;
        color: #fff;
        position: relative;
      }
-
-     /* Menu Hambúrguer */
      .menu-hamburguer {
        position: fixed;
        top: 10px;
        left: 10px;
        z-index: 1000;
      }
-
      .menu-hamburguer button {
-       background-color: #000; /* Preto */
-       color: white; /* Escrita branca */
+       background-color: #000;
+       color: white;
        border: none;
        padding: 5px;
        border-radius: 5px;
@@ -39,10 +33,8 @@
        transition: background-color 0.3s;
      }
      .menu-hamburguer button:hover {
-       background-color: #004d00; /* Verde escuro ao passar o mouse */
+       background-color: #004d00;
      }
-
-     /* Menu Lateral */
      .menu-lateral {
        position: fixed;
        top: 0;
@@ -56,66 +48,56 @@
        transition: transform 0.3s ease-in-out;
        z-index: 1100;
      }
-
      .menu-lateral ul {
        list-style: none;
        padding: 0;
        margin: 0;
      }
-
      .menu-lateral ul li {
        margin-bottom: 15px;
      }
-
      .menu-lateral ul li a {
        text-decoration: none;
-       text-align: center; /* Centraliza o texto */
-       color: black; /* Escrito em preto */
+       text-align: center;
+       color: black;
        background-color: white;
        padding: 10px 15px;
        border-radius: 10px;
        display: block;
        transition: all 0.3s ease-in-out;
      }
-
      .menu-lateral ul li a:hover {
-       background-color: #00b300; /* Verde ao passar o mouse */
+       background-color: #00b300;
      }
-
      .menu-lateral.aberto {
        transform: translateX(0);
      }
-
-     /* Página inicial */
      .home {
        text-align: center;
        padding: 40px 20px;
        position: relative;
        z-index: 100;
      }
-
      .home img {
        width: 100%;
-       height: 100vh; /* 100% da altura da tela */
-       object-fit: cover; /* A imagem se ajusta para cobrir toda a área */
+       height: 100vh;
+       object-fit: cover;
        margin-top: 0;
        border-radius: 0;
        box-shadow: none;
      }
-
      .subcapa {
        position: absolute;
        top: 0;
        left: 0;
        width: 100%;
        height: 100%;
-       background-image: url('https://i.postimg.cc/4yKFS9j4/Screenshot-20241129-232703-1.jpg'); /* Subcapa */
+       background-image: url('https://i.postimg.cc/4yKFS9j4/Screenshot-20241129-232703-1.jpg');
        background-size: cover;
        background-position: center;
        opacity: 0.6;
        z-index: 90;
      }
-
      .conteudo-principal {
        position: relative;
        z-index: 100;
@@ -125,14 +107,18 @@
        max-width: 80%;
        border-radius: 10px;
      }
-
+     .foto-capa {
+       width: 100%;
+       height: auto;
+       border-radius: 5px;
+       box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+     }
      .home p {
        font-size: 1.5em;
        background-color: rgba(0, 0, 0, 0.5);
        padding: 10px;
        border-radius: 5px;
      }
-
      footer {
        text-align: center;
        padding: 20px;
@@ -140,14 +126,13 @@
        color: #fff;
      }
    </style>
+   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
 </head>
 <body>
-  <!-- Menu Hambúrguer -->
   <div class="menu-hamburguer">
     <button onclick="toggleMenu()">☰</button>
   </div>
-
-  <!-- Menu Lateral -->
   <nav class="menu-lateral" id="menuLateral">
     <ul>
       <li><a href="index.html">Início</a></li>
@@ -161,31 +146,25 @@
       <li><a href="contato.html">Contato</a></li>
     </ul>
   </nav>
-
-  <!-- Página Inicial -->
   <main class="home">
-    <div class="subcapa"></div> <!-- Subcapa -->
+    <div class="subcapa"></div>
     <div class="conteudo-principal">
       <h1>Bem-vindo ao Portal de Loterias - Mac Point</h1>
-      <img src="https://i.postimg.cc/vTmmYCpy/Screenshot-20241221-151605-1-1.jpg" alt="Imagem de Capa">
+      <div class="quadro">
+        <img class="foto-capa" src="https://i.postimg.cc/vTmmYCpy/Screenshot-20241221-151605-1-1.jpg" alt="Imagem de Capa">
+      </div>
       <p>Nosso portal oferece conteúdo exclusivo para ajudá-lo a entender melhor as estatísticas e estratégias por trás das principais modalidades de loterias brasileiras. Aproveite!</p>
     </div>
   </main>
-
-  <!-- Rodapé -->
   <footer>
     <p>Mac Point é um site independente dedicado a fornecer análises, ferramentas e informações sobre as loterias brasileiras. Não temos vínculo com a Caixa Econômica Federal ou qualquer outra entidade governamental. Para resultados oficiais, consulte os canais oficiais de cada loteria.</p>
     <p>© 2024 Portal de Loterias-Mac Point . Todos os direitos reservados.</p>
   </footer>
-
-  <!-- Script para o Menu -->
   <script>
     function toggleMenu() {
       const menu = document.getElementById('menuLateral');
       menu.classList.toggle('aberto');
     }
-
-    // Fechar o menu se clicar fora dele
     document.addEventListener('click', function(event) {
       const menu = document.getElementById('menuLateral');
       const menuButton = document.querySelector('.menu-hamburguer button');
@@ -193,11 +172,22 @@
         menu.classList.remove('aberto');
       }
     });
+    const firebaseConfig = {
+      apiKey: "AIzaSyA2J6syDQWzdeMhjlzX2zJvcx80vb0dI6WqJzws",
+      authDomain: "macpoint-12345.firebaseapp.com",
+      projectId: "macpoint-12345",
+      storageBucket: "macpoint-12345.appspot.com",
+      messagingSenderId: "77491727006",
+      appId: "1:77491727006:web:1b4f11845685938da3d6d7"
+    };
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    auth.onAuthStateChanged(user => {
+      if (!user) {
+        window.location.href = "cadastro.html";
+      }
+    });
   </script>
 </body>
 </html>
-
-
-
-
 

@@ -158,6 +158,7 @@
 
   <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-firestore.js"></script>
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
@@ -170,10 +171,10 @@
 
     firebase.initializeApp(firebaseConfig);
 
+    // Verificação de autenticação
     firebase.auth().onAuthStateChanged(function (user) {
       const loadingMessage = document.getElementById('loadingMessage');
-
-      loadingMessage.style.display = 'none';
+      loadingMessage.style.display = 'none'; // Esconde a mensagem de carregamento
 
       if (!user) {
         window.location.href = "cadastro.html"; // Redireciona para a página de cadastro
@@ -190,3 +191,4 @@
 </body>
 </html>
 
+ 

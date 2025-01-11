@@ -2,7 +2,7 @@ const formCadastro = document.getElementById("form-cadastro");
 
 formCadastro.addEventListener("submit", async (e) => {
   e.preventDefault();
-
+  
   const nome = document.getElementById("nome").value;
   const email = document.getElementById("email").value;
   const senha = document.getElementById("senha").value;
@@ -10,10 +10,10 @@ formCadastro.addEventListener("submit", async (e) => {
 
   if (senha === confirmacaoSenha) {
     try {
-      const userCredential = await auth.createUserWithEmailAndPassword(email, senha);
+      const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, senha);
       const user = userCredential.user;
 
-      await db.collection("users").doc(user.uid).set({
+      await firebase.firestore().collection("users").doc(user.uid).set({
         nome: nome,
         email: email,
         status: "pendente",
@@ -21,13 +21,12 @@ formCadastro.addEventListener("submit", async (e) => {
         subscriptionEndDate: null
       });
 
-      console.log("Cadastro realizado com sucesso!");
-      alert("Cadastro realizado com sucesso!");
+      console.log("Cadastro realizado com sucesso e dados salvos no Firestore!");
     } catch (error) {
-      console.error("Erro ao realizar cadastro:", error.message);
-      alert("Erro ao realizar cadastro: " + error.message);
+      console.error("Erro ao realizar cadastro:", error);
     }
   } else {
-    alert("As senhas não coincidem!");
+    console.log("As senhas não coincidem!");
   }
 });
+

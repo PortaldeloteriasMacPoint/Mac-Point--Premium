@@ -1,37 +1,48 @@
-
-
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página de Pagamento</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página de Pagamento</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <div class="capa">
-            <img src="sua-imagem.jpg" alt="Imagem de Capa">
-        </div>
-        <div class="planos">
-            <div class="plano">
-                <h3>Plano Mensal</h3>
-                <p>R$ 29,90/mês</p>
-                <button class="btn-pagar">Pagar</button>
-            </div>
-            <div class="plano">
-                <h3>Plano Trimestral</h3>
-                <p>R$ 79,90/3 meses</p>
-                <button class="btn-pagar">Pagar</button>
-            </div>
-            <div class="plano">
-                <h3>Plano Anual</h3>
-                <p>R$ 299,90/ano</p>
-                <button class="btn-pagar">Pagar</button>
-            </div>
-        </div>
-        <a href="login.html" class="link-login">Já tem uma conta? Faça login.</a>
+  <div class="container">
+    <!-- Capa -->
+    <div class="header">
+      <img class="header-image" src="sua-imagem.jpg" alt="Capa do site">
+      <h1>Bem-vindo ao Portal Premium</h1>
+      <p>Escolha seu plano abaixo e tenha acesso exclusivo ao nosso conteúdo.</p>
     </div>
+
+    <!-- Planos -->
+    <div class="planos">
+      <!-- Plano Mensal -->
+      <div class="plano">
+        <h2>Plano Mensal</h2>
+        <p>De R$29,90 por apenas R$19,90</p>
+        <button onclick="location.href='sua-url-de-compra-mensal'">Comprar Agora</button>
+      </div>
+
+      <!-- Plano Trimestral -->
+      <div class="plano">
+        <h2>Plano Trimestral</h2>
+        <p>De R$89,90 por apenas R$49,90</p>
+        <button onclick="location.href='sua-url-de-compra-trimestral'">Comprar Agora</button>
+      </div>
+
+      <!-- Plano Anual -->
+      <div class="plano">
+        <h2>Plano Anual</h2>
+        <p>De R$299,90 por apenas R$199,90</p>
+        <button onclick="location.href='sua-url-de-compra-anual'">Comprar Agora</button>
+      </div>
+    </div>
+
+    <!-- Login -->
+    <div class="footer">
+      <p>Já tem uma conta? <a href="login.html" style="color: orange;">Faça login</a></p>
+    </div>
+  </div>
 </body>
 </html>
-

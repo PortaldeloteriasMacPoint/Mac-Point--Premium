@@ -1,71 +1,118 @@
+Claro! Aqui está o CSS:
 
+/* Reset geral */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 body {
-  font-family: 'Roboto', sans-serif;
-  background-color: #000;
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #000;
+    color: #fff;
+    text-align: center;
 }
 
+/* Estilos para containers */
 .container {
-  width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px;
+    background-color: #006400;
+    border: 2px solid #32CD32;
 }
 
-.form-container {
-  background-color: #006400;
-  border: 2px solid #00FF00;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+/* Cabeçalhos */
+h1 {
+    font-size: 36px;
+    color: white;
+    margin-bottom: 40px;
 }
 
-h2 {
-  text-align: center;
-  margin-bottom: 20px;
+/* Formulário de login e planos */
+form, .planos {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-form label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-  color: #fff;
+.input-container,
+.plano {
+    margin-bottom: 20px;
+    width: 80%;
 }
 
-form input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: none;
-  border-radius: 5px;
-  background-color: #000;
-  color: #fff;
+input, .btn-pagamento {
+    background-color: #000;
+    color: white;
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #32CD32;
+    font-size: 16px;
 }
 
-form button {
-  width: 100%;
-  padding: 10px;
-  background-color: #00FF00;
-  border: none;
-  border-radius: 5px;
-  color: #000;
-  font-weight: bold;
-  cursor: pointer;
+/* Input específicos */
+input::placeholder {
+    color: #ccc;
 }
 
-form button:hover {
-  background-color: #00cc00;
+input[type="email"], input[type="password"] {
+    background-color: #000;
+    color: white;
+    border: 1px solid #32CD32;
 }
 
-p {
-  text-align: center;
-  margin-top: 10px;
-  color: #fff;
+/* Estilos de botão */
+.btn-login,
+.btn-pagamento {
+    background-color: #32CD32;
+    border: none;
+    padding: 10px 20px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+}
+
+.link-cadastro,
+.link-login {
+    color: #32CD32;
+    text-decoration: none;
+    font-size: 16px;
+    margin-top: 20px;
+    display: block;
+}
+
+/* Estilos específicos para planos de pagamento */
+.plano {
+    background-color: #333;
+    padding: 20px;
+    border: 1px solid #32CD32;
+}
+
+.plano h3 {
+    color: #32CD32;
+}
+
+.plano p {
+    color: #fff;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+
+    .planos {
+        flex-direction: column;
+    }
+
+    .plano {
+        width: 80%;
+        margin: 10px auto;
+    }
 }
 

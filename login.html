@@ -1,27 +1,169 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Login - Portal Premium</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .login-box {
+            background-color: #1a1a1a;
+            border: 2px solid #4CAF50;
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 8px;
+            text-align: center;
+            color: #fff;
+        }
+
+        .header {
+            margin-bottom: 20px;
+        }
+
+        .cover-img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        h2 {
+            color: #4CAF50;
+            margin-bottom: 15px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #4CAF50;
+            border-radius: 5px;
+            background-color: #121212;
+            color: #fff;
+        }
+
+        .input-group input:focus {
+            border-color: #80e5a3;
+            outline: none;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 10px;
+            background-color: #ff9800;
+            border: none;
+            border-radius: 5px;
+            color: #000;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-submit:hover {
+            background-color: #4CAF50;
+        }
+
+        .error-message {
+            margin-top: 15px;
+            color: red;
+        }
+
+        .redirect {
+            margin-top: 20px;
+        }
+
+        .redirect a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+        .redirect a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
+
 <body>
-    <div class="container">
-        <h1>Login</h1>
-        <form action="#" method="POST" id="loginForm">
-            <div class="input-container">
-                <input type="email" name="email" placeholder="Digite seu email" required>
+    <div class="login-container">
+        <div class="login-box">
+            <div class="header">
+                <img src="capa.jpg" alt="Capa" class="cover-img"> <!-- Adicione a imagem da capa -->
             </div>
-            <div class="input-container">
-                <input type="password" name="password" placeholder="Digite sua senha" required>
-            </div>
-            <button type="submit" class="btn-login">Entrar</button>
-        </form>
-        <p>Não tem uma conta? <a href="register.html" class="link-cadastro">Cadastre-se</a></p>
+            <h2>Login</h2>
+            <form id="login-form">
+                <div class="input-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" required placeholder="Digite seu e-mail">
+                </div>
+                <div class="input-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" name="password" required placeholder="Digite sua senha">
+                </div>
+                <button type="submit" class="btn-submit">Entrar</button>
+                <div class="error-message" id="error-message" style="display:none;">
+                    <p>Efetue o pagamento para ter acesso ao conteúdo do site.</p>
+                </div>
+            </form>
+            <p class="redirect">
+                <a href="pagamento.html">Não tem uma conta? Faça login para acessar o conteúdo.</a>
+            </p>
+        </div>
     </div>
+
+    <script>
+        document.getElementById("login-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            // Simulação de verificação com Firebase ou seu banco de dados
+            // Aqui você vai fazer a autenticação com o Firestore ou a verificação que preferir
+
+            // Exemplo de lógica para usuário não encontrado ou senha inválida:
+            const usuarioExistente = false; // Isso deveria ser dinâmico, verificando o Firestore
+            const usuarioAtivo = false; // Verifique se o usuário está ativo no Firestore
+
+            if (!usuarioExistente || !usuarioAtivo) {
+                document.getElementById("error-message").style.display = "block";
+            } else {
+                window.location.href = "premium.html"; // Redireciona para o conteúdo protegido
+            }
+        });
+    </script>
 </body>
+
 </html>
-
-
 

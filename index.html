@@ -1,47 +1,37 @@
 
 
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cadastro</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Pagamento</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="container">
-    <div class="form-container">
-      <h2>Cadastro</h2>
-      <form id="form-cadastro">
-        <label for="nome">Nome Completo</label>
-        <input type="text" id="nome" placeholder="Digite seu nome completo" required>
-
-        <label for="email">E-mail</label>
-        <input type="email" id="email" placeholder="Digite seu e-mail" required>
-
-        <label for="senha">Senha</label>
-        <input type="password" id="senha" placeholder="Digite sua senha" required>
-
-        <label for="confirmacao-senha">Confirmação de Senha</label>
-        <input type="password" id="confirmacao-senha" placeholder="Confirme sua senha" required>
-
-        <button type="submit" id="btn-cadastrar">Cadastrar</button>
-      </form>
-      <p>Já tem uma conta? <a href="login.html">Faça seu login</a></p>
+    <div class="container">
+        <div class="capa">
+            <img src="sua-imagem.jpg" alt="Imagem de Capa">
+        </div>
+        <div class="planos">
+            <div class="plano">
+                <h3>Plano Mensal</h3>
+                <p>R$ 29,90/mês</p>
+                <button class="btn-pagar">Pagar</button>
+            </div>
+            <div class="plano">
+                <h3>Plano Trimestral</h3>
+                <p>R$ 79,90/3 meses</p>
+                <button class="btn-pagar">Pagar</button>
+            </div>
+            <div class="plano">
+                <h3>Plano Anual</h3>
+                <p>R$ 299,90/ano</p>
+                <button class="btn-pagar">Pagar</button>
+            </div>
+        </div>
+        <a href="login.html" class="link-login">Já tem uma conta? Faça login.</a>
     </div>
-  </div>
-
-  <!-- Scripts Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
-
-  <!-- Inicialização do Firebase -->
-  <script src="firebase-init.js"></script>
-
-  <!-- Script de Cadastro -->
-  <script src="cadastro.js"></script>
 </body>
 </html>
 

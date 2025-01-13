@@ -1,0 +1,109 @@
+
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - Portal Premium</title>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Roboto', sans-serif; background-color: black; display: flex; justify-content: center; align-items: center; min-height: 100vh; flex-direction: column; }
+        .cover-image {
+            width: 100%; 
+            height: 200px; 
+            background-image: url('sua-imagem-aqui.jpg'); /* Substitua com a URL da sua imagem */
+            background-size: cover; 
+            background-position: center; 
+            border-bottom: 5px solid #66ff66;
+        }
+        .container { display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; }
+        .form-container { 
+            background-color: #004d00; 
+            border: 2px solid #66ff66; 
+            padding: 30px; 
+            border-radius: 10px; 
+            text-align: center; 
+            width: 100%; 
+            max-width: 400px; 
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3); 
+        }
+        h2 { color: white; margin-bottom: 20px; }
+        input { width: 100%; padding: 12px; margin: 12px 0; border: none; border-radius: 5px; background-color: black; color: white; font-size: 16px; box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3); }
+        button { width: 100%; padding: 12px; background-color: #66ff66; border: none; border-radius: 5px; color: black; font-size: 18px; cursor: pointer; transition: background-color 0.3s; }
+        button:hover { background-color: #4dcd4d; }
+        .error { color: red; font-size: 14px; margin-top: 10px; }
+        a { display: block; margin-top: 20px; color: #66ff66; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        @media (max-width: 768px) { .form-container { max-width: 90%; padding: 20px; } }
+        @media (max-width: 480px) { .form-container { max-width: 100%; } }
+    </style>
+</head>
+<body>
+    <div class="cover-image"></div> <!-- Foto de Capa -->
+    
+    <div class="container">
+        <div class="form-container">
+            <h2>Cadastro</h2>
+            <form id="registerForm">
+                <input type="email" id="email" placeholder="E-mail" required>
+                <input type="password" id="password" placeholder="Senha" required>
+                <button type="submit">Cadastrar</button>
+            </form>
+            <p id="error-message" class="error"></p>
+            <a href="login.html">Já tem uma conta? Faça login!</a>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+            authDomain: "mac-projeto-4e552.firebaseapp.com",
+            projectId: "mac-projeto-4e552",
+            storageBucket: "mac-projeto-4e552.appspot.com",
+            messagingSenderId: "537330451519",
+            appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        document.getElementById("registerForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            try {
+                // Criar o usuário no Firebase Authentication
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // Salvar dados do usuário no Firestore
+                await setDoc(doc(db, "users", user.uid), {
+                    email: email,
+                    subscriptionActive: true, // Assinatura ativa
+                    subscriptionEndDate: new Date().setFullYear(new Date().getFullYear() + 1), // Data de expiração do plano
+                    plan: "Anual" // Plano escolhido
+                });
+
+                alert("Usuário cadastrado com sucesso!");
+                window.location.href = "login.html"; // Redirecionar para a página de login
+
+            } catch (error) {
+                console.error("Erro ao cadastrar: ", error.message);
+                document.getElementById("error-message").textContent = "Erro ao cadastrar: " + error.message;
+            }
+        });
+    </script>
+</body>
+</html>
+

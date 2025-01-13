@@ -1,169 +1,90 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Portal de Loterias- Mac Point</title>
+    <title>Login - Portal Premium</title>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #121212;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .login-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-        }
-
-        .login-box {
-            background-color: #1a1a1a;
-            border: 2px solid #4CAF50;
-            padding: 20px;
-            width: 100%;
-            max-width: 400px;
-            border-radius: 8px;
-            text-align: fixed;
-            color: #fff;
-        }
-
-        .header {
-            margin-bottom: 20px;
-        }
-
-        .cover-img {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-
-        h2 {
-            color: #4CAF50;
-            margin-bottom: 15px;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-        }
-
-        .input-group label {
-            display: block;
-            color: #fff;
-            margin-bottom: 5px;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #4CAF50;
-            border-radius: 5px;
-            background-color: #121212;
-            color: #fff;
-        }
-
-        .input-group input:focus {
-            border-color: #80e5a3;
-            outline: none;
-        }
-
-        .btn-submit {
-            width: 100%;
-            padding: 10px;
-            background-color: #ff9800;
-            border: none;
-            border-radius: 5px;
-            color: #000;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .btn-submit:hover {
-            background-color: #4CAF50;
-        }
-
-        .error-message {
-            margin-top: 15px;
-            color: red;
-        }
-
-        .redirect {
-            margin-top: 20px;
-        }
-
-        .redirect a {
-            color: #4CAF50;
-            text-decoration: none;
-        }
-
-        .redirect a:hover {
-            text-decoration: underline;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Roboto', sans-serif; background-color: black; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .container { display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; }
+        .form-container { background-color: #004d00; border: 2px solid #66ff66; padding: 30px; border-radius: 10px; text-align: center; width: 100%; max-width: 400px; box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3); }
+        h2 { color: white; margin-bottom: 20px; }
+        input { width: 100%; padding: 12px; margin: 12px 0; border: none; border-radius: 5px; background-color: black; color: white; font-size: 16px; box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3); }
+        button { width: 100%; padding: 12px; background-color: #66ff66; border: none; border-radius: 5px; color: black; font-size: 18px; cursor: pointer; transition: background-color 0.3s; }
+        button:hover { background-color: #4dcd4d; }
+        .error { color: red; font-size: 14px; margin-top: 10px; }
+        a { display: block; margin-top: 20px; color: #66ff66; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        @media (max-width: 768px) { .form-container { max-width: 90%; padding: 20px; } }
+        @media (max-width: 480px) { .form-container { max-width: 100%; } }
     </style>
 </head>
-
 <body>
-    <div class="login-container">
-        <div class="login-box">
-            <div class="header">
-                <img src="Screenshot_20250112-200556-1.jpg" alt="Capa" class="cover-img"> <!-- Adicione a imagem da capa -->
-            </div>
+    <div class="container">
+        <div class="form-container">
             <h2>Login</h2>
-            <form id="login-form">
-                <div class="input-group">
-                    <label for="email">E-mail</label>
-                    <input type="email" id="email" name="email" required placeholder="Digite seu e-mail">
-                </div>
-                <div class="input-group">
-                    <label for="password">Senha</label>
-                    <input type="password" id="password" name="password" required placeholder="Digite sua senha">
-                </div>
-                <button type="submit" class="btn-submit">Entrar</button>
-                <div class="error-message" id="error-message" style="display:none;">
-                    <p>Efetue o pagamento para ter acesso ao conteúdo do site.</p>
-                </div>
+            <form id="loginForm">
+                <input type="email" id="email" placeholder="E-mail" required>
+                <input type="password" id="password" placeholder="Senha" required>
+                <button type="submit">Entrar</button>
             </form>
-            <p class="redirect">
-                <a href="index.html">Efetue o pagamento para ter acesso ao conteúdo do site.</a>
-            </p>
+            <p id="error-message" class="error"></p>
+            <a href="cadastro.html">Não tem uma conta? Cadastre-se!</a>
         </div>
     </div>
 
-    <script>
-        document.getElementById("login-form").addEventListener("submit", function(event) {
-            event.preventDefault();
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+            authDomain: "mac-projeto-4e552.firebaseapp.com",
+            projectId: "mac-projeto-4e552",
+            storageBucket: "mac-projeto-4e552.appspot.com",
+            messagingSenderId: "537330451519",
+            appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        document.getElementById("loginForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
 
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
 
-            // Simulação de verificação com Firebase ou seu banco de dados
-            // Aqui você vai fazer a autenticação com o Firestore ou a verificação que preferir
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
 
-            // Exemplo de lógica para usuário não encontrado ou senha inválida:
-            const usuarioExistente = false; // Isso deveria ser dinâmico, verificando o Firestore
-            const usuarioAtivo = false; // Verifique se o usuário está ativo no Firestore
+                const userDocRef = doc(db, "users", user.uid);
+                const userDoc = await getDoc(userDocRef);
 
-            if (!usuarioExistente || !usuarioAtivo) {
-                document.getElementById("error-message").style.display = "block";
-            } else {
-                window.location.href = "premium.html"; // Redireciona para o conteúdo protegido
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    if (userData.subscriptionActive && userData.subscriptionEndDate.toDate() > new Date()) {
+                        window.location.href = "home.html";
+                    } else {
+                        alert("Sua assinatura está expirada ou inativa. Por favor, renove sua assinatura.");
+                        signOut(auth);
+                    }
+                } else {
+                    alert("Usuário não encontrado no Firestore.");
+                    signOut(auth);
+                }
+            } catch (error) {
+                document.getElementById("error-message").textContent = "Erro ao fazer login: " + error.message;
             }
         });
     </script>
 </body>
-
 </html>
 

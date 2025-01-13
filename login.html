@@ -1,30 +1,127 @@
+
+
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Portal Premium</title>
-    <script type="module" src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
-    <script type="module" src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
-    <script type="module" src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js"></script>
+    <title>Login</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Roboto', sans-serif; background-color: black; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .container { display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; }
-        .form-container { background-color: #004d00; border: 2px solid #66ff66; padding: 30px; border-radius: 10px; text-align: center; width: 100%; max-width: 400px; box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3); }
-        h2 { color: white; margin-bottom: 20px; }
-        input { width: 100%; padding: 12px; margin: 12px 0; border: none; border-radius: 5px; background-color: black; color: white; font-size: 16px; box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3); }
-        button { width: 100%; padding: 12px; background-color: #66ff66; border: none; border-radius: 5px; color: black; font-size: 18px; cursor: pointer; transition: background-color 0.3s; }
-        button:hover { background-color: #4dcd4d; }
-        .error { color: red; font-size: 14px; margin-top: 10px; }
-        a { display: block; margin-top: 20px; color: #66ff66; text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        @media (max-width: 768px) { .form-container { max-width: 90%; padding: 20px; } }
-        @media (max-width: 480px) { .form-container { max-width: 100%; } }
+        /* Estilo Geral */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .capa {
+            width: 100%;
+            max-height: 200px;
+            background-color: #222;
+            border: 3px solid #32cd32;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .capa img {
+            width: 100%;
+            height: auto;
+        }
+
+        .form-container {
+            background-color: #006400;
+            border: 3px solid #32cd32;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .form-container input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #32cd32;
+            border-radius: 5px;
+            background-color: #000;
+            color: white;
+        }
+
+        .form-container button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #32cd32;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .form-container button:hover {
+            background-color: #28a428;
+        }
+
+        /* Notificação */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #4caf50;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 16px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            animation: fadeIn 0.5s, fadeOut 0.5s 3.5s;
+        }
+
+        .notification.error {
+            background-color: #f44336;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <div class="capa">
+            <!-- Altere o caminho da imagem abaixo para a sua capa -->
+            <img src="https://via.placeholder.com/800x200" alt="Capa">
+        </div>
         <div class="form-container">
             <h2>Login</h2>
             <form id="loginForm">
@@ -32,14 +129,16 @@
                 <input type="password" id="password" placeholder="Senha" required>
                 <button type="submit">Entrar</button>
             </form>
-            <p id="error-message" class="error"></p>
-            <a href="cadastro.html">Não tem uma conta? Cadastre-se!</a>
         </div>
     </div>
 
+    <!-- Notificação -->
+    <div id="notification" style="display: none;" class="notification"></div>
+
+    <!-- Scripts Firebase -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
         import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -55,6 +154,19 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
+        function showNotification(message, isError = false) {
+            const notification = document.getElementById("notification");
+            notification.textContent = message;
+            notification.className = "notification";
+            if (isError) {
+                notification.classList.add("error");
+            }
+            notification.style.display = "block";
+            setTimeout(() => {
+                notification.style.display = "none";
+            }, 4000);
+        }
+
         document.getElementById("loginForm").addEventListener("submit", async (e) => {
             e.preventDefault();
 
@@ -65,26 +177,36 @@
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
-                const userDocRef = doc(db, "users", user.uid);
-                const userDoc = await getDoc(userDocRef);
+                const userDoc = await getDoc(doc(db, "users", user.uid));
 
-                if (userDoc.exists()) {
-                    const userData = userDoc.data();
-                    if (userData.subscriptionActive && userData.subscriptionEndDate.toDate() > new Date()) {
-                        window.location.href = "premium.html";
-                    } else {
-                        alert("Sua assinatura está expirada ou inativa. Por favor, renove sua assinatura.");
-                        signOut(auth);
-                    }
-                } else {
-                    alert("Usuário não encontrado no Firestore.");
-                    signOut(auth);
+                if (!userDoc.exists()) {
+                    showNotification("Erro: Usuário não encontrado no Firestore.", true);
+                    return;
                 }
+
+                const userData = userDoc.data();
+
+                if (!userData.subscriptionActive || new Date(userData.subscriptionEndDate.toDate()) < new Date()) {
+                    showNotification("Erro: Plano expirado ou inativo. Renove seu plano.", true);
+                    return;
+                }
+
+                showNotification("Login realizado com sucesso!");
+                setTimeout(() => {
+                    window.location.href = "premium.html";
+                }, 3000);
             } catch (error) {
-                document.getElementById("error-message").textContent = "Erro ao fazer login: " + error.message;
+                if (error.code === "auth/wrong-password") {
+                    showNotification("Erro: Senha incorreta.", true);
+                } else if (error.code === "auth/user-not-found") {
+                    showNotification("Erro: Usuário não encontrado.", true);
+                } else {
+                    showNotification(`Erro: ${error.message}`, true);
+                }
             }
         });
     </script>
 </body>
 </html>
+
 

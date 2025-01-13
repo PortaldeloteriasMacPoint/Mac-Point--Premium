@@ -71,7 +71,7 @@
                 if (userDoc.exists()) {
                     const userData = userDoc.data();
                     if (userData.subscriptionActive && userData.subscriptionEndDate.toDate() > new Date()) {
-                        window.location.href = "home.html";
+                        window.location.href = "premium.html";
                     } else {
                         alert("Sua assinatura está expirada ou inativa. Por favor, renove sua assinatura.");
                         signOut(auth);

@@ -211,7 +211,13 @@
 
             try {
                 // Cria o usuário no Firebase Authentication
-                await firebase.createUserWithEmailAndPassword(auth, email, password);
+                const userCredential = await firebase.createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // Atualiza o nome do usuário no perfil
+                await firebase.updateProfile(user, {
+                    displayName: name
+                });
 
                 // Exibe mensagem de sucesso
                 successMessage.style.display = "block";

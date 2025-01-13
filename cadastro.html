@@ -18,7 +18,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: calc(100vh - 50px);
         }
 
         .form-container {
@@ -29,11 +29,11 @@
             width: 90%;
             max-width: 400px;
             box-sizing: border-box;
-            text-align: center;
         }
 
         .form-container .capa img {
             width: 100%;
+            height: auto;
             border: 3px solid #32cd32;
             border-radius: 10px;
             margin-bottom: 20px;
@@ -42,21 +42,25 @@
         .form-container form {
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
+            align-items: center;
+            width: 100%;
         }
 
         .form-container input {
-            width: 100%;
+            width: 90%;
+            max-width: 350px;
             margin-bottom: 10px;
             padding: 10px;
             border: 1px solid #32cd32;
             border-radius: 5px;
             background-color: #000;
             color: white;
+            box-sizing: border-box;
         }
 
         .form-container button {
-            width: 100%;
+            width: 90%;
+            max-width: 350px;
             padding: 10px;
             margin-top: 10px;
             background-color: #32cd32;
@@ -66,6 +70,7 @@
             border-radius: 5px;
             font-size: 16px;
             cursor: pointer;
+            box-sizing: border-box;
         }
 
         .form-container button:hover {
@@ -75,7 +80,10 @@
         .checkbox-group {
             display: flex;
             align-items: center;
+            width: 90%;
+            max-width: 350px;
             margin-bottom: 10px;
+            box-sizing: border-box;
         }
 
         .checkbox-group input {
@@ -90,7 +98,6 @@
         .checkbox-group a {
             color: #32cd32;
             text-decoration: none;
-            margin-left: 5px;
         }
 
         .checkbox-group a:hover {
@@ -111,6 +118,17 @@
         .login-link a:hover {
             text-decoration: underline;
         }
+
+        footer {
+            background-color: #013220;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            border-top: 3px solid #32cd32;
+        }
     </style>
 </head>
 <body>
@@ -129,7 +147,7 @@
                 <div class="checkbox-group">
                     <input type="checkbox" id="terms" required>
                     <label for="terms">
-                        Eu li e concordo:
+                        Eu li e concordo: 
                         <a href="termos-e-condicoes.txt" target="_blank">Termos e Condições de Uso</a>
                     </label>
                 </div>
@@ -147,6 +165,10 @@
             </div>
         </div>
     </div>
+
+    <footer>
+        &copy; 2025 Portal de Loterias MacPoint. Todos os direitos reservados.
+    </footer>
 </body>
 </html>
 

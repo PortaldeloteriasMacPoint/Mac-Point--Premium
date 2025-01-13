@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro</title>
     <style>
-        /* Estilo geral */
+        /* Estilo Geral */
         body {
             margin: 0;
             padding: 0;
@@ -18,9 +16,8 @@
 
         .container {
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             height: 100vh;
         }
 
@@ -35,6 +32,19 @@
             text-align: center;
         }
 
+        .form-container .capa img {
+            width: 100%;
+            border: 3px solid #32cd32;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .form-container form {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
         .form-container input {
             width: 100%;
             margin-bottom: 10px;
@@ -43,7 +53,6 @@
             border-radius: 5px;
             background-color: #000;
             color: white;
-            box-sizing: border-box;
         }
 
         .form-container button {
@@ -63,40 +72,79 @@
             background-color: #28a428;
         }
 
-        .terms {
-            margin-top: 10px;
-            text-align: left;
-            font-size: 14px;
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
         }
 
-        .terms input {
+        .checkbox-group input {
             margin-right: 5px;
         }
 
-        .terms a {
+        .checkbox-group label {
+            font-size: 14px;
+            color: white;
+        }
+
+        .checkbox-group a {
             color: #32cd32;
+            text-decoration: none;
+            margin-left: 5px;
+        }
+
+        .checkbox-group a:hover {
             text-decoration: underline;
-            cursor: pointer;
+        }
+
+        .login-link {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .login-link a {
+            color: #32cd32;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="form-container">
-            <h2>Cadastro</h2>
+            <div class="capa">
+                <img src="Screenshot_20250112-173043-1.jpg" alt="Capa">
+            </div>
             <form id="registerForm">
                 <input type="text" id="name" placeholder="Nome Completo" required>
+                <input type="tel" id="phone" placeholder="Telefone" required>
                 <input type="email" id="email" placeholder="E-mail" required>
                 <input type="password" id="password" placeholder="Senha" required>
                 <input type="password" id="confirmPassword" placeholder="Confirme a Senha" required>
-                <div class="terms">
-                    <label>
-                        <input type="checkbox" id="acceptTerms" required>
-                        Li e aceito os <a href="termos-e-condicoes.txt" target="_blank">Termos e Condições de Uso</a>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="terms" required>
+                    <label for="terms">
+                        Eu li e concordo:
+                        <a href="termos-e-condicoes.txt" target="_blank">Termos e Condições de Uso</a>
                     </label>
                 </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="notRobot" required>
+                    <label for="notRobot">Eu não sou robô</label>
+                </div>
+
                 <button type="submit">Cadastrar</button>
             </form>
+
+            <div class="login-link">
+                Já tem sua conta? <a href="login.html">Faça login</a>
+            </div>
         </div>
     </div>
 </body>

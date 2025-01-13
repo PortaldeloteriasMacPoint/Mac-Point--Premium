@@ -25,36 +25,49 @@
         .capa {
             width: 100%;
             max-height: 200px;
-            background-color: #222;
-            border: 3px solid #32cd32;
-            border-radius: 10px;
             overflow: hidden;
+            display: flex;
+            justify-content: center;
             margin-bottom: 20px;
         }
 
         .capa img {
-            width: 100%;
-            height: auto;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
         }
 
         .form-container {
-            background-color: #006400;
+            background-color: #013220; /* Verde escuro mais atraente */
             border: 3px solid #32cd32;
             padding: 20px;
             border-radius: 10px;
-            text-align: center;
             width: 90%;
             max-width: 400px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .form-container form {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
         }
 
         .form-container input {
-            width: 100%;
+            width: 48%; /* 48% para caber dois campos lado a lado */
+            margin-bottom: 10px;
             padding: 10px;
-            margin: 10px 0;
             border: 1px solid #32cd32;
             border-radius: 5px;
             background-color: #000;
             color: white;
+            box-sizing: border-box;
+        }
+
+        .form-container input[type="email"],
+        .form-container input[type="password"] {
+            width: 100%; /* Campos maiores */
         }
 
         .form-container button {
@@ -62,7 +75,8 @@
             padding: 10px;
             margin-top: 10px;
             background-color: #32cd32;
-            color: white;
+            color: black;
+            font-weight: bold;
             border: none;
             border-radius: 5px;
             font-size: 16px;
@@ -74,7 +88,28 @@
         }
 
         .recaptcha {
-            margin-top: 15px;
+            width: 100%;
+            text-align: left;
+            margin-top: 10px;
+        }
+
+        .recaptcha label {
+            font-size: 14px;
+        }
+
+        .login-link {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .login-link a {
+            color: #32cd32;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
         }
 
         /* Notificação */
@@ -121,7 +156,6 @@
 <body>
     <div class="container">
         <div class="capa">
-            <!-- Altere o caminho da imagem abaixo para a sua capa -->
             <img src="Screenshot_20250112-173043-1.jpg" alt="Capa">
         </div>
         <div class="form-container">
@@ -140,92 +174,12 @@
                 </div>
                 <button type="submit">Cadastrar</button>
             </form>
+            <div class="login-link">
+                Já tem cadastro? <a href="login.html">Faça login</a>
+            </div>
         </div>
     </div>
 
-    <!-- Notificação -->
     <div id="notification" style="display: none;" class="notification"></div>
-
-    <!-- Scripts Firebase -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
-        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
-            authDomain: "mac-projeto-4e552.firebaseapp.com",
-            projectId: "mac-projeto-4e552",
-            storageBucket: "mac-projeto-4e552.appspot.com",
-            messagingSenderId: "537330451519",
-            appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
-        function showNotification(message, isError = false) {
-            const notification = document.getElementById("notification");
-            notification.textContent = message;
-            notification.className = "notification";
-            if (isError) {
-                notification.classList.add("error");
-            }
-            notification.style.display = "block";
-            setTimeout(() => {
-                notification.style.display = "none";
-            }, 4000);
-        }
-
-        document.getElementById("registerForm").addEventListener("submit", async (e) => {
-            e.preventDefault();
-
-            const name = document.getElementById("name").value;
-            const phone = document.getElementById("phone").value;
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
-            const confirmPassword = document.getElementById("confirmPassword").value;
-            const notRobot = document.getElementById("notRobot").checked;
-
-            if (password !== confirmPassword) {
-                showNotification("Erro: As senhas não coincidem.", true);
-                return;
-            }
-
-            if (!notRobot) {
-                showNotification("Erro: Confirme que você não é um robô.", true);
-                return;
-            }
-
-            try {
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                const user = userCredential.user;
-
-                await setDoc(doc(db, "users", user.uid), {
-                    name: name,
-                    phone: phone,
-                    email: email,
-                    subscriptionActive: true,
-                    subscriptionEndDate: new Date(new Date().setMonth(new Date().getMonth() + 1)),
-                    plan: "Mensal"
-                });
-
-                showNotification("Cadastro realizado com sucesso!");
-                setTimeout(() => {
-                    window.location.href = "login.html";
-                }, 4000);
-            } catch (error) {
-                if (error.code === "auth/email-already-in-use") {
-                    showNotification("Erro: O e-mail já está em uso. Faça login.", true);
-                } else {
-                    showNotification(`Erro: ${error.message}`, true);
-                }
-            }
-        });
-    </script>
 </body>
 </html>
-
-
- 

@@ -192,11 +192,7 @@
 
         // Inicializa o Firebase
         const app = firebase.initializeApp(firebaseConfig);
-
-        // Importar os métodos necessários do Firebase
-        const { getAuth, createUserWithEmailAndPassword, updateProfile } = firebase.auth;
-
-        const auth = getAuth(app);
+        const auth = firebase.auth();
 
         // Função de cadastro
         const registerForm = document.getElementById('registerForm');
@@ -218,11 +214,13 @@
 
             try {
                 // Cria o usuário no Firebase Authentication
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
                 const user = userCredential.user;
 
                 // Atualiza o nome do usuário no perfil
-                await updateProfile(user, { displayName: name });
+                await user.updateProfile({
+                    displayName: name
+                });
 
                 // Exibe mensagem de sucesso
                 successMessage.style.display = "block";

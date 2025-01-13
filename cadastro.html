@@ -168,6 +168,68 @@
     <footer>
         &copy; 2025 Portal de Loterias MacPoint. Todos os direitos reservados.
     </footer>
+
+    <!-- Scripts do Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js"></script>
+    <script>
+        // Configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+            authDomain: "mac-projeto-4e552.firebaseapp.com",
+            projectId: "mac-projeto-4e552",
+            storageBucket: "mac-projeto-4e552.appspot.com",
+            messagingSenderId: "537330451519",
+            appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
+        };
+
+        // Inicializa o Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.getAuth(app);
+        const db = firebase.getFirestore(app);
+
+        // Função de cadastro
+        const registerForm = document.getElementById('registerForm');
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            // Validação de senha
+            if (password !== confirmPassword) {
+                alert("As senhas não coincidem. Por favor, tente novamente.");
+                return;
+            }
+
+            try {
+                // Cria o usuário no Firebase Authentication
+                const userCredential = await firebase.createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // Cria o documento do usuário no Firestore
+                await firebase.setDoc(firebase.doc(db, "users", user.uid), {
+                    name: name,
+                    email: email,
+                    subscriptionEndDate: null,
+                    status: "inativo",
+                    createdAt: firebase.serverTimestamp()
+                });
+
+                // Exibe notificação de sucesso
+                alert("Cadastro realizado com sucesso!");
+
+                // Limpa o formulário
+                registerForm.reset();
+            } catch (error) {
+                // Exibe erro caso ocorra
+                alert(`Erro ao cadastrar: ${error.message}`);
+            }
+        });
+    </script>
 </body>
 </html>
 

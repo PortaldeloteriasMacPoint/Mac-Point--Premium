@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -138,7 +140,6 @@
             </div>
             <form id="registerForm">
                 <input type="text" id="name" placeholder="Nome Completo" required>
-                <input type="tel" id="phone" placeholder="Telefone" required>
                 <input type="email" id="email" placeholder="E-mail" required>
                 <input type="password" id="password" placeholder="Senha" required>
                 <input type="password" id="confirmPassword" placeholder="Confirme a Senha" required>
@@ -149,11 +150,6 @@
                         Eu li e concordo: 
                         <a href="termos-e-condicoes.txt" target="_blank">Termos e Condições de Uso</a>
                     </label>
-                </div>
-
-                <div class="checkbox-group">
-                    <input type="checkbox" id="notRobot" required>
-                    <label for="notRobot">Eu não sou robô</label>
                 </div>
 
                 <button type="submit">Cadastrar</button>
@@ -221,11 +217,8 @@
 
                 // Exibe notificação de sucesso
                 alert("Cadastro realizado com sucesso!");
-
-                // Limpa o formulário
                 registerForm.reset();
             } catch (error) {
-                // Exibe erro caso ocorra
                 alert(`Erro ao cadastrar: ${error.message}`);
             }
         });

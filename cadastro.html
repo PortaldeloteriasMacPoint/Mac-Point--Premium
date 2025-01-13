@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro</title>
     <style>
-        /* Estilo Geral */
+        /* Estilo geral */
         body {
             margin: 0;
             padding: 0;
@@ -22,23 +24,8 @@
             height: 100vh;
         }
 
-        .capa {
-            width: 100%;
-            max-height: 200px;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        .capa img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-        }
-
         .form-container {
-            background-color: #013220; /* Verde escuro mais atraente */
+            background-color: #013220;
             border: 3px solid #32cd32;
             padding: 20px;
             border-radius: 10px;
@@ -48,14 +35,8 @@
             text-align: center;
         }
 
-        .form-container form {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-        }
-
         .form-container input {
-            width: 48%; /* 48% para caber dois campos lado a lado */
+            width: 100%;
             margin-bottom: 10px;
             padding: 10px;
             border: 1px solid #32cd32;
@@ -63,11 +44,6 @@
             background-color: #000;
             color: white;
             box-sizing: border-box;
-        }
-
-        .form-container input[type="email"],
-        .form-container input[type="password"] {
-            width: 100%; /* Campos maiores */
         }
 
         .form-container button {
@@ -87,99 +63,42 @@
             background-color: #28a428;
         }
 
-        .recaptcha {
-            width: 100%;
-            text-align: left;
+        .terms {
             margin-top: 10px;
-        }
-
-        .recaptcha label {
+            text-align: left;
             font-size: 14px;
         }
 
-        .login-link {
-            margin-top: 20px;
-            text-align: center;
+        .terms input {
+            margin-right: 5px;
         }
 
-        .login-link a {
+        .terms a {
             color: #32cd32;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .login-link a:hover {
             text-decoration: underline;
-        }
-
-        /* Notificação */
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: #4caf50;
-            color: white;
-            padding: 15px;
-            border-radius: 5px;
-            font-size: 16px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-            animation: fadeIn 0.5s, fadeOut 0.5s 3.5s;
-        }
-
-        .notification.error {
-            background-color: #f44336;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeOut {
-            from {
-                opacity: 1;
-                transform: translateY(0);
-            }
-            to {
-                opacity: 0;
-            }
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="capa">
-            <img src="Screenshot_20250112-173043-1.jpg" alt="Capa">
-        </div>
         <div class="form-container">
             <h2>Cadastro</h2>
             <form id="registerForm">
                 <input type="text" id="name" placeholder="Nome Completo" required>
-                <input type="tel" id="phone" placeholder="Telefone" required>
                 <input type="email" id="email" placeholder="E-mail" required>
                 <input type="password" id="password" placeholder="Senha" required>
                 <input type="password" id="confirmPassword" placeholder="Confirme a Senha" required>
-                <div class="recaptcha">
+                <div class="terms">
                     <label>
-                        <input type="checkbox" id="notRobot" required>
-                        Não sou um robô
+                        <input type="checkbox" id="acceptTerms" required>
+                        Li e aceito os <a href="termos-e-condicoes.txt" target="_blank">Termos e Condições de Uso</a>
                     </label>
                 </div>
                 <button type="submit">Cadastrar</button>
             </form>
-            <div class="login-link">
-                Já tem cadastro? <a href="login.html">Faça login</a>
-            </div>
         </div>
     </div>
-
-    <div id="notification" style="display: none;" class="notification"></div>
 </body>
 </html>
+

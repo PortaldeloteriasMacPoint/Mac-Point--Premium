@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -124,6 +122,13 @@
             text-decoration: underline;
         }
 
+        .success-message {
+            margin-top: 10px;
+            color: #32cd32;
+            text-align: center;
+            font-weight: bold;
+        }
+
         footer {
             background-color: #013220;
             color: white;
@@ -155,6 +160,10 @@
                 <button type="submit">Cadastrar</button>
             </form>
 
+            <div id="successMessage" class="success-message" style="display: none;">
+                Cadastro realizado com sucesso!
+            </div>
+
             <div class="login-link">
                 Já tem sua conta? <a href="login.html">Faça login</a>
             </div>
@@ -168,7 +177,6 @@
     <!-- Scripts do Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js"></script>
     <script>
         // Configuração do Firebase
         const firebaseConfig = {
@@ -183,10 +191,10 @@
         // Inicializa o Firebase
         const app = firebase.initializeApp(firebaseConfig);
         const auth = firebase.getAuth(app);
-        const db = firebase.getFirestore(app);
 
         // Função de cadastro
         const registerForm = document.getElementById('registerForm');
+        const successMessage = document.getElementById('successMessage');
         registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
@@ -203,20 +211,10 @@
 
             try {
                 // Cria o usuário no Firebase Authentication
-                const userCredential = await firebase.createUserWithEmailAndPassword(auth, email, password);
-                const user = userCredential.user;
+                await firebase.createUserWithEmailAndPassword(auth, email, password);
 
-                // Cria o documento do usuário no Firestore
-                await firebase.setDoc(firebase.doc(db, "users", user.uid), {
-                    name: name,
-                    email: email,
-                    subscriptionEndDate: null,
-                    status: "inativo",
-                    createdAt: firebase.serverTimestamp()
-                });
-
-                // Exibe notificação de sucesso
-                alert("Cadastro realizado com sucesso!");
+                // Exibe mensagem de sucesso
+                successMessage.style.display = "block";
                 registerForm.reset();
             } catch (error) {
                 alert(`Erro ao cadastrar: ${error.message}`);

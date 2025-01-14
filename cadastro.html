@@ -1,5 +1,7 @@
 
 
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,6 +16,9 @@
             background-color: #000;
             color: white;
             font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         .container {
@@ -21,7 +26,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100%;
+            flex-grow: 1;
         }
 
         .form-container {
@@ -43,6 +48,7 @@
             border-radius: 5px;
             background-color: #000;
             color: white;
+            box-sizing: border-box;
         }
 
         .form-container button {
@@ -83,7 +89,7 @@
 
         .capa {
             width: 100%;
-            max-height: 200px;
+            max-height: 250px;
             background-color: #222;
             border: 3px solid #32cd32;
             border-radius: 10px;
@@ -143,8 +149,7 @@
             color: white;
             text-align: center;
             padding: 10px;
-            position: fixed;
-            bottom: 0;
+            position: relative;
             width: 100%;
         }
     </style>

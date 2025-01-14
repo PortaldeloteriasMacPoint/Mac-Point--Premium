@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,22 +21,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-        }
-
-        .capa {
-            width: 100%;
-            max-height: 200px;
-            background-color: #222;
-            border: 3px solid #32cd32;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-
-        .capa img {
-            width: 100%;
-            height: auto;
+            height: 100%;
         }
 
         .form-container {
@@ -44,7 +31,8 @@
             border-radius: 10px;
             text-align: center;
             width: 90%;
-            max-width: 400px;
+            max-width: 500px;
+            margin-bottom: 20px;
         }
 
         .form-container input {
@@ -71,6 +59,41 @@
 
         .form-container button:hover {
             background-color: #28a428;
+        }
+
+        .form-container .checkbox-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin: 10px 0;
+        }
+
+        .form-container .checkbox-container input {
+            margin-right: 10px;
+        }
+
+        .form-container .link {
+            color: #32cd32;
+            text-decoration: none;
+        }
+
+        .form-container .link:hover {
+            text-decoration: underline;
+        }
+
+        .capa {
+            width: 100%;
+            max-height: 200px;
+            background-color: #222;
+            border: 3px solid #32cd32;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .capa img {
+            width: 100%;
+            height: auto;
         }
 
         /* Notificação */
@@ -113,26 +136,51 @@
                 transform: translateY(-10px);
             }
         }
+
+        /* Rodapé */
+        footer {
+            background-color: #006400;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="capa">
-            <!-- Altere o caminho da imagem abaixo para a sua capa -->
-            <img src="https://via.placeholder.com/800x200" alt="Capa">
-        </div>
         <div class="form-container">
+            <div class="capa">
+                <!-- Altere o caminho da imagem abaixo para a sua capa -->
+                <img src="https://via.placeholder.com/800x200" alt="Capa">
+            </div>
             <h2>Cadastro</h2>
             <form id="registerForm">
+                <input type="text" id="fullName" placeholder="Digite seu nome completo" required>
                 <input type="email" id="email" placeholder="Digite seu e-mail" required>
                 <input type="password" id="password" placeholder="Digite sua senha" required>
+                <input type="password" id="confirmPassword" placeholder="Confirme sua senha" required>
+
+                <div class="checkbox-container">
+                    <input type="checkbox" id="terms" required>
+                    <label for="terms">Eu li e concordo: <a href="termos-e-condicoes.txt" class="link" target="_blank">Termos e Condições de Uso</a></label>
+                </div>
+
                 <button type="submit">Cadastrar</button>
+                <p>Já tem cadastro? <a href="login.html" class="link">Faça login</a></p>
             </form>
         </div>
     </div>
 
     <!-- Notificação -->
     <div id="notification" style="display: none;" class="notification"></div>
+
+    <!-- Rodapé -->
+    <footer>
+        <p>© 2025 MacPoint. Todos os direitos reservados.</p>
+    </footer>
 
     <!-- Scripts Firebase -->
     <script type="module">
@@ -173,14 +221,22 @@
         // Cadastro de usuário
         document.getElementById("registerForm").addEventListener("submit", async (e) => {
             e.preventDefault();
+            const fullName = document.getElementById("fullName").value;
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirmPassword").value;
+
+            if (password !== confirmPassword) {
+                showNotification("As senhas não coincidem.", true);
+                return;
+            }
 
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
                 await setDoc(doc(db, "users", user.uid), {
+                    fullName: fullName,
                     email: email,
                     subscriptionActive: true,
                     subscriptionEndDate: new Date(new Date().setMonth(new Date().getMonth() + 1)),
@@ -202,5 +258,4 @@
     </script>
 </body>
 </html>
-
 

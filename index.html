@@ -23,15 +23,14 @@
     header {
       background: url('Screenshot_20250112-173043-1.jpg') no-repeat center/cover;
       height: 300px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-shadow: 2px 2px 5px #000;
     }
 
-    header h1 {
-      font-size: 2.5em;
+    .welcome-message {
+      padding: 20px;
+      background-color: #111;
       color: #ffff00;
+      font-size: 2em;
+      text-shadow: 2px 2px 5px #000;
       animation: glow 2s infinite;
     }
 
@@ -115,6 +114,22 @@
       font-size: 1.2em;
     }
 
+    /* Seção de Testemunhos */
+    .testimonials {
+      background-color: #111;
+      padding: 20px;
+    }
+
+    .testimonials h2 {
+      color: #ffff00;
+    }
+
+    .testimonial {
+      margin: 20px 0;
+      font-style: italic;
+      color: #ddd;
+    }
+
     /* Rodapé */
     footer {
       background-color: #111;
@@ -126,9 +141,10 @@
 </head>
 <body>
   <!-- Cabeçalho -->
-  <header>
-    <h1>Bem-vindo ao Portal MacPoint Premium</h1>
-  </header>
+  <header></header>
+
+  <!-- Mensagem de boas-vindas -->
+  <div class="welcome-message">Bem-vindo ao Portal MacPoint Premium</div>
 
   <!-- Seção de Planos -->
   <section class="container">
@@ -159,7 +175,16 @@
       <li>Acesso a estatísticas exclusivas</li>
       <li>Suporte VIP 24 horas</li>
       <li>Conteúdo atualizado semanalmente</li>
+      <li>Benefícios exclusivos para membros premium</li>
     </ul>
+  </section>
+
+  <!-- Seção de Testemunhos -->
+  <section class="testimonials">
+    <h2>O que nossos usuários dizem</h2>
+    <div class="testimonial">"O melhor portal de loterias que já usei! Vale cada centavo." - João S.</div>
+    <div class="testimonial">"O suporte é incrível e as estatísticas são muito úteis!" - Maria F.</div>
+    <div class="testimonial">"Com o plano anual economizei muito e tenho acesso a tudo." - Carlos L.</div>
   </section>
 
   <!-- Rodapé -->
@@ -174,10 +199,5 @@
       window.location.href = url;
     }
   </script>
-    <!-- Login -->
-    <div class="footer">
-      <p>Não tem uma conta? <a href="cadastro.html" style="color: orange;">Cadastre-se </a></p>
-    </div>
-  </div>
 </body>
 </html>

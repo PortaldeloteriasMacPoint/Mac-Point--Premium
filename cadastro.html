@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,18 +14,14 @@
             background-color: #000;
             color: white;
             font-family: Arial, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
         }
 
         .container {
-            flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            height: 100%;
         }
 
         .form-container {
@@ -34,10 +32,11 @@
             text-align: center;
             width: 90%;
             max-width: 500px;
+            margin-bottom: 20px;
         }
 
         .form-container input {
-            width: calc(100% - 20px);
+            width: 100%;
             padding: 10px;
             margin: 10px 0;
             border: 1px solid #32cd32;
@@ -47,7 +46,7 @@
         }
 
         .form-container button {
-            width: calc(100% - 20px);
+            width: 100%;
             padding: 10px;
             margin-top: 10px;
             background-color: #32cd32;
@@ -84,18 +83,58 @@
 
         .capa {
             width: 100%;
-            height: auto;
+            max-height: 200px;
             background-color: #222;
             border: 3px solid #32cd32;
             border-radius: 10px;
-            margin-bottom: 20px;
             overflow: hidden;
+            margin-bottom: 20px;
         }
 
         .capa img {
             width: 100%;
             height: auto;
-            display: block;
+        }
+
+        /* Notificação */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #4caf50;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 16px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            animation: fadeIn 0.5s, fadeOut 0.5s 3.5s;
+        }
+
+        .notification.error {
+            background-color: #f44336;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
         }
 
         /* Rodapé */
@@ -104,7 +143,9 @@
             color: white;
             text-align: center;
             padding: 10px;
-            margin-top: auto;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
         }
     </style>
 </head>
@@ -112,7 +153,7 @@
     <div class="container">
         <div class="form-container">
             <div class="capa">
-                <img src="https://via.placeholder.com/800x200" alt="Capa">
+                <img src="Screenshot_20250112-173043-1.jpg" alt="Capa">
             </div>
             <h2>Cadastro</h2>
             <form id="registerForm">
@@ -132,16 +173,22 @@
         </div>
     </div>
 
+    <!-- Notificação -->
+    <div id="notification" style="display: none;" class="notification"></div>
+
+    <!-- Rodapé -->
     <footer>
         <p>© 2025 MacPoint. Todos os direitos reservados.</p>
     </footer>
 
     <!-- Scripts Firebase -->
     <script type="module">
+        // Importar Firebase SDK
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
         import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 
+        // Configuração do Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
             authDomain: "mac-projeto-4e552.firebaseapp.com",
@@ -151,14 +198,26 @@
             appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
         };
 
+        // Inicializar Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        async function showNotification(message, isError = false) {
-            alert(isError ? `Erro: ${message}` : message);
+        // Função para exibir notificações
+        function showNotification(message, isError = false) {
+            const notification = document.getElementById("notification");
+            notification.textContent = message;
+            notification.className = "notification";
+            if (isError) {
+                notification.classList.add("error");
+            }
+            notification.style.display = "block";
+            setTimeout(() => {
+                notification.style.display = "none";
+            }, 4000);
         }
 
+        // Cadastro de usuário
         document.getElementById("registerForm").addEventListener("submit", async (e) => {
             e.preventDefault();
             const fullName = document.getElementById("fullName").value;
@@ -176,8 +235,8 @@
                 const user = userCredential.user;
 
                 await setDoc(doc(db, "users", user.uid), {
-                    fullName,
-                    email,
+                    fullName: fullName,
+                    email: email,
                     subscriptionActive: true,
                     subscriptionEndDate: new Date(new Date().setMonth(new Date().getMonth() + 1)),
                     plan: "Mensal"
@@ -186,9 +245,13 @@
                 showNotification("Cadastro realizado com sucesso!");
                 setTimeout(() => {
                     window.location.href = "login.html";
-                }, 3000);
+                }, 4000);
             } catch (error) {
-                showNotification(error.message, true);
+                if (error.code === "auth/email-already-in-use") {
+                    showNotification("Erro: O e-mail já está em uso. Faça login.", true);
+                } else {
+                    showNotification(`Erro: ${error.message}`, true);
+                }
             }
         });
     </script>

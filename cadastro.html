@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,172 +12,135 @@
             background-color: #000;
             color: white;
             font-family: Arial, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
         }
 
         .container {
-            flex: 1;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            padding: 20px;
+            justify-content: center;
+            height: 100vh;
         }
 
-        .form-container {
-            background-color: #013220;
-            border: 3px solid #32cd32;
-            padding: 20px;
-            border-radius: 10px;
-            width: 90%;
-            max-width: 400px;
-            box-sizing: border-box;
-        }
-
-        .form-container .capa img {
+        .capa {
             width: 100%;
-            height: auto;
+            max-height: 200px;
+            background-color: #222;
             border: 3px solid #32cd32;
             border-radius: 10px;
+            overflow: hidden;
             margin-bottom: 20px;
         }
 
-        .form-container form {
-            display: flex;
-            flex-direction: column;
+        .capa img {
             width: 100%;
+            height: auto;
+        }
+
+        .form-container {
+            background-color: #006400;
+            border: 3px solid #32cd32;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
         }
 
         .form-container input {
-            width: 90%;
-            max-width: 350px;
-            margin-bottom: 10px;
+            width: 100%;
             padding: 10px;
+            margin: 10px 0;
             border: 1px solid #32cd32;
             border-radius: 5px;
             background-color: #000;
             color: white;
-            box-sizing: border-box;
         }
 
         .form-container button {
-            width: 90%;
-            max-width: 350px;
+            width: 100%;
             padding: 10px;
             margin-top: 10px;
             background-color: #32cd32;
-            color: black;
-            font-weight: bold;
+            color: white;
             border: none;
             border-radius: 5px;
             font-size: 16px;
             cursor: pointer;
-            box-sizing: border-box;
         }
 
         .form-container button:hover {
             background-color: #28a428;
         }
 
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-            width: 90%;
-            max-width: 350px;
-            box-sizing: border-box;
-        }
-
-        .checkbox-group input {
-            margin-right: 10px;
-        }
-
-        .checkbox-group label {
-            font-size: 14px;
+        /* Notificação */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #4caf50;
             color: white;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 16px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            animation: fadeIn 0.5s, fadeOut 0.5s 3.5s;
         }
 
-        .checkbox-group a {
-            color: #32cd32;
-            text-decoration: none;
+        .notification.error {
+            background-color: #f44336;
         }
 
-        .checkbox-group a:hover {
-            text-decoration: underline;
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .login-link {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .login-link a {
-            color: #32cd32;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .login-link a:hover {
-            text-decoration: underline;
-        }
-
-        .success-message {
-            margin-top: 10px;
-            color: #32cd32;
-            text-align: center;
-            font-weight: bold;
-        }
-
-        footer {
-            background-color: #013220;
-            color: white;
-            text-align: center;
-            padding: 10px;
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <div class="capa">
+            <!-- Altere o caminho da imagem abaixo para a sua capa -->
+            <img src="https://via.placeholder.com/800x200" alt="Capa">
+        </div>
         <div class="form-container">
-            <div class="capa">
-                <img src="Screenshot_20250112-173043-1.jpg" alt="Capa">
-            </div>
+            <h2>Cadastro</h2>
             <form id="registerForm">
-                <input type="text" id="name" placeholder="Nome Completo" required>
-                <input type="email" id="email" placeholder="E-mail" required>
-                <input type="password" id="password" placeholder="Senha" required>
-                <input type="password" id="confirmPassword" placeholder="Confirme a Senha" required>
-                
-                <div class="checkbox-group">
-                    <input type="checkbox" id="terms" required>
-                    <label for="terms">
-                        Eu li e concordo: 
-                        <a href="termos-e-condicoes.txt" target="_blank">Termos e Condições de Uso</a>
-                    </label>
-                </div>
-
+                <input type="email" id="email" placeholder="Digite seu e-mail" required>
+                <input type="password" id="password" placeholder="Digite sua senha" required>
                 <button type="submit">Cadastrar</button>
             </form>
-
-            <div id="successMessage" class="success-message" style="display: none;">
-                Cadastro realizado com sucesso!
-            </div>
-
-            <div class="login-link">
-                Já tem sua conta? <a href="login.html">Faça login</a>
-            </div>
         </div>
     </div>
 
-    <footer>
-        &copy; 2025 Portal de Loterias MacPoint. Todos os direitos reservados.
-    </footer>
+    <!-- Notificação -->
+    <div id="notification" style="display: none;" class="notification"></div>
 
-    <!-- Scripts do Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-auth.js"></script>
-    <script>
+    <!-- Scripts Firebase -->
+    <script type="module">
+        // Importar Firebase SDK
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+
         // Configuração do Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
@@ -190,46 +151,56 @@
             appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
         };
 
-        // Inicializa o Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
+        // Inicializar Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
 
-        // Função de cadastro
-        const registerForm = document.getElementById('registerForm');
-        const successMessage = document.getElementById('successMessage');
-
-        registerForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-
-            // Validação de senha
-            if (password !== confirmPassword) {
-                alert("As senhas não coincidem. Por favor, tente novamente.");
-                return;
+        // Função para exibir notificações
+        function showNotification(message, isError = false) {
+            const notification = document.getElementById("notification");
+            notification.textContent = message;
+            notification.className = "notification";
+            if (isError) {
+                notification.classList.add("error");
             }
+            notification.style.display = "block";
+            setTimeout(() => {
+                notification.style.display = "none";
+            }, 4000);
+        }
+
+        // Cadastro de usuário
+        document.getElementById("registerForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
 
             try {
-                // Cria o usuário no Firebase Authentication
-                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
-                // Atualiza o nome do usuário no perfil
-                await user.updateProfile({
-                    displayName: name
+                await setDoc(doc(db, "users", user.uid), {
+                    email: email,
+                    subscriptionActive: true,
+                    subscriptionEndDate: new Date(new Date().setMonth(new Date().getMonth() + 1)),
+                    plan: "Mensal"
                 });
 
-                // Exibe mensagem de sucesso
-                successMessage.style.display = "block";
-                registerForm.reset();
+                showNotification("Cadastro realizado com sucesso!");
+                setTimeout(() => {
+                    window.location.href = "login.html";
+                }, 4000);
             } catch (error) {
-                alert(`Erro ao cadastrar: ${error.message}`);
+                if (error.code === "auth/email-already-in-use") {
+                    showNotification("Erro: O e-mail já está em uso. Faça login.", true);
+                } else {
+                    showNotification(`Erro: ${error.message}`, true);
+                }
             }
         });
     </script>
 </body>
 </html>
+
 

@@ -1,66 +1,179 @@
-
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Portal de Loterias MacPoint</title>
-   
-   <!-- Open Graph Meta Tags -->
-   <meta property="og:title" content="Portal de Loterias MacPoint">
-   <meta property="og:description" content="Descubra o Portal de Loterias MacPoint: acesso premium a análises, estatísticas e dicas exclusivas para apostadores!">
-   <meta property="og:image" content="https://portaldeloteriasmacpoint.github.io/Mac-Point--Premium/Screenshot_20250112-173043-1.jpg">
-   <meta property="og:url" content="https://portaldeloteriasmacpoint.github.io/Mac-Point--Premium/">
-   <meta property="og:type" content="website">
-</head>
-<body>
-</body>
-</html>
-
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title> Portal de Loterias- Mac Point</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>Portal MacPoint Premium</title>
+  <style>
+    /* Estilos Globais */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #000;
+      color: #fff;
+      text-align: center;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* Cabeçalho */
+    header {
+      background: url('Screenshot_20250112-173043-1.jpg') no-repeat center/cover;
+      height: 300px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-shadow: 2px 2px 5px #000;
+    }
+
+    header h1 {
+      font-size: 2.5em;
+      color: #ffff00;
+      animation: glow 2s infinite;
+    }
+
+    @keyframes glow {
+      0%, 100% {
+        text-shadow: 0 0 5px #ff0, 0 0 10px #ff0, 0 0 20px #ff0, 0 0 30px #ff0;
+      }
+      50% {
+        text-shadow: 0 0 10px #ff0, 0 0 40px #ff0, 0 0 50px #ff0;
+      }
+    }
+
+    /* Seção de Planos */
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .card {
+      background-color: #004d00;
+      border: 4px solid;
+      border-image: linear-gradient(45deg, #00ff00, #ffff00) 1;
+      border-radius: 15px;
+      width: 300px;
+      margin: 15px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 0 15px rgba(255, 255, 0, 0.5);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 25px rgba(255, 255, 0, 0.8);
+    }
+
+    .card h2 {
+      font-size: 1.5em;
+      color: #ffff00;
+    }
+
+    .card button {
+      background-color: #ff6600;
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+      padding: 10px 20px;
+      font-size: 1em;
+      cursor: pointer;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+    }
+
+    /* Benefícios */
+    .benefits {
+      background-color: #222;
+      padding: 20px;
+    }
+
+    .benefits h2 {
+      color: #ffff00;
+    }
+
+    .benefits ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .benefits li {
+      margin: 10px 0;
+      font-size: 1.2em;
+    }
+
+    /* Rodapé */
+    footer {
+      background-color: #111;
+      color: #aaa;
+      padding: 10px;
+      font-size: 0.9em;
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <!-- Capa -->
-    <div class="header">
-      <img class="header-image" src="Screenshot_20250112-173043-1.jpg" alt="Capa do site">
-      <h1>Bem-vindo ao Portal Premium</h1>
-      <p>Escolha seu plano abaixo e tenha acesso exclusivo ao nosso conteúdo.</p>
+  <!-- Cabeçalho -->
+  <header>
+    <h1>Bem-vindo ao Portal MacPoint Premium</h1>
+  </header>
+
+  <!-- Seção de Planos -->
+  <section class="container">
+    <div class="card">
+      <h2>Plano Mensal</h2>
+      <p>R$ 19,90/mês</p>
+      <p>Acesso exclusivo por 30 dias</p>
+      <button onclick="redirectTo('https://exemplo.com/mensal')">Assinar Agora</button>
     </div>
-
-    <!-- Planos -->
-    <div class="planos">
-      <!-- Plano Mensal -->
-      <div class="plano">
-        <h2>Plano Mensal</h2>
-        <p>De R$29,90 por apenas R$19,90</p>
-        <button onclick="location.href='sua-url-de-compra-mensal'">Comprar Agora</button>
-      </div>
-
-      <!-- Plano Trimestral -->
-      <div class="plano">
-        <h2>Plano Trimestral</h2>
-        <p>De R$89,90 por apenas R$49,90</p>
-        <button onclick="location.href='sua-url-de-compra-trimestral'">Comprar Agora</button>
-      </div>
-
-      <!-- Plano Anual -->
-      <div class="plano">
-        <h2>Plano Anual</h2>
-        <p>De R$299,90 por apenas R$199,90</p>
-        <button onclick="location.href='sua-url-de-compra-anual'">Comprar Agora</button>
-      </div>
+    <div class="card">
+      <h2>Plano Trimestral</h2>
+      <p>R$ 49,90/trimestre</p>
+      <p>Economize 10%</p>
+      <button onclick="redirectTo('https://exemplo.com/trimestral')">Assinar Agora</button>
     </div>
+    <div class="card">
+      <h2>Plano Anual</h2>
+      <p>R$ 179,90/ano</p>
+      <p>Economize 25%</p>
+      <button onclick="redirectTo('https://exemplo.com/anual')">Assinar Agora</button>
+    </div>
+  </section>
 
+  <!-- Seção de Benefícios -->
+  <section class="benefits">
+    <h2>Por que se tornar premium?</h2>
+    <ul>
+      <li>Acesso a estatísticas exclusivas</li>
+      <li>Suporte VIP 24 horas</li>
+      <li>Conteúdo atualizado semanalmente</li>
+    </ul>
+  </section>
+
+  <!-- Rodapé -->
+  <footer>
+    <p>&copy; 2025 Portal MacPoint Premium. Todos os direitos reservados.</p>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // Função para redirecionar ao link do botão
+    function redirectTo(url) {
+      window.location.href = url;
+    }
+  </script>
     <!-- Login -->
     <div class="footer">
       <p>Não tem uma conta? <a href="cadastro.html" style="color: orange;">Cadastre-se </a></p>

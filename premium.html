@@ -26,7 +26,7 @@
      .menu-hamburguer button {
        background-color: #000;
        color: white;
-       border: 2px solid lightgreen; /* Bordas em verde claro */
+       border: 2px solid lightgreen;
        padding: 5px;
        border-radius: 5px;
        cursor: pointer;
@@ -65,7 +65,7 @@
        padding: 10px 15px;
        border-radius: 10px;
        display: block;
-       border: 2px solid lightgreen; /* Bordas em verde claro */
+       border: 2px solid lightgreen;
        transition: all 0.3s ease-in-out;
      }
      .menu-lateral ul li a:hover {
@@ -168,12 +168,35 @@
    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
 </head>
 <body>
+  <!-- Menu Hamburguer -->
+  <div class="menu-hamburguer">
+    <button onclick="toggleMenu()">☰</button>
+  </div>
+
+  <!-- Menu Lateral -->
+  <div class="menu-lateral" id="menuLateral">
+    <ul>
+      <li><a href="#">Início</a></li>
+      <li><a href="#">Modalidades</a></li>
+      <li><a href="#">Análise Estatística</a></li>
+      <li><a href="#">Simuladores</a></li>
+      <li><a href="#">Tabelas</a></li>
+      <li><a href="#">Desdobramentos</a></li>
+      <li><a href="#">Subnóis</a></li>
+      <li><a href="#">Planilhas</a></li>
+      <li><a href="#">E-books</a></li>
+    </ul>
+  </div>
+
+  <!-- Ícone de Engrenagem -->
   <div class="icone-config">
     <button onclick="toggleConfigMenu()">⚙</button>
     <div class="menu-config" id="menuConfig">
       <button onclick="logout()">Sair</button>
     </div>
   </div>
+
+  <!-- Conteúdo Principal -->
   <main class="home">
     <div class="subcapa"></div>
     <div class="conteudo-principal">
@@ -184,11 +207,15 @@
       <p>Nosso portal oferece conteúdo exclusivo para ajudá-lo a entender melhor as estatísticas e estratégias por trás das principais modalidades de loterias brasileiras. Aproveite!</p>
     </div>
   </main>
+
+  <!-- Rodapé -->
   <footer>
     <p>Mac Point é um site independente dedicado a fornecer análises, ferramentas e informações sobre as loterias brasileiras. Não temos vínculo com a Caixa Econômica Federal ou qualquer outra entidade governamental. Para resultados oficiais, consulte os canais oficiais de cada loteria.</p>
     <p>© 2024 Portal de Loterias-Mac Point . Todos os direitos reservados.</p>
   </footer>
+
   <script>
+    // Configuração do Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyA2J6syDQWzdeMhjlzX2zJvcx80vb0dI6WqJzws",
       authDomain: "macpoint-12345.firebaseapp.com",
@@ -198,20 +225,30 @@
       appId: "1:77491727006:web:1b4f11845685938da3d6d7"
     };
 
+    // Inicialização do Firebase
     const app = firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
+    // Verificação de autenticação
     auth.onAuthStateChanged(user => {
       if (!user) {
         window.location.href = "login.html";
       }
     });
 
+    // Função de Toggle Menu Lateral
+    function toggleMenu() {
+      const menu = document.getElementById('menuLateral');
+      menu.classList.toggle('aberto');
+    }
+
+    // Função de Toggle Menu de Configurações
     function toggleConfigMenu() {
       const menu = document.getElementById('menuConfig');
       menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
     }
 
+    // Função de Logout
     function logout() {
       auth.signOut()
         .then(() => {

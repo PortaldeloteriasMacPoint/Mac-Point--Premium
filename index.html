@@ -1,208 +1,197 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portal MacPoint Premium</title>
+  <title>Plataforma MacPoint</title>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js"></script>
   <style>
-    /* Estilos Globais */
     body {
       margin: 0;
       font-family: Arial, sans-serif;
       background-color: #000;
       color: #fff;
-      text-align: center;
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
 
     /* Cabeçalho */
-    header {
-      background: url('Screenshot_20250112-173043-1.jpg') no-repeat center/cover;
-      height: 300px;
-    }
-
-    .welcome-message {
-      padding: 20px;
-      background-color: #111;
-      color: #ffff00;
-      font-size: 2em;
-      text-shadow: 2px 2px 5px #000;
-      animation: glow 2s infinite;
-    }
-
-    @keyframes glow {
-      0%, 100% {
-        text-shadow: 0 0 5px #ff0, 0 0 10px #ff0, 0 0 20px #ff0, 0 0 30px #ff0;
-      }
-      50% {
-        text-shadow: 0 0 10px #ff0, 0 0 40px #ff0, 0 0 50px #ff0;
-      }
-    }
-
-    /* Seção de Planos */
-    .container {
+    .header {
+      width: 100%;
+      padding: 10px;
+      background-color: #013220;
+      border-bottom: 3px solid #00ff00;
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      padding: 20px;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    .card {
-      background-color: #004d00;
-      border: 4px solid;
-      border-image: linear-gradient(45deg, #00ff00, #ffff00) 1;
-      border-radius: 15px;
-      width: 300px;
-      margin: 15px;
-      padding: 20px;
-      text-align: center;
-      box-shadow: 0 0 15px rgba(255, 255, 0, 0.5);
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-    .card:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 25px rgba(255, 255, 0, 0.8);
-    }
-
-    .card h2 {
-      font-size: 1.5em;
-      color: #ffff00;
-    }
-
-    .card button {
-      background-color: #ff6600;
-      border: none;
-      border-radius: 5px;
+    .header .user-info {
       color: #fff;
-      padding: 10px 20px;
-      font-size: 1em;
+      font-size: 16px;
+    }
+
+    /* Capa */
+    .capa {
+      width: 100%;
+      height: 200px;
+      background: url('sua-imagem.jpg') no-repeat center center;
+      background-size: cover;
+    }
+
+    /* Menu lateral */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 250px;
+      height: 100%;
+      background-color: #013220;
+      padding: 20px;
+      display: none;
+      flex-direction: column;
+      gap: 15px;
+      border-right: 3px solid #00ff00;
+    }
+
+    .sidebar.active {
+      display: flex;
+    }
+
+    .sidebar button, .sidebar a {
+      width: 100%;
+      padding: 10px;
+      background-color: #000;
+      color: #fff;
+      text-align: center;
+      border: 2px solid #00ff00;
+      text-decoration: none;
       cursor: pointer;
-      animation: pulse 1.5s infinite;
+      border-radius: 20px;
     }
 
-    @keyframes pulse {
-      0%, 100% {
-        transform: scale(1);
-      }
-      50% {
-        transform: scale(1.1);
-      }
-    }
-
-    /* Benefícios */
-    .benefits {
-      background-color: #222;
-      padding: 20px;
-    }
-
-    .benefits h2 {
-      color: #ffff00;
-    }
-
-    .benefits ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    .benefits li {
-      margin: 10px 0;
-      font-size: 1.2em;
-    }
-
-    /* Seção de Testemunhos */
-    .testimonials {
-      background-color: #111;
-      padding: 20px;
-    }
-
-    .testimonials h2 {
-      color: #ffff00;
-    }
-
-    .testimonial {
-      margin: 20px 0;
-      font-style: italic;
-      color: #ddd;
+    .sidebar button:hover, .sidebar a:hover {
+      background-color: #00ff00;
+      color: #000;
     }
 
     /* Rodapé */
-    footer {
-      background-color: #111;
-      color: #aaa;
+    .footer {
+      width: 100%;
       padding: 10px;
-      font-size: 0.9em;
+      background-color: #013220;
+      border-top: 3px solid #00ff00;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .footer a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .footer a.active {
+      font-weight: bold;
+      color: #00ff00;
+    }
+
+    .content {
+      flex: 1;
+      padding: 20px;
     }
   </style>
 </head>
 <body>
   <!-- Cabeçalho -->
-  <header></header>
-
-  <!-- Mensagem de boas-vindas -->
-  <div class="welcome-message">Bem-vindo ao Portal MacPoint Premium</div>
-
-  <!-- Seção de Planos -->
-  <section class="container">
-    <div class="card">
-      <h2>Plano Mensal</h2>
-      <p>R$ 19,90/mês</p>
-      <p>Acesso exclusivo por 30 dias</p>
-      <button onclick="redirectTo('https://exemplo.com/mensal')">Assinar Agora</button>
+  <header class="header">
+    <div class="user-info">
+      <span id="user-name">Carregando...</span>
     </div>
-    <div class="card">
-      <h2>Plano Trimestral</h2>
-      <p>R$ 49,90/trimestre</p>
-      <p>Economize 10%</p>
-      <button onclick="redirectTo('https://exemplo.com/trimestral')">Assinar Agora</button>
-    </div>
-    <div class="card">
-      <h2>Plano Anual</h2>
-      <p>R$ 179,90/ano</p>
-      <p>Economize 25%</p>
-      <button onclick="redirectTo('https://exemplo.com/anual')">Assinar Agora</button>
-    </div>
-  </section>
+    <button id="menu-toggle">☰ Menu</button>
+  </header>
 
-  <!-- Seção de Benefícios -->
-  <section class="benefits">
-    <h2>Por que se tornar premium?</h2>
-    <ul>
-      <li>Acesso a estatísticas exclusivas</li>
-      <li>Suporte VIP 24 horas</li>
-      <li>Conteúdo atualizado semanalmente</li>
-      <li>Benefícios exclusivos para membros premium</li>
-    </ul>
-  </section>
+  <!-- Capa -->
+  <div class="capa"></div>
 
-  <!-- Seção de Testemunhos -->
-  <section class="testimonials">
-    <h2>O que nossos usuários dizem</h2>
-    <div class="testimonial">"O melhor portal de loterias que já usei! Vale cada centavo." - João S.</div>
-    <div class="testimonial">"O suporte é incrível e as estatísticas são muito úteis!" - Maria F.</div>
-    <div class="testimonial">"Com o plano anual economizei muito e tenho acesso a tudo." - Carlos L.</div>
-  </section>
+  <!-- Menu lateral -->
+  <nav class="sidebar" id="sidebar">
+    <a href="inicio.html">Início</a>
+    <a href="modalidades.html">Modalidades</a>
+    <a href="nave-estatistica.html">Nave Estatística</a>
+    <a href="deslocamentos.html">Deslocamentos</a>
+    <a href="tabelas.html">Tabelas</a>
+    <a href="simuladores.html">Simuladores</a>
+    <a href="tiradas-de-jogos.html">Tiradas de Jogos</a>
+    <a href="subnodes.html">Subnodes</a>
+    <button id="logout-btn">Logout</button>
+  </nav>
+
+  <!-- Conteúdo principal -->
+  <main class="content">
+    <h1>Bem-vindo à Plataforma MacPoint!</h1>
+    <p>Utilize o menu lateral para navegar entre as opções.</p>
+  </main>
 
   <!-- Rodapé -->
-  <footer>
-    <p>&copy; 2025 Portal MacPoint Premium. Todos os direitos reservados.</p>
+  <footer class="footer">
+    <a href="inicio.html" class="active">Início</a>
+    <a href="modalidades.html">Modalidades</a>
+    <a href="nave-estatistica.html">Nave Estatística</a>
+    <a href="deslocamentos.html">Deslocamentos</a>
+    <a href="tabelas.html">Tabelas</a>
+    <a href="simuladores.html">Simuladores</a>
+    <a href="tiradas-de-jogos.html">Tiradas de Jogos</a>
+    <a href="subnodes.html">Subnodes</a>
   </footer>
 
-  <!-- JavaScript -->
   <script>
-    // Função para redirecionar ao link do botão
-    function redirectTo(url) {
-      window.location.href = url;
-    }
-  </script>
- <button onclick="window.location.href='cadastro.html'" style="background-color: #006400; border: 2px solid #00ff00; color: white; padding: 10px 20px; font-size: 18px; border-radius: 5px; cursor: pointer; text-transform: uppercase; margin-top: 20px;">
-    Ir para Cadastro
-</button>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+      authDomain: "mac-projeto-4e552.firebaseapp.com",
+      projectId: "mac-projeto-4e552",
+      storageBucket: "mac-projeto-4e552.appspot.com",
+      messagingSenderId: "537330451519",
+      appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
+    };
 
- 
+    // Inicializar Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // Elementos do DOM
+    const userName = document.getElementById('user-name');
+    const menuToggle = document.getElementById('menu-toggle');
+    const sidebar = document.getElementById('sidebar');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    // Toggle do menu lateral
+    menuToggle.addEventListener('click', () => {
+      sidebar.classList.toggle('active');
+    });
+
+    // Logout do usuário
+    logoutBtn.addEventListener('click', () => {
+      auth.signOut().then(() => {
+        alert("Você foi deslogado!");
+        window.location.href = "login.html";
+      }).catch(error => {
+        console.error("Erro ao deslogar:", error);
+      });
+    });
+
+    // Obter informações do usuário autenticado
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        userName.textContent = user.displayName || user.email;
+      } else {
+        window.location.href = "login.html"; // Redirecionar para login se não autenticado
+      }
+    });
+  </script>
 </body>
 </html>

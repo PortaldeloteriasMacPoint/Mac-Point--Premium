@@ -27,7 +27,7 @@
      .menu-hamburguer button {
        background-color: #000;
        color: white;
-       border: 2px solid lightgreen;
+       border: 2px solid lightgreen; /* Bordas em verde claro */
        padding: 5px;
        border-radius: 5px;
        cursor: pointer;
@@ -66,7 +66,7 @@
        padding: 10px 15px;
        border-radius: 10px;
        display: block;
-       border: 2px solid lightgreen;
+       border: 2px solid lightgreen; /* Bordas em verde claro */
        transition: all 0.3s ease-in-out;
      }
      .menu-lateral ul li a:hover {
@@ -80,6 +80,14 @@
        padding: 40px 20px;
        position: relative;
        z-index: 100;
+     }
+     .home img {
+       width: 100%;
+       height: 100vh;
+       object-fit: cover;
+       margin-top: 0;
+       border-radius: 0;
+       box-shadow: none;
      }
      .subcapa {
        position: absolute;
@@ -105,9 +113,14 @@
      .foto-capa {
        width: 100%;
        height: auto;
-       border: 2px solid lightgreen;
-       box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
-       margin-top: 20px;
+       border-radius: 0;
+       box-shadow: none;
+     }
+     .home p {
+       font-size: 1.5em;
+       background-color: rgba(0, 0, 0, 0.5);
+       padding: 10px;
+       border-radius: 5px;
      }
      footer {
        text-align: center;
@@ -115,37 +128,40 @@
        background-color: #222;
        color: #fff;
      }
-     .icone-engrenagem {
+     .icone-config {
        position: fixed;
-       top: 20px;
-       right: 20px;
-       cursor: pointer;
-       font-size: 1.5em;
-       color: white;
-       z-index: 1200;
+       top: 10px;
+       right: 10px;
+       z-index: 1000;
      }
-     .menu-sair {
-       position: fixed;
-       top: 60px;
-       right: 20px;
-       background-color: #222;
+     .icone-config button {
+       background-color: #000;
+       border: 2px solid lightgreen;
+       color: white;
+       font-size: 1.5em;
+       border-radius: 50%;
+       padding: 10px;
+       cursor: pointer;
+     }
+     .menu-config {
+       display: none;
+       position: absolute;
+       top: 50px;
+       right: 10px;
+       background-color: darkgreen;
        border: 2px solid lightgreen;
        padding: 10px;
        border-radius: 10px;
-       display: none;
-       z-index: 1200;
      }
-     .menu-sair button {
+     .menu-config button {
        background-color: red;
        color: white;
        padding: 10px;
        border: none;
        border-radius: 5px;
        cursor: pointer;
-       font-size: 1em;
-       width: 100%;
      }
-     .menu-sair button:hover {
+     .menu-config button:hover {
        background-color: darkred;
      }
    </style>
@@ -153,31 +169,20 @@
    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
 </head>
 <body>
-  <div class="menu-hamburguer">
-    <button onclick="toggleMenu()">☰</button>
+  <div class="icone-config">
+    <button onclick="toggleConfigMenu()">⚙</button>
+    <div class="menu-config" id="menuConfig">
+      <button onclick="logout()">Sair</button>
+    </div>
   </div>
-  <div class="icone-engrenagem" onclick="toggleSairMenu()">⚙</div>
-  <div class="menu-sair" id="menuSair">
-    <button onclick="logout()">Sair</button>
-  </div>
-  <nav class="menu-lateral" id="menuLateral">
-    <ul>
-      <li><a href="index.html">Início</a></li>
-      <li><a href="modalidades.html">Modalidades</a></li>
-      <li><a href="simuladores.html">Simuladores</a></li>
-      <li><a href="desdobramentos.html">Desdobramentos</a></li>
-      <li><a href="analises.html">Análises/Estatísticas</a></li>
-      <li><a href="planilhas.html">Planilhas</a></li>
-      <li><a href="ebook.html">E-book</a></li>
-      <li><a href="sobre-nos.html">Sobre Nós</a></li>
-      <li><a href="contato.html">Contato</a></li>
-    </ul>
-  </nav>
   <main class="home">
     <div class="subcapa"></div>
     <div class="conteudo-principal">
       <h1>Bem-vindo ao Portal de Loterias - Mac Point</h1>
-      <img class="foto-capa" src="https://i.postimg.cc/vTmmYCpy/Screenshot-20241221-151605-1-1.jpg" alt="Imagem de Capa">
+      <div class="quadro">
+        <img class="foto-capa" src="https://i.postimg.cc/vTmmYCpy/Screenshot-20241221-151605-1-1.jpg" alt="Imagem de Capa">
+      </div>
+      <p>Nosso portal oferece conteúdo exclusivo para ajudá-lo a entender melhor as estatísticas e estratégias por trás das principais modalidades de loterias brasileiras. Aproveite!</p>
     </div>
   </main>
   <footer>
@@ -185,23 +190,6 @@
     <p>© 2024 Portal de Loterias-Mac Point . Todos os direitos reservados.</p>
   </footer>
   <script>
-    function toggleMenu() {
-      const menu = document.getElementById('menuLateral');
-      menu.classList.toggle('aberto');
-    }
-    document.addEventListener('click', function(event) {
-      const menu = document.getElementById('menuLateral');
-      const menuButton = document.querySelector('.menu-hamburguer button');
-      if (!menu.contains(event.target) && !menuButton.contains(event.target)) {
-        menu.classList.remove('aberto');
-      }
-    });
-    
-    function toggleSairMenu() {
-      const menuSair = document.getElementById('menuSair');
-      menuSair.style.display = menuSair.style.display === 'block' ? 'none' : 'block';
-    }
-
     const firebaseConfig = {
       apiKey: "AIzaSyA2J6syDQWzdeMhjlzX2zJvcx80vb0dI6WqJzws",
       authDomain: "macpoint-12345.firebaseapp.com",
@@ -210,21 +198,30 @@
       messagingSenderId: "77491727006",
       appId: "1:77491727006:web:1b4f11845685938da3d6d7"
     };
+
     const app = firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
     auth.onAuthStateChanged(user => {
       if (!user) {
-        window.location.href = "cadastro.html";
+        window.location.href = "login.html";
       }
     });
 
+    function toggleConfigMenu() {
+      const menu = document.getElementById('menuConfig');
+      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    }
+
     function logout() {
-      auth.signOut().then(() => {
-        window.location.href = "login.html";
-      }).catch(error => {
-        console.error("Erro ao deslogar: ", error);
-      });
+      auth.signOut()
+        .then(() => {
+          window.location.href = "login.html";
+        })
+        .catch(error => {
+          console.error("Erro ao deslogar: ", error);
+          alert("Erro ao deslogar. Por favor, tente novamente.");
+        });
     }
   </script>
 </body>

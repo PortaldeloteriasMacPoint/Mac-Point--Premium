@@ -176,15 +176,15 @@
   <!-- Menu Lateral -->
   <div class="menu-lateral" id="menuLateral">
     <ul>
-      <li><a href="#">Início</a></li>
-      <li><a href="#">Modalidades</a></li>
-      <li><a href="#">Análise Estatística</a></li>
-      <li><a href="#">Simuladores</a></li>
-      <li><a href="#">Tabelas</a></li>
-      <li><a href="#">Desdobramentos</a></li>
-      <li><a href="#">Subnóis</a></li>
-      <li><a href="#">Planilhas</a></li>
-      <li><a href="#">E-books</a></li>
+      <li><a href="link1.html">Início</a></li>
+      <li><a href="link2.html">Modalidades</a></li>
+      <li><a href="link3.html">Análise Estatística</a></li>
+      <li><a href="link4.html">Simuladores</a></li>
+      <li><a href="link5.html">Tabelas</a></li>
+      <li><a href="link6.html">Desdobramentos</a></li>
+      <li><a href="link7.html">Subnóis</a></li>
+      <li><a href="link8.html">Planilhas</a></li>
+      <li><a href="link9.html">E-books</a></li>
     </ul>
   </div>
 
@@ -229,13 +229,6 @@
     const app = firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
-    // Verificação de autenticação
-    auth.onAuthStateChanged(user => {
-      if (!user) {
-        window.location.href = "login.html";
-      }
-    });
-
     // Função de Toggle Menu Lateral
     function toggleMenu() {
       const menu = document.getElementById('menuLateral');
@@ -252,13 +245,20 @@
     function logout() {
       auth.signOut()
         .then(() => {
-          window.location.href = "login.html";
+          window.location.href = "login.html"; // Redireciona para a página de login
         })
         .catch(error => {
           console.error("Erro ao deslogar: ", error.message);
           alert("Erro ao deslogar. Por favor, tente novamente.");
         });
     }
+
+    // Proteção de página: Verificação de usuário autenticado
+    auth.onAuthStateChanged(user => {
+      if (!user) {
+        window.location.href = "login.html"; // Redireciona para login caso não esteja autenticado
+      }
+    });
   </script>
 </body>
 </html>

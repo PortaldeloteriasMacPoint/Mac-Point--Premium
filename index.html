@@ -1,12 +1,11 @@
+
+
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Plataforma MacPoint</title>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js"></script>
+  <title>Portal de Loterias - Página Inicial</title>
   <style>
     body {
       margin: 0;
@@ -14,184 +13,43 @@
       background-color: #000;
       color: #fff;
       display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    /* Cabeçalho */
-    .header {
-      width: 100%;
-      padding: 10px;
-      background-color: #013220;
-      border-bottom: 3px solid #00ff00;
-      display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
+      height: 100vh;
     }
-
-    .header .user-info {
-      color: #fff;
-      font-size: 16px;
-    }
-
-    /* Capa */
-    .capa {
-      width: 100%;
-      height: 200px;
-      background: url('sua-imagem.jpg') no-repeat center center;
-      background-size: cover;
-    }
-
-    /* Menu lateral */
-    .sidebar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 250px;
-      height: 100%;
-      background-color: #013220;
-      padding: 20px;
-      display: none;
-      flex-direction: column;
-      gap: 15px;
-      border-right: 3px solid #00ff00;
-    }
-
-    .sidebar.active {
-      display: flex;
-    }
-
-    .sidebar button, .sidebar a {
-      width: 100%;
-      padding: 10px;
-      background-color: #000;
-      color: #fff;
+    .container {
       text-align: center;
-      border: 2px solid #00ff00;
-      text-decoration: none;
+    }
+    h1 {
+      color: lightgreen;
+    }
+    button {
+      background-color: darkgreen;
+      color: white;
+      border: 2px solid lightgreen;
+      padding: 15px 30px;
+      font-size: 1.2em;
+      border-radius: 5px;
       cursor: pointer;
-      border-radius: 20px;
+      transition: all 0.3s ease-in-out;
     }
-
-    .sidebar button:hover, .sidebar a:hover {
-      background-color: #00ff00;
-      color: #000;
-    }
-
-    /* Rodapé */
-    .footer {
-      width: 100%;
-      padding: 10px;
-      background-color: #013220;
-      border-top: 3px solid #00ff00;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-    }
-
-    .footer a {
-      color: #fff;
-      text-decoration: none;
-      font-size: 14px;
-    }
-
-    .footer a.active {
-      font-weight: bold;
-      color: #00ff00;
-    }
-
-    .content {
-      flex: 1;
-      padding: 20px;
+    button:hover {
+      background-color: lightgreen;
+      color: black;
     }
   </style>
 </head>
 <body>
-  <!-- Cabeçalho -->
-  <header class="header">
-    <div class="user-info">
-      <span id="user-name">Carregando...</span>
-    </div>
-    <button id="menu-toggle">☰ Menu</button>
-  </header>
-
-  <!-- Capa -->
-  <div class="capa"></div>
-
-  <!-- Menu lateral -->
-  <nav class="sidebar" id="sidebar">
-    <a href="inicio.html">Início</a>
-    <a href="modalidades.html">Modalidades</a>
-    <a href="nave-estatistica.html">Nave Estatística</a>
-    <a href="deslocamentos.html">Deslocamentos</a>
-    <a href="tabelas.html">Tabelas</a>
-    <a href="simuladores.html">Simuladores</a>
-    <a href="tiradas-de-jogos.html">Tiradas de Jogos</a>
-    <a href="subnodes.html">Subnodes</a>
-    <button id="logout-btn">Logout</button>
-  </nav>
-
-  <!-- Conteúdo principal -->
-  <main class="content">
-    <h1>Bem-vindo à Plataforma MacPoint!</h1>
-    <p>Utilize o menu lateral para navegar entre as opções.</p>
-  </main>
-
-  <!-- Rodapé -->
-  <footer class="footer">
-    <a href="inicio.html" class="active">Início</a>
-    <a href="modalidades.html">Modalidades</a>
-    <a href="nave-estatistica.html">Nave Estatística</a>
-    <a href="deslocamentos.html">Deslocamentos</a>
-    <a href="tabelas.html">Tabelas</a>
-    <a href="simuladores.html">Simuladores</a>
-    <a href="tiradas-de-jogos.html">Tiradas de Jogos</a>
-    <a href="subnodes.html">Subnodes</a>
-  </footer>
-
+  <div class="container">
+    <h1>Bem-vindo ao Portal de Loterias</h1>
+    <p>Clique no botão abaixo para acessar a página de cadastro.</p>
+    <button onclick="irParaCadastro()">Ir para Cadastro</button>
+  </div>
   <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
-      authDomain: "mac-projeto-4e552.firebaseapp.com",
-      projectId: "mac-projeto-4e552",
-      storageBucket: "mac-projeto-4e552.appspot.com",
-      messagingSenderId: "537330451519",
-      appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
-    };
-
-    // Inicializar Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-
-    // Elementos do DOM
-    const userName = document.getElementById('user-name');
-    const menuToggle = document.getElementById('menu-toggle');
-    const sidebar = document.getElementById('sidebar');
-    const logoutBtn = document.getElementById('logout-btn');
-
-    // Toggle do menu lateral
-    menuToggle.addEventListener('click', () => {
-      sidebar.classList.toggle('active');
-    });
-
-    // Logout do usuário
-    logoutBtn.addEventListener('click', () => {
-      auth.signOut().then(() => {
-        alert("Você foi deslogado!");
-        window.location.href = "login.html";
-      }).catch(error => {
-        console.error("Erro ao deslogar:", error);
-      });
-    });
-
-    // Obter informações do usuário autenticado
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        userName.textContent = user.displayName || user.email;
-      } else {
-        window.location.href = "login.html"; // Redirecionar para login se não autenticado
-      }
-    });
+    function irParaCadastro() {
+      window.location.href = "cadastro.html";
+    }
   </script>
 </body>
 </html>
+

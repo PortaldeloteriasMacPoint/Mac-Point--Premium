@@ -5,186 +5,183 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Plataforma Premium de Loterias</title>
+  <title>Portal Premium - Mac Point</title>
   <style>
-    /* Estilos principais */
-    body {
-      font-family: Arial, sans-serif;
+    /* Reset básico */
+    body, html {
       margin: 0;
       padding: 0;
+      font-family: Arial, sans-serif;
       background-color: black;
       color: white;
     }
 
     /* Menu lateral */
-    .menu {
+    .menu-closed {
       position: fixed;
       top: 0;
       left: -250px;
       width: 250px;
       height: 100%;
-      background-color: #004d1a; /* Verde escuro */
+      background-color: #013220;
+      border-right: 2px solid #00ff00;
       transition: left 0.3s;
-      z-index: 1000;
     }
 
-    .menu a {
-      color: white;
-      text-decoration: none;
-      padding: 15px;
-      display: block;
-      border-bottom: 1px solid #5a9c76; /* Verde claro */
-    }
-
-    .menu a:hover {
-      background-color: #333;
-    }
-
-    .menu.open {
+    .menu-open {
       left: 0;
     }
 
-    /* Botão do menu */
-    .menu-button {
-      font-size: 30px;
-      cursor: pointer;
-      padding: 10px;
-      background-color: #004d1a;
-      color: white;
-      border: none;
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      z-index: 1001;
-    }
-
-    /* Conteúdo */
-    .content {
-      margin-left: 0;
-      padding: 20px;
-      transition: margin-left 0.3s;
-    }
-
-    .content.open {
-      margin-left: 250px;
-    }
-
-    /* Logout */
-    .logout-button {
-      position: absolute;
+    .menu-hamburger {
+      position: fixed;
       top: 10px;
-      right: 10px;
-      background-color: #ff0000;
-      color: white;
-      border: none;
+      left: 10px;
+      background-color: #000;
+      color: #fff;
+      border: 2px solid #00ff00;
+      border-radius: 20px;
       padding: 10px;
       cursor: pointer;
     }
 
-    /* Cabeçalho */
-    .header {
+    #closeMenu {
+      background: none;
+      color: white;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      padding: 10px;
+      display: block;
+      text-align: right;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 20px 0;
+    }
+
+    li {
+      margin: 15px 0;
+    }
+
+    a {
+      display: block;
+      padding: 10px;
+      background-color: black;
+      color: white;
+      border: 2px solid #00ff00;
+      text-decoration: none;
       text-align: center;
-      margin-top: 20px;
+      border-radius: 20px;
     }
 
-    .header h1 {
-      font-size: 2em;
-    }
-
-    .header p {
-      font-size: 1.2em;
+    a:hover {
+      background-color: #00ff00;
+      color: black;
     }
 
     /* Capa */
-    .cover-image {
+    .capa {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .capa img {
       width: 100%;
-      height: 250px;
-      background-image: url('link-da-imagem-da-capa.jpg'); /* Substitua com o link da imagem da capa */
-      background-size: cover;
-      background-position: center;
+      max-height: 300px;
+      object-fit: cover;
+      border-bottom: 2px solid #00ff00;
+    }
+
+    .titulo {
+      font-size: 2rem;
+      margin: 20px 0;
+      text-shadow: 2px 2px 4px #00ff00;
+    }
+
+    .descricao {
+      font-size: 1.2rem;
+      margin: 10px 0 20px;
+    }
+
+    /* Plano de fundo adicional */
+    .fundo-adicional {
+      background-color: #222;
+      border-top: 2px solid #00ff00;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .fundo-adicional img {
+      width: 90%;
+      max-width: 600px;
+      margin: 20px auto;
+      display: block;
+      border: 2px solid #00ff00;
+      border-radius: 10px;
     }
 
     /* Rodapé */
     footer {
+      text-align: center;
+      padding: 10px;
+      border-top: 2px solid #00ff00;
+      background-color: black;
       position: fixed;
       bottom: 0;
       width: 100%;
-      text-align: center;
-      background-color: #333;
-      padding: 10px;
     }
   </style>
 </head>
 <body>
-
   <!-- Menu lateral -->
-  <div class="menu" id="menu">
-    <a href="#inicio">Início</a>
-    <a href="#modalidades">Modalidades</a>
-    <a href="#analises">Análises</a>
-    <a href="#estatisticas">Estatísticas</a>
-    <a href="#simuladores">Simuladores</a>
-    <a href="#desdobramentos">Desdobramentos</a>
-    <a href="#tabelas">Tabelas</a>
-    <a href="#canilhas">Canilhas</a>
-    <a href="#sobre-nos">Sobre nós</a>
-    <a href="#" id="logout-btn">Sair</a>
+  <div id="menu" class="menu-closed">
+    <button id="closeMenu">✖</button>
+    <ul>
+      <li><a href="inicio.html">Início</a></li>
+      <li><a href="modalidades.html">Modalidades</a></li>
+      <li><a href="simuladores.html">Simuladores</a></li>
+      <li><a href="desdobramentos.html">Desdobramentos</a></li>
+      <li><a href="analises-estatisticas.html">Análises e Estatísticas</a></li>
+      <li><a href="planilhas.html">Planilhas</a></li>
+      <li><a href="girador-jogos.html">Girador de Jogos</a></li>
+      <li><a href="tabelas.html">Tabelas</a></li>
+      <li><a href="sobre-nos.html">Sobre Nós</a></li>
+      <li><a href="login.html">Sair</a></li>
+    </ul>
   </div>
 
-  <!-- Botão para abrir e fechar o menu -->
-  <button class="menu-button" id="menu-toggle">&#9776;</button>
+  <!-- Botão do menu hambúrguer -->
+  <button id="menuToggle" class="menu-hamburger">☰</button>
 
-  <!-- Conteúdo da página -->
-  <div class="content" id="content">
-    <div class="cover-image"></div>
+  <!-- Capa -->
+  <header class="capa">
+    <img id="capaImage" src="capa.jpg" alt="Capa do site">
+    <h1 class="titulo">Bem-vindo ao Portal Premium - Mac Point</h1>
+    <p class="descricao">A melhor plataforma para estratégias e análises de loterias.</p>
+  </header>
 
-    <div class="header">
-      <h1>Bem-vindo à Plataforma Premium de Loterias</h1>
-      <p>Explore nossas funcionalidades exclusivas.</p>
-    </div>
+  <!-- Fundo adicional -->
+  <section class="fundo-adicional">
+    <p>Adicione aqui mais informações ou imagens relacionadas à plataforma.</p>
+    <img src="adicional.jpg" alt="Imagem adicional">
+  </section>
 
-    <footer>
-      <p>© 2025 Plataforma Premium de Loterias</p>
-    </footer>
-  </div>
+  <!-- Rodapé -->
+  <footer>
+    <p>© 2025 Portal Premium - Mac Point. Todos os direitos reservados.</p>
+  </footer>
 
-  <!-- Scripts -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
   <script>
-    // Configuração do Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
-      authDomain: "mac-projeto-4e552.firebaseapp.com",
-      projectId: "mac-projeto-4e552",
-      storageBucket: "mac-projeto-4e552.appspot.com",
-      messagingSenderId: "537330451519",
-      appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
-    };
-
-    // Inicializa o Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-
-    // Abrir e fechar o menu
-    const menu = document.getElementById('menu');
-    const content = document.getElementById('content');
-    const menuToggle = document.getElementById('menu-toggle');
-
-    menuToggle.addEventListener('click', () => {
-      menu.classList.toggle('open');
-      content.classList.toggle('open');
+    // Abrir e fechar menu
+    document.getElementById('menuToggle').addEventListener('click', () => {
+      const menu = document.getElementById('menu');
+      menu.classList.toggle('menu-open');
     });
 
-    // Funcionalidade do botão de logout
-    const logoutBtn = document.getElementById('logout-btn');
-    logoutBtn.addEventListener('click', () => {
-      auth.signOut().then(() => {
-        window.location.href = 'login.html'; // Redireciona para a página de login
-      }).catch((error) => {
-        console.error('Erro ao deslogar:', error);
-      });
+    document.getElementById('closeMenu').addEventListener('click', () => {
+      document.getElementById('menu').classList.remove('menu-open');
     });
   </script>
 </body>

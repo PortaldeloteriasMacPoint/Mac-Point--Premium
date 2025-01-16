@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -26,7 +27,7 @@
      .menu-hamburguer button {
        background-color: #000;
        color: white;
-       border: 2px solid lightgreen; /* Bordas em verde claro */
+       border: 2px solid lightgreen;
        padding: 5px;
        border-radius: 5px;
        cursor: pointer;
@@ -65,7 +66,7 @@
        padding: 10px 15px;
        border-radius: 10px;
        display: block;
-       border: 2px solid lightgreen; /* Bordas em verde claro */
+       border: 2px solid lightgreen;
        transition: all 0.3s ease-in-out;
      }
      .menu-lateral ul li a:hover {
@@ -79,14 +80,6 @@
        padding: 40px 20px;
        position: relative;
        z-index: 100;
-     }
-     .home img {
-       width: 100%;
-       height: 100vh;
-       object-fit: cover;
-       margin-top: 0;
-       border-radius: 0;
-       box-shadow: none;
      }
      .subcapa {
        position: absolute;
@@ -112,14 +105,9 @@
      .foto-capa {
        width: 100%;
        height: auto;
-       border-radius: 5px;
+       border: 2px solid lightgreen;
        box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
-     }
-     .home p {
-       font-size: 1.5em;
-       background-color: rgba(0, 0, 0, 0.5);
-       padding: 10px;
-       border-radius: 5px;
+       margin-top: 20px;
      }
      footer {
        text-align: center;
@@ -127,26 +115,38 @@
        background-color: #222;
        color: #fff;
      }
-     .btn-sair {
+     .icone-engrenagem {
        position: fixed;
        top: 20px;
        right: 20px;
+       cursor: pointer;
+       font-size: 1.5em;
+       color: white;
+       z-index: 1200;
+     }
+     .menu-sair {
+       position: fixed;
+       top: 60px;
+       right: 20px;
+       background-color: #222;
+       border: 2px solid lightgreen;
+       padding: 10px;
+       border-radius: 10px;
+       display: none;
+       z-index: 1200;
+     }
+     .menu-sair button {
        background-color: red;
        color: white;
        padding: 10px;
-       border: 2px solid lightgreen; /* Bordas em verde claro */
+       border: none;
        border-radius: 5px;
        cursor: pointer;
+       font-size: 1em;
+       width: 100%;
      }
-     .btn-sair:hover {
+     .menu-sair button:hover {
        background-color: darkred;
-     }
-     .usuario-info {
-       position: fixed;
-       top: 20px;
-       left: 20px;
-       color: white;
-       font-size: 1.2em;
      }
    </style>
    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
@@ -155,6 +155,10 @@
 <body>
   <div class="menu-hamburguer">
     <button onclick="toggleMenu()">☰</button>
+  </div>
+  <div class="icone-engrenagem" onclick="toggleSairMenu()">⚙</div>
+  <div class="menu-sair" id="menuSair">
+    <button onclick="logout()">Sair</button>
   </div>
   <nav class="menu-lateral" id="menuLateral">
     <ul>
@@ -173,18 +177,13 @@
     <div class="subcapa"></div>
     <div class="conteudo-principal">
       <h1>Bem-vindo ao Portal de Loterias - Mac Point</h1>
-      <div class="quadro">
-        <img class="foto-capa" src="https://i.postimg.cc/vTmmYCpy/Screenshot-20241221-151605-1-1.jpg" alt="Imagem de Capa">
-      </div>
-      <p>Nosso portal oferece conteúdo exclusivo para ajudá-lo a entender melhor as estatísticas e estratégias por trás das principais modalidades de loterias brasileiras. Aproveite!</p>
+      <img class="foto-capa" src="https://i.postimg.cc/vTmmYCpy/Screenshot-20241221-151605-1-1.jpg" alt="Imagem de Capa">
     </div>
   </main>
   <footer>
     <p>Mac Point é um site independente dedicado a fornecer análises, ferramentas e informações sobre as loterias brasileiras. Não temos vínculo com a Caixa Econômica Federal ou qualquer outra entidade governamental. Para resultados oficiais, consulte os canais oficiais de cada loteria.</p>
     <p>© 2024 Portal de Loterias-Mac Point . Todos os direitos reservados.</p>
   </footer>
-  <button class="btn-sair" onclick="logout()">Sair</button>
-  <div class="usuario-info" id="usuarioInfo">Carregando...</div>
   <script>
     function toggleMenu() {
       const menu = document.getElementById('menuLateral');
@@ -198,6 +197,11 @@
       }
     });
     
+    function toggleSairMenu() {
+      const menuSair = document.getElementById('menuSair');
+      menuSair.style.display = menuSair.style.display === 'block' ? 'none' : 'block';
+    }
+
     const firebaseConfig = {
       apiKey: "AIzaSyA2J6syDQWzdeMhjlzX2zJvcx80vb0dI6WqJzws",
       authDomain: "macpoint-12345.firebaseapp.com",
@@ -208,12 +212,10 @@
     };
     const app = firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
-    
+
     auth.onAuthStateChanged(user => {
       if (!user) {
         window.location.href = "cadastro.html";
-      } else {
-        document.getElementById('usuarioInfo').textContent = `Bem-vindo, ${user.displayName || 'usuário'}`;
       }
     });
 
@@ -227,3 +229,4 @@
   </script>
 </body>
 </html>
+

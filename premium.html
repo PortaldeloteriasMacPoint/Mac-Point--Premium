@@ -1,263 +1,200 @@
 
 
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-   <meta property="og:description" content="Descrição da página principal do site.">
-   <meta property="og:image" content="https://meusite.github.io/imagens/imagem-principal.jpg">
-   <meta property="og:url" content="https://meusite.github.io">
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Portal de Loterias - Mac Point</title>
-   <style>
-     body {
-       margin: 0;
-       font-family: Arial, sans-serif;
-       background-color: #000;
-       color: #fff;
-       position: relative;
-     }
-     .menu-hamburguer {
-       position: fixed;
-       top: 10px;
-       left: 10px;
-       z-index: 1000;
-     }
-     .menu-hamburguer button {
-       background-color: #000;
-       color: white;
-       border: 2px solid lightgreen;
-       padding: 5px;
-       border-radius: 5px;
-       cursor: pointer;
-       font-size: 1.2em;
-       transition: background-color 0.3s;
-     }
-     .menu-hamburguer button:hover {
-       background-color: #004d00;
-     }
-     .menu-lateral {
-       position: fixed;
-       top: 0;
-       left: 0;
-       height: 100%;
-       width: 250px;
-       background-color: darkgreen;
-       box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
-       padding: 5px;
-       transform: translateX(-100%);
-       transition: transform 0.3s ease-in-out;
-       z-index: 1100;
-     }
-     .menu-lateral ul {
-       list-style: none;
-       padding: 0;
-       margin: 0;
-     }
-     .menu-lateral ul li {
-       margin-bottom: 15px;
-     }
-     .menu-lateral ul li a {
-       text-decoration: none;
-       text-align: center;
-       color: white;
-       background-color: black;
-       padding: 10px 15px;
-       border-radius: 10px;
-       display: block;
-       border: 2px solid lightgreen;
-       transition: all 0.3s ease-in-out;
-     }
-     .menu-lateral ul li a:hover {
-       background-color: #00b300;
-     }
-     .menu-lateral.aberto {
-       transform: translateX(0);
-     }
-     .home {
-       text-align: center;
-       padding: 40px 20px;
-       position: relative;
-       z-index: 100;
-     }
-     .home img {
-       width: 100%;
-       height: 100vh;
-       object-fit: cover;
-       margin-top: 0;
-       border-radius: 0;
-       box-shadow: none;
-     }
-     .subcapa {
-       position: absolute;
-       top: 0;
-       left: 0;
-       width: 100%;
-       height: 100%;
-       background-image: url('https://i.postimg.cc/4yKFS9j4/Screenshot-20241129-232703-1.jpg');
-       background-size: cover;
-       background-position: center;
-       opacity: 0.6;
-       z-index: 90;
-     }
-     .conteudo-principal {
-       position: relative;
-       z-index: 100;
-       background-color: darkgreen;
-       padding: 20px;
-       display: inline-block;
-       max-width: 80%;
-       border-radius: 10px;
-     }
-     .foto-capa {
-       width: 100%;
-       height: auto;
-       border-radius: 0;
-       box-shadow: none;
-     }
-     .home p {
-       font-size: 1.5em;
-       background-color: rgba(0, 0, 0, 0.5);
-       padding: 10px;
-       border-radius: 5px;
-     }
-     footer {
-       text-align: center;
-       padding: 20px;
-       background-color: #222;
-       color: #fff;
-     }
-     .icone-config {
-       position: fixed;
-       top: 10px;
-       right: 10px;
-       z-index: 1000;
-     }
-     .icone-config button {
-       background-color: #000;
-       border: 2px solid lightgreen;
-       color: white;
-       font-size: 1.5em;
-       border-radius: 50%;
-       padding: 10px;
-       cursor: pointer;
-     }
-     .menu-config {
-       display: none;
-       position: absolute;
-       top: 50px;
-       right: 10px;
-       background-color: darkgreen;
-       border: 2px solid lightgreen;
-       padding: 10px;
-       border-radius: 10px;
-     }
-     .menu-config button {
-       background-color: red;
-       color: white;
-       padding: 10px;
-       border: none;
-       border-radius: 5px;
-       cursor: pointer;
-     }
-     .menu-config button:hover {
-       background-color: darkred;
-     }
-   </style>
-   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plataforma Premium de Loterias</title>
+  <style>
+    /* Estilos do Menu */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: black;
+      color: white;
+    }
+    .menu {
+      position: fixed;
+      top: 0;
+      left: -250px;
+      width: 250px;
+      height: 100%;
+      background-color: #004d1a; /* Verde escuro */
+      transition: left 0.3s;
+      z-index: 1000;
+    }
+    .menu a {
+      color: white;
+      text-decoration: none;
+      padding: 15px;
+      display: block;
+      border-bottom: 1px solid #5a9c76; /* Verde claro */
+    }
+    .menu a:hover {
+      background-color: #333;
+    }
+    .menu-button {
+      font-size: 30px;
+      cursor: pointer;
+      padding: 10px;
+      background-color: #004d1a;
+      color: white;
+      border: none;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 1001;
+    }
+    .menu.open {
+      left: 0;
+    }
+    .content {
+      margin-left: 0;
+      padding: 20px;
+      transition: margin-left 0.3s;
+    }
+    .content.open {
+      margin-left: 250px;
+    }
+    .logout-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #ff0000;
+      color: white;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+    }
+    .header {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .header h1 {
+      font-size: 2em;
+    }
+    .header p {
+      font-size: 1.2em;
+    }
+    footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+      background-color: #333;
+      padding: 10px;
+    }
+  </style>
 </head>
 <body>
-  <!-- Menu Hamburguer -->
-  <div class="menu-hamburguer">
-    <button onclick="toggleMenu()">☰</button>
+
+  <!-- Menu lateral -->
+  <div class="menu" id="menu">
+    <a href="#inicio">Início</a>
+    <a href="#modalidades">Modalidades</a>
+    <a href="#analises">Análises</a>
+    <a href="#estatisticas">Estatísticas</a>
+    <a href="#simuladores">Simuladores</a>
+    <a href="#desdobramentos">Desdobramentos</a>
+    <a href="#tabelas">Tabelas</a>
+    <a href="#canilhas">Canilhas</a>
+    <a href="#sobre-nos">Sobre nós</a>
+    <a href="#" id="logout-btn">Sair</a>
   </div>
 
-  <!-- Menu Lateral -->
-  <div class="menu-lateral" id="menuLateral">
-    <ul>
-      <li><a href="link1.html">Início</a></li>
-      <li><a href="link2.html">Modalidades</a></li>
-      <li><a href="link3.html">Análise Estatística</a></li>
-      <li><a href="link4.html">Simuladores</a></li>
-      <li><a href="link5.html">Tabelas</a></li>
-      <li><a href="link6.html">Desdobramentos</a></li>
-      <li><a href="link7.html">Subnóis</a></li>
-      <li><a href="link8.html">Planilhas</a></li>
-      <li><a href="link9.html">E-books</a></li>
-    </ul>
-  </div>
+  <!-- Botão para abrir e fechar o menu -->
+  <button class="menu-button" id="menu-toggle">&#9776;</button>
 
-  <!-- Ícone de Engrenagem -->
-  <div class="icone-config">
-    <button onclick="toggleConfigMenu()">⚙</button>
-    <div class="menu-config" id="menuConfig">
-      <button onclick="logout()">Sair</button>
+  <!-- Conteúdo da página -->
+  <div class="content" id="content">
+    <div class="header">
+      <h1>Bem-vindo à Plataforma Premium de Loterias</h1>
+      <p>Descrição da plataforma: Acesse análises, estatísticas e muito mais.</p>
     </div>
+
+    <div id="pagina-inicial">
+      <!-- Conteúdo da página inicial -->
+    </div>
+
+    <footer>
+      <p>© 2025 Plataforma Premium de Loterias</p>
+    </footer>
   </div>
 
-  <!-- Conteúdo Principal -->
-  <main class="home">
-    <div class="subcapa"></div>
-    <div class="conteudo-principal">
-      <h1>Bem-vindo ao Portal de Loterias - Mac Point</h1>
-      <div class="quadro">
-        <img class="foto-capa" src="https://i.postimg.cc/vTmmYCpy/Screenshot-20241221-151605-1-1.jpg" alt="Imagem de Capa">
-      </div>
-      <p>Nosso portal oferece conteúdo exclusivo para ajudá-lo a entender melhor as estatísticas e estratégias por trás das principais modalidades de loterias brasileiras. Aproveite!</p>
-    </div>
-  </main>
-
-  <!-- Rodapé -->
-  <footer>
-    <p>Mac Point é um site independente dedicado a fornecer análises, ferramentas e informações sobre as loterias brasileiras. Não temos vínculo com a Caixa Econômica Federal ou qualquer outra entidade governamental. Para resultados oficiais, consulte os canais oficiais de cada loteria.</p>
-    <p>© 2024 Portal de Loterias-Mac Point . Todos os direitos reservados.</p>
-  </footer>
-
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
   <script>
     // Configuração do Firebase
     const firebaseConfig = {
-      apiKey: "AIzaSyA2J6syDQWzdeMhjlzX2zJvcx80vb0dI6WqJzws",
-      authDomain: "macpoint-12345.firebaseapp.com",
-      projectId: "macpoint-12345",
-      storageBucket: "macpoint-12345.appspot.com",
-      messagingSenderId: "77491727006",
-      appId: "1:77491727006:web:1b4f11845685938da3d6d7"
+      apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+      authDomain: "mac-projeto-4e552.firebaseapp.com",
+      projectId: "mac-projeto-4e552",
+      storageBucket: "mac-projeto-4e552.appspot.com",
+      messagingSenderId: "537330451519",
+      appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
     };
 
-    // Inicialização do Firebase
+    // Inicializa o Firebase
     const app = firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
+    const db = firebase.firestore();
 
-    // Função de Toggle Menu Lateral
-    function toggleMenu() {
-      const menu = document.getElementById('menuLateral');
-      menu.classList.toggle('aberto');
-    }
+    // Função para verificar se o usuário está autenticado e tem status ativo
+    function verificarAcesso() {
+      const user = auth.currentUser;
 
-    // Função de Toggle Menu de Configurações
-    function toggleConfigMenu() {
-      const menu = document.getElementById('menuConfig');
-      menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
-    }
+      if (user) {
+        const uid = user.uid;
+        const userRef = db.collection('users').doc(uid);
 
-    // Função de Logout
-    function logout() {
-      auth.signOut()
-        .then(() => {
-          window.location.href = "login.html"; // Redireciona para a página de login
-        })
-        .catch(error => {
-          console.error("Erro ao deslogar: ", error.message);
-          alert("Erro ao deslogar. Por favor, tente novamente.");
+        userRef.get().then((doc) => {
+          if (doc.exists) {
+            const userData = doc.data();
+            const statusAtivo = userData.status === 'ativo';
+            const subscriptionActive = userData.subscriptionActive;
+            const subscriptionEndDate = userData.subscriptionEndDate.toDate();
+
+            if (statusAtivo && subscriptionActive && subscriptionEndDate > new Date()) {
+              console.log('Usuário autenticado e com status ativo');
+            } else {
+              window.location.href = '/pagina-de-pagamento';
+            }
+          } else {
+            window.location.href = '/pagina-de-pagamento';
+          }
+        }).catch((error) => {
+          console.error('Erro ao verificar status:', error);
+          window.location.href = '/pagina-de-pagamento';
         });
+      } else {
+        window.location.href = '/pagina-de-login';
+      }
     }
 
-    // Proteção de página: Verificação de usuário autenticado
-    auth.onAuthStateChanged(user => {
-      if (!user) {
-        window.location.href = "login.html"; // Redireciona para login caso não esteja autenticado
-      }
+    // Chamando a verificação quando a página for carregada
+    window.onload = verificarAcesso;
+
+    // Abrir e fechar o menu
+    const menu = document.getElementById('menu');
+    const content = document.getElementById('content');
+    const menuToggle = document.getElementById('menu-toggle');
+
+    menuToggle.addEventListener('click', () => {
+      menu.classList.toggle('open');
+      content.classList.toggle('open');
+    });
+
+    // Funcionalidade do botão de logout
+    const logoutBtn = document.getElementById('logout-btn');
+    logoutBtn.addEventListener('click', () => {
+      auth.signOut().then(() => {
+        window.location.href = '/pagina-de-login';
+      }).catch((error) => {
+        console.error('Erro ao deslogar:', error);
+      });
     });
   </script>
 </body>

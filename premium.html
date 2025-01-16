@@ -6,7 +6,6 @@
    <meta property="og:description" content="Descrição da página principal do site.">
    <meta property="og:image" content="https://meusite.github.io/imagens/imagem-principal.jpg">
    <meta property="og:url" content="https://meusite.github.io">
-  
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Portal de Loterias - Mac Point</title>
@@ -219,7 +218,7 @@
           window.location.href = "login.html";
         })
         .catch(error => {
-          console.error("Erro ao deslogar: ", error);
+          console.error("Erro ao deslogar: ", error.message);
           alert("Erro ao deslogar. Por favor, tente novamente.");
         });
     }

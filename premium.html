@@ -1,261 +1,108 @@
-
-
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portal Premium - Mac Point</title>
-  <style>
-    /* Reset básico */
-    body, html {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      background-color: black;
-      color: white;
-      min-height: 100%;
-      display: flex;
-      flex-direction: column;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Site</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: url('background.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
 
-    /* Menu lateral */
-    .menu-closed {
-      position: fixed;
-      top: 0;
-      left: -250px;
-      width: 250px;
-      height: 100%;
-      background-color: #013220;
-      border-right: 2px solid #00ff00;
-      transition: left 0.3s;
-      z-index: 9999; /* Corrigido para uma prioridade alta */
-    }
+        .menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 250px;
+            background-color: black;
+            color: white;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+            border-right: 2px solid lightgreen;
+            z-index: 2;
+        }
 
-    .menu-open {
-      left: 0;
-    }
+        .menu.open {
+            transform: translateX(0);
+        }
 
-    .menu-hamburger {
-      position: fixed;
-      top: 10px;
-      left: 10px;
-      background-color: #000;
-      color: #fff;
-      border: 2px solid #00ff00;
-      border-radius: 20px;
-      padding: 10px;
-      cursor: pointer;
-      z-index: 10001; /* Corrigido para garantir que o botão fique acima do menu */
-    }
+        .menu a {
+            display: block;
+            padding: 15px;
+            text-decoration: none;
+            color: white;
+            border-bottom: 1px solid lightgreen;
+            border-radius: 10px;
+        }
 
-    #closeMenu {
-      background: none;
-      color: white;
-      border: none;
-      font-size: 20px;
-      cursor: pointer;
-      padding: 10px;
-      display: block;
-      text-align: right;
-    }
+        .menu a:hover {
+            background-color: lightgreen;
+            color: black;
+        }
 
-    ul {
-      list-style: none;
-      padding: 0;
-      margin: 20px 0;
-    }
+        .menu-toggle {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: 30px;
+            cursor: pointer;
+            z-index: 3;
+        }
 
-    li {
-      margin: 15px 0;
-    }
+        .capa {
+            border: 2px solid lightgreen;
+            text-align: center;
+            padding: 50px;
+            margin: 50px;
+            background-color: rgba(255, 255, 255, 0.8);
+            z-index: 1;
+        }
 
-    a {
-      display: block;
-      padding: 10px;
-      background-color: black;
-      color: white;
-      border: 2px solid #00ff00;
-      text-decoration: none;
-      text-align: center;
-      border-radius: 20px;
-    }
-
-    a:hover {
-      background-color: #00ff00;
-      color: black;
-    }
-
-    /* Capa */
-    .capa {
-      width: 100%;
-      height: 100vh;
-      background-image: url('sua-imagem.jpg');
-      background-size: cover;
-      background-position: center;
-      opacity: 0.6;
-      position: relative;
-      z-index: 1;
-    }
-
-    .menu {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 100;
-      text-align: center;
-      padding: 20px;
-      pointer-events: none; /* Garante que a capa não bloqueie interações com outros elementos */
-    }
-
-    .capa img {
-      width: 100%;
-      max-height: 300px;
-      object-fit: cover;
-      border-bottom: 2px solid #00ff00;
-    }
-
-    .titulo {
-      font-size: 2rem;
-      margin: 20px 0;
-      text-shadow: 2px 2px 4px #00ff00;
-    }
-
-    .descricao {
-      font-size: 1.2rem;
-      margin: 10px 0 20px;
-    }
-
-    /* Plano de fundo adicional */
-    .fundo-adicional {
-      background-color: #222;
-      border-top: 2px solid #00ff00;
-      padding: 20px;
-      text-align: center;
-      flex-grow: 1;
-    }
-
-    .fundo-adicional img {
-      width: 90%;
-      max-width: 600px;
-      margin: 20px auto;
-      display: block;
-      border: 2px solid #00ff00;
-      border-radius: 10px;
-    }
-
-    /* Rodapé */
-    footer {
-      text-align: center;
-      padding: 10px;
-      border-top: 2px solid #00ff00;
-      background-color: black;
-      position: sticky;
-      bottom: 0;
-      width: 100%;
-      z-index: 500;
-    }
-  </style>
+        .rodape {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: black;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            border-top: 2px solid lightgreen;
+        }
+    </style>
 </head>
 <body>
-  <!-- Menu lateral -->
-  <div id="menu" class="menu-closed">
-    <button id="closeMenu">✖</button>
-    <ul>
-      <li><a href="inicio.html">Início</a></li>
-      <li><a href="modalidades.html">Modalidades</a></li>
-      <li><a href="simuladores.html">Simuladores</a></li>
-      <li><a href="desdobramentos.html">Desdobramentos</a></li>
-      <li><a href="analises-estatisticas.html">Análises e Estatísticas</a></li>
-      <li><a href="planilhas.html">Planilhas</a></li>
-      <li><a href="gerador-jogos.html">Gerador de Jogos</a></li>
-      <li><a href="tabelas.html">Tabelas</a></li>
-      <li><a href="sobre-nos.html">Sobre Nós</a></li>
-      <li><a href="login.html">Sair</a></li>
-    </ul>
-  </div>
 
-  <!-- Botão do menu hambúrguer -->
-  <button id="menuToggle" class="menu-hamburger">☰</button>
+    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+    
+    <div class="menu">
+        <a href="#inicio">Início</a>
+        <a href="#modalidades">Modalidades</a>
+        <a href="#planilhas">Planilhas</a>
+        <a href="#analises">Análises Estatísticas</a>
+        <a href="#simuladores">Simuladores</a>
+        <a href="#geradores">Geradores de Jogos</a>
+    </div>
 
-  <!-- Capa -->
-  <header class="capa">
-    <img id="capaImage" src="" alt="Capa do site">
-    <h1 class="titulo">Bem-vindo ao Portal Premium - Mac Point</h1>
-    <p class="descricao">A melhor plataforma para estratégias e análises de loterias.</p>
-  </header>
+    <div class="capa">
+        <h1>Bem-vindo ao Meu Site</h1>
+        <p>Descrição do site aqui.</p>
+    </div>
 
-  <!-- Fundo adicional -->
-  <section class="fundo-adicional">
-    <p>Adicione aqui mais informações ou imagens relacionadas à plataforma.</p>
-    <img src="adicional.jpg" alt="Imagem adicional">
-  </section>
+    <div class="rodape">
+        &copy; 2025 Meu Site
+    </div>
 
-  <!-- Rodapé -->
-  <footer>
-    <p>© 2025 Portal Premium - Mac Point. Todos os direitos reservados.</p>
-  </footer>
+    <script>
+        function toggleMenu() {
+            const menu = document.querySelector('.menu');
+            menu.classList.toggle('open');
+        }
+    </script>
 
-  <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-firestore.js"></script>
-
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyA2J6syDQWzdeMhjlzX2zJvcx80vb0dI6WqJzws",
-      authDomain: "macpoint-12345.firebaseapp.com",
-      projectId: "macpoint-12345",
-      storageBucket: "macpoint-12345.appspot.com",
-      messagingSenderId: "77491727006",
-      appId: "1:77491727006:web:1b4f11845685938da3d6d7"
-    };
-
-    // Inicializar Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
-
-    auth.onAuthStateChanged(user => {
-      if (!user) {
-        window.location.href = "login.html";
-      } else {
-        const userRef = db.collection('usuarios').doc(user.uid);
-        userRef.get().then((doc) => {
-          if (doc.exists && doc.data().status === 'ativo') {
-            document.getElementById("usuarioInfo").innerText = `Olá, ${user.displayName || 'Usuário'}`;
-          } else {
-            auth.signOut().then(() => {
-              window.location.href = "login.html";
-            });
-          }
-        }).catch((error) => {
-          console.error("Erro ao verificar o status do usuário: ", error);
-          auth.signOut().then(() => {
-            window.location.href = "login.html";
-          });
-        });
-      }
-    });
-
-    function logout() {
-      auth.signOut().then(() => {
-        window.location.href = "login.html";
-      }).catch((error) => {
-        console.error("Erro ao sair: ", error);
-      });
-    }
-
-    // Abrir e fechar menu
-    document.getElementById('menuToggle').addEventListener('click', () => {
-      const menu = document.getElementById('menu');
-      menu.classList.toggle('menu-open');
-    });
-
-    document.getElementById('closeMenu').addEventListener('click', () => {
-      document.getElementById('menu').classList.remove('menu-open');
-    });
-  </script>
 </body>
 </html>
 

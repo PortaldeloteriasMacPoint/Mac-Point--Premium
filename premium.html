@@ -1,238 +1,51 @@
+
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portal Premium - Mac Point</title>
+  <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-firestore.js"></script>
   <style>
-    /* Reset básico */
-    body, html {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      background-color: black;
-      color: white;
-    }
-
-    /* Menu lateral */
-    .menu-closed {
-      position: fixed;
-      top: 0;
-      left: -250px;
-      width: 250px;
-      height: 100%;
-      background-color: #013220;
-      border-right: 2px solid #00ff00;
-      transition: left 0.3s;
-    }
-
-    .menu-open {
-      left: 0;
-    }
-
-    .menu-hamburger {
-      position: fixed;
-      top: 10px;
-      left: 10px;
-      background-color: #000;
-      color: #fff;
-      border: 2px solid #00ff00;
-      border-radius: 20px;
-      padding: 10px;
-      cursor: pointer;
-    }
-
-    #closeMenu {
-      background: none;
-      color: white;
-      border: none;
-      font-size: 20px;
-      cursor: pointer;
-      padding: 10px;
-      display: block;
-      text-align: right;
-    }
-
-    ul {
-      list-style: none;
-      padding: 0;
-      margin: 20px 0;
-    }
-
-    li {
-      margin: 15px 0;
-    }
-
-    a {
-      display: block;
-      padding: 10px;
-      background-color: black;
-      color: white;
-      border: 2px solid #00ff00;
-      text-decoration: none;
-      text-align: center;
-      border-radius: 20px;
-    }
-
-    a:hover {
-      background-color: #00ff00;
-      color: black;
-    }
-
-    /* Capa */
-    .capa {
-      text-align: center;
-      padding: 20px;
-    }
-
-    .capa img {
-      width: 100%;
-      max-height: 300px;
-      object-fit: cover;
-      border-bottom: 2px solid #00ff00;
-    }
-
-    .titulo {
-      font-size: 2rem;
-      margin: 20px 0;
-      text-shadow: 2px 2px 4px #00ff00;
-    }
-
-    .descricao {
-      font-size: 1.2rem;
-      margin: 10px 0 20px;
-    }
-
-    /* Plano de fundo adicional */
-    .fundo-adicional {
-      background-color: #222;
-      border-top: 2px solid #00ff00;
-      padding: 20px;
-      text-align: center;
-    }
-
-    .fundo-adicional img {
-      width: 90%;
-      max-width: 600px;
-      margin: 20px auto;
-      display: block;
-      border: 2px solid #00ff00;
-      border-radius: 10px;
-    }
-
-    /* Rodapé */
-    footer {
-      text-align: center;
-      padding: 10px;
-      border-top: 2px solid #00ff00;
-      background-color: black;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-    }
-/* Estilo do Menu Lateral */
-#menu {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 250px;
-    height: calc(100% - 60px);
-    background-color: #333;
-    z-index: 1000;
-    overflow-y: auto;
-}
-
-#menu ul {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-}
-
-#menu ul li {
-    padding: 20px;
-    color: white;
-    border-bottom: 1px solid #444;
-    cursor: pointer;
-}
-
-#menu ul li:hover {
-    background-color: #555;
-}
-
-/* Estilo do Conteúdo */
-.content {
-    margin-left: 250px;
-    padding: 20px;
-}
-
-/* Estilo do Rodapé */
-footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background-color: #222;
-    color: white;
-    padding: 20px;
-    text-align: center;
-    z-index: 999;
-}      
+    /* Adicione aqui os estilos mencionados anteriormente */
   </style>
 </head>
 <body>
-  <!-- Menu lateral -->
-  <div id="menu" class="menu-closed">
-    <button id="closeMenu">✖</button>
-    <ul>
-      <li><a href="inicio.html">Início</a></li>
-      <li><a href="modalidades.html">Modalidades</a></li>
-      <li><a href="simuladores.html">Simuladores</a></li>
-      <li><a href="desdobramentos.html">Desdobramentos</a></li>
-      <li><a href="analises-estatisticas.html">Análises e Estatísticas</a></li>
-      <li><a href="planilhas.html">Planilhas</a></li>
-      <li><a href="girador-jogos.html">Girador de Jogos</a></li>
-      <li><a href="tabelas.html">Tabelas</a></li>
-      <li><a href="sobre-nos.html">Sobre Nós</a></li>
-      <li><a href="login.html">Sair</a></li>
-    </ul>
+  <!-- Estrutura do site -->
+  <div id="app">
+    <div id="menu" class="menu">
+      <button id="closeMenu">✖</button>
+      <ul>
+        <li><a href="inicio.html">Início</a></li>
+        <li><a href="modalidades.html">Modalidades</a></li>
+        <li><a href="simuladores.html">Simuladores</a></li>
+        <li><a href="desdobramentos.html">Desdobramentos</a></li>
+        <li><a href="analises-estatisticas.html">Análises e Estatísticas</a></li>
+        <li><a href="planilhas.html">Planilhas</a></li>
+        <li><a href="girador-jogos.html">Girador de Jogos</a></li>
+        <li><a href="tabelas.html">Tabelas</a></li>
+        <li><a href="sobre-nos.html">Sobre Nós</a></li>
+        <li><a href="#" id="logout">Sair</a></li>
+      </ul>
+    </div>
+
+    <button id="menuToggle" class="menu-hamburger">☰</button>
+
+    <header class="capa">
+      <img id="capaImage" src="capa.jpg" alt="Capa do site">
+      <h1 class="titulo">Bem-vindo ao Portal Premium - Mac Point</h1>
+      <p class="descricao">A melhor plataforma para estratégias e análises de loterias.</p>
+    </header>
+    <footer>
+      <p>© 2025 Portal Premium - Mac Point. Todos os direitos reservados.</p>
+    </footer>
   </div>
 
-  <!-- Botão do menu hambúrguer -->
-  <button id="menuToggle" class="menu-hamburger">☰</button>
-
-  <!-- Capa -->
-  <header class="capa">
-    <img id="capaImage" src="capa.jpg" alt="Capa do site">
-    <h1 class="titulo">Bem-vindo ao Portal Premium - Mac Point</h1>
-    <p class="descricao">A melhor plataforma para estratégias e análises de loterias.</p>
-  </header>
-
-  <!-- Fundo adicional -->
-  <section class="fundo-adicional">
-    <p>Adicione aqui mais informações ou imagens relacionadas à plataforma.</p>
-    <img src="adicional.jpg" alt="Imagem adicional">
-  </section>
-
-  <!-- Rodapé -->
-  <footer>
-    <p>© 2025 Portal Premium - Mac Point. Todos os direitos reservados.</p>
-  </footer>
-<script>
-    // Abrir e fechar menu
-    document.getElementById('menuToggle').addEventListener('click', () => {
-      const menu = document.getElementById('menu');
-      menu.classList.toggle('menu-open');
-    });
-
-    document.getElementById('closeMenu').addEventListener('click', () => {
-      document.getElementById('menu').classList.remove('menu-open');
-    });
-  </script>
-  <!-- Scripts do Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-firestore.js"></script>
   <script>
-    // Configuração do Firebase
+    // Configuração Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
       authDomain: "mac-projeto-4e552.firebaseapp.com",
@@ -241,34 +54,45 @@ footer {
       messagingSenderId: "537330451519",
       appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
     };
+
+    // Inicializar Firebase
     const app = firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
 
-    // Verificação de autenticação e status de usuário
-    auth.onAuthStateChanged(user => {
+    // Verificar autenticação e status no Firestore
+    auth.onAuthStateChanged(async (user) => {
       if (user) {
-        const userId = user.uid;
-        const userDocRef = db.collection('users').doc(userId);
-
-        userDocRef.get().then(doc => {
-          if (doc.exists) {
-            const userData = doc.data();
-            if (userData.status !== 'ativo' || userData.subscriptionEndDate < new Date()) {
-              window.location.href = 'login.html'; // Redireciona se não estiver ativo
-            }
-          } else {
-            window.location.href = 'login.html'; // Redireciona se o usuário não existir
-          }
-        }).catch(error => {
-          console.error("Erro ao verificar status do usuário:", error);
-          window.location.href = 'login.html'; // Redireciona em caso de erro
-        });
+        const userDoc = await db.collection('users').doc(user.uid).get();
+        if (userDoc.exists && userDoc.data().status === "ativo") {
+          console.log("Usuário autenticado e ativo.");
+        } else {
+          alert("Acesso restrito. Redirecionando para a página de pagamento.");
+          window.location.href = "pagamento.html";
+        }
       } else {
-        window.location.href = 'login.html'; // Redireciona se não estiver autenticado
+        alert("Por favor, faça login para acessar o conteúdo.");
+        window.location.href = "login.html";
       }
+    });
+
+    // Logout
+    document.getElementById("logout").addEventListener("click", () => {
+      auth.signOut().then(() => {
+        window.location.href = "login.html";
+      });
+    });
+
+    // Menu lateral
+    document.getElementById('menuToggle').addEventListener('click', () => {
+      document.getElementById('menu').classList.toggle('menu-open');
+    });
+
+    document.getElementById('closeMenu').addEventListener('click', () => {
+      document.getElementById('menu').classList.remove('menu-open');
     });
   </script>
 </body>
 </html>
+
 

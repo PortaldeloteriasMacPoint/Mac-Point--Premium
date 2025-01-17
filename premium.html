@@ -10,10 +10,142 @@
   <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-firestore.js"></script>
   <style>
-    /* Adicione aqui os estilos mencionados anteriormente */
+    /* Reset básico e estilo inicial */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: black;
+      color: white;
+    }
+
+    /* Capa */
+    .capa {
+      position: relative;
+      text-align: center;
+      padding: 50px 0;
+    }
+
+    .capa img {
+      width: 100%;
+      height: auto;
+      opacity: 0.8;
+    }
+
+    .titulo {
+      position: absolute;
+      top: 30%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 3em;
+      color: white;
+    }
+
+    .descricao {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.5em;
+      color: white;
+    }
+
+    /* Menu Lateral */
+    .menu {
+      position: fixed;
+      top: 0;
+      left: -250px;
+      width: 250px;
+      height: 100%;
+      background-color: #2d2d2d;
+      transition: left 0.3s ease;
+      padding-top: 60px;
+      box-shadow: 3px 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .menu-open {
+      left: 0;
+    }
+
+    .menu ul {
+      list-style-type: none;
+    }
+
+    .menu li {
+      padding: 15px;
+      text-align: center;
+    }
+
+    .menu a {
+      text-decoration: none;
+      color: white;
+      display: block;
+      font-size: 1.2em;
+      padding: 10px;
+      border-radius: 10px;
+      transition: background-color 0.2s ease;
+    }
+
+    .menu a:hover {
+      background-color: #444;
+    }
+
+    /* Botões no menu e no site */
+    .menu-hamburger {
+      font-size: 30px;
+      color: white;
+      background-color: transparent;
+      border: none;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      cursor: pointer;
+    }
+
+    #logout {
+      background-color: #333;
+      padding: 10px;
+      border-radius: 10px;
+      transition: background-color 0.2s ease;
+    }
+
+    #logout:hover {
+      background-color: #444;
+    }
+
+    /* Layout responsivo */
+    @media (max-width: 768px) {
+      .titulo {
+        font-size: 2.5em;
+      }
+
+      .descricao {
+        font-size: 1.2em;
+      }
+
+      .menu {
+        width: 200px;
+      }
+
+      .capa {
+        padding: 30px 0;
+      }
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #222;
+    }
   </style>
 </head>
 <body>
+
   <!-- Estrutura do site -->
   <div id="app">
     <div id="menu" class="menu">
@@ -39,6 +171,7 @@
       <h1 class="titulo">Bem-vindo ao Portal Premium - Mac Point</h1>
       <p class="descricao">A melhor plataforma para estratégias e análises de loterias.</p>
     </header>
+
     <footer>
       <p>© 2025 Portal Premium - Mac Point. Todos os direitos reservados.</p>
     </footer>
@@ -94,5 +227,4 @@
   </script>
 </body>
 </html>
-
 

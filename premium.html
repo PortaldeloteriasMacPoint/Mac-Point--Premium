@@ -172,31 +172,17 @@
   <footer>
     <p>© 2025 Portal Premium - Mac Point. Todos os direitos reservados.</p>
   </footer>
-
-
 <script>
-const menu = document.getElementById('menu');
-const overlay = document.getElementById('overlay');
+    // Abrir e fechar menu
+    document.getElementById('menuToggle').addEventListener('click', () => {
+      const menu = document.getElementById('menu');
+      menu.classList.toggle('menu-open');
+    });
 
-// Abre o menu lateral
-function openMenu() {
-    menu.style.left = '0';
-    overlay.style.display = 'block';
-}
-
-// Fecha o menu lateral
-function closeMenu() {
-    menu.style.left = '-250px';
-    overlay.style.display = 'none';
-}
-
-// Abre ou fecha o menu ao clicar
-menu.addEventListener('click', openMenu);
-overlay.addEventListener('click', closeMenu);
-</script>
-
-
-
+    document.getElementById('closeMenu').addEventListener('click', () => {
+      document.getElementById('menu').classList.remove('menu-open');
+    });
+  </script>
   <!-- Scripts do Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-auth.js"></script>

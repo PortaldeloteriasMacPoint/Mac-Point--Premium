@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -11,6 +12,32 @@
             font-family: Arial, sans-serif;
             background: url('background.jpg') no-repeat center center fixed;
             background-size: cover;
+        }
+
+        .capa {
+            background: url('Screenshot_20250112-173043-1.jpg') no-repeat center center;
+            background-size: cover;
+            height: 300px;
+            border: 2px solid lightgreen;
+        }
+
+        .conteudo {
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            margin: 20px;
+            border-radius: 10px;
+        }
+
+        .titulo {
+            color: black;
+            font-size: 2em;
+            margin: 20px 0;
+        }
+
+        .descricao {
+            color: black;
+            margin: 10px 0;
         }
 
         .menu, .menu-sair {
@@ -80,28 +107,6 @@
             right: 15px;
         }
 
-        .capa {
-            border: 2px solid lightgreen;
-            text-align: center;
-            padding: 50px;
-            margin: 50px;
-            background-color: rgba(255, 255, 255, 0.8);
-        }
-
-        .titulo {
-            text-align: center;
-            color: white;
-            text-shadow: 0 0 10px lightgreen;
-            font-size: 2em;
-            margin: 20px 0;
-        }
-
-        .descricao {
-            text-align: center;
-            color: white;
-            margin: 20px;
-        }
-
         .rodape {
             position: fixed;
             bottom: 0;
@@ -134,7 +139,9 @@
         <a href="login.html">Sair</a>
     </div>
 
-    <div class="capa">
+    <div class="capa"></div>
+
+    <div class="conteudo">
         <h1 class="titulo">Portal de Loterias MacPoint</h1>
         <p class="descricao">Descrição da plataforma aqui.</p>
     </div>

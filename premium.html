@@ -29,7 +29,7 @@
       background-color: #013220;
       border-right: 2px solid #00ff00;
       transition: left 0.3s;
-      z-index: 10000;/* Priorodade alta para o menu */
+      z-index: 9999; /* Corrigido para uma prioridade alta */
     }
 
     .menu-open {
@@ -46,7 +46,7 @@
       border-radius: 20px;
       padding: 10px;
       cursor: pointer;
-      z-index: 1001;
+      z-index: 10001; /* Corrigido para garantir que o botão fique acima do menu */
     }
 
     #closeMenu {
@@ -88,34 +88,32 @@
 
     /* Capa */
     .capa {
-  width: 100%;
-  height: 100vh;
-  background-image: url('sua-imagem.jpg');
-  background-size: cover;
-  background-position: center;
-  opacity: 0.6;
-  position: relative;
-  z-index: 1;
-}
+      width: 100%;
+      height: 100vh;
+      background-image: url('sua-imagem.jpg');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.6;
+      position: relative;
+      z-index: 1;
+    }
 
-.menu {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 100;
- text-align: center;
+    .menu {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      text-align: center;
       padding: 20px;
-    pointer-events: none; /* Garante que a capa não bloqueie interações com outros elementos */ }
+      pointer-events: none; /* Garante que a capa não bloqueie interações com outros elementos */
+    }
 
     .capa img {
       width: 100%;
       max-height: 300px;
       object-fit: cover;
       border-bottom: 2px solid #00ff00;
-    Z-index:90; /* Garante que a capa não sobreponha outros elementos */
-
-
     }
 
     .titulo {
@@ -198,50 +196,57 @@
   <footer>
     <p>© 2025 Portal Premium - Mac Point. Todos os direitos reservados.</p>
   </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-firestore.js"></script>
+
   <script>
-const firebaseConfig = {
-  apiKey: "AIzaSyA2J6syDQWzdeMhjlzX2zJvcx80vb0dI6WqJzws",
-  authDomain: "macpoint-12345.firebaseapp.com",
-  projectId: "macpoint-12345",
-  storageBucket: "macpoint-12345.appspot.com",
-  messagingSenderId: "77491727006",
-  appId: "1:77491727006:web:1b4f11845685938da3d6d7"
-};
+    const firebaseConfig = {
+      apiKey: "AIzaSyA2J6syDQWzdeMhjlzX2zJvcx80vb0dI6WqJzws",
+      authDomain: "macpoint-12345.firebaseapp.com",
+      projectId: "macpoint-12345",
+      storageBucket: "macpoint-12345.appspot.com",
+      messagingSenderId: "77491727006",
+      appId: "1:77491727006:web:1b4f11845685938da3d6d7"
+    };
 
-const app = firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
+    // Inicializar Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
 
-auth.onAuthStateChanged(user => {
-  if (!user) {
-    window.location.href = "login.html";
-  } else {
-    const userRef = db.collection('usuarios').doc(user.uid);
-    userRef.get().then((doc) => {
-      if (doc.exists && doc.data().status === 'ativo') {
-        document.getElementById("usuarioInfo").innerText = `Olá, ${user.displayName || 'Usuário'}`;
+    auth.onAuthStateChanged(user => {
+      if (!user) {
+        window.location.href = "login.html";
       } else {
-        auth.signOut().then(() => {
-          window.location.href = "login.html";
+        const userRef = db.collection('usuarios').doc(user.uid);
+        userRef.get().then((doc) => {
+          if (doc.exists && doc.data().status === 'ativo') {
+            document.getElementById("usuarioInfo").innerText = `Olá, ${user.displayName || 'Usuário'}`;
+          } else {
+            auth.signOut().then(() => {
+              window.location.href = "login.html";
+            });
+          }
+        }).catch((error) => {
+          console.error("Erro ao verificar o status do usuário: ", error);
+          auth.signOut().then(() => {
+            window.location.href = "login.html";
+          });
         });
       }
-    }).catch((error) => {
-      console.error("Erro ao verificar o status do usuário: ", error);
+    });
+
+    function logout() {
       auth.signOut().then(() => {
         window.location.href = "login.html";
+      }).catch((error) => {
+        console.error("Erro ao sair: ", error);
       });
-    });
-  }
-});
+    }
 
-function logout() {
-  auth.signOut().then(() => {
-    window.location.href = "login.html";
-  }).catch((error) => {
-    console.error("Erro ao sair: ", error);
-  });
-}
-   // Abrir e fechar menu
+    // Abrir e fechar menu
     document.getElementById('menuToggle').addEventListener('click', () => {
       const menu = document.getElementById('menu');
       menu.classList.toggle('menu-open');

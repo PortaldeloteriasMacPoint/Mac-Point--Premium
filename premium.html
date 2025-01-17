@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -20,10 +18,10 @@
         }
 
         .capa {
-            background: url('Screenshot-20241228-214554-1.jpg') no-repeat center center;
+            background: url('sua-imagem-de-capa.jpg') no-repeat center center;
             background-size: cover;
             height: 300px;
-            margin-top: 20px;
+            margin-top: 60px;
         }
 
         .conteudo {
@@ -52,7 +50,7 @@
             top: 0;
             left: -250px;
             height: 100%;
-            background-color: #1e2d24; /* Cor verde escuro */
+            background-color: #1e2d24;
             color: white;
             transition: left 0.3s ease;
             z-index: 2;
@@ -88,22 +86,9 @@
             color: white;
         }
 
-        .menu-sair-toggle, .sair-btn {
+        .sair-btn {
             position: absolute;
             top: 15px;
-            font-size: 30px;
-            cursor: pointer;
-            z-index: 4;
-            padding: 10px;
-            background-color: black;
-            color: white;
-        }
-
-        .menu-sair-toggle {
-            right: 60px;
-        }
-
-        .sair-btn {
             right: 15px;
             font-size: 16px;
             background-color: red;
@@ -130,6 +115,11 @@
             padding: 10px;
             background-color: black;
             border-bottom: 2px solid lightgreen;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 3;
         }
 
         .menu.open {
@@ -140,10 +130,7 @@
 <body>
 
     <div class="superior-borda">
-        <!-- Ícone de Menu -->
         <div class="menu-toggle" onclick="toggleMenu()">☰</div>
-
-        <!-- Botão Sair -->
         <div class="sair-btn" onclick="logout()">Sair</div>
     </div>
 
@@ -152,9 +139,9 @@
         <a href="#modalidades">Modalidades</a>
         <a href="#simuladores">Simuladores</a>
         <a href="#desdobramento">Desdobramento</a>
-        <a href="#analise-estatistica">Análises/Estatísticas</a>
+        <a href="#analise-estatistica">Análise Estatística</a>
         <a href="#planilhas">Planilhas</a>
-        <a href="#subnois">Sobre nós </a>
+        <a href="#subnois">Subnóis</a>
     </div>
 
     <div class="capa"></div>
@@ -178,7 +165,6 @@
 
         function logout() {
             alert("Você foi desconectado!");
-            // Adicionar o comportamento de logout aqui
         }
     </script>
 

@@ -172,6 +172,21 @@
   <footer>
     <p>© 2025 Portal Premium - Mac Point. Todos os direitos reservados.</p>
   </footer>
+<script>
+ const menu = document.getElementById('menu');
+const menuToggle = document.getElementById('menu-toggle');
+const overlay = document.getElementById('overlay');
+
+menuToggle.addEventListener('click', () => {
+    menu.style.left = (menu.style.left === '0px') ? '-250px' : '0';
+    overlay.style.display = 'block';
+});
+
+overlay.addEventListener('click', () => {
+    menu.style.left = '-250px';
+    overlay.style.display = 'none';
+});
+</script>
 
   <!-- Scripts do Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js"></script>

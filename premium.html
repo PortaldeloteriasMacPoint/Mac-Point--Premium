@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -8,7 +10,162 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js"></script>
   <style>
-    /* Estilos como anteriormente */
+    /* Estilos gerais do site */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #000000;
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Imagem de fundo */
+    body {
+      background-image: url('background.jpg'); /* Imagem de fundo do site */
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+
+    /* Menu lateral */
+    #menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 250px;
+      height: 100%;
+      background-color: #004d00; /* Verde escuro */
+      color: white;
+      border-right: 2px solid #66ff66; /* Borda verde claro */
+      display: none; /* Inicialmente fechado */
+      flex-direction: column;
+      padding-top: 30px;
+      border-radius: 10px 0 0 10px; /* Borda arredondada */
+    }
+
+    #menu ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    #menu ul li {
+      padding: 10px;
+      text-align: center;
+    }
+
+    #menu ul li a {
+      color: white;
+      text-decoration: none;
+      display: block;
+      padding: 10px;
+      background-color: #000000;
+      border: 1px solid #66ff66; /* Borda verde claro */
+      border-radius: 5px; /* Bordas arredondadas */
+    }
+
+    #menu ul li a:hover {
+      background-color: #003300; /* Efeito de hover */
+    }
+
+    #menuToggle {
+      font-size: 30px;
+      background-color: #004d00;
+      color: white;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      border-radius: 5px;
+    }
+
+    #menuToggle:hover {
+      background-color: #003300;
+    }
+
+    /* Capa do site */
+    .capa {
+      text-align: center;
+      padding: 50px;
+      background-color: rgba(0, 0, 0, 0.5); /* Fundo escuro transparente */
+      border-bottom: 2px solid #66ff66; /* Borda verde claro */
+    }
+
+    .capa img {
+      width: 100%;
+      height: auto;
+      max-height: 300px;
+      object-fit: cover;
+    }
+
+    .titulo {
+      color: white;
+      font-size: 36px;
+      text-shadow: 2px 2px 5px #66ff66;
+    }
+
+    .descricao {
+      color: white;
+      font-size: 18px;
+      text-shadow: 1px 1px 3px #66ff66;
+    }
+
+    /* Seção adicional */
+    .fundo-adicional {
+      text-align: center;
+      padding: 20px;
+      background-color: #333333;
+    }
+
+    .fundo-adicional img {
+      width: 80%;
+      max-width: 600px;
+      height: auto;
+    }
+
+    /* Rodapé */
+    footer {
+      background-color: #000000;
+      color: white;
+      padding: 10px 0;
+      text-align: center;
+    }
+
+    /* Estilos para o formulário de login e cadastro */
+    .form-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 80vh;
+      flex-direction: column;
+    }
+
+    input[type="text"], input[type="password"] {
+      background-color: #000000;
+      color: white;
+      border: 2px solid #66ff66;
+      padding: 10px;
+      margin: 10px;
+      width: 300px;
+      text-align: center;
+      border-radius: 5px; /* Bordas arredondadas */
+    }
+
+    input[type="submit"] {
+      background-color: #004d00;
+      color: white;
+      border: none;
+      padding: 15px 20px;
+      cursor: pointer;
+      width: 320px;
+      border-radius: 5px; /* Bordas arredondadas */
+    }
+
+    input[type="submit"]:hover {
+      background-color: #003300;
+    }
+
   </style>
 </head>
 <body>
@@ -64,37 +221,8 @@
     // Inicializando o Firebase
     const app = firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
-    const firestore = firebase.firestore();
-
-    // Verificação de usuário autenticado e status ativo
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        const userId = user.uid;
-        firestore.collection('users').doc(userId).get()
-          .then((doc) => {
-            if (doc.exists && doc.data().status === 'ativo') {
-              // Usuário autenticado e com status ativo
-              console.log("Acesso permitido. Usuário ativo.");
-            } else {
-              // Usuário autenticado, mas com status diferente de ativo
-              console.log("Acesso negado. Status do usuário não ativo.");
-              // Redireciona para a página de pagamento ou outra página de erro
-              window.location.href = 'pagamento.html';
-            }
-          })
-          .catch((error) => {
-            console.error("Erro ao verificar status do usuário:", error);
-            // Redireciona para a página de login ou erro
-            window.location.href = 'login.html';
-          });
-      } else {
-        // Usuário não autenticado
-        console.log("Usuário não autenticado.");
-        // Redireciona para a página de login
-        window.location.href = 'login.html';
-      }
-    });
   </script>
 </body>
 </html>
 
+ 

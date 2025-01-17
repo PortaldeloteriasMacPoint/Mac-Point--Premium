@@ -1,9 +1,11 @@
+
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Site</title>
+    <title>Portal de Loterias MacPoint</title>
     <style>
         body {
             margin: 0;
@@ -12,10 +14,9 @@
             background-size: cover;
         }
 
-        .menu {
+        .menu, .menu-sair {
             position: fixed;
             top: 0;
-            left: 0;
             height: 100%;
             width: 250px;
             background-color: black;
@@ -30,7 +31,19 @@
             transform: translateX(0);
         }
 
-        .menu a {
+        .menu-sair {
+            right: 0;
+            left: auto;
+            transform: translateX(100%);
+            border-left: 2px solid lightgreen;
+            z-index: 3;
+        }
+
+        .menu-sair.open {
+            transform: translateX(0);
+        }
+
+        .menu a, .menu-sair a {
             display: block;
             padding: 15px;
             text-decoration: none;
@@ -39,18 +52,34 @@
             border-radius: 10px;
         }
 
-        .menu a:hover {
+        .menu a:hover, .menu-sair a:hover {
             background-color: lightgreen;
             color: black;
         }
 
-        .menu-toggle {
+        .menu-sair a {
+            background-color: red;
+            text-align: center;
+        }
+
+        .menu-sair a:hover {
+            background-color: darkred;
+        }
+
+        .menu-toggle, .menu-sair-toggle {
             position: absolute;
             top: 15px;
-            left: 15px;
             font-size: 30px;
             cursor: pointer;
-            z-index: 3;
+            z-index: 4;
+        }
+
+        .menu-toggle {
+            left: 15px;
+        }
+
+        .menu-sair-toggle {
+            right: 15px;
         }
 
         .capa {
@@ -60,6 +89,21 @@
             margin: 50px;
             background-color: rgba(255, 255, 255, 0.8);
             z-index: 1;
+            position: relative;
+        }
+
+        .titulo {
+            text-align: center;
+            color: white;
+            text-shadow: 0 0 10px lightgreen;
+            font-size: 2em;
+            margin: 20px 0;
+        }
+
+        .descricao {
+            text-align: center;
+            color: white;
+            margin: 20px;
         }
 
         .rodape {
@@ -77,23 +121,30 @@
 <body>
 
     <div class="menu-toggle" onclick="toggleMenu()">☰</div>
-    
     <div class="menu">
         <a href="#inicio">Início</a>
         <a href="#modalidades">Modalidades</a>
-        <a href="#planilhas">Planilhas</a>
-        <a href="#analises">Análises Estatísticas</a>
-        <a href="#simuladores">Simuladores</a>
         <a href="#geradores">Geradores de Jogos</a>
+        <a href="#simuladores">Simuladores</a>
+        <a href="#desdobramento">Desdobramento</a>
+        <a href="#tabelas">Tabelas</a>
+        <a href="#analises">Análise Estatística</a>
+        <a href="#planilhas">Planilhas</a>
+        <a href="#subnois">Subnóis</a>
+    </div>
+
+    <div class="menu-sair-toggle" onclick="toggleSairMenu()">⚙</div>
+    <div class="menu-sair">
+        <a href="login.html">Sair</a>
     </div>
 
     <div class="capa">
-        <h1>Bem-vindo ao Meu Site</h1>
-        <p>Descrição do site aqui.</p>
+        <h1 class="titulo">Portal de Loterias MacPoint</h1>
+        <p class="descricao">Descrição da plataforma aqui.</p>
     </div>
 
     <div class="rodape">
-        &copy; 2025 Meu Site
+        &copy; 2025 Portal de Loterias MacPoint
     </div>
 
     <script>
@@ -101,6 +152,22 @@
             const menu = document.querySelector('.menu');
             menu.classList.toggle('open');
         }
+
+        function toggleSairMenu() {
+            const menuSair = document.querySelector('.menu-sair');
+            menuSair.classList.toggle('open');
+        }
+
+        document.body.addEventListener('click', function(event) {
+            const menu = document.querySelector('.menu');
+            const menuSair = document.querySelector('.menu-sair');
+            if (!menu.contains(event.target) && !document.querySelector('.menu-toggle').contains(event.target)) {
+                menu.classList.remove('open');
+            }
+            if (!menuSair.contains(event.target) && !document.querySelector('.menu-sair-toggle').contains(event.target)) {
+                menuSair.classList.remove('open');
+            }
+        });
     </script>
 
 </body>

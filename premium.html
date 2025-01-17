@@ -130,6 +130,52 @@
       bottom: 0;
       width: 100%;
     }
+/* Estilo do Menu Lateral */
+#menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: calc(100% - 60px);
+    background-color: #333;
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+#menu ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+#menu ul li {
+    padding: 20px;
+    color: white;
+    border-bottom: 1px solid #444;
+    cursor: pointer;
+}
+
+#menu ul li:hover {
+    background-color: #555;
+}
+
+/* Estilo do Conteúdo */
+.content {
+    margin-left: 250px;
+    padding: 20px;
+}
+
+/* Estilo do Rodapé */
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #222;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    z-index: 999;
+}      
   </style>
 </head>
 <body>

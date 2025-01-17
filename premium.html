@@ -7,12 +7,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal de Loterias MacPoint</title>
     <style>
+        /* Estilos para o corpo da página */
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: black; /* Fundo preto */
+            background-color: black;
+            color: white;
         }
 
+        /* Estilo para a capa do site */
         .capa {
             background: url('Screenshot_20250112-173043-1.jpg') no-repeat center center;
             background-size: cover;
@@ -20,6 +23,7 @@
             border: 2px solid lightgreen;
         }
 
+        /* Conteúdo principal da página */
         .conteudo {
             text-align: center;
             padding: 20px;
@@ -28,28 +32,30 @@
             border-radius: 10px;
         }
 
+        /* Estilo do título */
         .titulo {
-            color: white; /* Cor branca para o título */
-            font-weight: bold; /* Título em negrito */
-            font-size: 2.5em; /* Tamanho maior para o título */
+            font-weight: bold;
+            font-size: 2.5em;
             margin: 20px 0;
-            text-shadow: 2px 2px 4px lightgreen; /* Contorno verde-claro */
+            text-shadow: 2px 2px 4px lightgreen;
         }
 
+        /* Estilo da descrição */
         .descricao {
-            color: white; /* Texto da descrição em branco */
+            color: white;
             margin: 10px 0;
         }
 
+        /* Menu lateral */
         .menu, .menu-sair {
             position: fixed;
             top: 0;
             height: 100%;
-            background-color: white; /* Cor de fundo branco para os menus */
+            background-color: white;
             color: black;
             transition: transform 0.3s ease-in-out;
             z-index: 2;
-            border: 2px solid lightgreen; /* Contorno verde-claro */
+            border: 2px solid lightgreen;
         }
 
         .menu {
@@ -72,9 +78,11 @@
             display: block;
             padding: 15px;
             text-decoration: none;
-            color: black;
-            border-bottom: 1px solid lightgreen;
+            color: white;
+            background-color: black;
+            border: 2px solid lightgreen;
             border-radius: 10px;
+            margin: 5px 0;
         }
 
         .menu a:hover, .menu-sair a:hover {
@@ -91,15 +99,17 @@
             background-color: darkred;
         }
 
+        /* Botões de menu (hambúrguer e engrenagem) */
         .menu-toggle, .menu-sair-toggle {
             position: absolute;
             top: 15px;
             font-size: 30px;
             cursor: pointer;
             z-index: 4;
-            border: 2px solid lightgreen; /* Contorno verde-claro */
+            border: 2px solid lightgreen;
             padding: 10px;
-            background-color: white; /* Fundo branco para os botões */
+            background-color: black;
+            color: white;
             border-radius: 50%;
         }
 
@@ -111,6 +121,12 @@
             right: 15px;
         }
 
+        .menu-toggle:hover, .menu-sair-toggle:hover {
+            background-color: lightgreen;
+            color: black;
+        }
+
+        /* Rodapé */
         .rodape {
             position: fixed;
             bottom: 0;
@@ -125,7 +141,10 @@
 </head>
 <body>
 
+    <!-- Ícone de Menu -->
     <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+
+    <!-- Menu Lateral -->
     <div class="menu">
         <a href="#inicio">Início</a>
         <a href="#modalidades">Modalidades</a>
@@ -138,33 +157,43 @@
         <a href="#subnois">Subnóis</a>
     </div>
 
+    <!-- Ícone de Engrenagem (Sair) -->
     <div class="menu-sair-toggle" onclick="toggleSairMenu()">⚙</div>
+
+    <!-- Menu Sair -->
     <div class="menu-sair">
         <a href="login.html">Sair</a>
     </div>
 
+    <!-- Capa -->
     <div class="capa"></div>
 
+    <!-- Conteúdo -->
     <div class="conteudo">
         <h1 class="titulo">Portal de Loterias MacPoint</h1>
         <p class="descricao">Descrição da plataforma aqui.</p>
     </div>
 
+    <!-- Rodapé -->
     <div class="rodape">
         &copy; 2025 Portal de Loterias MacPoint
     </div>
 
+    <!-- Script para o funcionamento dos menus -->
     <script>
+        // Função para abrir e fechar o menu lateral
         function toggleMenu() {
             const menu = document.querySelector('.menu');
             menu.classList.toggle('open');
         }
 
+        // Função para abrir e fechar o menu de sair
         function toggleSairMenu() {
             const menuSair = document.querySelector('.menu-sair');
             menuSair.classList.toggle('open');
         }
 
+        // Fechar o menu se clicar fora
         document.body.addEventListener('click', function(event) {
             const menu = document.querySelector('.menu');
             const menuSair = document.querySelector('.menu-sair');
@@ -180,4 +209,3 @@
 </body>
 </html>
 
- 

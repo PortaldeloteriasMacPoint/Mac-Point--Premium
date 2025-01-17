@@ -152,7 +152,7 @@
       <li><a href="desdobramentos.html">Desdobramentos</a></li>
       <li><a href="analises-estatisticas.html">Análises e Estatísticas</a></li>
       <li><a href="planilhas.html">Planilhas</a></li>
-      <li><a href="girador-jogos.html">Girador de Jogos</a></li>
+      <li><a href="gerador-jogos.html">Gerador de Jogos</a></li>
       <li><a href="tabelas.html">Tabelas</a></li>
       <li><a href="sobre-nos.html">Sobre Nós</a></li>
       <li><a href="login.html">Sair</a></li>
@@ -179,16 +179,50 @@
   <footer>
     <p>© 2025 Portal Premium - Mac Point. Todos os direitos reservados.</p>
   </footer>
-
   <script>
-    // Verificação de autenticação
-    const isAuthenticated = true; //  Agora a página  será exibida normalmente
+const firebaseConfig = {
+  apiKey: "AIzaSyA2J6syDQWzdeMhjlzX2zJvcx80vb0dI6WqJzws",
+  authDomain: "macpoint-12345.firebaseapp.com",
+  projectId: "macpoint-12345",
+  storageBucket: "macpoint-12345.appspot.com",
+  messagingSenderId: "77491727006",
+  appId: "1:77491727006:web:1b4f11845685938da3d6d7"
+};
 
-    if (!isAuthenticated) {
-      window.location.href = 'login.html'; // Redireciona para a página de login se não estiver autenticado
-    }
+const app = firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
 
-    // Abrir e fechar menu
+auth.onAuthStateChanged(user => {
+  if (!user) {
+    window.location.href = "login.html";
+  } else {
+    const userRef = db.collection('usuarios').doc(user.uid);
+    userRef.get().then((doc) => {
+      if (doc.exists && doc.data().status === 'ativo') {
+        document.getElementById("usuarioInfo").innerText = `Olá, ${user.displayName || 'Usuário'}`;
+      } else {
+        auth.signOut().then(() => {
+          window.location.href = "login.html";
+        });
+      }
+    }).catch((error) => {
+      console.error("Erro ao verificar o status do usuário: ", error);
+      auth.signOut().then(() => {
+        window.location.href = "login.html";
+      });
+    });
+  }
+});
+
+function logout() {
+  auth.signOut().then(() => {
+    window.location.href = "login.html";
+  }).catch((error) => {
+    console.error("Erro ao sair: ", error);
+  });
+}
+   // Abrir e fechar menu
     document.getElementById('menuToggle').addEventListener('click', () => {
       const menu = document.getElementById('menu');
       menu.classList.toggle('menu-open');

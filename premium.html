@@ -26,16 +26,13 @@
             background: url('') no-repeat center center; /* Aqui você adiciona a URL da imagem quando quiser */
             background-size: cover;
             height: 300px;
-            border: 2px solid lightgreen;
+            margin-top: 20px;
         }
 
         /* Conteúdo principal da página */
         .conteudo {
             text-align: center;
             padding: 20px;
-            background-color: rgba(255, 255, 255, 0.8);
-            margin: 20px;
-            border-radius: 10px;
         }
 
         /* Estilo do título */
@@ -43,44 +40,35 @@
             font-weight: bold;
             font-size: 2.5em;
             margin: 20px 0;
-            text-shadow: 2px 2px 4px lightgreen;
+            padding: 10px;
+            background-color: black;
+            color: white;
+            border: 2px solid lightgreen;
+            text-align: center;
         }
 
         /* Estilo da descrição */
         .descricao {
             color: white;
             margin: 10px 0;
+            text-align: center;
         }
 
         /* Menu lateral */
-        .menu, .menu-sair {
+        .menu {
             position: fixed;
             top: 0;
+            left: 0;
             height: 100%;
             background-color: #2c3e50;
             color: white;
             transition: transform 0.3s ease-in-out;
             z-index: 2;
-            border: 2px solid lightgreen;
-        }
-
-        .menu {
             width: 250px;
-            left: 0;
-            transform: translateX(-100%);
+            border-right: 2px solid lightgreen;
         }
 
-        .menu-sair {
-            width: 150px;
-            right: 0;
-            transform: translateX(100%);
-        }
-
-        .menu.open, .menu-sair.open {
-            transform: translateX(0);
-        }
-
-        .menu a, .menu-sair a {
+        .menu a {
             display: block;
             padding: 15px;
             text-decoration: none;
@@ -91,18 +79,33 @@
             margin: 5px 0;
         }
 
-        .menu a:hover, .menu-sair a:hover {
+        .menu a:hover {
             background-color: lightgreen;
             color: black;
         }
 
-        .menu-sair a {
-            background-color: red;
-            text-align: center;
+        /* Menu pequeno */
+        .menu-pequeno {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background-color: #2c3e50;
+            color: white;
+            transition: transform 0.3s ease-in-out;
+            z-index: 2;
+            width: 200px;
+            border-right: 2px solid lightgreen;
         }
 
-        .menu-sair a:hover {
-            background-color: darkred;
+        .menu-pequeno a {
+            display: block;
+            padding: 15px;
+            text-decoration: none;
+            color: white;
+            background-color: black;
+            border: 2px solid lightgreen;
+            margin: 5px 0;
         }
 
         /* Botões de menu (hambúrguer e engrenagem) */
@@ -112,11 +115,9 @@
             font-size: 30px;
             cursor: pointer;
             z-index: 4;
-            border: 2px solid lightgreen;
             padding: 10px;
             background-color: black;
             color: white;
-            border-radius: 50%;
         }
 
         .menu-toggle {
@@ -127,18 +128,16 @@
             right: 15px;
         }
 
-        .menu-toggle:hover, .menu-sair-toggle:hover {
-            background-color: lightgreen;
-            color: black;
-        }
-
-        /* Menu de Sair */
+        /* Botão Sair */
         .sair-btn {
             background-color: red;
             color: white;
             border-radius: 5px;
             padding: 10px 20px;
             cursor: pointer;
+            position: absolute;
+            top: 15px;
+            right: 75px;
         }
 
         .sair-btn:hover {
@@ -157,40 +156,19 @@
             border-top: 2px solid lightgreen;
         }
 
-        /* Estilo da borda superior */
+        /* Borda superior */
         .superior-borda {
             display: flex;
             justify-content: space-between;
             padding: 10px;
             background-color: black;
             border-bottom: 2px solid lightgreen;
-            color: white;
-        }
-
-        .superior-borda .btn {
-            color: white;
-            background-color: black;
-            border: 2px solid lightgreen;
-            border-radius: 50%;
-            padding: 10px;
-            cursor: pointer;
-        }
-
-        .superior-borda .btn:hover {
-            background-color: lightgreen;
-            color: black;
         }
 
         /* Menu lateral responsivo */
         @media (max-width: 768px) {
-            .menu {
+            .menu, .menu-pequeno {
                 width: 200px;
-            }
-            .menu-sair {
-                width: 120px;
-            }
-            .menu-toggle, .menu-sair-toggle {
-                font-size: 25px;
             }
         }
     </style>
@@ -211,14 +189,20 @@
 
     <!-- Menu Lateral -->
     <div class="menu">
+        <a href="#inicio">Início</a>
+        <a href="#modalidades">Modalidades</a>
+        <a href="#simuladores">Simuladores</a>
+        <a href="#desdobramento">Desdobramento</a>
+        <a href="#analise-estatistica">Análise Estatística</a>
+        <a href="#planilhas">Planilhas</a>
+        <a href="#subnois">Subnóis</a>
+    </div>
+
+    <!-- Menu Pequeno -->
+    <div class="menu-pequeno">
         <a href="#perfil">Perfil de Usuário</a>
         <a href="#dashboard">Dashboard</a>
         <a href="#batepapo">Bate-Papo</a>
-    </div>
-
-    <!-- Menu Sair -->
-    <div class="menu-sair">
-        <a href="login.html">Sair</a>
     </div>
 
     <!-- Capa -->
@@ -228,7 +212,7 @@
     <div class="principal">
         <div class="conteudo">
             <h1 class="titulo">Seja Bem-vindo à Plataforma!</h1>
-            <p class="descricao">Esta é a descrição da plataforma, onde você pode acessar todos os serviços e recursos relacionados à loteria. Aproveite nossa ferramenta para maximizar suas chances de sucesso!</p>
+            <p class="descricao">Aqui você pode acessar todos os serviços e recursos relacionados à loteria. Explore as modalidades, utilize simuladores e aproveite nossas ferramentas para maximizar suas chances de sucesso!</p>
         </div>
     </div>
 
@@ -239,22 +223,20 @@
 
     <!-- Script para o funcionamento dos menus -->
     <script>
-        // Função para abrir e fechar o menu lateral
         function toggleMenu() {
             const menu = document.querySelector('.menu');
             menu.classList.toggle('open');
         }
 
-        // Função para abrir e fechar o menu de sair
         function toggleSairMenu() {
-            const menuSair = document.querySelector('.menu-sair');
+            const menuSair = document.querySelector('.menu-pequeno');
             menuSair.classList.toggle('open');
         }
 
         // Fechar o menu se clicar fora
         document.body.addEventListener('click', function(event) {
             const menu = document.querySelector('.menu');
-            const menuSair = document.querySelector('.menu-sair');
+            const menuSair = document.querySelector('.menu-pequeno');
             if (!menu.contains(event.target) && !document.querySelector('.menu-toggle').contains(event.target)) {
                 menu.classList.remove('open');
             }

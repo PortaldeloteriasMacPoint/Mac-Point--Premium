@@ -6,9 +6,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portal Premium - Mac Point</title>
-  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js"></script>
+  <!-- Incluindo a biblioteca do Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+  
   <style>
     /* Estilos gerais do site */
     body {
@@ -17,14 +19,6 @@
       color: white;
       margin: 0;
       padding: 0;
-    }
-
-    /* Imagem de fundo */
-    body {
-      background-image: url('background.jpg'); /* Imagem de fundo do site */
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
     }
 
     /* Menu lateral */
@@ -104,88 +98,6 @@
       color: #66ff66;
     }
 
-    /* Capa do site */
-    .capa {
-      text-align: center;
-      padding: 50px;
-      background-color: rgba(0, 0, 0, 0.5); /* Fundo escuro transparente */
-      border-bottom: 2px solid #66ff66; /* Borda verde claro */
-    }
-
-    .capa img {
-      width: 100%;
-      height: auto;
-      max-height: 300px;
-      object-fit: cover;
-    }
-
-    .titulo {
-      color: white;
-      font-size: 36px;
-      text-shadow: 2px 2px 5px #66ff66;
-    }
-
-    .descricao {
-      color: white;
-      font-size: 18px;
-      text-shadow: 1px 1px 3px #66ff66;
-    }
-
-    /* Seção adicional */
-    .fundo-adicional {
-      text-align: center;
-      padding: 20px;
-      background-color: #333333;
-    }
-
-    .fundo-adicional img {
-      width: 80%;
-      max-width: 600px;
-      height: auto;
-    }
-
-    /* Rodapé */
-    footer {
-      background-color: #000000;
-      color: white;
-      padding: 10px 0;
-      text-align: center;
-    }
-
-    /* Estilos para o formulário de login e cadastro */
-    .form-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 80vh;
-      flex-direction: column;
-    }
-
-    input[type="text"], input[type="password"] {
-      background-color: #000000;
-      color: white;
-      border: 2px solid #66ff66;
-      padding: 10px;
-      margin: 10px;
-      width: 300px;
-      text-align: center;
-      border-radius: 5px; /* Bordas arredondadas */
-    }
-
-    input[type="submit"] {
-      background-color: #004d00;
-      color: white;
-      border: none;
-      padding: 15px 20px;
-      cursor: pointer;
-      width: 320px;
-      border-radius: 5px; /* Bordas arredondadas */
-    }
-
-    input[type="submit"]:hover {
-      background-color: #003300;
-    }
-
   </style>
 </head>
 <body>
@@ -202,30 +114,15 @@
       <li><a href="girador-jogos.html">Girador de Jogos</a></li>
       <li><a href="tabelas.html">Tabelas</a></li>
       <li><a href="sobre-nos.html">Sobre Nós</a></li>
-      <li><a href="login.html">Sair</a></li>
+      <li><a href="login.html" onclick="logout()">Sair</a></li>
     </ul>
   </div>
 
   <!-- Botão do menu hambúrguer -->
   <button id="menuToggle">☰</button>
 
-  <!-- Capa -->
-  <header class="capa">
-    <img id="capaImage" src="capa.jpg" alt="Capa do site">
-    <h1 class="titulo">Bem-vindo ao Portal Premium - Mac Point</h1>
-    <p class="descricao">A melhor plataforma para estratégias e análises de loterias.</p>
-  </header>
-
-  <!-- Fundo adicional -->
-  <section class="fundo-adicional">
-    <p>Adicione aqui mais informações ou imagens relacionadas à plataforma.</p>
-    <img src="adicional.jpg" alt="Imagem adicional">
-  </section>
-
-  <!-- Rodapé -->
-  <footer>
-    <p>© 2025 Portal Premium - Mac Point. Todos os direitos reservados.</p>
-  </footer>
+  <!-- Mensagem de boas-vindas com nome do usuário -->
+  <div id="welcomeMessage"></div>
 
   <script>
     // Configuração do Firebase
@@ -241,18 +138,50 @@
     // Inicializando o Firebase
     const app = firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
+    const firestore = firebase.firestore();
 
-    // Função para abrir/fechar o menu
+    // Abertura e fechamento do menu
     const menuToggle = document.getElementById('menuToggle');
     const menu = document.getElementById('menu');
     const closeMenu = document.getElementById('closeMenu');
 
     menuToggle.addEventListener('click', () => {
-      menu.classList.toggle('open'); // Alterna a classe open
+      menu.classList.toggle('open');
     });
 
     closeMenu.addEventListener('click', () => {
-      menu.classList.remove('open'); // Fecha o menu
+      menu.classList.remove('open');
+    });
+
+    // Função de logout
+    function logout() {
+      auth.signOut().then(() => {
+        window.location.href = 'login.html'; // Redireciona para a página de login
+      }).catch((error) => {
+        console.error("Erro ao deslogar: ", error);
+      });
+    }
+
+    // Verifica se o usuário está autenticado e com acesso permitido
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        // Verificar se o usuário tem acesso (status ativo no Firestore)
+        const userRef = firestore.collection('users').doc(user.uid);
+        userRef.get().then(doc => {
+          if (doc.exists && doc.data().subscriptionActive) {
+            // Exibir nome do usuário
+            document.getElementById('welcomeMessage').innerText = `Bem-vindo, ${doc.data().name}`;
+          } else {
+            // Redirecionar para a página de pagamento se o usuário não tiver acesso
+            window.location.href = 'pagamento.html';
+          }
+        }).catch(error => {
+          console.error("Erro ao verificar o status do usuário: ", error);
+        });
+      } else {
+        // Redirecionar para a página de login se o usuário não estiver autenticado
+        window.location.href = 'login.html';
+      }
     });
   </script>
 </body>

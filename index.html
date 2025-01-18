@@ -8,185 +8,155 @@
     <title>Portal de Loterias Mac Point</title>
     <style>
         body {
-            background-color: black;
-            color: white;
             font-family: Arial, sans-serif;
-            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-image: url('URL_DA_IMAGEM_DE_FUNDO');
+            background-size: cover;
+            color: white;
         }
-        .capa {
-            width: 100%;
+        header {
             height: 300px;
-            background: url('sua-imagem.jpg') no-repeat center center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-image: url('URL_DA_CAPA');
             background-size: cover;
         }
         .titulo {
-            background-color: #006400;
-            border: 2px solid #32CD32;
-            padding: 20px;
-            margin: 20px auto;
-            display: inline-block;
-            color: white;
-            font-size: 2em;
-            box-shadow: 0 0 10px #32CD32;
+            font-size: 3em;
+            color: yellow;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
-        .descricao, .beneficios {
-            background-color: #006400;
-            border: 2px solid #32CD32;
+        .quadro {
+            background-color: #8B5A2B; /* Bege Escuro */
+            border: 2px solid #F5DEB3; /* Bege Claro */
             padding: 20px;
-            margin: 20px auto;
-            max-width: 800px;
+            margin: 20px;
+            text-align: center;
+        }
+        .galeria-imagens {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px;
+        }
+        .seta {
+            background-color: transparent;
+            border: none;
+            font-size: 2em;
+            cursor: pointer;
+            color: white;
         }
         .planos {
-            background-color: black;
-            border: 2px solid #32CD32;
-            padding: 20px;
-            margin: 20px auto;
-            max-width: 800px;
-            animation: pulse 1s infinite;
-        }
-        .planos h3 {
-            margin-bottom: 10px;
-            color: white;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
         }
         .plano {
-            background-color: black;
-            border: 1px solid #32CD32;
-            padding: 15px;
-            margin: 10px 0;
-            color: white;
-            animation: pulse 1s infinite;
+            background-color: #8B5A2B; /* Bege Escuro */
+            border: 2px solid #F5DEB3; /* Bege Claro */
+            padding: 20px;
+            text-align: center;
         }
-        .desconto {
+        .preco-antigo {
+            text-decoration: line-through;
+            color: white;
+        }
+        .preco-promocional {
             color: yellow;
-            font-size: 1.5em;
-            font-weight: bold;
-            animation: pulse 1s infinite;
         }
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-            100% {
-                transform: scale(1);
-            }
-        }
-        .botao {
+        .botao-plano {
             background-color: orange;
-            color: white;
-            padding: 10px 20px;
+            color: black;
+            padding: 10px;
             border: none;
-            border-radius: 5px;
             cursor: pointer;
-            transition: box-shadow 0.3s ease-in-out;
-            animation: pulse 1s infinite;
+            transition: transform 0.3s, box-shadow 0.3s;
         }
-        .botao:hover {
-            box-shadow: 0 0 20px orange;
+        .botao-plano:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
-        .botao:active {
-            box-shadow: 0 0 5px orange;
+        .avaliacoes {
+            text-align: center;
         }
         .botao-cadastro {
+            display: block;
+            margin: 20px auto;
+            padding: 10px;
             background-color: orange;
-            color: white;
-            padding: 15px 30px;
+            color: black;
             border: none;
-            border-radius: 5px;
-            margin: 20px;
             cursor: pointer;
-            transition: box-shadow 0.3s ease-in-out;
-            animation: pulse 1s infinite;
+            transition: transform 0.3s, box-shadow 0.3s;
         }
         .botao-cadastro:hover {
-            box-shadow: 0 0 20px orange;
-        }
-        .estrelas {
-            font-size: 3em;
-            color: #ccc;
-            cursor: pointer;
-        }
-        .estrelas span:hover,
-        .estrelas span:hover ~ span {
-            color: gold;
-        }
-        .votos {
-            margin-top: 10px;
-            font-size: 1.2em;
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
     </style>
 </head>
 <body>
+    <header>
+        <h1 class="titulo">Portal de Loterias Mac Point</h1>
+    </header>
 
-    <div class="capa"></div>
+    <section class="quadro">
+        <h2>Explicação</h2>
+        <p>Como funciona o sistema dos planos...</p>
+    </section>
 
-    <div class="titulo">
-        Portal de Loterias Markpoint
-    </div>
+    <section class="galeria-imagens">
+        <button class="seta" id="seta-esquerda">&#8592;</button>
+        <img src="URL_DA_IMAGEM_1" alt="Imagem" id="imagem-atual">
+        <button class="seta" id="seta-direita">&#8594;</button>
+    </section>
 
-    <div class="descricao">
-        <p>Explicação sobre como funcionam os planos.</p>
-    </div>
-
-    <div class="planos">
-        <h3>Planos Disponíveis</h3>
-        <div class="plano">
-            <p>Plano Mensal: R$29,90 <span class="desconto">R$19,90</span></p>
-            <button class="botao" onclick="window.location.href='mensal.html'">Acesso Limitado</button>
-        </div>
-        <div class="plano">
-            <p>Plano Trimestral: R$89,70 <span class="desconto">R$67,30</span></p>
-            <button class="botao" onclick="window.location.href='trimestral.html'">Acesso Limitado</button>
-        </div>
-        <div class="plano">
-            <p>Plano Anual: R$358,80 <span class="desconto">R$179,40</span></p>
-            <button class="botao" onclick="window.location.href='anual.html'">Acesso Limitado</button>
-        </div>
-    </div>
-
-    <div class="beneficios">
-        <h2>Por que se tornar <strong>PREMIUM</strong></h2>
+    <section class="quadro">
+        <h2><strong>Por que se tornar Premium?</strong></h2>
+        <p>Incentive-se a assinar a plataforma e aproveite as vantagens exclusivas, como:</p>
         <ul>
-            <li>Acesso exclusivo a dicas de especialistas.</li>
-            <li>Participação em sorteios semanais.</li>
-            <li>Descontos em serviços e produtos parceiros.</li>
+            <li>Acesso a simuladores avançados de loterias.</li>
+            <li>Estatísticas detalhadas para melhorar suas chances de ganhar.</li>
+            <li>Comunidade exclusiva de usuários para trocar estratégias.</li>
         </ul>
-    </div>
+    </section>
 
-    <div class="galeria">
-        <img src="imagem1.jpg" alt="Imagem 1">
-        <img src="imagem2.jpg" alt="Imagem 2">
-        <img src="imagem3.jpg" alt="Imagem 3">
-    </div>
-
-    <div class="avaliacao">
-        <p>Vote nas estrelas:</p>
-        <div class="estrelas" onclick="votarEstrelas(event)">
-            <span>&#9733;</span>
-            <span>&#9733;</span>
-            <span>&#9733;</span>
-            <span>&#9733;</span>
-            <span>&#9733;</span>
+    <section class="planos">
+        <div class="plano">
+            <h3>Plano Mensal</h3>
+            <p>De <span class="preco-antigo">R$29,90</span> por <span class="preco-promocional">R$19,90</span></p>
+            <button class="botao-plano" onclick="window.location.href='LINK_DO_PLANO_MENSAL'">Acesso Ilimitado</button>
         </div>
-        <div class="votos" id="media-votos">Média de votos: 0.0</div>
-    </div>
+        <!-- Adicione os outros planos aqui -->
+    </section>
 
-    <button class="botao-cadastro" onclick="window.location.href='cadastro.html'">Ir para o Cadastro</button>
+    <section class="avaliacoes">
+        <h3>Avalie nosso serviço</h3>
+        <div class="estrelas">
+            <!-- Estrelas para avaliação -->
+        </div>
+        <p>Percentual de aprovação: <span id="percentual-aprovacao">0%</span></p>
+    </section>
+
+    <button class="botao-cadastro" onclick="window.location.href='cadastro.html'">Ir para Cadastro</button>
 
     <script>
-        function votarEstrelas(event) {
-            let estrelas = document.querySelectorAll('.estrelas span');
-            let index = Array.from(estrelas).indexOf(event.target);
-            estrelas.forEach((estrela, i) => {
-                estrela.style.color = i <= index ? 'gold' : '#ccc';
-            });
-            let media = (index + 1).toFixed(1);
-            document.getElementById('media-votos').textContent = `Média de votos: ${media}`;
-        }
-    </script>
+        const imagens = ['URL_DA_IMAGEM_1', 'URL_DA_IMAGEM_2', 'URL_DA_IMAGEM_3']; // Adicione mais URLs de imagens conforme necessário
+        let imagemAtualIndex = 0;
 
+        document.getElementById('seta-esquerda').addEventListener('click', () => {
+            imagemAtualIndex = (imagemAtualIndex - 1 + imagens.length) % imagens.length;
+            document.getElementById('imagem-atual').src = imagens[imagemAtualIndex];
+        });
+
+        document.getElementById('seta-direita').addEventListener('click', () => {
+            imagemAtualIndex = (imagemAtualIndex + 1) % imagens.length;
+            document.getElementById('imagem-atual').src = imagens[imagemAtualIndex];
+        });
+    </script>
 </body>
 </html>
 

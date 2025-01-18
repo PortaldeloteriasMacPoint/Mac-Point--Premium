@@ -1,196 +1,200 @@
-
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PORTAL DE LOTERIAS MAC POINT</title>
+    <title>Portal de Loterias Mac Point Premium</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-image: url('Captura de tela_20250118-130351-1.jpg');
+            background-image: url('Screenshot_20250118-130351-1.jpg');
             background-size: cover;
             background-position: center;
-            color: white ;
+            color: white;
             text-align: center;
         }
-        header {
-            height: 300px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-image: url('Screenshot_20250112-173043-1.jpg');
-            background-size: cover;
-            background-position: center;
+        .capa {
+            width: 100%;
+            height: auto;
         }
-        
         .titulo {
-            font-size: 4em;
+            font-size: 3em;
             color: yellow;
-            animation: pulse 3s infinite;
+            animation: pulse 1s infinite;
+            background-color: black;
+            padding: 20px;
+            margin-bottom: 20px;
         }
         @keyframes pulse {
             0% { transform: scale(1); }
-            60% { transform: scale(1.05); }
+            50% { transform: scale(1.05); }
             100% { transform: scale(1); }
         }
-        .quadro-verde {
-            background-color: #004d00; /* Verde Escuro */
-            border: 2px solid #00cc00; /* Verde Claro */
-            padding: 40px;
-            margin: 40px auto;
-            max-width: 800px;
-        }
-        .quadro-apresentacao {
-            background-color: #004d00; /* Verde Escuro */
+        .quadro {
+            background-color: #006400;
+            color: white;
+            border: 3px solid #00FF00;
+            border-radius: 10px;
             padding: 20px;
             margin: 20px auto;
-            max-width: 800px;
-        }
-        .galeria-imagens {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 20px;
-        }
-        .seta {
-            background-color: transparent;
-            border: none;
-            font-size: 4em;
-            cursor: pointer;
-            color: yellow;
-        }
-        .planos {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            flex-wrap: wrap;
+            max-width: 600px;
         }
         .plano {
-            background-color: #004d00; /* Verde Escuro */
-            border: 2px solid #00cc00; /* Verde Claro */
-            padding: 40px;
-            text-align: center;
-            margin: 20px;
+            font-size: 1.2em;
+            margin-bottom: 15px;
         }
-        .preco-antigo {
-            text-decoration: line-through;
-            color: white;
-        }
-        .preco-promocional {
+        .valor {
             color: yellow;
         }
-        .botao-plano {
+        .botao {
             background-color: orange;
             color: black;
-            padding: 10px;
+            padding: 10px 20px;
             border: none;
+            border-radius: 15px;
             cursor: pointer;
             animation: pulse 1s infinite;
-            transition: transform 0.3s, box-shadow 0.3s;
         }
-        .botao-plano:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        .botao:hover {
+            background-color: darkorange;
         }
-        .avaliacoes {
-            text-align: center;
-        }
-        .botao-cadastro {
-            display: block;
+        .imagens {
+            position: relative;
+            max-width: 600px;
             margin: 20px auto;
-            padding: 60px;
-            background-color: orange;
+            border: 2px solid #00FF00;
+            background-color: black;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .imagens img {
+            width: 100%;
+            height: auto;
+            display: none;
+        }
+        .imagens img.active {
+            display: block;
+        }
+        .seta {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(255, 255, 255, 0.5);
             color: black;
-            border: none;
+            font-size: 2em;
+            padding: 10px;
             cursor: pointer;
-            animation: pulse 3s infinite;
+            border-radius: 50%;
+            user-select: none;
         }
-        .quadro-vantagens {
-            background-color: #004d00; /* Verde Escuro */
-            border: 2px solid #00cc00; /* Verde Claro */
-            padding: 40px;
-            margin: 40px auto;
-            max-width: 800px;
+        .seta.esquerda {
+            left: 10px;
         }
-        @media (max-width: 768px) {
-            .planos {
-                flex-direction: column;
-                align-items: center;
-            }
+        .seta.direita {
+            right: 10px;
+        }
+        .seta:hover {
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+        .quadro-premium {
+            background-color: #006400;
+            color: white;
+            border: 3px solid #00FF00;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 600px;
+        }
+        .quadro-premium h2 {
+            color: yellow;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .quadro-premium p {
+            color: white;
+            font-size: 1.1em;
+            line-height: 1.5;
+        }
+        .estrelas {
+            margin: 15px 0;
+        }
+        .estrelas span {
+            font-size: 2em;
+            cursor: pointer;
+        }
+        .estrelas span:hover,
+        .estrelas span:hover ~ span {
+            color: gold;
         }
     </style>
 </head>
 <body>
-    <header></header>
+    <!-- Imagem de Capa -->
+    <img src="Screenshot_20250112-173043-1.jpg" alt="Capa" class="capa">
 
-    <h1 class="titulo">PORTAL DE LOTERIAS MAC POINT </h1>
+    <h1 class="titulo">Portal de Loterias Mac Point Premium</h1>
 
-    <section class="quadro-apresentacao">
+    <!-- Seção de Apresentação -->
+    <div class="quadro">
         <h2>Apresentação da Plataforma</h2>
-        <p>Bem-vindo ao Portal de Loterias Mac Point, sua ferramenta definitiva para maximizar suas chances nas loterias.</p>
-    </section>
+        <p>Nossa plataforma oferece diversas vantagens para os entusiastas de loterias...</p>
+    </div>
 
-    <section class="galeria-imagens">
-        <button class="seta" id="seta-esquerda">&#8592;</button>
-        <img src="URL_DA_IMAGEM_1" alt="Imagem" id="imagem-atual" style="max-width: 80%;">
-        <button class="seta" id="seta-direita">&#8594;</button>
-    </section>
+    <!-- Seção das Imagens -->
+    <div class="imagens">
+        <div class="seta esquerda" onclick="mudarImagem(-1)">&#10094;</div>
+        <img src="URL_DA_IMAGEM1" class="active">
+        <img src="URL_DA_IMAGEM2">
+        <img src="URL_DA_IMAGEM3">
+        <div class="seta direita" onclick="mudarImagem(1)">&#10095;</div>
+    </div>
 
-    <section class="planos">
-        <div class="plano">
-            <h3>Plano Mensal</h3>
-            <p>De <span class="preco-antigo">R$29,90</span> por <span class="preco-promocional">R$19,90</span></p>
-            <button class="botao-plano" onclick="window.location.href='LINK_DO_PLANO_MENSAL'">Acesso Ilimitado</button>
-        </div>
-        <div class="plano">
-            <h3>Plano Trimestral</h3>
-            <p>De <span class="preco-antigo">R$79,90</span> por <span class="preco-promocional">R$59,90</span></p>
-            <button class="botao-plano" onclick="window.location.href='LINK_DO_PLANO_TRIMESTRAL'">Acesso Ilimitado</button>
-        </div>
-        <div class="plano">
-            <h3>Plano Anual</h3>
-            <p>De <span class="preco-antigo">R$299,90</span> por <span class="preco-promocional">R$199,90</span></p>
-            <button class="botao-plano" onclick="window.location.href='LINK_DO_PLANO_ANUAL'">Acesso Ilimitado</button>
-        </div>
-    </section>
+    <!-- Seção dos Planos -->
+    <div class="quadro">
+        <h2>Plano Mensal</h2>
+        <p class="plano">De <span class="valor">R$29,90</span> por <span class="valor">R$19,90</span></p>
+        <button class="botao" onclick="window.location.href='URL_DO_LINK'">Acesso Ilimitado</button>
+    </div>
+    <div class="quadro">
+        <h2>Plano Trimestral</h2>
+        <p class="plano">De <span class="valor">R$89,70</span> por <span class="valor">R$59,70</span></p>
+        <button class="botao" onclick="window.location.href='URL_DO_LINK'">Acesso Ilimitado</button>
+    </div>
+    <div class="quadro">
+        <h2>Plano Anual</h2>
+        <p class="plano">De <span class="valor">R$358,80</span> por <span class="valor">R$239,40</span></p>
+        <button class="botao" onclick="window.location.href='URL_DO_LINK'">Acesso Ilimitado</button>
+    </div>
 
-    <section class="quadro-vantagens">
-        <h2><strong style="color: yellow;">Por que se tornar Premium?</strong></h2>
+    <!-- Seção de Benefícios -->
+    <div class="quadro-premium">
+        <h2>Por que se tornar Premium?</h2>
+        <p>Ao se tornar Premium, você terá acesso a:</p>
         <ul>
-            <li>Simuladores avançados de loterias.</li>
-            <li>Estatísticas detalhadas para melhorar suas chances.</li>
-            <li>Comunidade exclusiva para troca de estratégias.</li>
+            <li>Acesso exclusivo a análises detalhadas</li>
+            <li>Ferramentas avançadas para simulações</li>
+            <li>Relatórios personalizados</li>
+            <li>Suporte especializado</li>
         </ul>
-    </section>
-
-    <section class="avaliacoes">
-        <h3>Avalie nosso serviço</h3>
+        <!-- Estrelas de Avaliação -->
         <div class="estrelas">
-            <!-- Estrelas para avaliação -->
+            <span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span>
+            <p>Média de Votações: 4.5</p>
         </div>
-        <p>Percentual de aprovação: <span id="percentual-aprovacao">0%</span></p>
-    </section>
-
-    <button class="botao-cadastro" onclick="window.location.href='cadastro.html'">Ir para Cadastro</button>
+        <button class="botao" style="font-size: 1.5em; margin-top: 20px;" onclick="window.location.href='cadastro.html'">IR PARA CADASTRO</button>
+    </div>
 
     <script>
-        const imagens = ['URL_DA_IMAGEM_1', 'URL_DA_IMAGEM_2', 'URL_DA_IMAGEM_3']; // Adicione URLs de imagens conforme necessário
-        let imagemAtualIndex = 0;
+        let indiceImagem = 0;
+        const imagens = document.querySelectorAll('.imagens img');
 
-        document.getElementById('seta-esquerda').addEventListener('click', () => {
-            imagemAtualIndex = (imagemAtualIndex - 1 + imagens.length) % imagens.length;
-            document.getElementById('imagem-atual').src = imagens[imagemAtualIndex];
-        });
-
-        document.getElementById('seta-direita').addEventListener('click', () => {
-            imagemAtualIndex = (imagemAtualIndex + 1) % imagens.length;
-            document.getElementById('imagem-atual').src = imagens[imagemAtualIndex];
-        });
+        function mudarImagem(direcao) {
+            imagens[indiceImagem].classList.remove('active');
+            indiceImagem = (indiceImagem + direcao + imagens.length) % imagens.length;
+            imagens[indiceImagem].classList.add('active');
+        }
     </script>
 </body>
 </html>
-

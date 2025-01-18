@@ -1,55 +1,269 @@
-
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portal de Loterias - Página Inicial</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #000;
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    .container {
-      text-align: center;
-    }
-    h1 {
-      color: lightgreen;
-    }
-    button {
-      background-color: darkgreen;
-      color: white;
-      border: 2px solid lightgreen;
-      padding: 15px 30px;
-      font-size: 1.2em;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: all 0.3s ease-in-out;
-    }
-    button:hover {
-      background-color: lightgreen;
-      color: black;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ponto Adulterio Market Punch</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: white;
+        }
+
+        .capa {
+            background: url('sua-imagem-de-capa.jpg') no-repeat center center;
+            background-size: cover;
+            height: 350px;
+            margin-top: 50px;
+        }
+
+        .titulo {
+            text-align: center;
+            font-size: 3em;
+            color: white;
+            background-color: black;
+            padding: 20px;
+            border: 3px solid #00FF00;
+            margin: 20px;
+            font-weight: bold;
+        }
+
+        .descricao {
+            text-align: center;
+            font-size: 1.2em;
+            margin: 20px;
+            color: #D3D3D3;
+        }
+
+        .quadro {
+            background-color: #1e2d24;
+            border: 2px solid #32CD32;
+            padding: 20px;
+            margin: 20px;
+            text-align: center;
+        }
+
+        .quadro h3 {
+            font-size: 2em;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .quadro p {
+            color: #ddd;
+            font-size: 1.2em;
+        }
+
+        .planos {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px;
+        }
+
+        .plano {
+            background-color: #1e2d24;
+            border: 2px solid #32CD32;
+            padding: 30px;
+            width: 30%;
+            text-align: center;
+            margin: 10px;
+        }
+
+        .plano h4 {
+            font-size: 2.5em;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .preco {
+            font-size: 2em;
+            font-weight: bold;
+            color: #FF4500;
+            margin: 15px 0;
+        }
+
+        .desconto {
+            font-size: 1.5em;
+            color: #32CD32;
+            margin: 10px 0;
+        }
+
+        .botao {
+            background-color: #FF4500;
+            color: white;
+            font-size: 1.5em;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .botao:hover {
+            background-color: #32CD32;
+            color: black;
+        }
+
+        .botao:active {
+            background-color: green;
+        }
+
+        .avaliacao {
+            display: flex;
+            justify-content: center;
+            margin: 20px;
+        }
+
+        .avaliacao button {
+            font-size: 2em;
+            color: #FFD700;
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+
+        .avaliacao button:hover {
+            color: #FF6347;
+        }
+
+        .carrossel {
+            display: flex;
+            overflow-x: auto;
+            margin: 20px;
+        }
+
+        .carrossel img {
+            width: 300px;
+            margin: 0 10px;
+            border-radius: 10px;
+        }
+
+        .carrossel button {
+            background-color: #1e2d24;
+            color: white;
+            border: none;
+            font-size: 2em;
+            cursor: pointer;
+            padding: 10px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+        }
+
+        .carrossel button.left {
+            left: 0;
+        }
+
+        .carrossel button.right {
+            right: 0;
+        }
+
+        .botao-cadastro {
+            background-color: #32CD32;
+            color: white;
+            padding: 20px 30px;
+            font-size: 1.5em;
+            display: block;
+            width: 100%;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 30px;
+        }
+
+        .botao-cadastro:hover {
+            background-color: #228B22;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Bem-vindo ao Portal de Loterias</h1>
-    <p>Clique no botão abaixo para acessar a página de cadastro.</p>
-    <button onclick="irParaCadastro()">Ir para Cadastro</button>
-  </div>
-  <script>
-    function irParaCadastro() {
-      window.location.href = "cadastro.html";
-    }
-  </script>
+
+    <div class="capa"></div>
+
+    <div class="titulo">Ponto Adulterio Market Punch</div>
+
+    <div class="descricao">
+        <p>Descubra como a nossa plataforma pode transformar a sua experiência no mercado! Acesse conteúdos exclusivos, descontos incríveis e muito mais!</p>
+    </div>
+
+    <div class="quadro">
+        <h3>Como Funciona</h3>
+        <p>A plataforma Ponto Adulterio Market Punch oferece acesso exclusivo a conteúdos de alta qualidade. Ao se tornar premium, você desbloqueia planos com preços especiais e acesso a recursos exclusivos!</p>
+    </div>
+
+    <div class="planos">
+        <div class="plano">
+            <h4>Plano Mensal</h4>
+            <div class="preco">R$19,90</div>
+            <div class="desconto">De R$29,90 por R$19,90</div>
+            <a href="#" class="botao">Ilimitado</a>
+        </div>
+        <div class="plano">
+            <h4>Plano Premium Mensal</h4>
+            <div class="preco">R$14,92</div>
+            <div class="desconto">Desconto de 25%</div>
+            <a href="#" class="botao">Ilimitado</a>
+        </div>
+        <div class="plano">
+            <h4>Plano Premium Anual</h4>
+            <div class="preco">R$119,40</div>
+            <div class="desconto">Desconto de 50%</div>
+            <a href="#" class="botao">Ilimitado</a>
+        </div>
+    </div>
+
+    <div class="quadro">
+        <h3>Por Que se Tornar Premium?</h3>
+        <p>Vantagens:</p>
+        <ul>
+            <li>Conteúdo exclusivo</li>
+            <li>Descontos especiais</li>
+            <li>Acesso ilimitado a todos os materiais</li>
+            <li>Suporte prioritário</li>
+        </ul>
+    </div>
+
+    <div class="avaliacao">
+        <button>⭐</button>
+        <button>⭐</button>
+        <button>⭐</button>
+        <button>⭐</button>
+        <button>⭐</button>
+    </div>
+
+    <div class="carrossel">
+        <button class="left">❮</button>
+        <img src="imagem1.jpg" alt="Imagem 1">
+        <img src="imagem2.jpg" alt="Imagem 2">
+        <img src="imagem3.jpg" alt="Imagem 3">
+        <button class="right">❯</button>
+    </div>
+
+    <a href="cadastro.html" class="botao-cadastro">Ir para o Cadastro</a>
+
+    <script>
+        const leftBtn = document.querySelector('.carrossel .left');
+        const rightBtn = document.querySelector('.carrossel .right');
+        const carrossel = document.querySelector('.carrossel');
+
+        leftBtn.addEventListener('click', () => {
+            carrossel.scrollBy({
+                left: -300,
+                behavior: 'smooth'
+            });
+        });
+
+        rightBtn.addEventListener('click', () => {
+            carrossel.scrollBy({
+                left: 300,
+                behavior: 'smooth'
+            });
+        });
+    </script>
 </body>
 </html>
 

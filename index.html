@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal de Loterias Mac Point</title>
+    <title>Portal de Loterias Markpoint</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,28 +13,41 @@
             padding: 0;
             background-image: url('URL_DA_IMAGEM_DE_FUNDO');
             background-size: cover;
+            background-position: center;
             color: white;
+            text-align: center;
         }
         header {
             height: 300px;
             display: flex;
             justify-content: center;
             align-items: center;
-            text-align: center;
             background-image: url('URL_DA_CAPA');
             background-size: cover;
+            background-position: center;
         }
         .titulo {
             font-size: 3em;
             color: yellow;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            animation: pulse 1s infinite;
         }
-        .quadro {
-            background-color: #8B5A2B; /* Bege Escuro */
-            border: 2px solid #F5DEB3; /* Bege Claro */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .quadro-verde {
+            background-color: #004d00; /* Verde Escuro */
+            border: 2px solid #00cc00; /* Verde Claro */
             padding: 20px;
-            margin: 20px;
-            text-align: center;
+            margin: 20px auto;
+            max-width: 800px;
+        }
+        .quadro-apresentacao {
+            background-color: #004d00; /* Verde Escuro */
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 800px;
         }
         .galeria-imagens {
             display: flex;
@@ -53,12 +66,14 @@
             display: flex;
             justify-content: center;
             gap: 20px;
+            flex-wrap: wrap;
         }
         .plano {
-            background-color: #8B5A2B; /* Bege Escuro */
-            border: 2px solid #F5DEB3; /* Bege Claro */
+            background-color: #004d00; /* Verde Escuro */
+            border: 2px solid #00cc00; /* Verde Claro */
             padding: 20px;
             text-align: center;
+            margin: 10px;
         }
         .preco-antigo {
             text-decoration: line-through;
@@ -73,6 +88,7 @@
             padding: 10px;
             border: none;
             cursor: pointer;
+            animation: pulse 1s infinite;
             transition: transform 0.3s, box-shadow 0.3s;
         }
         .botao-plano:hover {
@@ -90,38 +106,37 @@
             color: black;
             border: none;
             cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
+            animation: pulse 1s infinite;
         }
-        .botao-cadastro:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        .quadro-vantagens {
+            background-color: #004d00; /* Verde Escuro */
+            border: 2px solid #00cc00; /* Verde Claro */
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 800px;
+        }
+        @media (max-width: 768px) {
+            .planos {
+                flex-direction: column;
+                align-items: center;
+            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1 class="titulo">Portal de Loterias Mac Point</h1>
-    </header>
+    <header></header>
 
-    <section class="quadro">
-        <h2>Explicação</h2>
-        <p>Como funciona o sistema dos planos...</p>
+    <h1 class="titulo">Portal de Loterias Markpoint</h1>
+
+    <section class="quadro-apresentacao">
+        <h2>Apresentação da Plataforma</h2>
+        <p>Bem-vindo ao Portal de Loterias Markpoint, sua ferramenta definitiva para maximizar suas chances nas loterias.</p>
     </section>
 
     <section class="galeria-imagens">
         <button class="seta" id="seta-esquerda">&#8592;</button>
-        <img src="URL_DA_IMAGEM_1" alt="Imagem" id="imagem-atual">
+        <img src="URL_DA_IMAGEM_1" alt="Imagem" id="imagem-atual" style="max-width: 80%;">
         <button class="seta" id="seta-direita">&#8594;</button>
-    </section>
-
-    <section class="quadro">
-        <h2><strong>Por que se tornar Premium?</strong></h2>
-        <p>Incentive-se a assinar a plataforma e aproveite as vantagens exclusivas, como:</p>
-        <ul>
-            <li>Acesso a simuladores avançados de loterias.</li>
-            <li>Estatísticas detalhadas para melhorar suas chances de ganhar.</li>
-            <li>Comunidade exclusiva de usuários para trocar estratégias.</li>
-        </ul>
     </section>
 
     <section class="planos">
@@ -130,7 +145,25 @@
             <p>De <span class="preco-antigo">R$29,90</span> por <span class="preco-promocional">R$19,90</span></p>
             <button class="botao-plano" onclick="window.location.href='LINK_DO_PLANO_MENSAL'">Acesso Ilimitado</button>
         </div>
-        <!-- Adicione os outros planos aqui -->
+        <div class="plano">
+            <h3>Plano Trimestral</h3>
+            <p>De <span class="preco-antigo">R$79,90</span> por <span class="preco-promocional">R$59,90</span></p>
+            <button class="botao-plano" onclick="window.location.href='LINK_DO_PLANO_TRIMESTRAL'">Acesso Ilimitado</button>
+        </div>
+        <div class="plano">
+            <h3>Plano Anual</h3>
+            <p>De <span class="preco-antigo">R$299,90</span> por <span class="preco-promocional">R$199,90</span></p>
+            <button class="botao-plano" onclick="window.location.href='LINK_DO_PLANO_ANUAL'">Acesso Ilimitado</button>
+        </div>
+    </section>
+
+    <section class="quadro-vantagens">
+        <h2><strong style="color: yellow;">Por que se tornar Premium?</strong></h2>
+        <ul>
+            <li>Simuladores avançados de loterias.</li>
+            <li>Estatísticas detalhadas para melhorar suas chances.</li>
+            <li>Comunidade exclusiva para troca de estratégias.</li>
+        </ul>
     </section>
 
     <section class="avaliacoes">
@@ -144,7 +177,7 @@
     <button class="botao-cadastro" onclick="window.location.href='cadastro.html'">Ir para Cadastro</button>
 
     <script>
-        const imagens = ['URL_DA_IMAGEM_1', 'URL_DA_IMAGEM_2', 'URL_DA_IMAGEM_3']; // Adicione mais URLs de imagens conforme necessário
+        const imagens = ['URL_DA_IMAGEM_1', 'URL_DA_IMAGEM_2', 'URL_DA_IMAGEM_3']; // Adicione URLs de imagens conforme necessário
         let imagemAtualIndex = 0;
 
         document.getElementById('seta-esquerda').addEventListener('click', () => {

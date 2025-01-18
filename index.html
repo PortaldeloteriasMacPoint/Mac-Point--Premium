@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal de Loterias Markpoint</title>
+    <title>Portal de Loterias Mac Point</title>
     <style>
         body {
             background-color: black;
@@ -16,7 +16,7 @@
         .capa {
             width: 100%;
             height: 300px;
-            background: url('Screenshot_20250112-173043-1.jpg') no-repeat center center;
+            background: url('sua-imagem.jpg') no-repeat center center;
             background-size: cover;
         }
         .titulo {
@@ -29,7 +29,7 @@
             font-size: 2em;
             box-shadow: 0 0 10px #32CD32;
         }
-        .descricao, .beneficios, .avaliacao {
+        .descricao, .beneficios {
             background-color: #006400;
             border: 2px solid #32CD32;
             padding: 20px;
@@ -42,6 +42,7 @@
             padding: 20px;
             margin: 20px auto;
             max-width: 800px;
+            animation: pulse 1s infinite;
         }
         .planos h3 {
             margin-bottom: 10px;
@@ -53,6 +54,7 @@
             padding: 15px;
             margin: 10px 0;
             color: white;
+            animation: pulse 1s infinite;
         }
         .desconto {
             color: yellow;
@@ -65,7 +67,7 @@
                 transform: scale(1);
             }
             50% {
-                transform: scale(1.1);
+                transform: scale(1.05);
             }
             100% {
                 transform: scale(1);
@@ -79,6 +81,7 @@
             border-radius: 5px;
             cursor: pointer;
             transition: box-shadow 0.3s ease-in-out;
+            animation: pulse 1s infinite;
         }
         .botao:hover {
             box-shadow: 0 0 20px orange;
@@ -95,9 +98,23 @@
             margin: 20px;
             cursor: pointer;
             transition: box-shadow 0.3s ease-in-out;
+            animation: pulse 1s infinite;
         }
         .botao-cadastro:hover {
             box-shadow: 0 0 20px orange;
+        }
+        .estrelas {
+            font-size: 3em;
+            color: #ccc;
+            cursor: pointer;
+        }
+        .estrelas span:hover,
+        .estrelas span:hover ~ span {
+            color: gold;
+        }
+        .votos {
+            margin-top: 10px;
+            font-size: 1.2em;
         }
     </style>
 </head>
@@ -130,7 +147,12 @@
     </div>
 
     <div class="beneficios">
-        <p>Por que se tornar premium</p>
+        <h2>Por que se tornar <strong>PREMIUM</strong></h2>
+        <ul>
+            <li>Acesso exclusivo a dicas de especialistas.</li>
+            <li>Participação em sorteios semanais.</li>
+            <li>Descontos em serviços e produtos parceiros.</li>
+        </ul>
     </div>
 
     <div class="galeria">
@@ -141,16 +163,29 @@
 
     <div class="avaliacao">
         <p>Vote nas estrelas:</p>
-        <div class="estrelas">
+        <div class="estrelas" onclick="votarEstrelas(event)">
             <span>&#9733;</span>
             <span>&#9733;</span>
             <span>&#9733;</span>
             <span>&#9733;</span>
             <span>&#9733;</span>
         </div>
+        <div class="votos" id="media-votos">Média de votos: 0.0</div>
     </div>
 
     <button class="botao-cadastro" onclick="window.location.href='cadastro.html'">Ir para o Cadastro</button>
+
+    <script>
+        function votarEstrelas(event) {
+            let estrelas = document.querySelectorAll('.estrelas span');
+            let index = Array.from(estrelas).indexOf(event.target);
+            estrelas.forEach((estrela, i) => {
+                estrela.style.color = i <= index ? 'gold' : '#ccc';
+            });
+            let media = (index + 1).toFixed(1);
+            document.getElementById('media-votos').textContent = `Média de votos: ${media}`;
+        }
+    </script>
 
 </body>
 </html>

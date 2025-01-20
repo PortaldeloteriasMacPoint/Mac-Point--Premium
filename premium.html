@@ -263,57 +263,63 @@
                 logoutButton.addEventListener('click', logout);
             }
         });
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
-            authDomain: "mac-projeto-4e552.firebaseapp.com",
-            projectId: "mac-projeto-4e552",
-            storageBucket: "mac-projeto-4e552.appspot.com",
-            messagingSenderId: "537330451519",
-            appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
+const firebaseConfig = {
+            apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o", // Substitua pelo seu Firebase API Key
+            authDomain: "seu-project-id.firebaseapp.com", // Substitua pelo seu project ID
+            projectId: "seu-project-id", // Substitua pelo seu project ID
+            storageBucket: "seu-project-id.appspot.com", // Substitua pelo seu project ID
+            messagingSenderId: "seu-messagingSenderId", // Substitua pelo seu Sender ID
+            appId: "seu-app-id" // Substitua pelo seu App ID
         };
 
+        // Inicializar o Firebase
         firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
 
-        firebase.auth().onAuthStateChanged(function(user) {
+        // Função para verificar o status do usuário
+        function checkUserStatus() {
+            const user = auth.currentUser;
+
             if (user) {
-                showLoading();
-                checkUserStatus(user.uid);
-            } else {
-                window.location.href = "login.html";
-            }
-        });
+                // Usuário está logado, vamos verificar o status no Firestore
+                const userRef = db.collection("users").doc(user.uid);
 
-        function showLoading() {
-            document.getElementById("loading").style.display = "flex";
-        }
+                // Mostrar tela de carregamento
+                document.getElementById('loading').style.display = 'flex';
 
-        function hideLoading() {
-            document.getElementById("loading").style.display = "none";
-        }
+                userRef.get().then((doc) => {
+                    if (doc.exists) {
+                        const userData = doc.data();
+                        const status = userData.status;
 
-        function checkUserStatus(uid) {
-            var db = firebase.firestore();
-            db.collection("users").doc(uid).get().then((doc) => {
-                if (doc.exists) {
-                    var userData = doc.data();
-if (userData.status === "ativo" && userData.subscriptionActive === true && userData.subscriptionEndDate > new Date()) {
-                        hideLoading();
-                        document.getElementById("protected-content").style.display = "block";
+                        // Se o status não for 'ativo', redireciona para a página de bloqueado
+                        if (status !== "ativo") {
+                            window.location.href = "bloqueado.html";
+                        } else {
+                            // Se o status for 'ativo', mostra o conteúdo protegido
+                            document.getElementById('protected-content').style.display = 'block';
+                        }
                     } else {
-                        hideLoading();
+                        // Caso o documento não exista
                         window.location.href = "bloqueado.html";
                     }
-                } else {
-                    hideLoading();
+
+                    // Esconde o carregamento após verificar o status
+                    document.getElementById('loading').style.display = 'none';
+                }).catch((error) => {
+                    console.error("Erro ao verificar status: ", error);
+                    // Em caso de erro, redireciona para a página de bloqueado
                     window.location.href = "bloqueado.html";
-                }
-            }).catch((error) => {
-                console.error("Erro ao verificar status do usuário:", error);
-                hideLoading();
-                window.location.href = "bloqueado.html";
-            });
+                });
+            } else {
+                // Se o usuário não estiver logado, redireciona para a página de login
+                window.location.href = "login.html";
+            }
         }
+
+        // Verifica o status assim que a página carregar
+        window.onload = checkUserStatus;
     </script>
 </body>
 </html>

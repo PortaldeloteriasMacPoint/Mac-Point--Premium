@@ -263,7 +263,8 @@
                 logoutButton.addEventListener('click', logout);
             }
         });
-const firebaseConfig = {
+
+        const firebaseConfig = {
             apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o", // Substitua pelo seu Firebase API Key
             authDomain: "seu-project-id.firebaseapp.com", // Substitua pelo seu project ID
             projectId: "seu-project-id", // Substitua pelo seu project ID
@@ -304,23 +305,29 @@ const firebaseConfig = {
                         // Caso o documento não exista
                         window.location.href = "bloqueado.html";
                     }
-
-                    // Esconde o carregamento após verificar o status
+// Esconde o carregamento após verificar o status
                     document.getElementById('loading').style.display = 'none';
                 }).catch((error) => {
-                    console.error("Erro ao verificar status: ", error);
-                    // Em caso de erro, redireciona para a página de bloqueado
-                    window.location.href = "bloqueado.html";
+                    console.error("Erro ao buscar o status do usuário: ", error);
+                    document.getElementById('loading').style.display = 'none';
+                    window.location.href = "login.html"; // Redireciona para a página de login se ocorrer erro
                 });
             } else {
-                // Se o usuário não estiver logado, redireciona para a página de login
+                // Caso o usuário não esteja logado, redireciona para a página de login
                 window.location.href = "login.html";
             }
         }
 
-        // Verifica o status assim que a página carregar
-        window.onload = checkUserStatus;
+        // Chama a função de verificação assim que o Firebase estiver pronto
+        auth.onAuthStateChanged(function(user) {
+            if (user) {
+                checkUserStatus();
+            } else {
+                window.location.href = "login.html"; // Redireciona para a página de login
+            }
+        });
     </script>
 </body>
 </html>
 
+ 

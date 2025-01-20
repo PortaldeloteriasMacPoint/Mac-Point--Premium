@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casa dos Animais</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            background-color: #ffeb3b;
+            width: 100%;
+            padding: 20px;
+        }
+
+        header img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #333;
+        }
+
+        p {
+            color: #555;
+            font-size: 1.2rem;
+        }
+
+        .menu {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        .menu-bar {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            position: absolute;
+            top: 60px;
+            left: 0;
+            background-color: #ffeb3b;
+            width: 200px;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .menu-bar a {
+            text-decoration: none;
+            color: #333;
+            padding: 10px 0;
+            font-size: 1.5rem;
+        }
+
+        .menu-bar a:hover {
+            background-color: #fbc02d;
+        }
+
+        .menu.active + .menu-bar {
+            display: flex;
+        }
+
+        .locked-content {
+            margin-top: 50px;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            width: 80%;
+            max-width: 400px;
+            margin: 50px auto;
+        }
+
+        .locked-content p {
+            font-size: 1.5rem;
+            color: #fff;
+        }
+
+        .locked-content img {
+            margin: 20px 0;
+            width: 100px;
+            height: 100px;
+        }
+
+        body.protect-area {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+        }
+
+        body.protect-area.logged-in main {
+            display: block;
+        }
+
+        main {
+            display: none;
+            margin-top: 100px;
+            padding: 20px;
+            width: 90%;
+            max-width: 800px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="protect-area">
+
+<header>
+    <img src="https://www.pngitem.com/pimgs/m/55-554263_free-download-png-kitten-icon-transparent-png.png" alt="Gatinho" />
+    <h1>Casa dos Animais</h1>
+    <p>Descubra os melhores animais do mundo em nossa coleção!</p>
+</header>
+
+<div class="menu" onclick="toggleMenu()">🐾</div>
+
+<div class="menu-bar">
+    <a href="#">Cachorro</a>
+    <a href="#">Tatu</a>
+    <a href="#">Gato</a>
+    <a href="#">Elefante</a>
+    <a href="#">Fechar</a>
+</div>
+
+<main id="protectedContent">
+    <div class="locked-content">
+        <p><strong>Esta página está protegida!</strong></p>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Lock_icon_2.svg/1200px-Lock_icon_2.svg.png" alt="Cadeado" />
+        <p>Você precisa estar logado para acessar o conteúdo completo.</p>
+    </div>
+</main>
+
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
+
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+        authDomain: "mac-projeto-4e552.firebaseapp.com",
+        projectId: "mac-projeto-4e552",
+        storageBucket: "mac-projeto-4e552.appspot.com",
+        messagingSenderId: "537330451519",
+        appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
+    };
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    function toggleMenu() {
+        document.querySelector('.menu').classList.toggle('active');
+    }
+
+    firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+            const userRef = firebase.firestore().collection('usuarios').doc(user.uid);
+            userRef.get().then(doc => {
+                if (doc.exists && doc.data().status === 'ativo') {
+                    document.body.classList.add('logged-in');
+                    document.getElementById('protectedContent').style.display = 'none';
+                } else {
+                    alert("Você não tem acesso ao conteúdo.");
+                }
+            }).catch(err => {
+                console.error("Erro ao verificar status:", err);
+            });
+        } else {
+            alert("Você precisa estar logado para acessar este conteúdo.");
+        }
+    });
+</script>
+
+</body>
+</html>
+

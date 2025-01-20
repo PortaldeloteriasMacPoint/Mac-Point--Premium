@@ -211,6 +211,17 @@
     </div>
 
     <script>
+        // Forçar invalidar cache
+        window.addEventListener('load', function() {
+            if ('caches' in window) {
+                caches.keys().then(function(cacheNames) {
+                    cacheNames.forEach(function(cacheName) {
+                        caches.delete(cacheName);
+                    });
+                });
+            }
+        });
+
         function toggleMenu() {
             const menu = document.getElementById('menu');
             menu.classList.toggle('menu-open');
@@ -227,10 +238,18 @@
             submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
         }
 
+        // Fechar menu quando clicar em qualquer lugar fora dele
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('menu');
+            const menuToggle = document.querySelector('.menu-toggle');
+            if (!menu.contains(event.target) && !menuToggle.contains(event.target)) {
+                menu.classList.remove('menu-open');
+            }
+        });
+
         // Função para logout
         function logout() {
             firebase.auth().signOut().then(() => {
-                // Redireciona para a página de login após o logout
                 window.location.href = "login.html";
             }).catch((error) => {
                 console.error("Erro ao fazer logout: ", error);
@@ -278,24 +297,22 @@
             db.collection("users").doc(uid).get().then((doc) => {
                 if (doc.exists) {
                     var userData = doc.data();
-                    if (userData.status === "ativo" && userData.subscriptionActive === true && userData.subscriptionEndDate > new Date()) {
-                        showProtectedContent();
+if (userData.status === "ativo" && userData.subscriptionActive === true && userData.subscriptionEndDate > new Date()) {
+                        hideLoading();
+                        document.getElementById("protected-content").style.display = "block";
                     } else {
+                        hideLoading();
                         window.location.href = "bloqueado.html";
                     }
                 } else {
+                    hideLoading();
                     window.location.href = "bloqueado.html";
                 }
-                hideLoading();
             }).catch((error) => {
-                console.log("Erro ao verificar status do usuário:", error);
-                window.location.href = "bloqueado.html";
+                console.error("Erro ao verificar status do usuário:", error);
                 hideLoading();
+                window.location.href = "bloqueado.html";
             });
-        }
-
-        function showProtectedContent() {
-            document.getElementById("protected-content").style.display = "block";
         }
     </script>
 </body>

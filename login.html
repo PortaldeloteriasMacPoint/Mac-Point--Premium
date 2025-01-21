@@ -14,6 +14,9 @@
             background-color: #000;
             color: white;
             font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         .container {
@@ -21,22 +24,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-        }
-
-        .capa {
-            width: 100%;
-            max-height: 200px;
-            background-color: #222;
-            border: 3px solid #32cd32;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-
-        .capa img {
-            width: 100%;
-            height: auto;
+            flex-grow: 1;
         }
 
         .form-container {
@@ -46,7 +34,8 @@
             border-radius: 10px;
             text-align: center;
             width: 90%;
-            max-width: 400px;
+            max-width: 500px;
+            margin-bottom: 20px;
         }
 
         .form-container input {
@@ -57,6 +46,7 @@
             border-radius: 5px;
             background-color: #000;
             color: white;
+            box-sizing: border-box;
         }
 
         .form-container button {
@@ -73,6 +63,30 @@
 
         .form-container button:hover {
             background-color: #28a428;
+        }
+
+        .form-container .link {
+            color: #32cd32;
+            text-decoration: none;
+        }
+
+        .form-container .link:hover {
+            text-decoration: underline;
+        }
+
+        .capa {
+            width: 100%;
+            max-height: 250px;
+            background-color: #222;
+            border: 3px solid #32cd32;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .capa img {
+            width: 70%;
+            height: auto;
         }
 
         /* Notificação */
@@ -112,22 +126,34 @@
             }
             to {
                 opacity: 0;
+                transform: translateY(-10px);
             }
+        }
+
+        /* Rodapé */
+        footer {
+            background-color: #006400;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: relative;
+            width: 100%;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="capa">
-            <!-- Altere o caminho da imagem abaixo para a sua capa -->
-            <img src="https://via.placeholder.com/800x200" alt="Capa">
-        </div>
         <div class="form-container">
+            <div class="capa">
+                <img src="Screenshot_20250112-173043-1.jpg" alt="Capa">
+            </div>
             <h2>Login</h2>
             <form id="loginForm">
-                <input type="email" id="email" placeholder="E-mail" required>
-                <input type="password" id="password" placeholder="Senha" required>
+                <input type="email" id="email" placeholder="Digite seu e-mail" required>
+                <input type="password" id="password" placeholder="Digite sua senha" required>
+
                 <button type="submit">Entrar</button>
+                <p>Não tem cadastro? <a href="cadastro.html" class="link">Cadastre-se</a></p>
             </form>
         </div>
     </div>
@@ -135,11 +161,15 @@
     <!-- Notificação -->
     <div id="notification" style="display: none;" class="notification"></div>
 
+    <!-- Rodapé -->
+    <footer>
+        <p>© 2025 MacPoint. Todos os direitos reservados.</p>
+    </footer>
+
     <!-- Scripts Firebase -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
@@ -152,7 +182,6 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const db = getFirestore(app);
 
         function showNotification(message, isError = false) {
             const notification = document.getElementById("notification");
@@ -169,44 +198,20 @@
 
         document.getElementById("loginForm").addEventListener("submit", async (e) => {
             e.preventDefault();
-
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
 
             try {
-                const userCredential = await signInWithEmailAndPassword(auth, email, password);
-                const user = userCredential.user;
-
-                const userDoc = await getDoc(doc(db, "users", user.uid));
-
-                if (!userDoc.exists()) {
-                    showNotification("Erro: Usuário não encontrado no Firestore.", true);
-                    return;
-                }
-
-                const userData = userDoc.data();
-
-                if (!userData.subscriptionActive || new Date(userData.subscriptionEndDate.toDate()) < new Date()) {
-                    showNotification("Erro: Plano expirado ou inativo. Renove seu plano.", true);
-                    return;
-                }
-
-                showNotification("Login realizado com sucesso!");
+                await signInWithEmailAndPassword(auth, email, password);
+                showNotification("Login efetuado com sucesso!");
                 setTimeout(() => {
                     window.location.href = "premium.html";
-                }, 3000);
+                }, 4000);
             } catch (error) {
-                if (error.code === "auth/wrong-password") {
-                    showNotification("Erro: Senha incorreta.", true);
-                } else if (error.code === "auth/user-not-found") {
-                    showNotification("Erro: Usuário não encontrado.", true);
-                } else {
-                    showNotification(`Erro: ${error.message}`, true);
-                }
+                showNotification("Erro ao fazer login: " + error.message, true);
             }
         });
     </script>
 </body>
 </html>
-
 

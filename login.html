@@ -205,7 +205,7 @@
                 await signInWithEmailAndPassword(auth, email, password);
                 showNotification("Login efetuado com sucesso!");
                 setTimeout(() => {
-                    window.location.href = "premium.html";
+                    window.location.href = "paginapremium.html";
                 }, 4000);
             } catch (error) {
                 showNotification("Erro ao fazer login: " + error.message, true);

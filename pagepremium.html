@@ -1,12 +1,11 @@
+
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Conteúdo Protegido</title>
-  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore.js"></script>
+  <title>Sistema Personalizado</title>
   <style>
     body {
       margin: 0;
@@ -17,12 +16,12 @@
     }
 
     header {
-      background-color: black;
-      height: 60px;
+      background-color: #000;
+      color: white;
+      padding: 10px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 20px;
       position: fixed;
       top: 0;
       width: 100%;
@@ -66,6 +65,7 @@
       color: white;
       text-decoration: none;
       display: block;
+      cursor: pointer;
     }
 
     .submenu {
@@ -79,7 +79,7 @@
 
     .menu ul li a:hover,
     .menu ul li:hover {
-      background-color: black;
+      background-color: #005500;
     }
 
     .content {
@@ -101,6 +101,47 @@
       color: white;
     }
 
+    .logout-modal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0px 0px 10px #000000;
+      z-index: 2000;
+    }
+
+    .logout-modal button {
+      margin: 10px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .logout-modal .btn-yes {
+      background-color: #00ff00;
+      color: black;
+    }
+
+    .logout-modal .btn-yes:hover {
+      background-color: #007700;
+      color: white;
+    }
+
+    .logout-modal .btn-no {
+      background-color: #ff0000;
+      color: white;
+    }
+
+    .logout-modal .btn-no:hover {
+      background-color: #770000;
+    }
+
     footer {
       background-color: black;
       padding: 10px;
@@ -109,19 +150,34 @@
       width: 100%;
       color: white;
     }
+
+    /* Responsivo */
+    @media (max-width: 768px) {
+      .menu {
+        width: 200px;
+      }
+
+      .menu ul li {
+        padding: 10px 15px;
+      }
+
+      .content {
+        padding: 15px;
+      }
+    }
   </style>
 </head>
 <body>
   <header>
     <span class="menu-icon" onclick="toggleMenu()">☰</span>
-    <h1>Conteúdo Protegido</h1>
+    <h1>Personalizado</h1>
   </header>
 
   <div class="menu" id="menu">
     <ul>
       <li><a href="#">Início</a></li>
       <li>
-        <a href="#" onclick="toggleSubmenu('modalidades')">Modalidades</a>
+        <a onclick="toggleSubmenu('modalidades')">Modalidades ▾</a>
         <ul class="submenu" id="modalidades">
           <li><a href="#">Mega-Sena</a></li>
           <li><a href="#">Quina</a></li>
@@ -129,40 +185,32 @@
         </ul>
       </li>
       <li>
-        <a href="#" onclick="toggleSubmenu('analise')">Análise Estatística</a>
+        <a onclick="toggleSubmenu('analise')">Análise Estatística ▾</a>
         <ul class="submenu" id="analise">
           <li><a href="#">Grupo de Soma</a></li>
         </ul>
       </li>
       <li><a href="#">Planilhas</a></li>
-      <li><a href="#">Sair</a></li>
+      <li><a onclick="showLogoutModal()">Sair</a></li>
     </ul>
   </div>
 
+  <div class="logout-modal" id="logoutModal">
+    <p>Deseja realmente sair?</p>
+    <button class="btn-yes" onclick="logout()">Sim</button>
+    <button class="btn-no" onclick="closeLogoutModal()">Não</button>
+  </div>
+
   <main class="content">
-    <h2>Bem-vindo ao conteúdo protegido</h2>
-    <button class="btn-logout" onclick="logout()">Sair</button>
+    <h2>Bem-vindo ao sistema!</h2>
+    <button class="btn-logout" onclick="showLogoutModal()">Sair</button>
   </main>
 
   <footer>
-    © 2025 Sistema Protegido
+    © 2025 Sistema Personalizado
   </footer>
 
   <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
-      authDomain: "mac-projeto-4e552.firebaseapp.com",
-      projectId: "mac-projeto-4e552",
-      storageBucket: "mac-projeto-4e552.firebasestorage.app",
-      messagingSenderId: "537330451519",
-      appId: "1:537330451519:web:5a1b4c921119b5ee98e48a",
-      databaseURL: "https://mac-projeto-4e552-default-rtdb.firebaseio.com",
-    };
-
-    const app = firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
-
     const menu = document.getElementById("menu");
 
     function toggleMenu() {
@@ -174,26 +222,20 @@
       submenu.style.display = submenu.style.display === "block" ? "none" : "block";
     }
 
-    auth.onAuthStateChanged(async (user) => {
-      if (!user) {
-        window.location.href = "bloqueado.html";
-        return;
-      }
+    function showLogoutModal() {
+      document.getElementById("logoutModal").style.display = "block";
+    }
 
-      const doc = await db.collection("users").doc(user.uid).get();
-      if (!doc.exists || doc.data().status !== "ativo") {
-        window.location.href = "bloqueado.html";
-      }
-    });
+    function closeLogoutModal() {
+      document.getElementById("logoutModal").style.display = "none";
+    }
 
     function logout() {
-      if (confirm("Deseja realmente sair?")) {
-        auth.signOut().then(() => {
-          window.location.href = "login.html";
-        });
-      }
+      alert("Você saiu com sucesso!");
+      closeLogoutModal();
     }
   </script>
 </body>
 </html>
+
 

@@ -1,148 +1,94 @@
+
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PORTAL de LOTERIAS-MAC POINT</title>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+    <title>Portal de Loterias - MAC POINT</title>
     <style>
+        /* Estilos gerais */
         body {
             margin: 0;
             font-family: Arial, sans-serif;
             background-color: black;
             color: white;
-            background-image: url('sua-imagem-de-fundo.jpg');
-            background-size: cover;
-            background-position: center;
         }
+
         .header {
-position: relative;
+            padding: 20px;
             text-align: center;
-            background-color: black;
-            padding: 20px 0;
-            border-bottom: 2px solid #00ff00;
+            background-color: #333;
         }
-        .header img {
-            width: 100%;
-            height: auto;
-        }
+
         .header-title {
-            font-size: 1em;
-            font-weight: bold;
+            font-size: 2em;
             margin: 0;
-            color: yellow;
         }
-        .menu-toggle, .user-icon {
-            position: absolute;
-            top: 20px;
-            cursor: pointer;
-            color: white;
-            border: 2px solid #00ff00;
-            padding: 5px;
-            border-radius: 2px;
-   }
-        .menu-toggle {
-            left: 30px;
-        }
-        .user-icon {
-            right: 10px;
-        }
+
         .menu {
-            position: fixed;
-            top: 0;
-            left: -250px;
-            width: 250px;
-            height: 100%;
-            background-color: darkgreen;
-            transition: left 0.3s ease;
-            padding-top: 10px;
-            border-right: 2px solid #00ff00;
-            z-index: 1000;
+            background-color: #444;
+            padding: 10px;
+            list-style-type: none;
+            text-align: center;
         }
-.menu a {
-            display: block;
-            padding: 10px 20px;
+
+        .menu a {
             color: white;
             text-decoration: none;
-            border-bottom: 1px solid #444;
-            border-radius: 5px;
-            margin: 10px;
-            background-color: black;
-            border: 1px solid #00ff00;
-            text-align: center;
+            padding: 10px;
+            display: block;
         }
-        .menu a:hover {
-            background-color: green;
-        }
-        .menu-open {
-            left: 0;
-        }
+
         .submenu {
             display: none;
-            margin-left: 20px;
+            padding-left: 20px;
         }
-        .submenu a {
-            background-color: white;
-            border: 1px solid yellow;
-            color: black;
-            font-weight: 
-bold;
-            padding: 10px 20px;
-            margin: 5px 0;
-        }
-        .submenu a:hover {
-            background-color: white;
-            color: black;
-        }
-        .menu a.submenu-toggle::after {
-            content: ' ▼';
-        }
-        .user-menu {
-            position: absolute;
-            top: 50px;
-            right: 20px;
-            width: 100px;
-            background-color: black;
-            border: 1px solid yellow;
-            display: none;
-            text-align: center;
- z-index: 1000;
-        }
-        .user-menu a {
-            display: block;
-            padding: 10px;
-            color: white;
-            text-decoration: none;
-        }
-        .quadro {
-            background-color: #006400;
-            border: 2px solid #00ff00;
-            color: white;
-            padding: 20px;
-            width: 300px;
-            margin: 50px auto;
-            text-align: center;
-            border-radius: 10px;
-        }
+
         .footer {
-            background-color: #013220;
+            background-color: #333;
             text-align: center;
-            padding: 10px 0;
-            border-top: 2px 
+            padding: 10px;
+            position: fixed;
             bottom: 0;
-            z-index: 999;
+            width: 100%;
         }
-        #protected-content {
+
+        /* Conteúdo protegido */
+        .protected-content {
             display: none;
+            padding: 20px;
+            background-color: #555;
+            margin-top: 20px;
+        }
+
+        /* Menu Toggle */
+        .menu-toggle {
+            font-size: 30px;
+            cursor: pointer;
+            display: none;
+        }
+
+        /* Media Queries para Responsividade */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .menu {
+                display: none;
+            }
+
+            .submenu {
+                padding-left: 10px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="header">
         <div class="menu-toggle" onclick="toggleMenu()">&#9776;</div>
-        <h1 class="header-title">MAC POINT- PREMIUM</h1>
+        <h1 class="header-title">MAC POINT - PREMIUM</h1>
         <div class="user-icon" onclick="toggleUserMenu()">⚙️</div>
         <img src="https://i.postimg.cc/NfRBhwww/Screenshot-20250112-200147-1.jpg" alt="Imagem da Capa">
     </div>
@@ -154,64 +100,83 @@ bold;
             <a href="#">Mega Sena</a>
             <a href="#">Quina</a>
             <a href="#">Lotomania</a>
-            <a href="link2.html">GRUPOS de soma</a>
-            <a href="link3.html">Fibonacci</a>
-            <a href="link4.html">Números Primos</a>
-            <a href="link5.html">Mini Quadrantes</a>
+            <a href="link2.html">GRUPOS de Soma</a>
         </div>
         <a href="#" class="submenu-toggle" onclick="toggleSubMenu(event, 'submenuAnalises')">Análises/Estatísticas</a>
         <div class="submenu" id="submenuAnalises">
             <a href="#">Gráficos</a>
             <a href="#">Tabelas</a>
-            <a href="#">Projeções</a>
-            <a href="#">Estatísticas Avançadas</a>
         </div>
-        <a href="#">Desdobramento</a>
-        <a href="#">Simuladores</a>
-        <a href="#">E-books</a>
- <a href="#">Planilhas</a>
-        <a href="sobre-nos.html">Sobre Nós</a>
     </div>
 
-    <div class="user-menu" id="userMenu">
-        <a href="#" onclick="logout()">Sair</a>
-    </div>
-
-    <div class="quadro">
-        <p>Sejam bem-vindos à Plataforma</p>
-    </div>
-
-    <div id="protected-content">
+    <div id="protected-content" class="protected-content">
         <h1>Conteúdo Exclusivo</h1>
         <p>Este é o conteúdo que só os usuários com assinatura ativa podem acessar.</p>
     </div>
 
-    <div class="footer">
-        Rodapé do Site
-    </div>
-<script>
-        function toggleMenu() {
-            const menu = document.getElementById('menu');
-            menu.classList.toggle('menu-open');
+    <div class="footer">Rodapé do Site</div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+    
+    <script>
+        // Configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+            authDomain: "mac-projeto-4e552.firebaseapp.com",
+            databaseURL: "https://mac-projeto-4e552-default-rtdb.firebaseio.com",
+            projectId: "mac-projeto-4e552",
+            storageBucket: "mac-projeto-4e552.firebasestorage.app",
+            messagingSenderId: "537330451519",
+            appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
+        };
+
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Verificar acesso
+        function verificarAcesso() {
+            auth.onAuthStateChanged(user => {
+                if (user) {
+                    const userRef = db.collection('usuarios').doc(user.uid);
+                    userRef.get().then(doc => {
+                        if (doc.exists && doc.data().status === "ativo") {
+                            document.querySelector('.protected-content').style.display = 'block';
+                        } else {
+                            window.location.href = "bloqueado.html";
+                        }
+                    }).catch(() => {
+                        window.location.href = "bloqueado.html";
+                    });
+                } else {
+                    window.location.href = "bloqueado.html";
+                }
+            });
         }
 
-        function toggleUserMenu() {
-            const userMenu = document.getElementById('userMenu');
-            userMenu.style.display = userMenu.style.display === 'block' ? 'none' : 'block';
+        verificarAcesso();
+
+        // Funções de menu
+        function toggleMenu() {
+            const menu = document.getElementById('menu');
+            menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
         }
 
         function toggleSubMenu(event, submenuId) {
-            event.preventDefault();
             const submenu = document.getElementById(submenuId);
-            submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
+            submenu.style.display = (submenu.style.display === 'block') ? 'none' : 'block';
+            event.preventDefault();
         }
-        
-        document.addEventListener('click', function(event) {
-            const menu = document.getElementById('menu');
-            const menuToggle = document.querySelector('.menu-toggle');
-            if (!menu.contains(event.target) && !menuToggle.contains(event.target)) {
-                menu.classList.remove('menu-open');
+
+        // Responsividade (exemplo simples)
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                document.getElementById('menu').style.display = 'block';
             }
-            </script>
+        });
+    </script>
 </body>
 </html>
+

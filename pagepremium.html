@@ -1,252 +1,199 @@
-
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal de Loterias - MAC POINT</title>
-    <style>
-        /* Estilos gerais */
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: black;
-            color: white;
-            display: flex;
-            min-height: 100vh;
-            flex-direction: column;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conteúdo Protegido</title>
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: white;
+      text-align: center;
+    }
 
-        .header {
-            padding: 20px;
-            text-align: center;
-            background-color: #333;
-            position: relative;
-            z-index: 2;
-        }
+    header {
+      background-color: black;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+    }
 
-        .header-title {
-            font-size: 2.5em;
-            margin: 0;
-            color: white;
-            text-shadow: 2px 2px 5px lime; /* Contorno verde-claro */
-        }
+    .menu-icon {
+      font-size: 24px;
+      color: white;
+      cursor: pointer;
+    }
 
-        .menu-toggle {
-            font-size: 30px;
-            cursor: pointer;
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            z-index: 10;
-        }
+    .menu {
+      position: fixed;
+      top: 0;
+      left: -250px;
+      height: 100%;
+      width: 250px;
+      background-color: #003300;
+      border-right: 2px solid #00ff00;
+      transition: 0.3s;
+      padding-top: 60px;
+      z-index: 999;
+    }
 
-        .user-icon {
-            font-size: 30px;
-            cursor: pointer;
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            z-index: 10;
-        }
+    .menu.open {
+      left: 0;
+    }
 
-        /* Menu lateral */
-        .menu {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 250px;
-            background-color: #000000; /* Alterado para preto */
-            z-index: 5;
-            padding-top: 60px;
-            overflow-y: auto;
-        }
+    .menu ul {
+      list-style: none;
+      padding: 0;
+    }
 
-        .menu a {
-            color: white;
-            text-decoration: none;
-            padding: 15px;
-            display: block;
-            font-size: 18px;
-            text-align: left;
-            border-bottom: 1px solid #333;
-        }
+    .menu ul li {
+      padding: 10px 20px;
+      border-bottom: 1px solid #00ff00;
+    }
 
-        .submenu {
-            display: none;
-            padding-left: 20px;
-        }
+    .menu ul li a {
+      color: white;
+      text-decoration: none;
+      display: block;
+    }
 
-        .submenu-toggle::after {
-            content: " ▼";
-            font-size: 14px;
-            margin-left: 5px;
-        }
+    .submenu {
+      display: none;
+      padding-left: 20px;
+    }
 
-        .menu a:hover {
-            background-color: #333;
-        }
+    .submenu li {
+      border: none;
+    }
 
-        .menu a.active {
-            background-color: #555;
-        }
+    .menu ul li a:hover,
+    .menu ul li:hover {
+      background-color: black;
+    }
 
-        .footer {
-            background-color: #333;
-            text-align: center;
-            padding: 10px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            z-index: 1;
-        }
+    .content {
+      margin-top: 80px;
+      padding: 20px;
+    }
 
-        /* Estilos do conteúdo */
-        .platform-description {
-            text-align: center;
-            font-size: 1.2em;
-            margin-top: 20px;
-            padding: 20px;
-        }
+    .btn-logout {
+      padding: 10px 20px;
+      background-color: #00ff00;
+      color: black;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
 
-        .content-image {
-            width: 100%;
-            max-width: 600px;
-            border: 5px solid #66ff66; /* Borda verde-claro */
-            margin: 20px auto;
-        }
+    .btn-logout:hover {
+      background-color: #007700;
+      color: white;
+    }
 
-        .protected-content {
-            display: none;
-            padding: 20px;
-            background-color: #555;
-            margin-top: 20px;
-        }
-
-        /* Estilos para formulários */
-        input, select, textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0;
-            background-color: black;
-            color: white;
-            border: 2px solid #66ff66; /* Borda verde-claro */
-            border-radius: 5px;
-        }
-
-        /* Media Queries para Responsividade */
-        @media (max-width: 768px) {
-            .menu {
-                width: 100%;
-                height: auto;
-                position: relative;
-            }
-            .menu-toggle {
-                display: block;
-            }
-            .header-title {
-                font-size: 2em;
-            }
-        }
-    </style>
+    footer {
+      background-color: black;
+      padding: 10px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      color: white;
+    }
+  </style>
 </head>
 <body>
-    <div class="header">
-        <div class="menu-toggle" onclick="toggleMenu()">&#9776;</div>
-        <h1 class="header-title">MAC POINT - PREMIUM</h1>
-        <div class="user-icon" onclick="toggleUserMenu()">⚙️</div>
-        <img src="https://i.postimg.cc/NfRBhwww/Screenshot-20250112-200147-1.jpg" alt="Imagem da Capa" class="content-image">
-    </div>
+  <header>
+    <span class="menu-icon" onclick="toggleMenu()">☰</span>
+    <h1>Conteúdo Protegido</h1>
+  </header>
 
-    <div class="platform-description">
-        <p>Bem-vindo ao MAC POINT! Aqui você encontrará os melhores simuladores de loterias, análises estatísticas, dicas e muito mais. Aproveite e explore nosso conteúdo exclusivo!</p>
-    </div>
+  <div class="menu" id="menu">
+    <ul>
+      <li><a href="#">Início</a></li>
+      <li>
+        <a href="#" onclick="toggleSubmenu('modalidades')">Modalidades</a>
+        <ul class="submenu" id="modalidades">
+          <li><a href="#">Mega-Sena</a></li>
+          <li><a href="#">Quina</a></li>
+          <li><a href="#">Lotomania</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#" onclick="toggleSubmenu('analise')">Análise Estatística</a>
+        <ul class="submenu" id="analise">
+          <li><a href="#">Grupo de Soma</a></li>
+        </ul>
+      </li>
+      <li><a href="#">Planilhas</a></li>
+      <li><a href="#">Sair</a></li>
+    </ul>
+  </div>
 
-    <div class="menu" id="menu">
-        <a href="#">Início</a>
-        <a href="#" class="submenu-toggle" onclick="toggleSubMenu(event, 'submenuModalidades')">Modalidades</a>
-        <div class="submenu" id="submenuModalidades">
-            <a href="#">Mega Sena</a>
-            <a href="#">Quina</a>
-            <a href="#">Lotomania</a>
-            <a href="link2.html">GRUPOS de Soma</a>
-        </div>
-        <a href="#" class="submenu-toggle" onclick="toggleSubMenu(event, 'submenuAnalises')">Análises/Estatísticas</a>
-        <div class="submenu" id="submenuAnalises">
-            <a href="#">Gráficos</a>
-            <a href="#">Tabelas</a>
-        </div>
-    </div>
+  <main class="content">
+    <h2>Bem-vindo ao conteúdo protegido</h2>
+    <button class="btn-logout" onclick="logout()">Sair</button>
+  </main>
 
-    <div id="protected-content" class="protected-content">
-        <h1>Conteúdo Exclusivo</h1>
-        <p>Este é o conteúdo que só os usuários com assinatura ativa podem acessar.</p>
-    </div>
+  <footer>
+    © 2025 Sistema Protegido
+  </footer>
 
-    <div class="footer">Rodapé do Site</div>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+      authDomain: "mac-projeto-4e552.firebaseapp.com",
+      projectId: "mac-projeto-4e552",
+      storageBucket: "mac-projeto-4e552.firebasestorage.app",
+      messagingSenderId: "537330451519",
+      appId: "1:537330451519:web:5a1b4c921119b5ee98e48a",
+      databaseURL: "https://mac-projeto-4e552-default-rtdb.firebaseio.com",
+    };
 
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
-    
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
-            authDomain: "mac-projeto-4e552.firebaseapp.com",
-            databaseURL: "https://mac-projeto-4e552-default-rtdb.firebaseio.com",
-            projectId: "mac-projeto-4e552",
-            storageBucket: "mac-projeto-4e552.firebasestorage.app",
-            messagingSenderId: "537330451519",
-            appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
-        };
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
 
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
+    const menu = document.getElementById("menu");
 
-        function verificarAcesso() {
-            auth.onAuthStateChanged(user => {
-                if (user) {
-                    const userRef = db.collection('usuarios').doc(user.uid);
-                    userRef.get().then(doc => {
-                        if (doc.exists && doc.data().status === "ativo") {
-                            document.querySelector('.protected-content').style.display = 'block';
-                        } else {
-                            window.location.href = "bloqueado.html";
-                        }
-                    }).catch(() => {
-                        window.location.href = "bloqueado.html";
-                    });
-                } else {
-                    window.location.href = "bloqueado.html";
-                }
-            });
-        }
+    function toggleMenu() {
+      menu.classList.toggle("open");
+    }
 
-        verificarAcesso();
+    function toggleSubmenu(id) {
+      const submenu = document.getElementById(id);
+      submenu.style.display = submenu.style.display === "block" ? "none" : "block";
+    }
 
-        function toggleMenu() {
-            const menu = document.getElementById('menu');
-            menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
-        }
+    auth.onAuthStateChanged(async (user) => {
+      if (!user) {
+        window.location.href = "bloqueado.html";
+        return;
+      }
 
-        function toggleSubMenu(event, submenuId) {
-            const submenu = document.getElementById(submenuId);
-            submenu.style.display = (submenu.style.display === 'block') ? 'none' : 'block';
-            event.preventDefault();
-        }
+      const doc = await db.collection("users").doc(user.uid).get();
+      if (!doc.exists || doc.data().status !== "ativo") {
+        window.location.href = "bloqueado.html";
+      }
+    });
 
-        function toggleUserMenu() {
-            const logout = confirm('Deseja realmente deslogar?');
-            if (logout) {
-                auth.signOut();
-                window.location.href = "index.html";
-            }
-        }
-    </script>
+    function logout() {
+      if (confirm("Deseja realmente sair?")) {
+        auth.signOut().then(() => {
+          window.location.href = "login.html";
+        });
+      }
+    }
+  </script>
 </body>
 </html>
 

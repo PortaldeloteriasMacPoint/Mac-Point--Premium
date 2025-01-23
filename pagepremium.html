@@ -8,7 +8,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
     <style>
-        /* Estilo original do seu código */
         body {
             margin: 0;
             font-family: Arial, sans-serif;
@@ -19,7 +18,7 @@
             background-position: center;
         }
         .header {
-            position: relative;
+position: relative;
             text-align: center;
             background-color: black;
             padding: 20px 0;
@@ -43,7 +42,7 @@
             border: 2px solid #00ff00;
             padding: 5px;
             border-radius: 2px;
-        }
+   }
         .menu-toggle {
             left: 30px;
         }
@@ -62,7 +61,7 @@
             border-right: 2px solid #00ff00;
             z-index: 1000;
         }
-        .menu a {
+.menu a {
             display: block;
             padding: 10px 20px;
             color: white;
@@ -88,7 +87,8 @@
             background-color: white;
             border: 1px solid yellow;
             color: black;
-            font-weight: bold;
+            font-weight: 
+bold;
             padding: 10px 20px;
             margin: 5px 0;
         }
@@ -108,7 +108,7 @@
             border: 1px solid yellow;
             display: none;
             text-align: center;
-            z-index: 1000;
+ z-index: 1000;
         }
         .user-menu a {
             display: block;
@@ -130,35 +130,16 @@
             background-color: #013220;
             text-align: center;
             padding: 10px 0;
-            border-top: 2px solid #00ff00;
-            color: white;
-            position: fixed;
-            width: 100%;
+            border-top: 2px 
             bottom: 0;
             z-index: 999;
         }
         #protected-content {
             display: none;
         }
-        #loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            font-size: 24px;
-            z-index: 9999;
-        }
     </style>
 </head>
 <body>
-    <div id="loading">Carregando, por favor, aguarde...</div>
-
     <div class="header">
         <div class="menu-toggle" onclick="toggleMenu()">&#9776;</div>
         <h1 class="header-title">MAC POINT- PREMIUM</h1>
@@ -188,12 +169,12 @@
         <a href="#">Desdobramento</a>
         <a href="#">Simuladores</a>
         <a href="#">E-books</a>
-        <a href="#">Planilhas</a>
+ <a href="#">Planilhas</a>
         <a href="sobre-nos.html">Sobre Nós</a>
     </div>
 
     <div class="user-menu" id="userMenu">
-        <a href="#" id="logoutButton">Sair</a>
+        <a href="#" onclick="logout()">Sair</a>
     </div>
 
     <div class="quadro">
@@ -208,84 +189,29 @@
     <div class="footer">
         Rodapé do Site
     </div>
-
-    <script>
-        // Inicializa o Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o", // Substitua pelo seu Firebase API Key
-            authDomain: "seu-project-id.firebaseapp.com", // Substitua pelo seu project ID
-            projectId: "seu-project-id", // Substitua pelo seu project ID
-            storageBucket: "seu-project-id.appspot.com", // Substitua pelo seu project ID
-            messagingSenderId: "seu-messagingSenderId", // Substitua pelo seu Sender ID
-            appId: "seu-app-id" // Substitua pelo seu App ID
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const auth = firebase.auth();
-
-        // Função para verificação de status do usuário
-        function checkUserStatus() {
-            const user = auth.currentUser;
-
-            if (user) {
-                const userRef = db.collection("users").doc(user.uid);
-                document.getElementById('loading').style.display = 'flex'; // Mostrar carregando
-
-                userRef.get().then((doc) => {
-                    if (doc.exists) {
-                        const userData = doc.data();
-                        const status = userData.status;
-
-                        if (status !== "ativo") {
-                            window.location.href = "bloqueado.html";
-                        } else {
-                            document.getElementById('protected-content').style.display = 'block'; // Mostrar conteúdo protegido
-                        }
-} else {
-                        window.location.href = "bloqueado.html";
-                    }
-                    document.getElementById('loading').style.display = 'none'; // Ocultar carregando
-                }).catch((error) => {
-                    console.log("Erro ao verificar status do usuário:", error);
-                    window.location.href = "bloqueado.html";
-                    document.getElementById('loading').style.display = 'none'; // Ocultar carregando
-                });
-            } else {
-                window.location.href = "login.html";
-            }
-        }
-
-        // Função para mostrar/ocultar o menu
+<script>
         function toggleMenu() {
             const menu = document.getElementById('menu');
             menu.classList.toggle('menu-open');
         }
 
-        // Função para mostrar/ocultar o submenu
-        function toggleSubMenu(event, submenuId) {
-            event.preventDefault();
-            const submenu = document.getElementById(submenuId);
-            submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
-        }
-
-        // Função para mostrar/ocultar o menu de usuário
         function toggleUserMenu() {
             const userMenu = document.getElementById('userMenu');
             userMenu.style.display = userMenu.style.display === 'block' ? 'none' : 'block';
         }
 
-        // Função de logout
-        document.getElementById('logoutButton').addEventListener('click', function() {
-            auth.signOut().then(() => {
-                window.location.href = "login.html";
-            }).catch((error) => {
-                console.log("Erro ao fazer logout:", error);
-            });
-        });
-
-        // Verificar o status do usuário ao carregar a página
-        window.onload = checkUserStatus;
-    </script>
+        function toggleSubMenu(event, submenuId) {
+            event.preventDefault();
+            const submenu = document.getElementById(submenuId);
+            submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
+        }
+        
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('menu');
+            const menuToggle = document.querySelector('.menu-toggle');
+            if (!menu.contains(event.target) && !menuToggle.contains(event.target)) {
+                menu.classList.remove('menu-open');
+            }
+            </script>
 </body>
 </html>
-

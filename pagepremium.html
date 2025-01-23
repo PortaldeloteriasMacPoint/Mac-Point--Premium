@@ -13,6 +13,9 @@
             font-family: Arial, sans-serif;
             background-color: black;
             color: white;
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
         }
 
         .header {
@@ -20,6 +23,7 @@
             text-align: center;
             background-color: #333;
             position: relative;
+            z-index: 2;
         }
 
         .header-title {
@@ -47,6 +51,7 @@
             z-index: 10;
         }
 
+        /* Menu lateral */
         .menu {
             display: none;
             position: fixed;
@@ -57,15 +62,17 @@
             background-color: #006400; /* Verde escuro */
             z-index: 5;
             padding-top: 60px;
+            overflow-y: auto;
         }
 
         .menu a {
             color: white;
             text-decoration: none;
-            padding: 10px;
+            padding: 15px;
             display: block;
             font-size: 18px;
             text-align: left;
+            border-bottom: 1px solid #333;
         }
 
         .submenu {
@@ -94,13 +101,15 @@
             position: fixed;
             bottom: 0;
             width: 100%;
+            z-index: 1;
         }
 
-        .protected-content {
-            display: none;
-            padding: 20px;
-            background-color: #555;
+        /* Estilos do conteúdo */
+        .platform-description {
+            text-align: center;
+            font-size: 1.2em;
             margin-top: 20px;
+            padding: 20px;
         }
 
         .content-image {
@@ -110,17 +119,30 @@
             margin: 20px auto;
         }
 
-        .platform-description {
-            text-align: center;
-            font-size: 1.2em;
+        .protected-content {
+            display: none;
+            padding: 20px;
+            background-color: #555;
             margin-top: 20px;
+        }
+
+        /* Estilos para formulários */
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            background-color: black;
+            color: white;
+            border: 2px solid #66ff66; /* Borda verde-claro */
+            border-radius: 5px;
         }
 
         /* Media Queries para Responsividade */
         @media (max-width: 768px) {
             .menu {
                 width: 100%;
-                padding-top: 60px;
+                height: auto;
+                position: relative;
             }
             .menu-toggle {
                 display: block;

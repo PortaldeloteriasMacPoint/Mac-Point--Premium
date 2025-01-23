@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -10,7 +12,6 @@
       font-family: Arial, sans-serif;
       background-color: #121212;
       color: white;
-      text-align: center;
     }
 
     header {
@@ -77,7 +78,6 @@
       border: none;
     }
 
-    .menu ul li a:hover,
     .menu ul li:hover {
       background-color: #005500;
     }
@@ -87,35 +87,29 @@
       padding: 20px;
     }
 
-    .btn-logout {
-      padding: 10px 20px;
-      background-color: #00ff00;
-      color: black;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .btn-logout:hover {
-      background-color: #007700;
-      color: white;
-    }
-
     .logout-modal {
       display: none;
       position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+
+    .logout-box {
       background-color: #ffffff;
       padding: 20px;
       border-radius: 10px;
       text-align: center;
       box-shadow: 0px 0px 10px #000000;
-      z-index: 2000;
     }
 
-    .logout-modal button {
+    .logout-box button {
       margin: 10px;
       padding: 10px 20px;
       border: none;
@@ -123,22 +117,22 @@
       cursor: pointer;
     }
 
-    .logout-modal .btn-yes {
+    .logout-box .btn-yes {
       background-color: #00ff00;
       color: black;
     }
 
-    .logout-modal .btn-yes:hover {
+    .logout-box .btn-yes:hover {
       background-color: #007700;
       color: white;
     }
 
-    .logout-modal .btn-no {
+    .logout-box .btn-no {
       background-color: #ff0000;
       color: white;
     }
 
-    .logout-modal .btn-no:hover {
+    .logout-box .btn-no:hover {
       background-color: #770000;
     }
 
@@ -154,6 +148,20 @@
       border-radius: 10px;
     }
 
+    input {
+      background-color: black;
+      color: white;
+      border: 1px solid #00ff00;
+      border-radius: 5px;
+      padding: 5px;
+      margin: 10px 0;
+      width: 90%;
+    }
+
+    input::placeholder {
+      color: #ddd;
+    }
+
     footer {
       background-color: black;
       padding: 10px;
@@ -166,14 +174,6 @@
     @media (max-width: 768px) {
       .menu {
         width: 200px;
-      }
-
-      .menu ul li {
-        padding: 10px 15px;
-      }
-
-      .content {
-        padding: 15px;
       }
     }
   </style>
@@ -195,32 +195,26 @@
           <li><a href="#">Lotomania</a></li>
         </ul>
       </li>
-      <li>
-        <a onclick="toggleSubmenu('analise')">Análise Estatística ▾</a>
-        <ul class="submenu" id="analise">
-          <li><a href="#">Grupo de Soma</a></li>
-        </ul>
-      </li>
-      <li><a href="#">Planilhas</a></li>
       <li><a onclick="showLogoutModal()">Sair</a></li>
     </ul>
   </div>
 
   <div class="logout-modal" id="logoutModal">
-    <p>Deseja realmente sair?</p>
-    <button class="btn-yes" onclick="logout()">Sim</button>
-    <button class="btn-no" onclick="closeLogoutModal()">Não</button>
+    <div class="logout-box">
+      <p>Deseja realmente sair?</p>
+      <button class="btn-yes" onclick="logout()">Sim</button>
+      <button class="btn-no" onclick="closeLogoutModal()">Não</button>
+    </div>
   </div>
 
   <div class="cover">
-    <a href="https://exemplo.com" target="_blank">
+    <a href="https://seulink.com" target="_blank">
       <img src="https://via.placeholder.com/800x400" alt="Capa Personalizada">
     </a>
   </div>
 
   <main class="content">
     <h2>Bem-vindo ao sistema!</h2>
-    <button class="btn-logout" onclick="showLogoutModal()">Sair</button>
   </main>
 
   <footer>
@@ -234,13 +228,19 @@
       menu.classList.toggle("open");
     }
 
+    document.addEventListener("click", function (e) {
+      if (!menu.contains(e.target) && !e.target.classList.contains("menu-icon")) {
+        menu.classList.remove("open");
+      }
+    });
+
     function toggleSubmenu(id) {
       const submenu = document.getElementById(id);
       submenu.style.display = submenu.style.display === "block" ? "none" : "block";
     }
 
     function showLogoutModal() {
-      document.getElementById("logoutModal").style.display = "block";
+      document.getElementById("logoutModal").style.display = "flex";
     }
 
     function closeLogoutModal() {

@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -10,6 +8,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
     <style>
+        /* Estilo original do seu código */
         body {
             margin: 0;
             font-family: Arial, sans-serif;
@@ -211,59 +210,7 @@
     </div>
 
     <script>
-        // Forçar invalidar cache
-        window.addEventListener('load', function() {
-            if ('caches' in window) {
-                caches.keys().then(function(cacheNames) {
-                    cacheNames.forEach(function(cacheName) {
-                        caches.delete(cacheName);
-                    });
-                });
-            }
-        });
-
-        function toggleMenu() {
-            const menu = document.getElementById('menu');
-            menu.classList.toggle('menu-open');
-        }
-
-        function toggleUserMenu() {
-            const userMenu = document.getElementById('userMenu');
-            userMenu.style.display = userMenu.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function toggleSubMenu(event, submenuId) {
-            event.preventDefault();
-            const submenu = document.getElementById(submenuId);
-            submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
-        }
-
-        // Fechar menu quando clicar em qualquer lugar fora dele
-        document.addEventListener('click', function(event) {
-            const menu = document.getElementById('menu');
-            const menuToggle = document.querySelector('.menu-toggle');
-            if (!menu.contains(event.target) && !menuToggle.contains(event.target)) {
-                menu.classList.remove('menu-open');
-            }
-        });
-
-        // Função para logout
-        function logout() {
-            firebase.auth().signOut().then(() => {
-                window.location.href = "login.html";
-            }).catch((error) => {
-                console.error("Erro ao fazer logout: ", error);
-            });
-        }
-
-        // Aguardar carregamento do DOM para adicionar o evento de logout
-        document.addEventListener('DOMContentLoaded', function() {
-            const logoutButton = document.querySelector('#logoutButton');
-            if (logoutButton) {
-                logoutButton.addEventListener('click', logout);
-            }
-        });
-
+        // Inicializa o Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o", // Substitua pelo seu Firebase API Key
             authDomain: "seu-project-id.firebaseapp.com", // Substitua pelo seu project ID
@@ -272,62 +219,73 @@
             messagingSenderId: "seu-messagingSenderId", // Substitua pelo seu Sender ID
             appId: "seu-app-id" // Substitua pelo seu App ID
         };
-
-        // Inicializar o Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         const auth = firebase.auth();
 
-        // Função para verificar o status do usuário
+        // Função para verificação de status do usuário
         function checkUserStatus() {
             const user = auth.currentUser;
 
             if (user) {
-                // Usuário está logado, vamos verificar o status no Firestore
                 const userRef = db.collection("users").doc(user.uid);
-
-                // Mostrar tela de carregamento
-                document.getElementById('loading').style.display = 'flex';
+                document.getElementById('loading').style.display = 'flex'; // Mostrar carregando
 
                 userRef.get().then((doc) => {
                     if (doc.exists) {
                         const userData = doc.data();
                         const status = userData.status;
 
-                        // Se o status não for 'ativo', redireciona para a página de bloqueado
                         if (status !== "ativo") {
                             window.location.href = "bloqueado.html";
                         } else {
-                            // Se o status for 'ativo', mostra o conteúdo protegido
-                            document.getElementById('protected-content').style.display = 'block';
+                            document.getElementById('protected-content').style.display = 'block'; // Mostrar conteúdo protegido
                         }
-                    } else {
-                        // Caso o documento não exista
+} else {
                         window.location.href = "bloqueado.html";
                     }
-// Esconde o carregamento após verificar o status
-                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('loading').style.display = 'none'; // Ocultar carregando
                 }).catch((error) => {
-                    console.error("Erro ao buscar o status do usuário: ", error);
-                    document.getElementById('loading').style.display = 'none';
-                    window.location.href = "login.html"; // Redireciona para a página de login se ocorrer erro
+                    console.log("Erro ao verificar status do usuário:", error);
+                    window.location.href = "bloqueado.html";
+                    document.getElementById('loading').style.display = 'none'; // Ocultar carregando
                 });
             } else {
-                // Caso o usuário não esteja logado, redireciona para a página de login
                 window.location.href = "login.html";
             }
         }
 
-        // Chama a função de verificação assim que o Firebase estiver pronto
-        auth.onAuthStateChanged(function(user) {
-            if (user) {
-                checkUserStatus();
-            } else {
-                window.location.href = "login.html"; // Redireciona para a página de login
-            }
+        // Função para mostrar/ocultar o menu
+        function toggleMenu() {
+            const menu = document.getElementById('menu');
+            menu.classList.toggle('menu-open');
+        }
+
+        // Função para mostrar/ocultar o submenu
+        function toggleSubMenu(event, submenuId) {
+            event.preventDefault();
+            const submenu = document.getElementById(submenuId);
+            submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Função para mostrar/ocultar o menu de usuário
+        function toggleUserMenu() {
+            const userMenu = document.getElementById('userMenu');
+            userMenu.style.display = userMenu.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Função de logout
+        document.getElementById('logoutButton').addEventListener('click', function() {
+            auth.signOut().then(() => {
+                window.location.href = "login.html";
+            }).catch((error) => {
+                console.log("Erro ao fazer logout:", error);
+            });
         });
+
+        // Verificar o status do usuário ao carregar a página
+        window.onload = checkUserStatus;
     </script>
 </body>
 </html>
 
- 

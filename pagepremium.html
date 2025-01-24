@@ -1,42 +1,35 @@
-
-
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Neckpoint Premium</title>
+  <title>Mac Point Premium </title>
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
       background-color: black;
       color: white;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
     }
 
     header {
-      background-color: #000;
-      border-bottom: 5px solid #d4af37; /* Contraborda dourada */
-      padding: 20px;
-      text-align: center;
+      background-color: black;
+      border-bottom: 5px solid #d4af37; /* Borda dourada */
+      padding: 15px;
       position: relative;
       z-index: 1001;
     }
 
     header h1 {
       margin: 0;
-      color: white;
       font-size: 24px;
+      color: white;
+      text-align: center;
     }
 
     .menu-icon {
       position: absolute;
-      left: 10px;
+      left: 15px;
       top: 50%;
       transform: translateY(-50%);
       font-size: 24px;
@@ -51,8 +44,8 @@
       width: 250px;
       height: 100%;
       background-color: #013220; /* Verde-escuro */
-      border-right: 2px solid #00ff00; /* Borda verde-claro */
-      padding: 10px;
+      border-right: 3px solid #d4af37; /* Borda dourada */
+      padding-top: 20px;
       transition: 0.3s;
       z-index: 1000;
     }
@@ -60,29 +53,36 @@
     .menu-lateral a {
       display: block;
       padding: 10px;
-      margin: 5px 0;
+      margin: 10px 10px;
       color: white;
       text-decoration: none;
-      background-color: #000;
-      border: 2px solid #00ff00; /* Borda verde-claro */
-      border-radius: 5px;
+      background-color: black;
+      border-radius: 10px;
+      border: 1px solid #d4af37; /* Borda dourada */
     }
 
     .menu-lateral a:hover {
-      background-color: #00ff00;
+      background-color: #d4af37;
       color: black;
+    }
+
+    .menu-lateral .submenu {
+      display: none;
+      margin-left: 10px;
+      margin-top: 10px;
     }
 
     .menu-lateral .submenu a {
       background-color: white;
       color: black;
-      border: 2px solid yellow; /* Borda amarela */
+      border: 1px solid black;
+      margin-bottom: 5px;
       border-radius: 5px;
     }
 
     .menu-lateral .submenu a:hover {
-      background-color: yellow;
-      color: black;
+      background-color: black;
+      color: white;
     }
 
     .menu-overlay {
@@ -99,7 +99,6 @@
     .capa {
       margin-top: 10px;
       text-align: center;
-      z-index: 1;
     }
 
     .capa img {
@@ -110,22 +109,17 @@
       border-radius: 10px;
     }
 
-    .description {
-      margin: 20px auto;
-      color: #ccc;
-      max-width: 800px;
-    }
-
     footer {
       background-color: black;
       padding: 10px;
       color: white;
-      margin-top: auto;
-      position: relative;
-      z-index: 1;
+      text-align: center;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
     }
 
-    .logout-modal {
+    .sair-modal {
       display: none;
       position: fixed;
       top: 50%;
@@ -133,14 +127,13 @@
       transform: translate(-50%, -50%);
       background-color: white;
       color: black;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
       padding: 20px;
-      text-align: center;
-      z-index: 1001;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      z-index: 1002;
     }
 
-    .logout-modal button {
+    .sair-modal button {
       margin: 10px;
       padding: 10px 20px;
       border: none;
@@ -148,14 +141,27 @@
       cursor: pointer;
     }
 
-    .logout-modal .confirm {
+    .sair-modal .sim {
+      background-color: green;
+      color: white;
+    }
+
+    .sair-modal .nao {
       background-color: red;
       color: white;
     }
 
-    .logout-modal .cancel {
-      background-color: #00ff00;
-      color: black;
+    .saindo {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 18px;
+      background: black;
+      padding: 20px;
+      border-radius: 5px;
     }
   </style>
 </head>
@@ -167,33 +173,47 @@
 
   <div class="menu-lateral" id="menu">
     <a href="#inicio">Início</a>
-    <a href="#sobre">Sobre</a>
-    <a href="#servicos">Serviços</a>
-    <div class="submenu">
-      <a href="#sub1">Submenu 1</a>
-      <a href="#sub2">Submenu 2</a>
+    <a href="#modalidades" onclick="toggleSubmenu('modalidadesSubmenu')">Modalidades</a>
+    <div class="submenu" id="modalidadesSubmenu">
+      <a href="#megasena">Mega-Sena</a>
+      <a href="#quina">Quina</a>
+      <a href="#lotofacil">Lotofácil</a>
+      <a href="#lotomania">Lotomania</a>
+      <a href="#timemania">Timemania</a>
     </div>
-    <a href="javascript:logout()">Logout</a>
+    <a href="#analise" onclick="toggleSubmenu('analiseSubmenu')">Análise Estatística</a>
+    <div class="submenu" id="analiseSubmenu">
+      <a href="#grupoSoma">Grupo de Soma</a>
+      <a href="#grupoBichos">Grupo dos Bichos</a>
+      <a href="#primos">Grupo dos Primos</a>
+      <a href="#quadrantes">Quadrante</a>
+    </div>
+    <a href="#planilhas">Planilhas</a>
+    <a href="#tabelas">Tabelas</a>
+    <a href="#simuladores">Simuladores</a>
+    <a href="#gerador">Gerador de Jogos</a>
+    <a href="#sobre">Sobre Nós</a>
+    <a href="#logout" onclick="confirmarSair()">Logout</a>
   </div>
   <div class="menu-overlay" id="overlay" onclick="toggleMenu()"></div>
 
-  <div class="capa">
-    <img src="capa.jpg" alt="Capa do Sistema">
+  <div class="sair-modal" id="sairModal">
+    <p>Deseja sair?</p>
+    <button class="sim" onclick="sair()">Sim</button>
+    <button class="nao" onclick="fecharSair()">Não</button>
   </div>
 
-  <p class="description">
-    Bem-vindo ao Neckpoint Premium. Explore o menu para mais opções e aproveite a plataforma.
-  </p>
+  <div class="saindo" id="saindo">
+    Saindo... Carregando...
+  </div>
+
+  <div class="capa">
+    <img src="Screenshot_20250112-173043-1.jpg" alt="Capa do Sistema">
+  </div>
 
   <footer>
     © 2025 Neckpoint Premium
   </footer>
-
-  <div class="logout-modal" id="logoutModal">
-    <p>Tem certeza que deseja sair?</p>
-    <button class="confirm" onclick="confirmLogout()">SIM</button>
-    <button class="cancel" onclick="cancelLogout()">NÃO</button>
-  </div>
 
   <script>
     function toggleMenu() {
@@ -208,19 +228,32 @@
       }
     }
 
-    function logout() {
-      document.getElementById("logoutModal").style.display = "block";
+    function toggleSubmenu(id) {
+      const submenu = document.getElementById(id);
+      submenu.style.display = submenu.style.display === "block" ? "none" : "block";
     }
 
-    function confirmLogout() {
-      document.getElementById("logoutModal").style.display = "none";
-      window.location.href = "login.html"; // Redireciona para login
+    function confirmarSair() {
+      document.getElementById("sairModal").style.display = "block";
     }
 
-    function cancelLogout() {
-      document.getElementById("logoutModal").style.display = "none";
+    function fecharSair() {
+      document.getElementById("sairModal").style.display = "none";
+    }
+
+    function sair() {
+      document.getElementById("sairModal").style.display = "none";
+      document.getElementById("saindo").style.display = "block";
+      setTimeout(() => {
+        localStorage.setItem("loggedIn", "false");
+        window.location.href = "login.html";
+      }, 2000);
+    }
+
+    // Bloqueia voltar para a página
+    if (localStorage.getItem("loggedIn") === "false") {
+      window.location.href = "login.html";
     }
   </script>
 </body>
 </html>
-

@@ -1,9 +1,11 @@
+
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mac Point Premium </title>
+  <title>Mac Point Premium</title>
   <style>
     body {
       margin: 0;
@@ -32,7 +34,7 @@
       left: 15px;
       top: 50%;
       transform: translateY(-50%);
-      font-size: 40 px;
+      font-size: 40px;
       color: white;
       cursor: pointer;
     }
@@ -43,7 +45,7 @@
       left: -250px;
       width: 250px;
       height: 100%;
-      background-color: #013220; /* Verde-escuro */
+      background-color: #013220; /* Verde escuro */
       border-right: 3px solid #d4af37; /* Borda dourada */
       padding-top: 20px;
       transition: 0.3s;
@@ -59,6 +61,7 @@
       background-color: black;
       border-radius: 10px;
       border: 1px solid #d4af37; /* Borda dourada */
+      transition: background-color 0.3s;
     }
 
     .menu-lateral a:hover {
@@ -85,6 +88,11 @@
       color: white;
     }
 
+    .menu-lateral .active {
+      background-color: #004d26; /* Verde escuro para destacar */
+      color: white;
+    }
+
     .menu-overlay {
       display: none;
       position: fixed;
@@ -108,107 +116,52 @@
       border: 2px solid #00ff00; /* Borda verde-claro */
       border-radius: 10px;
     }
+
+    /* Descrição centralizada */
     .descricao {
-  text-align: center;
-  margin: 0 auto;
-}
-
-      .sair-modal {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: white;
-      color: black;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-      z-index: 1002;
-    }
-
-    .sair-modal button {
-      margin: 10px;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .sair-modal .sim {
-      background-color: green;
-      color: white;
-    }
-
-    .sair-modal .nao {
-      background-color: red;
-      color: white;
-    }
-
-    .saindo {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: white;
+      text-align: center;
+      margin: 20px auto;
+      font-family: 'Quendon Standard', sans-serif;
       font-size: 18px;
-      background: black;
-      padding: 20px;
-      border-radius: 5px;
+      color: #ccc;
     }
-/* Estilos para a descrição */
-.description {
-  margin: 20px;
-  color: #ccc;
-  font-size: 18px;
-}
 
-/* Linha de borda amarela */
-.linha-borda {
-  border-top: 2px solid yellow;
-  margin: 20px 0;
-}
-    
+    /* Estilo para a linha de borda amarela */
+    .linha-borda {
+      border-top: 2px solid yellow;
+      margin: 20px 0;
+    }
 
-/* Container dos ícones */
-.icone-botao-container {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin-top: 20px;
-}
+    /* Estilo para os botões com ícones dentro de quadradinhos arredondados */
+    .icone-botao-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
 
-/* Estilos para os botões com ícones */
-.icone-botao {
-  background-color: #000;
-  color: white;
-  border: 2px solid yellow;
-  border-radius: 12px;
-  padding: 10px 20px;
-  font-size: 60px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
+    .icone-botao {
+      background-color: #000;
+      color: white;
+      border: 2px solid yellow;
+      border-radius: 12px;
+      padding: 20px;
+      font-size: 24px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-.icone-botao:hover {
-  background-color: yellow;
-  color: black;
-}
+    .icone-botao:hover {
+      background-color: yellow;
+      color: black;
+    }
 
-
-.conteudo {
-  min-height: calc(100vh - 60px); /* Ajusta o conteúdo para ocupar toda a altura da página menos a altura do rodapé */
-  padding: 20px;
-  background-color: #222;
-  color: white;
-}
-    
-/* Ícones */
-.icone-botao i {
-  margin-right: 8px;
-}
-
+    .icone-botao i {
+      margin: 0;
+    }
 
     footer {
       background-color: black;
@@ -217,18 +170,19 @@
       text-align: center;
       position: fixed;
       bottom: 0;
-      width: 100%;}
+      width: 100%;
+    }
   </style>
 </head>
 <body>
   <header>
     <span class="menu-icon" onclick="toggleMenu()">🍀🕵🏻‍♂️🍀</span>
-    <h1> </h1>
+    <h1>Mac Point Premium</h1>
   </header>
 
   <div class="menu-lateral" id="menu">
-    <a href="#inicio">Início</a>
-    <a href="#modalidades" onclick="toggleSubmenu('modalidadesSubmenu')">Modalidades</a>
+    <a href="#inicio" id="inicioBtn" onclick="toggleHighlight('inicioBtn')">Início</a>
+    <a href="#modalidades" id="modalidadesBtn" onclick="toggleSubmenu('modalidadesSubmenu', 'modalidadesBtn')">Modalidades</a>
     <div class="submenu" id="modalidadesSubmenu">
       <a href="#megasena">Mega-Sena</a>
       <a href="#quina">Quina</a>
@@ -236,83 +190,51 @@
       <a href="#lotomania">Lotomania</a>
       <a href="#timemania">Timemania</a>
     </div>
-    <a href="#analise" onclick="toggleSubmenu('analiseSubmenu')">Análise Estatística</a>
+    <a href="#analise" id="analiseBtn" onclick="toggleSubmenu('analiseSubmenu', 'analiseBtn')">Análise Estatística</a>
     <div class="submenu" id="analiseSubmenu">
       <a href="#grupoSoma">Grupo de Soma</a>
       <a href="#grupoBichos">Grupo dos Bichos</a>
       <a href="#primos">Grupo dos Primos</a>
       <a href="#quadrantes">Quadrante</a>
     </div>
-    <a href="#planilhas">Planilhas</a>
-    <a href="#tabelas">Tabelas</a>
-    <a href="#simuladores">Simuladores</a>
-    <a href="#gerador">Gerador de Jogos</a>
-    <a href="#sobre">Sobre Nós</a>
+    <a href="#planilhas" id="planilhasBtn" onclick="toggleHighlight('planilhasBtn')">Planilhas</a>
+    <a href="#tabelas" id="tabelasBtn" onclick="toggleHighlight('tabelasBtn')">Tabelas</a>
+    <a href="#simuladores" id="simuladoresBtn" onclick="toggleHighlight('simuladoresBtn')">Simuladores</a>
+    <a href="#gerador" id="geradorBtn" onclick="toggleHighlight('geradorBtn')">Gerador de Jogos</a>
+    <a href="#sobre" id="sobreBtn" onclick="toggleHighlight('sobreBtn')">Sobre Nós</a>
     <a href="#logout" onclick="confirmarSair()">Logout</a>
   </div>
   <div class="menu-overlay" id="overlay" onclick="toggleMenu()"></div>
-
-  <div class="sair-modal" id="sairModal">
-    <p>Deseja sair?</p>
-    <button class="sim" onclick="sair()">Sim</button>
-    <button class="nao" onclick="fecharSair()">Não</button>
-  </div>
-
-  <div class="saindo" id="saindo">
-    Saindo... Carregando...
-  </div>
 
   <div class="capa">
     <img src="Screenshot_20250123-232747-1.jpg" alt="Capa do Sistema">
   </div>
 
+  <div class="linha-borda"></div>
+  <div class="linha-borda"></div>
 
-<!-- Descrição abaixo da capa -->
-<p class="description">
-  "Navegue pelo menu e descubra o melhor do Mac Point."
+  <div class="descricao">
+    "Navegue pelo menu e descubra o melhor do Mac Point."
+  </div>
 
-
-</p>
-<!-- Linha de borda amarela com fundo preto -->
-<div class="linha-borda">
-<!-- Linha de borda verde claro  com fundo preto -->
-<div class="linha-borda">
-
-
-<!-- Linha de ícones como botões -->
-<div class="icone-botao-container">
-  <button class="icone-botao">
-    <i class="⚙️"></i> <!-- Ícone de engrenagem -->
-  </button>
-  <button class="icone-botao">
-    <i class="💬"></i> <!-- Ícone de bate papo -->
-  </button>
-  <button class="icone-botao">
-    <i class="📝"></i> <!-- Ícone de caderno -->
-  </button>
-  <i class="🛒"></i> <!-- Ícone de carrinho de compras-->
-  </button>
-</div>
-
-  
-  <hr>
-</div>
-    <head>
-  <style>
-    .conteudo {
-      min-height: calc(100vh - 60px); /* Ajusta o conteúdo para ocupar toda a altura da página menos a altura do rodapé */
-      padding: 20px;
-      background-color: #222;
-      color: white;
-    }
-  </style>
-</head>
-  
+  <!-- Ícones como botões dentro de quadrados arredondados -->
+  <div class="icone-botao-container">
+    <button class="icone-botao">
+      <i class="⚙️"></i> <!-- Ícone de engrenagem -->
+    </button>
+    <button class="icone-botao">
+      <i class="💬"></i> <!-- Ícone de bate-papo -->
+    </button>
+    <button class="icone-botao">
+      <i class="📝"></i> <!-- Ícone de caderno -->
+    </button>
+    <button class="icone-botao">
+      <i class="🛒"></i> <!-- Ícone de carrinho de compras -->
+    </button>
+  </div>
 
   <footer>
-    © Copyright 2025 / Portal de Loterias-Mac Point /Plataforma independente, sem vínculo com a Caixa Econômica Federal.
-
-
+    © Copyright 2025 / Portal de Loterias-Mac Point / Plataforma independente, sem vínculo com a Caixa Econômica Federal.
   </footer>
 
   <script>
@@ -328,9 +250,26 @@
       }
     }
 
-    function toggleSubmenu(id) {
-      const submenu = document.getElementById(id);
+    function toggleSubmenu(submenuId, btnId) {
+      const submenu = document.getElementById(submenuId);
+      const btn = document.getElementById(btnId);
+      
+      // Alterna o submenu
       submenu.style.display = submenu.style.display === "block" ? "none" : "block";
+
+      // Alterna o destaque do botão
+      toggleHighlight(btnId);
+    }
+
+    function toggleHighlight(btnId) {
+      const allButtons = document.querySelectorAll('.menu-lateral a');
+      
+      allButtons.forEach((button) => {
+        button.classList.remove('active');
+      });
+      
+      const btn = document.getElementById(btnId);
+      btn.classList.add('active');
     }
 
     function confirmarSair() {
@@ -349,11 +288,7 @@
         window.location.href = "login.html";
       }, 2000);
     }
-
-    // Bloqueia voltar para a página
-    if (localStorage.getItem("loggedIn") === "false") {
-      window.location.href = "login.html";
-    }
   </script>
 </body>
 </html>
+

@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -13,6 +14,9 @@
       background-color: black;
       color: white;
       text-align: center;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
 
     header {
@@ -21,6 +25,7 @@
       padding: 20px;
       text-align: center;
       position: relative;
+      z-index: 1001;
     }
 
     header h1 {
@@ -94,6 +99,7 @@
     .capa {
       margin-top: 10px;
       text-align: center;
+      z-index: 1;
     }
 
     .capa img {
@@ -114,6 +120,9 @@
       background-color: black;
       padding: 10px;
       color: white;
+      margin-top: auto;
+      position: relative;
+      z-index: 1;
     }
 
     .logout-modal {
@@ -205,8 +214,7 @@
 
     function confirmLogout() {
       document.getElementById("logoutModal").style.display = "none";
-      alert("Você saiu do sistema.");
-      window.location.reload(); // Simula logout (reinicia a página)
+      window.location.href = "login.html"; // Redireciona para login
     }
 
     function cancelLogout() {

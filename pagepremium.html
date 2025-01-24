@@ -5,111 +5,133 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sistema Personalizado</title>
+  <title>Neckpoint Premium</title>
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background-color: #121212;
+      background-color: black;
       color: white;
+      text-align: center;
     }
 
     header {
       background-color: #000;
+      border-bottom: 5px solid #d4af37; /* Contraborda dourada */
+      padding: 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    header h1 {
+      margin: 0;
       color: white;
-      padding: 10px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: fixed;
-      top: 0;
-      width: 100%;
-      z-index: 1000;
+      font-size: 24px;
     }
 
     .menu-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
       font-size: 24px;
       color: white;
       cursor: pointer;
-      position: absolute;
-      left: 10px;
     }
 
-    .menu {
+    .menu-lateral {
       position: fixed;
       top: 0;
       left: -250px;
-      height: 100%;
       width: 250px;
-      background-color: #003300;
-      border-right: 2px solid #00ff00;
+      height: 100%;
+      background-color: #013220; /* Verde-escuro */
+      border-right: 2px solid #00ff00; /* Borda verde-claro */
+      padding: 10px;
       transition: 0.3s;
-      padding-top: 60px;
-      z-index: 1500;
+      z-index: 1000;
     }
 
-    .menu.open {
-      left: 0;
-    }
-
-    .menu ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    .menu ul li {
-      padding: 10px 20px;
-      border-bottom: 1px solid #00ff00;
-    }
-
-    .menu ul li a {
+    .menu-lateral a {
+      display: block;
+      padding: 10px;
+      margin: 5px 0;
       color: white;
       text-decoration: none;
-      display: block;
-      cursor: pointer;
+      background-color: #000;
+      border: 2px solid #00ff00; /* Borda verde-claro */
+      border-radius: 5px;
     }
 
-    .submenu {
+    .menu-lateral a:hover {
+      background-color: #00ff00;
+      color: black;
+    }
+
+    .menu-lateral .submenu a {
+      background-color: white;
+      color: black;
+      border: 2px solid yellow; /* Borda amarela */
+      border-radius: 5px;
+    }
+
+    .menu-lateral .submenu a:hover {
+      background-color: yellow;
+      color: black;
+    }
+
+    .menu-overlay {
       display: none;
-      padding-left: 20px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
     }
 
-    .submenu li {
-      border: none;
+    .capa {
+      margin-top: 10px;
+      text-align: center;
     }
 
-    .menu ul li:hover {
-      background-color: #005500;
+    .capa img {
+      width: 100%;
+      max-height: 400px;
+      object-fit: cover;
+      border: 2px solid #00ff00; /* Borda verde-claro */
+      border-radius: 10px;
     }
 
-    .content {
-      margin-top: 80px;
-      padding: 20px;
+    .description {
+      margin: 20px auto;
+      color: #ccc;
+      max-width: 800px;
+    }
+
+    footer {
+      background-color: black;
+      padding: 10px;
+      color: white;
     }
 
     .logout-modal {
       display: none;
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 2000;
-    }
-
-    .logout-box {
-      background-color: #ffffff;
-      padding: 20px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      color: black;
       border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+      padding: 20px;
       text-align: center;
-      box-shadow: 0px 0px 10px #000000;
+      z-index: 1001;
     }
 
-    .logout-box button {
+    .logout-modal button {
       margin: 10px;
       padding: 10px 20px;
       border: none;
@@ -117,134 +139,78 @@
       cursor: pointer;
     }
 
-    .logout-box .btn-yes {
+    .logout-modal .confirm {
+      background-color: red;
+      color: white;
+    }
+
+    .logout-modal .cancel {
       background-color: #00ff00;
       color: black;
-    }
-
-    .logout-box .btn-yes:hover {
-      background-color: #007700;
-      color: white;
-    }
-
-    .logout-box .btn-no {
-      background-color: #ff0000;
-      color: white;
-    }
-
-    .logout-box .btn-no:hover {
-      background-color: #770000;
-    }
-
-    .cover {
-      margin-top: 80px;
-      text-align: center;
-    }
-
-    .cover img {
-      max-width: 100%;
-      height: auto;
-      border: 2px solid #00ff00;
-      border-radius: 10px;
-    }
-
-    input {
-      background-color: black;
-      color: white;
-      border: 1px solid #00ff00;
-      border-radius: 5px;
-      padding: 5px;
-      margin: 10px 0;
-      width: 90%;
-    }
-
-    input::placeholder {
-      color: #ddd;
-    }
-
-    footer {
-      background-color: black;
-      padding: 10px;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      color: white;
-    }
-
-    @media (max-width: 768px) {
-      .menu {
-        width: 200px;
-      }
     }
   </style>
 </head>
 <body>
   <header>
     <span class="menu-icon" onclick="toggleMenu()">☰</span>
-    <h1>Personalizado</h1>
+    <h1>Neckpoint Premium</h1>
   </header>
 
-  <div class="menu" id="menu">
-    <ul>
-      <li><a href="#">Início</a></li>
-      <li>
-        <a onclick="toggleSubmenu('modalidades')">Modalidades ▾</a>
-        <ul class="submenu" id="modalidades">
-          <li><a href="#">Mega-Sena</a></li>
-          <li><a href="#">Quina</a></li>
-          <li><a href="#">Lotomania</a></li>
-        </ul>
-      </li>
-      <li><a onclick="showLogoutModal()">Sair</a></li>
-    </ul>
+  <div class="menu-lateral" id="menu">
+    <a href="#inicio">Início</a>
+    <a href="#sobre">Sobre</a>
+    <a href="#servicos">Serviços</a>
+    <div class="submenu">
+      <a href="#sub1">Submenu 1</a>
+      <a href="#sub2">Submenu 2</a>
+    </div>
+    <a href="javascript:logout()">Logout</a>
+  </div>
+  <div class="menu-overlay" id="overlay" onclick="toggleMenu()"></div>
+
+  <div class="capa">
+    <img src="capa.jpg" alt="Capa do Sistema">
   </div>
 
-  <div class="logout-modal" id="logoutModal">
-    <div class="logout-box">
-      <p>Deseja realmente sair?</p>
-      <button class="btn-yes" onclick="logout()">Sim</button>
-      <button class="btn-no" onclick="closeLogoutModal()">Não</button>
-    </div>
-  </div>
-<div class="capa">
-  <img src="capa.jpg" alt="Capa do Sistema">
-</div>
-  <main class="content">
-    <h2>Bem-vindo ao sistema!</h2>
-  </main>
+  <p class="description">
+    Bem-vindo ao Neckpoint Premium. Explore o menu para mais opções e aproveite a plataforma.
+  </p>
 
   <footer>
-    © 2025 Sistema Personalizado
+    © 2025 Neckpoint Premium
   </footer>
 
+  <div class="logout-modal" id="logoutModal">
+    <p>Tem certeza que deseja sair?</p>
+    <button class="confirm" onclick="confirmLogout()">SIM</button>
+    <button class="cancel" onclick="cancelLogout()">NÃO</button>
+  </div>
+
   <script>
-    const menu = document.getElementById("menu");
-
     function toggleMenu() {
-      menu.classList.toggle("open");
-    }
-
-    document.addEventListener("click", function (e) {
-      if (!menu.contains(e.target) && !e.target.classList.contains("menu-icon")) {
-        menu.classList.remove("open");
+      const menu = document.getElementById("menu");
+      const overlay = document.getElementById("overlay");
+      if (menu.style.left === "0px") {
+        menu.style.left = "-250px";
+        overlay.style.display = "none";
+      } else {
+        menu.style.left = "0px";
+        overlay.style.display = "block";
       }
-    });
-
-    function toggleSubmenu(id) {
-      const submenu = document.getElementById(id);
-      submenu.style.display = submenu.style.display === "block" ? "none" : "block";
-    }
-
-    function showLogoutModal() {
-      document.getElementById("logoutModal").style.display = "flex";
-    }
-
-    function closeLogoutModal() {
-      document.getElementById("logoutModal").style.display = "none";
     }
 
     function logout() {
-      window.location.href = "login.html";
+      document.getElementById("logoutModal").style.display = "block";
+    }
+
+    function confirmLogout() {
+      document.getElementById("logoutModal").style.display = "none";
+      alert("Você saiu do sistema.");
+      window.location.reload(); // Simula logout (reinicia a página)
+    }
+
+    function cancelLogout() {
+      document.getElementById("logoutModal").style.display = "none";
     }
   </script>
 </body>

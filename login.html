@@ -85,7 +85,7 @@
         }
 
         .capa img {
-            width: 100%;
+            width: 70%;
             height: auto;
         }
 
@@ -232,7 +232,13 @@
                     showNotification("Usuário não encontrado no Firestore.", true);
                 }
             } catch (error) {
-                showNotification("Erro ao fazer login: " + error.message, true);
+                if (error.code === 'auth/user-not-found') {
+                    showNotification("Usuário não encontrado.", true);
+                } else if (error.code === 'auth/wrong-password') {
+                    showNotification("Senha incorreta.", true);
+                } else {
+                    showNotification("Erro ao fazer login: " + error.message, true);
+                }
             }
         });
     </script>

@@ -181,14 +181,15 @@
 
             // Exibe a mensagem de sucesso
             successMessage.style.display = "block";
+            successMessage.innerText = "Login efetuado com sucesso!";
 
-            // Apaga os campos de preenchimento
+            // Limpa os campos de entrada
             document.getElementById("email").value = '';
             document.getElementById("password").value = '';
 
-            // Aguarda 1,5 segundos e esconde a mensagem
+            // Aguarda 1,5 segundos e redireciona
             setTimeout(() => {
-                successMessage.style.display = "none";
+                successMessage.style.display = "none"; // Esconde a mensagem
                 window.location.href = "pagepremium.html"; // Redireciona
             }, 1500);
         } catch (error) {
@@ -199,5 +200,3 @@
 </body>
 </html>
 
-
- 

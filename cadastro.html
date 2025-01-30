@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -8,9 +10,10 @@
         body {
             font-family: Arial, sans-serif;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             background-color: #f4f4f4;
             margin: 0;
         }
@@ -43,7 +46,7 @@
             width: 100%;
             padding: 10px;
             margin: 10px 0;
-            border: 1px solid #00ff00; /* Verde claro */
+            border: 1px solid #00ff00;
             border-radius: 4px;
             box-sizing: border-box;
             background-color: black;
@@ -67,11 +70,19 @@
 
         .mensagem {
             display: none;
-            background-color: #28a745;
-            color: white;
             padding: 10px;
             border-radius: 4px;
             margin-top: 10px;
+        }
+
+        .sucesso {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .erro {
+            background-color: #dc3545;
+            color: white;
         }
 
         .login-link {
@@ -80,27 +91,44 @@
             margin-top: 10px;
             font-size: 14px;
         }
+
+        /* Rodapé fixo no final da página */
+        footer {
+            background-color: black;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+        }
     </style>
 </head>
 <body>
+
     <div class="form-container">
         <!-- Imagem de capa -->
         <img src="https://portaldeloteriasmacpoint.github.io/Mac-Point--Premium/Screenshot_20250112-173043-1.jpg" alt="Capa">
         
         <h1>Cadastro</h1>
         <form id="cadastro-form">
+            <input type="text" id="nome" placeholder="Nome Completo" required><br>
             <input type="email" id="email" placeholder="Email" required><br>
             <input type="password" id="password" placeholder="Senha" required><br>
-            <input type="text" id="nome" placeholder="Nome Completo" required><br>
+            <input type="password" id="confirm-password" placeholder="Confirme sua Senha" required><br>
             <button type="submit">Cadastrar</button>
         </form>
 
-        <!-- Mensagem de sucesso -->
-        <div id="mensagem-sucesso" class="mensagem">Cadastro realizado com sucesso!</div>
+        <!-- Mensagem de sucesso ou erro -->
+        <div id="mensagem" class="mensagem"></div>
 
         <!-- Link para login -->
         <a href="login.html" class="login-link">Já tem cadastro? Faça login</a>
     </div>
+
+    <footer>
+        © 2025 Mac Point - Todos os direitos reservados.
+    </footer>
 
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
@@ -127,46 +155,62 @@
         document.getElementById('cadastro-form').addEventListener('submit', function (e) {
             e.preventDefault();
 
+            const nome = document.getElementById('nome').value;
             const email = document.getElementById('email').value;
             const senha = document.getElementById('password').value;
-            const nome = document.getElementById('nome').value;
-            const mensagemSucesso = document.getElementById('mensagem-sucesso');
+            const confirmarSenha = document.getElementById('confirm-password').value;
+            const mensagem = document.getElementById('mensagem');
 
-            // Criação de conta no Firebase Authentication
+            // Verifica se as senhas coincidem
+            if (senha !== confirmarSenha) {
+                mensagem.textContent = "As senhas não coincidem!";
+                mensagem.className = "mensagem erro";
+                mensagem.style.display = "block";
+                setTimeout(() => mensagem.style.display = "none", 2000);
+                return;
+            }
+
+            // Criando usuário no Firebase Authentication
             auth.createUserWithEmailAndPassword(email, senha)
                 .then((userCredential) => {
                     const user = userCredential.user;
 
-                    // Criar documento do usuário no Firestore com status "inativo"
+                    // Criando o documento no Firestore
                     db.collection('usuarios').doc(user.uid).set({
-                        email: email,
                         nome: nome,
-                        status: 'inativo'  // Status inativo por padrão
+                        email: email,
+                        status: 'inativo' // Começa como inativo
                     })
                     .then(() => {
-                        // Exibir mensagem de sucesso
-                        mensagemSucesso.style.display = 'block';
+                        mensagem.textContent = "Cadastro realizado com sucesso!";
+                        mensagem.className = "mensagem sucesso";
+                        mensagem.style.display = "block";
 
-                        // Limpar campos do formulário
+                        // Limpar os campos do formulário
                         document.getElementById('cadastro-form').reset();
 
-                        // Esconder a mensagem após 3 segundos
+                        // Esconder a mensagem após 2 segundos e redirecionar
                         setTimeout(() => {
-                            mensagemSucesso.style.display = 'none';
-                            // Redireciona automaticamente para a página de login
+                            mensagem.style.display = "none";
                             window.location.href = 'login.html';
-                        }, 3000);
+                        }, 2000);
                     })
                     .catch((error) => {
-                        console.error("Erro ao criar documento no Firestore:", error);
+                        mensagem.textContent = "Erro ao salvar usuário no banco de dados.";
+                        mensagem.className = "mensagem erro";
+                        mensagem.style.display = "block";
+                        setTimeout(() => mensagem.style.display = "none", 2000);
                     });
                 })
                 .catch((error) => {
-                    console.error("Erro ao criar usuário:", error);
+                    mensagem.textContent = "Erro ao cadastrar usuário!";
+                    mensagem.className = "mensagem erro";
+                    mensagem.style.display = "block";
+                    setTimeout(() => mensagem.style.display = "none", 2000);
                 });
         });
     </script>
+
 </body>
 </html>
-
 

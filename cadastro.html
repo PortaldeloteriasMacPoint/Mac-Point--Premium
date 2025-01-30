@@ -1,7 +1,5 @@
 
 
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -236,22 +234,28 @@
             }
 
             try {
+                // Criar o usuário no Firebase Authentication
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
+                // Criar o documento do usuário no Firestore com o uid
                 await setDoc(doc(db, "users", user.uid), {
                     fullName: fullName,
                     email: email,
-                    subscriptionActive: true,
-                    subscriptionEndDate: new Date(new Date().setMonth(new Date().getMonth() + 1)),
+                    subscriptionActive: true, // Ativo por padrão
+                    subscriptionEndDate: new Date(new Date().setMonth(new Date().getMonth() + 1)), // Assinatura mensal
                     plan: "Mensal"
                 });
 
+                // Mostrar notificação de sucesso
                 showNotification("Cadastro realizado com sucesso!");
+
+                // Redirecionar para a página de login após 4 segundos
                 setTimeout(() => {
                     window.location.href = "login.html";
                 }, 4000);
             } catch (error) {
+                // Tratar erros
                 if (error.code === "auth/email-already-in-use") {
                     showNotification("Erro: O e-mail já está em uso. Faça login.", true);
                 } else {

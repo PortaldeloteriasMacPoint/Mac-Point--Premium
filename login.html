@@ -25,23 +25,24 @@
             align-items: center;
             justify-content: center;
             flex-grow: 1;
+            padding-bottom: 60px; /* Espaço para não cobrir o conteúdo */
         }
 
         .form-container {
             background-color: #006400;
             border: 3px solid #32cd32;
-            padding: 20px;
+            padding: 15px;
             border-radius: 10px;
             text-align: center;
             width: 90%;
-            max-width: 500px;
+            max-width: 400px;
             margin-bottom: 20px;
             position: relative;
         }
 
         .form-container img {
             width: 100%;
-            max-width: 500px;
+            max-width: 350px;
             height: auto;
             border-radius: 10px;
             margin-bottom: 10px;
@@ -49,8 +50,8 @@
 
         .form-container input {
             width: 100%;
-            padding: 10px;
-            margin: 10px 0;
+            padding: 8px;
+            margin: 8px 0;
             border: 1px solid #32cd32;
             border-radius: 5px;
             background-color: #000;
@@ -61,7 +62,7 @@
         .form-container button {
             width: 100%;
             padding: 10px;
-            margin-top: 10px;
+            margin-top: 8px;
             background-color: #32cd32;
             color: white;
             border: none;
@@ -76,7 +77,9 @@
 
         /* Link de cadastro */
         .form-container p {
+            margin: 10px 0;
             color: #ffffff;
+            font-size: 14px;
         }
 
         .form-container a {
@@ -94,11 +97,11 @@
             background-color: #28a428;
             color: white;
             padding: 10px;
-            margin: 20px 0;
+            margin-bottom: 10px;
             border-radius: 5px;
             font-size: 16px;
             text-align: center;
-            display: none; /* Inicialmente escondido */
+            display: none;
         }
 
         /* Rodapé */
@@ -110,20 +113,25 @@
             position: fixed;
             bottom: 0;
             width: 100%;
+            font-size: 14px;
         }
 
         /* Responsividade */
         @media (max-width: 768px) {
             .form-container {
                 max-width: 90%;
-                padding: 15px;
+                padding: 10px;
+            }
+
+            .form-container img {
+                max-width: 250px;
             }
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <!-- Mensagem de sucesso (oculta inicialmente) -->
+    <!-- Mensagem de sucesso -->
     <div id="successMessage" class="success-message">Login efetuado com sucesso!</div>
 
     <div class="form-container">
@@ -133,8 +141,8 @@
             <input type="email" id="email" placeholder="Digite seu e-mail" required>
             <input type="password" id="password" placeholder="Digite sua senha" required>
             <button type="submit">Entrar</button>
-            <p>Ainda não tem cadastro? <a href="cadastro.html">Cadastre-se</a></p>
         </form>
+        <p>Ainda não tem cadastro? <a href="cadastro.html">Cadastre-se</a></p>
     </div>
 </div>
 
@@ -178,15 +186,11 @@
             document.getElementById("email").value = '';
             document.getElementById("password").value = '';
 
-            // Aguarda 2 segundos e esconde a mensagem
+            // Aguarda 1,5 segundos e esconde a mensagem
             setTimeout(() => {
                 successMessage.style.display = "none";
-            }, 2000);
-
-            // Aguarda 2,5 segundos e redireciona para a página premium
-            setTimeout(() => {
-                window.location.href = "pagepremium.html"; // Certifique-se de que a página existe
-            }, 2500);
+                window.location.href = "pagepremium.html"; // Redireciona
+            }, 1500);
         } catch (error) {
             alert("Erro ao fazer login: " + error.message);
         }
@@ -195,3 +199,5 @@
 </body>
 </html>
 
+
+ 

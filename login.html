@@ -209,14 +209,14 @@
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
-                // Consultar dados do usuário no Firestore
+                // Consultar status ativo no Firestore
                 const userDocRef = doc(db, "users", user.uid);
                 const userDoc = await getDoc(userDocRef);
 
                 if (userDoc.exists()) {
                     const userData = userDoc.data();
 
-                    if (userData.status === "ativo" && userData.SubscriptionActive === true) {
+                    if (userData.status === "ativo") {
                         showNotification("Login efetuado com sucesso!");
                         setTimeout(() => {
                             window.location.href = "pagepremium.html";
@@ -228,7 +228,7 @@
                         }, 2000);
                     }
                 } else {
-                    showNotification("Usuário não encontrado no sistema.", true);
+                    showNotification("Usuário não encontrado no Firestore.", true);
                 }
             } catch (error) {
                 showNotification("Erro ao fazer login: " + error.message, true);

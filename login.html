@@ -36,6 +36,20 @@
             width: 90%;
             max-width: 500px;
             margin-bottom: 20px;
+            position: relative; /* Para imagem de fundo */
+        }
+
+        .form-container img {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+            border-radius: 10px;
         }
 
         .form-container input {
@@ -67,12 +81,13 @@
 
         /* Link de cadastro */
         .form-container p {
-            color: #32cd32;
+            color: #ffffff;
         }
 
         .form-container a {
             color: #32cd32;
             text-decoration: none;
+            font-weight: bold;
         }
 
         .form-container a:hover {
@@ -101,6 +116,18 @@
             bottom: 0;
             width: 100%;
         }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .form-container {
+                max-width: 90%;
+                padding: 15px;
+            }
+
+            .form-container img {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -109,6 +136,7 @@
     <div id="successMessage" class="success-message">Login efetuado com sucesso!</div>
 
     <div class="form-container">
+        <img src="Screenshot_20250112-173043-1.jpg" alt="Capa">
         <h2>Login</h2>
         <form id="loginForm">
             <input type="email" id="email" placeholder="Digite seu e-mail" required>
@@ -155,6 +183,10 @@
             const successMessage = document.getElementById("successMessage");
             successMessage.style.display = "block";
 
+            // Apaga os campos de preenchimento
+            document.getElementById("email").value = '';
+            document.getElementById("password").value = '';
+
             // Aguarda 2 segundos e redireciona para a página premium
             setTimeout(() => {
                 window.location.href = "pagepremium.html"; // Certifique-se de que a página existe
@@ -167,3 +199,4 @@
 </body>
 </html>
 
+ 

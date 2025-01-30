@@ -17,6 +17,7 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            justify-content: center;
         }
 
         .container {
@@ -35,6 +36,18 @@
             text-align: center;
             width: 90%;
             max-width: 500px;
+            margin-bottom: 20px;
+            position: relative; /* Para permitir a imagem dentro do formulário */
+        }
+
+        /* Capa - A imagem será inserida aqui */
+        .form-container .capa {
+            width: 100%;
+            height: 200px; /* Ajusta a altura da imagem */
+            background-image: url('Screenshot_20250112-173043-1.jpg');
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
             margin-bottom: 20px;
         }
 
@@ -89,59 +102,96 @@
             bottom: 0;
             width: 100%;
         }
+
+        /* Responsividade - Imagem de capa em diferentes dispositivos */
+        @media (max-width: 768px) {
+            .form-container .capa {
+                height: 150px; /* Reduz a altura da imagem para dispositivos menores */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .form-container .capa {
+                height: 120px; /* Ajusta ainda mais a altura para dispositivos muito pequenos */
+            }
+        }
     </style>
 </head>
 <body>
-
-    <div class="container">
-        <div class="form-container">
-            <h2>Login</h2>
-            <form id="loginForm">
-                <input type="email" id="email" placeholder="Digite seu e-mail" required>
-                <input type="password" id="password" placeholder="Digite sua senha" required>
-
-                <button type="submit">Entrar</button>
-                <p>Ainda não tem cadastro? <a href="cadastro.html">Cadastre-se</a></p>
-            </form>
-        </div>
+<div class="container">
+    <div class="form-container">
+        <div class="capa"></div> <!-- Imagem de capa aqui dentro do formulário -->
+        <h2>Login</h2>
+        <form id="loginForm">
+            <input type="email" id="email" placeholder="Digite seu e-mail" required>
+            <input type="password" id="password" placeholder="Digite sua senha" required>
+            <button type="submit">Entrar</button>
+            <p>Ainda não tem cadastro? <a href="cadastro.html">Cadastre-se</a></p>
+        </form>
     </div>
+</div>
 
-    <!-- Rodapé -->
-    <footer>
-        <p>© Copyright 2025 - Todos direitos autorais reservados/O Portal de Loterias - Mac Point é uma plataforma independente,não tem vínculo com a caixa econômica Federal .</p>
-    </footer>
+<!-- Rodapé -->
+<footer>
+    <p>© 2025 MacPoint. Todos os direitos reservados.</p>
+</footer>
 
-    <!-- Scripts Firebase -->
-    <script type="module">
-        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+<!-- Scripts Firebase -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 
-      const firebaseConfig = {
-            apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
-            authDomain: "mac-projeto-4e552.firebaseapp.com",
-            projectId: "mac-projeto-4e552",
-            storageBucket: "mac-projeto-4e552.appspot.com",
-            messagingSenderId: "537330451519",
-            appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
-        }; 
-            
+    // Configuração do Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+        authDomain: "mac-projeto-4e552.firebaseapp.com",
+        projectId: "mac-projeto-4e552",
+        storageBucket: "mac-projeto-4e552.appspot.com",
+        messagingSenderId: "537330451519",
+        appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
+    };
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
+    // Inicializando o Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-        document.getElementById("loginForm").addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
+    // Função de login
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
 
-            try {
-                const userCredential = await signInWithEmailAndPassword(auth, email, password);
-                // Redireciona após login bem-sucedido
-                window.location.href = "pagepremium.html"; // ou a página que o usuário deve acessar
-            } catch (error) {
-                alert("Erro ao fazer login: " + error.message);
+        try {
+            // Realiza o login do usuário
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // Verifica a assinatura do usuário no Firestore
+            const userDoc = await getDoc(doc(db, "users", user.uid));
+
+            if (userDoc.exists()) {
+                const subscriptionActive = userDoc.data().subscriptionActive;
+
+                if (subscriptionActive) {
+                    // Se a assinatura estiver ativa, redireciona para a página premium
+                    window.location.href = "pagePremium.html"; // Ou qualquer página premium
+                } else {
+                    // Se a assinatura não estiver ativa, redireciona para a página bloqueada
+                    window.location.href = "blocked.html"; // Página de bloqueio
+                }
+            } else {
+                throw new Error("Usuário não encontrado no Firestore");
             }
-        });
-    </script>
+        } catch (error) {
+            // Exibe mensagem de erro caso haja falha no login
+            alert("Erro ao fazer login: " + error.message);
+        }
+    });
+</script>
+
 </body>
 </html>
 

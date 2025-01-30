@@ -1,142 +1,145 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro</title>
     <style>
+        /* Estilo Geral */
         body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: white;
             font-family: Arial, sans-serif;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
             min-height: 100vh;
-            background-color: #f4f4f4;
-            margin: 0;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
         }
 
         .form-container {
-            background-color: #004d00;
+            background-color: #006400;
+            border: 3px solid #32cd32;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 400px;
+            border-radius: 10px;
             text-align: center;
-            border: 2px solid #00ff00;
-        }
-
-        .form-container img {
-            width: 100%;
-            max-width: 350px;
-            height: auto;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-
-        h1 {
-            color: white;
+            width: 90%;
+            max-width: 500px;
             margin-bottom: 20px;
         }
 
-        input {
+        .form-container input {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
-            border: 1px solid #00ff00;
-            border-radius: 4px;
-            box-sizing: border-box;
-            background-color: black;
+            border: 1px solid #32cd32;
+            border-radius: 5px;
+            background-color: #000;
             color: white;
+            box-sizing: border-box;
         }
 
-        button {
+        .form-container button {
             width: 100%;
             padding: 10px;
-            background-color: #28a745;
+            margin-top: 10px;
+            background-color: #32cd32;
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 5px;
+            font-size: 16px;
             cursor: pointer;
-            font-weight: bold;
         }
 
-        button:hover {
-            background-color: #218838;
+        .form-container button:hover {
+            background-color: #28a428;
         }
 
-        .mensagem {
-            display: none;
-            padding: 10px;
-            border-radius: 4px;
-            margin-top: 10px;
-        }
-
-        .sucesso {
-            background-color: #28a745;
+        /* Notificação */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #4caf50;
             color: white;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 16px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            animation: fadeIn 0.5s, fadeOut 0.5s 3.5s;
         }
 
-        .erro {
-            background-color: #dc3545;
-            color: white;
+        .notification.error {
+            background-color: #f44336;
         }
 
-        .login-link {
-            color: #00ff00;
-            display: block;
-            margin-top: 10px;
-            font-size: 14px;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Rodapé fixo no final da página */
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-10px); }
+        }
+
+        /* Rodapé */
         footer {
-            background-color: black;
+            background-color: #006400;
             color: white;
             text-align: center;
             padding: 10px;
+            position: relative;
             width: 100%;
-            position: fixed;
-            bottom: 0;
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <div class="form-container">
+            <h2>Cadastro</h2>
+<img src="sua-imagem.jpg" alt="Capa" style="width: 80%; max-width: 250px; height: auto; display: block; margin: 0 auto 10px; border-radius: 8px;">
+    <form id="registerForm">
+                <input type="text" id="fullName" placeholder="Digite seu nome completo" required>
+                <input type="email" id="email" placeholder="Digite seu e-mail" required>
+                <input type="password" id="password" placeholder="Digite sua senha" required>
+                <input type="password" id="confirmPassword" placeholder="Confirme sua senha" required>
 
-    <div class="form-container">
-        <!-- Imagem de capa -->
-        <img src="https://portaldeloteriasmacpoint.github.io/Mac-Point--Premium/Screenshot_20250112-173043-1.jpg" alt="Capa">
-        
-        <h1>Cadastro</h1>
-        <form id="cadastro-form">
-            <input type="text" id="nome" placeholder="Nome Completo" required><br>
-            <input type="email" id="email" placeholder="Email" required><br>
-            <input type="password" id="password" placeholder="Senha" required><br>
-            <input type="password" id="confirm-password" placeholder="Confirme sua Senha" required><br>
-            <button type="submit">Cadastrar</button>
-        </form>
+                <div class="checkbox-container">
+                    <input type="checkbox" id="terms" required>
+                    <label for="terms">Eu li e concordo: <a href="termos-e-condicoes.txt" class="link" target="_blank">Termos e Condições</a></label>
+                </div>
 
-        <!-- Mensagem de sucesso ou erro -->
-        <div id="mensagem" class="mensagem"></div>
-
-        <!-- Link para login antes do rodapé -->
-        <p class="login-link">Já tem cadastro? <a href="login.html">Faça login</a></p>
+                <button type="submit">Cadastrar</button>
+                <p>Já tem cadastro? <a href="login.html" class="link">Faça login</a></p>
+            </form>
+        </div>
     </div>
 
+    <!-- Notificação -->
+    <div id="notification" style="display: none;" class="notification"></div>
+
+    <!-- Rodapé -->
     <footer>
-        © 2025 Mac Point - Todos os direitos reservados.
+        <p>© 2025 MacPoint. Todos os direitos reservados.</p>
     </footer>
 
-    <!-- Firebase -->
+    <!-- Scripts Firebase -->
     <script type="module">
-        // Importação correta dos módulos do Firebase
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 
-        // Configuração do Firebase
-        const firebaseConfig = {
+       const firebaseConfig = {
             apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
             authDomain: "mac-projeto-4e552.firebaseapp.com",
             projectId: "mac-projeto-4e552",
@@ -145,66 +148,60 @@
             appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
         };
 
-        // Inicializando Firebase
         const app = initializeApp(firebaseConfig);
-        const auth = getAuth();
-        const db = getFirestore();
+        const auth = getAuth(app);
+        const db = getFirestore(app);
 
-        // Função de cadastro
-        document.getElementById('cadastro-form').addEventListener('submit', async function (e) {
+        function showNotification(message, isError = false) {
+            const notification = document.getElementById("notification");
+            notification.textContent = message;
+            notification.className = "notification";
+            if (isError) {
+                notification.classList.add("error");
+            }
+            notification.style.display = "block";
+
+            // Oculta a notificação após 3 segundos
+            setTimeout(() => {
+                notification.style.display = "none";
+            }, 3000);
+        }
+
+        document.getElementById("registerForm").addEventListener("submit", async (e) => {
             e.preventDefault();
+            const fullName = document.getElementById("fullName").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirmPassword").value;
 
-            const nome = document.getElementById('nome').value;
-            const email = document.getElementById('email').value;
-            const senha = document.getElementById('password').value;
-            const confirmarSenha = document.getElementById('confirm-password').value;
-            const mensagem = document.getElementById('mensagem');
-
-            // Verifica se as senhas coincidem
-            if (senha !== confirmarSenha) {
-                mensagem.textContent = "As senhas não coincidem!";
-                mensagem.className = "mensagem erro";
-                mensagem.style.display = "block";
-                setTimeout(() => mensagem.style.display = "none", 2000);
+            if (password !== confirmPassword) {
+                showNotification("As senhas não coincidem.", true);
                 return;
             }
 
             try {
-                // Criando usuário no Firebase Authentication
-                const userCredential = await createUserWithEmailAndPassword(auth, email, senha);
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
-                // Criando o documento do usuário no Firestore
-                await setDoc(doc(db, "usuarios", user.uid), {
-                    nome: nome,
-                    email: email,
-                    status: 'inativo'
+                await setDoc(doc(db, "users", user.uid), {
+                    fullName: fullName,
+                    email: email
                 });
 
-                // Exibir mensagem de sucesso
-                mensagem.textContent = "Cadastro realizado com sucesso!";
-                mensagem.className = "mensagem sucesso";
-                mensagem.style.display = "block";
+                // Exibe notificação de sucesso
+                showNotification("Cadastro realizado com sucesso!");
 
-                // Limpar os campos do formulário
-                document.getElementById('cadastro-form').reset();
+                // Limpa os campos do formulário
+                document.getElementById("registerForm").reset();
 
-                // Esconder a mensagem após 2 segundos e redirecionar
+                // Aguarda 3 segundos e redireciona para login.html
                 setTimeout(() => {
-                    mensagem.style.display = "none";
-                    window.location.href = 'login.html';
-                }, 2000);
-
+                    window.location.href = "login.html";
+                }, 3000);
             } catch (error) {
-                mensagem.textContent = "Erro ao cadastrar usuário!";
-                mensagem.className = "mensagem erro";
-                mensagem.style.display = "block";
-                setTimeout(() => mensagem.style.display = "none", 2000);
+                showNotification(`Erro: ${error.message}`, true);
             }
         });
     </script>
-
 </body>
 </html>
-
-

@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -186,27 +186,23 @@
 
     <!-- Scripts Firebase -->
     <script type="module">
-        // Importar Firebase SDK
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
         import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 
-        // Configuração do Firebase
         const firebaseConfig = {
-            apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
-            authDomain: "mac-projeto-4e552.firebaseapp.com",
-            projectId: "mac-projeto-4e552",
-            storageBucket: "mac-projeto-4e552.appspot.com",
-            messagingSenderId: "537330451519",
-            appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
+            apiKey: "SUA_API_KEY",
+            authDomain: "SEU_DOMINIO",
+            projectId: "SEU_PROJETO_ID",
+            storageBucket: "SEU_STORAGE_BUCKET",
+            messagingSenderId: "SEU_MESSAGING_ID",
+            appId: "SEU_APP_ID"
         };
 
-        // Inicializar Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // Função para exibir notificações
         function showNotification(message, isError = false) {
             const notification = document.getElementById("notification");
             notification.textContent = message;
@@ -220,7 +216,6 @@
             }, 4000);
         }
 
-        // Cadastro de usuário
         document.getElementById("registerForm").addEventListener("submit", async (e) => {
             e.preventDefault();
             const fullName = document.getElementById("fullName").value;
@@ -234,33 +229,17 @@
             }
 
             try {
-                // Criar o usuário no Firebase Authentication
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
-                // Criar o documento do usuário no Firestore com o uid
                 await setDoc(doc(db, "users", user.uid), {
                     fullName: fullName,
-                    email: email,
-                    subscriptionActive: true, // Ativo por padrão
-                    subscriptionEndDate: new Date(new Date().setMonth(new Date().getMonth() + 1)), // Assinatura mensal
-                    plan: "Mensal"
+                    email: email
                 });
 
-                // Mostrar notificação de sucesso
                 showNotification("Cadastro realizado com sucesso!");
-
-                // Redirecionar para a página de login após 4 segundos
-                setTimeout(() => {
-                    window.location.href = "login.html";
-                }, 4000);
             } catch (error) {
-                // Tratar erros
-                if (error.code === "auth/email-already-in-use") {
-                    showNotification("Erro: O e-mail já está em uso. Faça login.", true);
-                } else {
-                    showNotification(`Erro: ${error.message}`, true);
-                }
+                showNotification(`Erro: ${error.message}`, true);
             }
         });
     </script>

@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -210,14 +209,14 @@
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
-                // Consultar status ativo no Firestore
+                // Consultar dados do usuário no Firestore
                 const userDocRef = doc(db, "users", user.uid);
                 const userDoc = await getDoc(userDocRef);
 
                 if (userDoc.exists()) {
                     const userData = userDoc.data();
 
-                    if (userData.status === "ativo") {
+                    if (userData.status === "ativo" && userData.SubscriptionActive === true) {
                         showNotification("Login efetuado com sucesso!");
                         setTimeout(() => {
                             window.location.href = "pagepremium.html";
@@ -229,16 +228,10 @@
                         }, 2000);
                     }
                 } else {
-                    showNotification("Usuário não encontrado no Firestore.", true);
+                    showNotification("Usuário não encontrado no sistema.", true);
                 }
             } catch (error) {
-                if (error.code === 'auth/user-not-found') {
-                    showNotification("Usuário não encontrado.", true);
-                } else if (error.code === 'auth/wrong-password') {
-                    showNotification("Senha incorreta.", true);
-                } else {
-                    showNotification("Erro ao fazer login: " + error.message, true);
-                }
+                showNotification("Erro ao fazer login: " + error.message, true);
             }
         });
     </script>

@@ -36,20 +36,15 @@
             width: 90%;
             max-width: 500px;
             margin-bottom: 20px;
-            position: relative; /* Para imagem de fundo */
+            position: relative;
         }
 
         .form-container img {
             width: 100%;
             max-width: 500px;
             height: auto;
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: -1;
             border-radius: 10px;
+            margin-bottom: 10px;
         }
 
         .form-container input {
@@ -102,8 +97,8 @@
             margin: 20px 0;
             border-radius: 5px;
             font-size: 16px;
-            display: none; /* Inicialmente escondido */
             text-align: center;
+            display: none; /* Inicialmente escondido */
         }
 
         /* Rodapé */
@@ -122,10 +117,6 @@
             .form-container {
                 max-width: 90%;
                 padding: 15px;
-            }
-
-            .form-container img {
-                width: 100%;
             }
         }
     </style>
@@ -164,7 +155,7 @@
         storageBucket: "mac-projeto-4e552.appspot.com",
         messagingSenderId: "537330451519",
         appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
-    }; 
+    };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
@@ -174,23 +165,28 @@
         
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
+        const successMessage = document.getElementById("successMessage");
 
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             console.log("Usuário autenticado:", userCredential.user);
 
             // Exibe a mensagem de sucesso
-            const successMessage = document.getElementById("successMessage");
             successMessage.style.display = "block";
 
             // Apaga os campos de preenchimento
             document.getElementById("email").value = '';
             document.getElementById("password").value = '';
 
-            // Aguarda 2 segundos e redireciona para a página premium
+            // Aguarda 2 segundos e esconde a mensagem
+            setTimeout(() => {
+                successMessage.style.display = "none";
+            }, 2000);
+
+            // Aguarda 2,5 segundos e redireciona para a página premium
             setTimeout(() => {
                 window.location.href = "pagepremium.html"; // Certifique-se de que a página existe
-            }, 2000);
+            }, 2500);
         } catch (error) {
             alert("Erro ao fazer login: " + error.message);
         }
@@ -199,4 +195,3 @@
 </body>
 </html>
 
- 

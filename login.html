@@ -1,6 +1,7 @@
 
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -101,6 +102,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             z-index: 1000;
             animation: fadeIn 0.5s, fadeOut 0.5s 3.5s;
+            display: none;
         }
 
         .notification.error {
@@ -157,7 +159,7 @@
     </div>
 
     <!-- Notificação -->
-    <div id="notification" style="display: none;" class="notification"></div>
+    <div id="notification" class="notification"></div>
 
     <!-- Rodapé -->
     <footer>
@@ -209,20 +211,23 @@
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
-                // Consultar status ativo no Firestore
+                console.log("Usuário autenticado:", user); // Debug
+
+                // Consultar status no Firestore
                 const userDocRef = doc(db, "users", user.uid);
                 const userDoc = await getDoc(userDocRef);
 
                 if (userDoc.exists()) {
                     const userData = userDoc.data();
+                    console.log("Dados do usuário Firestore:", userData); // Debug
 
-                    if (userData.status === "ativo") {
+                    if (userData.Subscriptionactive === true) {
                         showNotification("Login efetuado com sucesso!");
                         setTimeout(() => {
                             window.location.href = "pagepremium.html";
                         }, 2000);
                     } else {
-                        showNotification("Acesso bloqueado. Entre em contato com o suporte.", true);
+                        showNotification("Acesso bloqueado. Contate o suporte.", true);
                         setTimeout(() => {
                             window.location.href = "bloqueado.html";
                         }, 2000);
@@ -231,10 +236,12 @@
                     showNotification("Usuário não encontrado no Firestore.", true);
                 }
             } catch (error) {
-                showNotification("Erro ao fazer login: " + error.message, true);
+                console.error("Erro ao fazer login:", error);
+                showNotification("Erro: " + error.message, true);
             }
         });
     </script>
 </body>
 </html>
+
 

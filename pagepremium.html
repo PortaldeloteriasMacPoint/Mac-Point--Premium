@@ -5,9 +5,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
   <title>Página Protegida</title>
   
   <!-- Incluindo o Firebase -->
@@ -25,7 +22,7 @@
 
     header {
       background-color: black;
-      border-bottom: 5px solid #d4af37;
+      border-bottom: 5px solid #d4af37; /* Borda dourada */
       padding: 15px;
       position: relative;
       z-index: 1001;
@@ -54,8 +51,8 @@
       left: -250px;
       width: 250px;
       height: 100%;
-      background-color: #013220;
-      border-right: 3px solid #d4af37;
+      background-color: #013220; /* Verde escuro */
+      border-right: 3px solid #d4af37; /* Borda dourada */
       padding-top: 20px;
       transition: 0.3s;
       z-index: 1000;
@@ -69,7 +66,7 @@
       text-decoration: none;
       background-color: black;
       border-radius: 10px;
-      border: 1px solid #d4af37;
+      border: 1px solid #d4af37; /* Borda dourada */
       transition: background-color 0.3s;
     }
 
@@ -98,7 +95,7 @@
     }
 
     .menu-lateral .active {
-      background-color: #004d26;
+      background-color: #004d26; /* Verde escuro para destacar */
       color: white;
     }
 
@@ -122,10 +119,11 @@
       width: 100%;
       max-height: 400px;
       object-fit: cover;
-      border: 2px solid #00ff00;
+      border: 2px solid #00ff00; /* Borda verde-claro */
       border-radius: 10px;
     }
 
+    /* Descrição centralizada */
     .descricao {
       text-align: center;
       margin: 20px auto;
@@ -134,11 +132,13 @@
       color: #ccc;
     }
 
+    /* Estilo para a linha de borda amarela */
     .linha-borda {
       border-top: 2px solid yellow;
       margin: 20px 0;
     }
 
+    /* Estilo para os botões com ícones dentro de quadradinhos arredondados */
     .icone-botao-container {
       display: flex;
       justify-content: center;
@@ -223,18 +223,19 @@
     "Navegue pelo menu e descubra o melhor do Mac Point."
   </div>
 
+  <!-- Ícones como botões dentro de quadrados arredondados -->
   <div class="icone-botao-container">
     <button class="icone-botao">
-      <i class="⚙️"></i>
+      <i class="⚙️"></i> <!-- Ícone de engrenagem -->
     </button>
     <button class="icone-botao">
-      <i class="💬"></i>
+      <i class="💬"></i> <!-- Ícone de bate-papo -->
     </button>
     <button class="icone-botao">
-      <i class="📝"></i>
+      <i class="📝"></i> <!-- Ícone de caderno -->
     </button>
     <button class="icone-botao">
-      <i class="🛒"></i>
+      <i class="🛒"></i> <!-- Ícone de carrinho de compras -->
     </button>
   </div>
 
@@ -243,116 +244,85 @@
   </footer>
 
   <script>
-    // Configuração do Firebase
-const firebaseConfig = {
-            apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
-            authDomain: "mac-projeto-4e552.firebaseapp.com",
-            projectId: "mac-projeto-4e552",
-            storageBucket: "mac-projeto-4e552.appspot.com",
-            messagingSenderId: "537330451519",
-            appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
-        };      
-    // Inicializa o Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+    const firebaseConfig = {
+      apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+      authDomain: "mac-projeto-4e552.firebaseapp.com",
+      projectId: "mac-projeto-4e552",
+      storageBucket: "mac-projeto-4e552.appspot.com",
+      messagingSenderId: "537330451519",
+      appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
+    };
+
+    // Inicializar o Firebase
+    firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
+    const firestore = firebase.firestore();
 
-    // Função para verificar a permissão de acesso
-    function verificarPermissao() {
-      auth.onAuthStateChanged((user) => {
-        if (user) {
-          // Usuário autenticado, vamos verificar a permissão de subscription
-          db.collection('usuarios').doc(user.uid).get()
-            .then((doc) => {
-              if (doc.exists && doc.data().subscription === true) {
-                // O usuário tem subscription ativa,
-
-
-<script>
-  // Função para verificar a permissão de acesso
-  function verificarPermissao() {
-    auth.onAuthStateChanged((user) => {
+    // Verificar se o usuário está logado e tem assinatura ativa
+    firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
-        // Usuário autenticado, vamos verificar a permissão de subscription
-        db.collection('usuarios').doc(user.uid).get()
-          .then((doc) => {
-            if (doc.exists && doc.data().subscription === true) {
-              // O usuário tem subscription ativa, ele pode acessar a página
-              console.log("Acesso autorizado: Assinatura ativa.");
-            } else {
-              // Usuário sem assinatura ativa, redirecionar ou bloquear o acesso
-              alert("Você precisa de uma assinatura ativa para acessar esta página.");
-              window.location.href = "/"; // Redireciona para a página inicial ou outra de sua escolha
-            }
-          })
-          .catch((error) => {
-            console.error("Erro ao verificar usuário:", error);
-          });
+        const userDoc = await firestore.collection('users').doc(user.uid).get();
+        const subscriptionActive = userDoc.exists && userDoc.data().subscriptionActive;
+
+        // Verificar a assinatura ativa
+        if (!subscriptionActive) {
+          alert("Você precisa de uma assinatura ativa para acessar este conteúdo.");
+          window.location.href = "login.html"; // Redirecionar para login
+        }
       } else {
-        // Usuário não autenticado, redireciona para login
-        alert("Você precisa estar logado para acessar esta página.");
-        window.location.href = "/login"; // Redireciona para a página de login
+        window.location.href = "login.html"; // Redirecionar para login caso não esteja logado
       }
     });
-  }
 
-  // Chama a função de verificação de permissão ao carregar a página
-  window.onload = verificarPermissao;
+    // Limpar cache do navegador
+    window.onload = () => {
+      if ('caches' in window) {
+        caches.keys().then((cacheNames) => {
+          cacheNames.forEach((cacheName) => {
+            caches.delete(cacheName);
+          });
+        });
+      }
+    };
 
-  // Função para abrir e fechar o menu lateral
-  function toggleMenu() {
-    const menu = document.getElementById("menu");
-    const overlay = document.getElementById("overlay");
-    const menuStyle = menu.style;
-
-    if (menuStyle.left === "0px") {
-      menuStyle.left = "-250px";
-      overlay.style.display = "none";
-    } else {
-      menuStyle.left = "0px";
-      overlay.style.display = "block";
+    function toggleMenu() {
+      const menu = document.getElementById("menu");
+      const overlay = document.getElementById("overlay");
+      if (menu.style.left === "0px") {
+        menu.style.left = "-250px";
+        overlay.style.display = "none";
+      } else {
+        menu.style.left = "0px";
+        overlay.style.display = "block";
+      }
     }
-  }
+function toggleHighlight(id) {
+      const items = document.querySelectorAll('.menu-lateral a');
+      items.forEach(item => {
+        item.classList.remove('active');
+      });
 
-  // Função para destacar os itens do menu
-  function toggleHighlight(btnId) {
-    const buttons = document.querySelectorAll("a");
-    buttons.forEach((button) => {
-      button.classList.remove("active");
-    });
-    document.getElementById(btnId).classList.add("active");
-  }
-
-  // Função para mostrar e esconder os submenus
-  function toggleSubmenu(submenuId, btnId) {
-    const submenu = document.getElementById(submenuId);
-    const button = document.getElementById(btnId);
-    const submenuStyle = submenu.style;
-
-    if (submenuStyle.display === "none" || submenuStyle.display === "") {
-      submenuStyle.display = "block";
-      button.classList.add("active");
-    } else {
-      submenuStyle.display = "none";
-      button.classList.remove("active");
+      const selectedItem = document.getElementById(id);
+      selectedItem.classList.add('active');
     }
-  }
 
-  // Função para confirmar o logout
-  function confirmarSair() {
-    if (confirm("Tem certeza que deseja sair?")) {
-      auth.signOut()
-        .then(() => {
+    function toggleSubmenu(submenuId, buttonId) {
+      const submenu = document.getElementById(submenuId);
+      submenu.style.display = submenu.style.display === "block" ? "none" : "block";
+      toggleHighlight(buttonId);
+    }
+
+    function confirmarSair() {
+      if (confirm("Tem certeza que deseja sair?")) {
+        firebase.auth().signOut().then(() => {
           alert("Você saiu com sucesso.");
-          window.location.href = "/login"; // Redireciona para página de login
-        })
-        .catch((error) => {
+          window.location.href = "login.html";
+        }).catch((error) => {
           console.error("Erro ao sair:", error);
         });
+      }
     }
-  }
-</script>
+  </script>
 </body>
 </html>
-
 

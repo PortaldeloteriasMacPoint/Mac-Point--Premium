@@ -1,161 +1,185 @@
 
 
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
         body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #121212;
+            margin: 0;
         }
 
         .container {
-            background-color: #004d00;
+            background-color: #013220; /* Verde-escuro */
+            border: 2px solid #00ff00; /* Verde-claro */
             padding: 20px;
+            text-align: center;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
             width: 90%;
             max-width: 400px;
-            text-align: center;
-            border: 2px solid #00ff00;
         }
 
-        .logo {
-            width: 100px;
-            height: 100px;
-            border-radius: 10px;
-            border: 2px solid #00ff00;
+        .container img {
+            max-width: 100%;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        h1 {
             margin-bottom: 15px;
-        }
-
-        h2 {
-            color: white;
-            margin-bottom: 20px;
         }
 
         input {
             width: 100%;
             padding: 10px;
-            margin: 10px 0;
-            border: none;
-            border-radius: 5px;
+            margin-bottom: 10px;
             background-color: black;
+            border: 1px solid #00ff00;
             color: white;
-            font-size: 16px;
+            border-radius: 5px;
         }
 
         button {
             width: 100%;
             padding: 10px;
             background-color: #00ff00;
+            color: black;
             border: none;
             border-radius: 5px;
-            color: black;
-            font-size: 16px;
             cursor: pointer;
-            margin-top: 10px;
+            font-size: 16px;
         }
 
         button:hover {
-            background-color: #00cc00;
+            background-color: #008000;
         }
 
-        .register {
+        .cadastro {
             margin-top: 15px;
-            color: white;
         }
 
-        .register a {
+        .cadastro a {
             color: #00ff00;
             text-decoration: none;
             font-weight: bold;
         }
 
-        .register a:hover {
+        .cadastro a:hover {
             text-decoration: underline;
         }
 
-        .footer {
-            position: absolute;
-            bottom: 10px;
+        .notificacao {
+            display: none;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            max-width: 300px;
+        }
+
+        .sucesso {
+            background-color: #00ff00;
+            color: black;
+        }
+
+        .erro {
+            background-color: red;
             color: white;
-            font-size: 14px;
+        }
+
+        footer {
+            background-color: #013220;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
         }
     </style>
 </head>
 <body>
+
     <div class="container">
-        <img src="sua-imagem.png" alt="Logo" class="logo"> <!-- Imagem acima do título Login -->
-        <h2>Login</h2>
-        <form id="loginForm">
-            <input type="email" id="email" placeholder="E-mail" required>
-            <input type="password" id="password" placeholder="Senha" required>
-            <button type="submit">Entrar</button>
+        <img src="capa.jpg" alt="Imagem de Capa"> <!-- Adicione a imagem desejada -->
+        <h1>Login</h1>
+        <form onsubmit="event.preventDefault(); autenticarUsuario();">
+            <input type="email" id="email" placeholder="E-mail" required><br>
+            <input type="password" id="senha" placeholder="Senha" required><br>
+            <button type="submit">Cadastrar/Login</button>
         </form>
-        <p class="register">Não tem cadastro? <a href="cadastro.html">Cadastre-se</a></p>
+        <div class="cadastro">
+            Você já tem cadastro? Se não tem, <a href="cadastro.html">Cadastre-se</a>
+        </div>
     </div>
-    <div class="footer">© 2025 Seu Projeto - Todos os direitos reservados.</div>
+
+    <div class="notificacao" id="notificacao"></div>
+
+    <footer>
+        &copy; 2025 - Todos os direitos reservados
+    </footer>
 
     <script>
-        // Configuração do Firebase
-    const firebaseConfig = {
-            apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
-            authDomain: "mac-projeto-4e552.firebaseapp.com",
-            projectId: "mac-projeto-4e552",
-            storageBucket: "mac-projeto-4e552.appspot.com",
-            messagingSenderId: "537330451519",
-            appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
-        };        firebase.initializeApp(firebaseConfig);
+        function autenticarUsuario() {
+            let email = document.getElementById("email").value;
+            let senha = document.getElementById("senha").value;
 
-        document.getElementById("loginForm").addEventListener("submit", function (e) {
-            e.preventDefault();
+            fetch("cadastrar.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, senha })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.sucesso) {
+                    verificarAcesso(email);
+                } else {
+                    mostrarNotificacao(data.mensagem, "erro");
+                }
+            });
+        }
 
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
-
-            firebase.auth().signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    return userCredential.user.getIdToken();
-                })
-                .then((token) => {
-                    // Enviar o token para o PHP
-                    fetch("verifica_token.php", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({ token })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.autorizado) {
-                            window.location.href = "pagepremium.html"; // Acesso liberado
-                        } else {
-                            alert("Acesso negado. Aguarde autorização.");
-                        }
-                    });
-                })
-                .catch((error) => {
-                    alert("Erro: " + error.message);
+        function verificarAcesso(email) {
+            fetch("verificar_acesso.php?email=" + encodeURIComponent(email))
+                .then(response => response.json())
+                .then(data => {
+                    if (data.liberado) {
+                        mostrarNotificacao("Login efetuado com sucesso!", "sucesso");
+                        setTimeout(() => {
+                            window.location.href = "pagepremium.html";
+                        }, 2000);
+                    } else {
+                        mostrarNotificacao("Acesso negado! Aguarde autorização.", "erro");
+                    }
                 });
-        });
+        }
+
+        function mostrarNotificacao(mensagem, tipo) {
+            let notificacao = document.getElementById("notificacao");
+            notificacao.textContent = mensagem;
+            notificacao.className = "notificacao " + tipo;
+            notificacao.style.display = "block";
+            setTimeout(() => {
+                notificacao.style.display = "none";
+            }, 3000);
+        }
     </script>
+
 </body>
 </html>
 
- 
+

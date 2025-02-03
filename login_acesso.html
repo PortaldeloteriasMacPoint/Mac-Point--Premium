@@ -5,181 +5,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Login de Atualização</title>
     <style>
-        body {
-            background-color: black;
-            color: white;
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-
-        .container {
-            background-color: #013220; /* Verde-escuro */
-            border: 2px solid #00ff00; /* Verde-claro */
-            padding: 20px;
-            text-align: center;
-            border-radius: 10px;
-            width: 90%;
-            max-width: 400px;
-        }
-
-        .container img {
-            max-width: 100%;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-
-        h1 {
-            margin-bottom: 15px;
-        }
-
-        input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            background-color: black;
-            border: 1px solid #00ff00;
-            color: white;
-            border-radius: 5px;
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #00ff00;
-            color: black;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        button:hover {
-            background-color: #008000;
-        }
-
-        .cadastro {
-            margin-top: 15px;
-        }
-
-        .cadastro a {
-            color: #00ff00;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .cadastro a:hover {
-            text-decoration: underline;
-        }
-
-        .notificacao {
-            display: none;
-            padding: 10px;
-            border-radius: 5px;
-            text-align: center;
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80%;
-            max-width: 300px;
-        }
-
-        .sucesso {
-            background-color: #00ff00;
-            color: black;
-        }
-
-        .erro {
-            background-color: red;
-            color: white;
-        }
-
-        footer {
-            background-color: #013220;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
+        body { background-color: black; color: white; font-family: Arial, sans-serif; }
+        .form-container { width: 300px; margin: 100px auto; padding: 20px; background-color: #2d2d2d; border-radius: 10px; text-align: center; }
+        input[type="email"], input[type="password"] { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; background-color: #333; color: white; }
+        button { padding: 10px 20px; background-color: #FFA500; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background-color: #ff7f00; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <img src="capa.jpg" alt="Imagem de Capa"> <!-- Adicione a imagem desejada -->
-        <h1>Login</h1>
-        <form onsubmit="event.preventDefault(); autenticarUsuario();">
-            <input type="email" id="email" placeholder="E-mail" required><br>
-            <input type="password" id="senha" placeholder="Senha" required><br>
-            <button type="submit">Cadastrar/Login</button>
-        </form>
-        <div class="cadastro">
-            Você já tem cadastro? Se não tem, <a href="cadastro.html">Cadastre-se</a>
-        </div>
-    </div>
-
-    <div class="notificacao" id="notificacao"></div>
-
-    <footer>
-        &copy; 2025 - Todos os direitos reservados
-    </footer>
-
-    <script>
-        function autenticarUsuario() {
-            let email = document.getElementById("email").value;
-            let senha = document.getElementById("senha").value;
-
-            fetch("cadastrar.php", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, senha })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.sucesso) {
-                    verificarAcesso(email);
-                } else {
-                    mostrarNotificacao(data.mensagem, "erro");
-                }
-            });
-        }
-
-        function verificarAcesso(email) {
-            fetch("verificar_acesso.php?email=" + encodeURIComponent(email))
-                .then(response => response.json())
-                .then(data => {
-                    if (data.liberado) {
-                        mostrarNotificacao("Login efetuado com sucesso!", "sucesso");
-                        setTimeout(() => {
-                            window.location.href = "pagepremium.html";
-                        }, 2000);
-                    } else {
-                        mostrarNotificacao("Acesso negado! Aguarde autorização.", "erro");
-                    }
-                });
-        }
-
-        function mostrarNotificacao(mensagem, tipo) {
-            let notificacao = document.getElementById("notificacao");
-            notificacao.textContent = mensagem;
-            notificacao.className = "notificacao " + tipo;
-            notificacao.style.display = "block";
-            setTimeout(() => {
-                notificacao.style.display = "none";
-            }, 3000);
-        }
-    </script>
+<div class="form-container">
+    <h2>Login de Atualização</h2>
+    <form action="validar-login.php" method="POST">
+        <input type="email" name="email" placeholder="Digite seu e-mail" required><br>
+        <input type="password" name="senha" placeholder="Digite sua senha" required><br>
+        <button type="submit" name="login">Entrar</button>
+    </form>
+</div>
 
 </body>
 </html>
-
 

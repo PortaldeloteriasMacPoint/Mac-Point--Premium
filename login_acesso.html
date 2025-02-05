@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -7,132 +5,89 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login de Atualização</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
         body {
             background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
             height: 100vh;
         }
-
         .form-container {
-            background-color: #004d00; /* Verde escuro */
-            border: 2px solid #00ff00; /* Borda verde brilhante */
-            border-radius: 15px;
+            background-color: #013220; 
+            border: 2px solid #00FF00; 
+            border-radius: 10px;
             padding: 20px;
             width: 90%;
-            max-width: 400px; /* Ajustável para tablet e PC */
+            max-width: 400px;
             text-align: center;
-            position: relative;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
         }
-
-        .form-container img {
+        .image-container {
             width: 100%;
-            border-radius: 10px;
-            margin-bottom: 15px;
+            height: 100px;
+            background-color: #00FF00; 
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
         }
-
-        input {
+        .image-container img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        input[type="email"], input[type="password"] {
             width: 100%;
             padding: 10px;
             margin-bottom: 10px;
-            border: 2px solid #00ff00; /* Borda verde brilhante */
-            border-radius: 8px;
+            border: 1px solid #00FF00;
+            border-radius: 5px;
             background-color: black;
             color: white;
             font-size: 16px;
-            text-align: center;
         }
-
         button {
             width: 100%;
             padding: 10px;
-            background-color: #cc5500; /* Laranja escuro */
+            background-color: #00FF00;
             border: none;
-            border-radius: 8px;
-            color: white;
-            font-size: 18px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #994400;
-        }
-
-        .mensagem {
-            margin-top: 15px;
-            padding: 10px;
             border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
             font-weight: bold;
-            display: none;
+            color: black;
         }
-
-        .mensagem.sucesso {
-            background-color: #00cc00; /* Verde */
-            color: white;
+        button:hover {
+            background-color: #00CC00;
         }
-
-        .mensagem.erro {
-            background-color: #cc0000; /* Vermelho */
+        .footer {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+            background-color: green;
             color: white;
+            padding: 10px 0;
         }
     </style>
 </head>
 <body>
-
     <div class="form-container">
-        <img src="capa.jpg" alt="Imagem de Capa"> <!-- Adicione uma imagem chamada "capa.jpg" -->
-        <h2 style="color: white;">Acesso Restrito</h2>
-        <input type="email" id="email" placeholder="Digite seu e-mail">
-        <input type="password" id="senha" placeholder="Digite sua senha">
-        <button onclick="login()">Acessar</button>
-        <p class="mensagem" id="mensagem"></p>
+        <div class="image-container">
+            <img src="Screenshot_20250112-173043-1.jpg" alt="Imagem de Capa">
+        </div>
+        <h2>Login de Atualização</h2>
+        <form action="validar-login.php" method="POST">
+            <input type="email" name="email" placeholder="Digite seu e-mail" required><br>
+            <input type="password" name="senha" placeholder="Digite sua senha" required><br>
+            <button type="submit" name="login">Entrar</button>
+        </form>
     </div>
-
-    <script>
-        function login() {
-            let email = document.getElementById("email").value;
-            let senha = document.getElementById("senha").value;
-            let mensagem = document.getElementById("mensagem");
-
-            fetch("verificar_acesso.php", {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: `email=${email}&senha=${senha}`
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === "acesso_permitido") {
-                    mensagem.className = "mensagem sucesso";
-                    mensagem.innerText = "✅ Acesso Liberado!";
-                    mensagem.style.display = "block";
-
-                    setTimeout(() => {
-                        localStorage.setItem("usuario_logado", email);
-                        window.location.href = "protegido.html";
-                    }, 1500); // Redireciona após 1,5s
-                } else {
-                    mensagem.className = "mensagem erro";
-                    mensagem.innerText = "❌ Acesso Negado!";
-                    mensagem.style.display = "block";
-                }
-            })
-            .catch(() => {
-                mensagem.className = "mensagem erro";
-                mensagem.innerText = "❌ Erro ao conectar ao servidor!";
-                mensagem.style.display = "block";
-            });
-        }
-    </script>
-
 </body>
 </html>
-
-

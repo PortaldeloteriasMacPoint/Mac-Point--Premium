@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal de Loterias Mac Point</title>
-
+    
     <!-- Evitar cache -->
     <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0" />
     <meta http-equiv="Pragma" content="no-cache" />
@@ -26,38 +26,25 @@
             appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
         };
 
-        // Inicializa o Firebase
         firebase.initializeApp(firebaseConfig);
 
-        // Exibe "Carregando..." enquanto verifica a autenticação
-        window.onload = function() {
-            // Criando um loader simples para mostrar na tela
-            const loadingDiv = document.createElement("div");
-            loadingDiv.classList.add("loading");
-            loadingDiv.innerHTML = "Carregando...";
-            document.body.appendChild(loadingDiv);
-
-            // Função para verificar a autenticação do usuário
+        // Função para verificar a autenticação do usuário
+        function checkAuthentication() {
             firebase.auth().onAuthStateChanged(user => {
-                // Removendo o "Carregando..." após a autenticação ser verificada
-                const loadingDiv = document.querySelector(".loading");
-                if (loadingDiv) {
-                    loadingDiv.remove(); // Remove o carregamento
-                }
-
                 if (!user) {
                     // Se não autenticado, redireciona para a página de bloqueio
                     window.location.href = "bloqueado.html";
                 } else {
-                    // Confirma a autenticação e verifica se o usuário foi removido
+                    // Se autenticado, verifica se o usuário foi excluído da autenticação
                     user.getIdToken(true)
                         .then(() => user.reload()) // Atualiza os dados do usuário
                         .then(() => {
                             if (!firebase.auth().currentUser) {
+                                // Se o usuário foi removido, desconecta e redireciona
                                 firebase.auth().signOut();
-                                window.location.href = "bloqueado.html"; // Redireciona para a página de bloqueio
+                                window.location.href = "bloqueado.html";
                             } else {
-                                // 🔹 Usuário autenticado → Carrega o conteúdo seguro
+                                // Carrega o conteúdo seguro
                                 loadContent();
                             }
                         })
@@ -68,10 +55,11 @@
                         });
                 }
             });
-        };
+        }
 
         // Função que carrega o conteúdo da página apenas se o usuário for autenticado
         function loadContent() {
+            // Substitui o conteúdo da página após a autenticação
             document.body.innerHTML = `
                 <div class="top-bar">
                     <span class="menu-icon" onclick="toggleMenu()">☰</span>
@@ -137,6 +125,9 @@
             const submenu = document.getElementById('submenu');
             submenu.classList.toggle('active');
         }
+
+        // Chama a verificação de autenticação quando a página carrega
+        window.onload = checkAuthentication;
     </script>
 
     <style>
@@ -154,18 +145,6 @@
         .submenu.active { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
         .submenu span { font-size: 30px; cursor: pointer; }
         footer { position: fixed; bottom: 0; width: 100%; height: 40px; background: black; color: white; text-align: center; line-height: 40px; }
-
-        /* Estilos para o carregamento */
-        .loading {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 20px;
-            font-weight: bold;
-            color: #333;
-            z-index: 1000;
-        }
     </style>
 </head>
 <body>

@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal de Loterias Mac Point</title>
+    
+    <!-- Evitar cache -->
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
 
@@ -21,7 +27,9 @@
         firebase.initializeApp(firebaseConfig);
 
         // Exibe "Carregando..." enquanto verifica a autenticação
-        document.body.innerHTML = "<h1 style='text-align:center;'>Carregando...</h1>";
+        window.onload = function() {
+            document.body.innerHTML = "<h1 style='text-align:center;'>Carregando...</h1>";
+        };
 
         // Função para verificar a autenticação do usuário
         firebase.auth().onAuthStateChanged(user => {
@@ -51,6 +59,7 @@
 
         // Função que carrega o conteúdo da página apenas se o usuário for autenticado
         function loadContent() {
+            // Substitui o conteúdo da página após a autenticação
             document.body.innerHTML = `
                 <div class="top-bar">
                     <span class="menu-icon" onclick="toggleMenu()">☰</span>
@@ -116,6 +125,9 @@
             const submenu = document.getElementById('submenu');
             submenu.classList.toggle('active');
         }
+
+        // Adicionando um forçamento de recarregamento da página
+        window.location.reload(true); // Isso forçará a atualização completa da página
     </script>
 
     <style>

@@ -1,0 +1,174 @@
+
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Portal de Loterias Mac Point</title>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .container {
+            background-color: white;
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+        .input-group input:focus {
+            border-color: #00cc99;
+        }
+        .button {
+            width: 100%;
+            padding: 10px;
+            background-color: #004d00;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .button:hover {
+            background-color: #00cc99;
+        }
+        .switch-container {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .switch-container a {
+            text-decoration: none;
+            color: #004d00;
+            font-weight: bold;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="auth-container">
+        <h2>Portal de Loterias</h2>
+        
+        <div class="input-group" id="email-group">
+            <input type="email" id="email" placeholder="E-mail" required>
+        </div>
+        
+        <div class="input-group" id="password-group">
+            <input type="password" id="password" placeholder="Senha" required>
+        </div>
+        
+        <button class="button" id="login-btn" onclick="login()">Login</button>
+        <button class="button" id="register-btn" onclick="register()" style="display:none;">Cadastrar</button>
+
+        <div class="switch-container" id="switch-container">
+            <a href="#" onclick="toggleForm()">Não tem uma conta? Cadastre-se</a>
+        </div>
+
+        <div class="loading" id="loading">Carregando...</div>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+            authDomain: "mac-projeto-4e552.firebaseapp.com",
+            projectId: "mac-projeto-4e552",
+            storageBucket: "mac-projeto-4e552.appspot.com",
+            messagingSenderId: "537330451519",
+            appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+
+        function toggleForm() {
+            const loginBtn = document.getElementById('login-btn');
+            const registerBtn = document.getElementById('register-btn');
+            const switchContainer = document.getElementById('switch-container');
+            const emailGroup = document.getElementById('email-group');
+            const passwordGroup = document.getElementById('password-group');
+
+            if (loginBtn.style.display === 'none') {
+                loginBtn.style.display = 'block';
+                registerBtn.style.display = 'none';
+                switchContainer.innerHTML = '<a href="#" onclick="toggleForm()">Não tem uma conta? Cadastre-se</a>';
+                emailGroup.querySelector('input').placeholder = 'E-mail';
+                passwordGroup.querySelector('input').placeholder = 'Senha';
+            } else {
+                loginBtn.style.display = 'none';
+                registerBtn.style.display = 'block';
+                switchContainer.innerHTML = '<a href="#" onclick="toggleForm()">Já tem uma conta? Faça login</a>';
+                emailGroup.querySelector('input').placeholder = 'E-mail';
+                passwordGroup.querySelector('input').placeholder = 'Senha';
+            }
+        }
+
+        function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            document.getElementById('loading').style.display = 'block';
+
+            firebase.auth().signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    document.getElementById('loading').style.display = 'none';
+                    window.location.href = 'index.html'; // Página principal após login
+                })
+                .catch((error) => {
+                    document.getElementById('loading').style.display = 'none';
+                    alert(error.message);
+                });
+        }
+
+        function register() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            document.getElementById('loading').style.display = 'block';
+
+            firebase.auth().createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    document.getElementById('loading').style.display = 'none';
+                    window.location.href = 'index2.html'; // Página principal após cadastro
+                })
+                .catch((error) => {
+                    document.getElementById('loading').style.display = 'none';
+                    alert(error.message);
+                });
+        }
+    </script>
+</body>
+</html>
+

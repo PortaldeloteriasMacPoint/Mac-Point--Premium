@@ -21,7 +21,6 @@
             background: #f0f0f0;
         }
 
-        /* Borda superior fixa */
         .top-bar {
             position: fixed;
             top: 0;
@@ -37,13 +36,11 @@
             font-weight: bold;
         }
 
-        /* Ícone menu hambúrguer */
         .menu-icon {
             font-size: 30px;
             cursor: pointer;
         }
 
-        /* Menu lateral */
         .sidebar {
             position: fixed;
             left: -250px;
@@ -75,7 +72,16 @@
             cursor: pointer;
         }
 
-        /* Submenu */
+        .content {
+            display: none;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .content.active {
+            display: block;
+        }
+
         .submenu {
             display: none;
         }
@@ -92,7 +98,6 @@
             cursor: pointer;
         }
 
-        /* Rodapé */
         footer {
             position: fixed;
             bottom: 0;
@@ -104,21 +109,17 @@
             line-height: 40px;
         }
 
-        /* Esconder rodapé ao abrir menu */
         .hide-footer {
             display: none;
         }
-
     </style>
 </head>
 <body>
-    <!-- Borda superior -->
     <div class="top-bar">
         <span class="menu-icon" onclick="toggleMenu()">☰</span>
         Portal de Loterias Mac Point
     </div>
 
-    <!-- Menu lateral -->
     <div class="sidebar" id="sidebar">
         <h2>Menu</h2>
         <button onclick="showSection('home')">Início</button>
@@ -129,12 +130,28 @@
         <button onclick="toggleSubMenu()">Mostrar Ícones</button>
         
         <div class="submenu" id="submenu">
-            <span>⚙️</span> <span>🪩</span> <span>📚</span> 
-            <span>📢</span> <span>🎯</span> <span>🎰</span>
+            <span onclick="openPage('configuracoes.html')">⚙️</span>
+            <span onclick="openPage('eventos.html')">🪩</span>
+            <span onclick="openPage('documentos.html')">📚</span>
+            <span onclick="openPage('anuncios.html')">📢</span>
+            <span onclick="openPage('alvo.html')">🎯</span>
+            <span onclick="openPage('jogos.html')">🎰</span>
         </div>
     </div>
 
-    <!-- Rodapé -->
+    <div id="home" class="content active">
+        <h1>Página Inicial</h1>
+        <p>Bem-vindo ao Portal de Loterias Mac Point!</p>
+    </div>
+    <div id="about" class="content">
+        <h1>Sobre Nós</h1>
+        <p>Informações sobre nossa equipe e missão.</p>
+    </div>
+    <div id="contact" class="content">
+        <h1>Contato</h1>
+        <p>Entre em contato conosco através do formulário abaixo.</p>
+    </div>
+
     <footer id="footer">© 2025 Portal de Loterias Mac Point</footer>
 
     <script>
@@ -147,7 +164,10 @@
         }
 
         function showSection(section) {
-            alert("Abrindo seção: " + section);
+            const sections = document.querySelectorAll(".content");
+            sections.forEach(sec => sec.classList.remove("active"));
+
+            document.getElementById(section).classList.add("active");
             toggleMenu();
         }
 
@@ -155,18 +175,30 @@
             document.getElementById("submenu").classList.toggle("active");
         }
 
-        // Firebase Auth (Evita acesso não autenticado)
+        function openPage(page) {
+            window.location.href = page;
+        }
+
         document.addEventListener("DOMContentLoaded", function () {
             firebase.auth().onAuthStateChanged(user => {
                 if (!user) {
                     window.location.href = "login.html";
+                } else {
+                    user.getIdTokenResult(true).then(idTokenResult => {
+                        if (!idTokenResult.claims) {
+                            firebase.auth().signOut();
+                            window.location.href = "login.html";
+                        }
+                    }).catch(() => {
+                        firebase.auth().signOut();
+                        window.location.href = "login.html";
+                    });
                 }
             });
         });
 
-        // Firebase Config
         const firebaseConfig = {
-            apiKey: "SUA_NOVA_CHAVE_AQUI",
+            apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
             authDomain: "mac-projeto-4e552.firebaseapp.com",
             projectId: "mac-projeto-4e552",
             storageBucket: "mac-projeto-4e552.appspot.com",
@@ -177,7 +209,6 @@
         firebase.initializeApp(firebaseConfig);
     </script>
 
-    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
 </body>

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -21,13 +20,13 @@
 
         firebase.initializeApp(firebaseConfig);
 
-        // Exibir apenas "Carregando..." antes da autenticação
+        // Exibe "Carregando..." enquanto verifica a autenticação
         document.body.innerHTML = "<h1 style='text-align:center;'>Carregando...</h1>";
 
         // Função para verificar a autenticação do usuário
         firebase.auth().onAuthStateChanged(user => {
             if (!user) {
-                // Usuário não autenticado → Redireciona imediatamente para a página de bloqueio
+                // Se não autenticado, redireciona para a página de bloqueio
                 window.location.href = "bloqueado.html";
             } else {
                 // Confirma a autenticação e verifica se o usuário foi removido

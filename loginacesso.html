@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -145,11 +143,11 @@
             firebase.auth().signInWithEmailAndPassword(email, password)
                 .then((userCredential) => {
                     document.getElementById('loading').style.display = 'none';
-                    window.location.href = 'index.html'; // Página principal após login
+                    window.location.href = 'index2.html'; // Página principal após login
                 })
                 .catch((error) => {
                     document.getElementById('loading').style.display = 'none';
-                    alert(error.message);
+                    alert("Erro ao fazer login: " + error.message);
                 });
         }
 
@@ -165,7 +163,7 @@
                 })
                 .catch((error) => {
                     document.getElementById('loading').style.display = 'none';
-                    alert(error.message);
+                    alert("Erro ao criar conta: " + error.message);
                 });
         }
     </script>

@@ -28,22 +28,19 @@
 
         // Função para verificar a autenticação do usuário
         function checkAuthentication() {
-            // Usar onAuthStateChanged para verificar se há um usuário autenticado
             firebase.auth().onAuthStateChanged(user => {
-                if (!user) {
-                    // Se não autenticado, redireciona imediatamente para a página de bloqueio
-                    window.location.href = "bloqueado.html";
+                if (user) {
+                    // Se o usuário estiver autenticado, redireciona para o conteúdo imediatamente
+                    window.location.href = "conteudo.html";  // Aqui, redireciona para a página principal
                 } else {
-                    // Se o usuário estiver autenticado, armazena esse estado na sessão
-                    sessionStorage.setItem('userAuthenticated', 'true');
-                    loadContent();
+                    // Se não estiver autenticado, redireciona imediatamente para a página de bloqueio
+                    window.location.href = "bloqueado.html";
                 }
             });
         }
 
-        // Função que carrega o conteúdo da página apenas se o usuário for autenticado
+        // Função que carrega o conteúdo apenas se o usuário for autenticado
         function loadContent() {
-            // Substitui o conteúdo da página após a autenticação
             document.body.innerHTML = `
                 <div class="top-bar">
                     <span class="menu-icon" onclick="toggleMenu()">☰</span>
@@ -110,14 +107,9 @@
             submenu.classList.toggle('active');
         }
 
-        // Verifica se o usuário já está autenticado ao carregar a página
+        // Verifica a autenticação ao carregar a página
         window.onload = function() {
-            const userAuthenticated = sessionStorage.getItem('userAuthenticated');
-            if (userAuthenticated === 'true') {
-                loadContent();  // Carrega o conteúdo imediatamente
-            } else {
-                checkAuthentication();  // Verifica a autenticação
-            }
+            checkAuthentication();  // Verificação de autenticação
         };
     </script>
 

@@ -1,10 +1,12 @@
+
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal de Loterias Mac Point</title>
-    
+
     <!-- Evitar cache -->
     <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0" />
     <meta http-equiv="Pragma" content="no-cache" />
@@ -24,6 +26,7 @@
             appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
         };
 
+        // Inicializa o Firebase
         firebase.initializeApp(firebaseConfig);
 
         // Exibe "Carregando..." enquanto verifica a autenticação
@@ -33,43 +36,42 @@
             loadingDiv.classList.add("loading");
             loadingDiv.innerHTML = "Carregando...";
             document.body.appendChild(loadingDiv);
-        };
 
-        // Função para verificar a autenticação do usuário
-        firebase.auth().onAuthStateChanged(user => {
-            // Removendo o "Carregando..." após a autenticação ser verificada
-            const loadingDiv = document.querySelector(".loading");
-            if (loadingDiv) {
-                loadingDiv.remove(); // Remove o carregamento
-            }
+            // Função para verificar a autenticação do usuário
+            firebase.auth().onAuthStateChanged(user => {
+                // Removendo o "Carregando..." após a autenticação ser verificada
+                const loadingDiv = document.querySelector(".loading");
+                if (loadingDiv) {
+                    loadingDiv.remove(); // Remove o carregamento
+                }
 
-            if (!user) {
-                // Se não autenticado, redireciona para a página de bloqueio
-                window.location.href = "bloqueado.html";
-            } else {
-                // Confirma a autenticação e verifica se o usuário foi removido
-                user.getIdToken(true)
-                    .then(() => user.reload()) // Atualiza os dados do usuário
-                    .then(() => {
-                        if (!firebase.auth().currentUser) {
+                if (!user) {
+                    // Se não autenticado, redireciona para a página de bloqueio
+                    window.location.href = "bloqueado.html";
+                } else {
+                    // Confirma a autenticação e verifica se o usuário foi removido
+                    user.getIdToken(true)
+                        .then(() => user.reload()) // Atualiza os dados do usuário
+                        .then(() => {
+                            if (!firebase.auth().currentUser) {
+                                firebase.auth().signOut();
+                                window.location.href = "bloqueado.html"; // Redireciona para a página de bloqueio
+                            } else {
+                                // 🔹 Usuário autenticado → Carrega o conteúdo seguro
+                                loadContent();
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Erro na autenticação:", error);
                             firebase.auth().signOut();
                             window.location.href = "bloqueado.html"; // Redireciona para a página de bloqueio
-                        } else {
-                            // 🔹 Usuário autenticado → Carrega o conteúdo seguro
-                            loadContent();
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Erro na autenticação:", error);
-                        firebase.auth().signOut();
-                        window.location.href = "bloqueado.html"; // Redireciona para a página de bloqueio
-                    });
-            }
-        });
+                        });
+                }
+            });
+        };
 
         // Função que carrega o conteúdo da página apenas se o usuário for autenticado
         function loadContent() {
-            // Substitui o conteúdo da página após a autenticação
             document.body.innerHTML = `
                 <div class="top-bar">
                     <span class="menu-icon" onclick="toggleMenu()">☰</span>
@@ -169,3 +171,4 @@
 <body>
 </body>
 </html>
+

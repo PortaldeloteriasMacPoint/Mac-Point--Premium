@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -30,29 +28,15 @@
 
         // Função para verificar a autenticação do usuário
         function checkAuthentication() {
+            // Usar onAuthStateChanged para verificar se há um usuário autenticado
             firebase.auth().onAuthStateChanged(user => {
                 if (!user) {
-                    // Se não autenticado, redireciona para a página de bloqueio
+                    // Se não autenticado, redireciona imediatamente para a página de bloqueio
                     window.location.href = "bloqueado.html";
                 } else {
-                    // Se autenticado, verifica se o usuário foi excluído da autenticação
-                    user.getIdToken(true)
-                        .then(() => user.reload()) // Atualiza os dados do usuário
-                        .then(() => {
-                            if (!firebase.auth().currentUser) {
-                                // Se o usuário foi removido, desconecta e redireciona
-                                firebase.auth().signOut();
-                                window.location.href = "bloqueado.html";
-                            } else {
-                                // Carrega o conteúdo seguro
-                                loadContent();
-                            }
-                        })
-                        .catch(error => {
-                            console.error("Erro na autenticação:", error);
-                            firebase.auth().signOut();
-                            window.location.href = "bloqueado.html"; // Redireciona para a página de bloqueio
-                        });
+                    // Se o usuário estiver autenticado, armazena esse estado na sessão
+                    sessionStorage.setItem('userAuthenticated', 'true');
+                    loadContent();
                 }
             });
         }
@@ -126,8 +110,15 @@
             submenu.classList.toggle('active');
         }
 
-        // Chama a verificação de autenticação quando a página carrega
-        window.onload = checkAuthentication;
+        // Verifica se o usuário já está autenticado ao carregar a página
+        window.onload = function() {
+            const userAuthenticated = sessionStorage.getItem('userAuthenticated');
+            if (userAuthenticated === 'true') {
+                loadContent();  // Carrega o conteúdo imediatamente
+            } else {
+                checkAuthentication();  // Verifica a autenticação
+            }
+        };
     </script>
 
     <style>

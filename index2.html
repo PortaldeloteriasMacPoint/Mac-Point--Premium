@@ -5,12 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal de Loterias Mac Point</title>
 
-    <!-- Evitar cache -->
-    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
-
-    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
 
@@ -24,62 +18,39 @@
             messagingSenderId: "537330451519",
             appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
         };
+
         // Inicializa o Firebase
         firebase.initializeApp(firebaseConfig);
 
-        // Verifica a autenticação do usuário
+        // Verifica a autenticação
         firebase.auth().onAuthStateChanged(user => {
-            if (user) {
-                // Se estiver autenticado, redireciona para index2.html (página protegida)
-                window.location.href = "index2.html";
-            } else {
-                // Se não estiver autenticado, redireciona para a página de login
+            if (!user) {
+                // Se não estiver autenticado, redireciona para login.html
                 window.location.href = "login.html";
+            } else {
+                // Se estiver autenticado, o conteúdo será visível imediatamente
+                document.getElementById("conteudo").style.display = "block";
             }
         });
     </script>
 
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
-        body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: #f0f0f0; }
-        #carregando { display: none; } /* Não exibe a mensagem de carregamento */
-        #conteudo { display: none; text-align: center; width: 80%; max-width: 1000px; margin: 0 auto; }
-
-        .top-bar {
-            background: #004d00;
-            color: white;
-            padding: 10px;
-            text-align: left;
-            font-size: 20px;
-            font-weight: bold;
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
         }
 
-        .sidebar {
-            width: 250px;
-            height: 100vh;
-            background: #004d00;
-            color: white;
-            position: fixed;
-            left: 0;
-            top: 0;
-            padding-top: 60px;
+        #conteudo {
             display: none;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-            border-right: 2px solid #ddd;
+            padding: 20px;
+            text-align: center;
         }
 
-        .sidebar.active {
-            display: flex;
-        }
-
-        .content {
-            display: none;
-        }
-
-        .content.active {
-            display: block;
+        h1 {
+            font-size: 2rem;
+            color: #333;
         }
 
         footer {
@@ -87,78 +58,17 @@
             padding: 20px;
             background: #333;
             color: white;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
         }
     </style>
 </head>
 <body>
 
-    <!-- O conteúdo será exibido diretamente quando o usuário estiver autenticado -->
     <div id="conteudo">
-        <!-- Conteúdo do site -->
-        <div class="top-bar">
-            Portal de Loterias Mac Point
-        </div>
-
-        <div class="sidebar" id="sidebar">
-            <h2>Menu</h2>
-            <button onclick="showSection('home')">Início</button>
-            <button onclick="showSection('about')">Sobre Nós</button>
-            <button onclick="showSection('contact')">Contato</button>
-            <h2>Outro Serviço</h2>
-            <button onclick="toggleSubMenu()">Mostrar Ícones</button>
-            <div class="submenu" id="submenu">
-                <span onclick="openPage('configuracoes.html')">⚙️</span>
-                <span onclick="openPage('eventos.html')">🪩</span>
-                <span onclick="openPage('documentos.html')">📚</span>
-                <span onclick="openPage('anuncios.html')">📢</span>
-                <span onclick="openPage('alvo.html')">🎯</span>
-                <span onclick="openPage('jogos.html')">🎰</span>
-            </div>
-        </div>
-
-        <div id="home" class="content active">
-            <h1>Página Inicial</h1>
-            <p>Bem-vindo ao Portal de Loterias Mac Point!</p>
-        </div>
-        
-        <div id="about" class="content">
-            <h1>Sobre Nós</h1>
-            <p>Informações sobre nossa equipe e missão.</p>
-        </div>
-        
-        <div id="contact" class="content">
-            <h1>Contato</h1>
-            <p>Entre em contato conosco através do formulário abaixo.</p>
-        </div>
-
-        <footer>© 2025 Portal de Loterias Mac Point</footer>
+        <h1>Bem-vindo ao Portal de Loterias Mac Point!</h1>
+        <p>Conteúdo protegido. Você está autenticado e pode acessar o conteúdo.</p>
     </div>
 
-    <script>
-        // Exibe a seção ao clicar
-        function showSection(section) {
-            document.querySelectorAll('.content').forEach(sec => sec.classList.remove('active'));
-            document.getElementById(section).classList.add('active');
-        }
-
-        // Abre uma nova página
-        function openPage(page) {
-            window.location.href = page;
-        }
-
-        // Função para abrir/fechar o menu lateral
-        function toggleMenu() {
-            document.getElementById('sidebar').classList.toggle('active');
-        }
-
-        // Função para abrir/fechar o submenu
-        function toggleSubMenu() {
-            document.getElementById('submenu').classList.toggle('active');
-        }
-    </script>
+    <footer>© 2025 Portal de Loterias Mac Point</footer>
 
 </body>
 </html>

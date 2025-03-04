@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal de Loterias Mac Point</title>
-    
+
     <!-- Evitar cache -->
     <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0" />
     <meta http-equiv="Pragma" content="no-cache" />
@@ -29,18 +29,19 @@
         // Função para verificar a autenticação do usuário
         function checkAuthentication() {
             firebase.auth().onAuthStateChanged(user => {
-                if (user) {
-                    // Se o usuário estiver autenticado, redireciona para o conteúdo imediatamente
-                    window.location.href = "conteudo.html";  // Aqui, redireciona para a página principal
+                if (!user) {
+                    // Se o usuário não estiver autenticado, redireciona para o perfil do GPT-ML (ou qualquer página desejada)
+                    window.location.href = "https://profile.gpt-ml.com";  // Substitua pelo link desejado
                 } else {
-                    // Se não estiver autenticado, redireciona imediatamente para a página de bloqueio
-                    window.location.href = "bloqueado.html";
+                    // Se o usuário estiver autenticado, permite o acesso ao conteúdo
+                    loadContent();
                 }
             });
         }
 
-        // Função que carrega o conteúdo apenas se o usuário for autenticado
+        // Função para carregar o conteúdo da página (apenas se o usuário estiver autenticado)
         function loadContent() {
+            // Carregue aqui o conteúdo do seu site, por exemplo:
             document.body.innerHTML = `
                 <div class="top-bar">
                     <span class="menu-icon" onclick="toggleMenu()">☰</span>
@@ -66,19 +67,11 @@
                     <h1>Página Inicial</h1>
                     <p>Bem-vindo ao Portal de Loterias Mac Point!</p>
                 </div>
-                <div id="about" class="content">
-                    <h1>Sobre Nós</h1>
-                    <p>Informações sobre nossa equipe e missão.</p>
-                </div>
-                <div id="contact" class="content">
-                    <h1>Contato</h1>
-                    <p>Entre em contato conosco através do formulário abaixo.</p>
-                </div>
                 <footer id="footer">© 2025 Portal de Loterias Mac Point</footer>
             `;
         }
 
-        // Função para mostrar ou ocultar as seções no menu lateral
+        // Função para mostrar ou ocultar seções no menu lateral
         function showSection(section) {
             const sections = document.querySelectorAll('.content');
             sections.forEach(sec => {
@@ -107,9 +100,9 @@
             submenu.classList.toggle('active');
         }
 
-        // Verifica a autenticação ao carregar a página
+        // Verifica a autenticação assim que a página é carregada
         window.onload = function() {
-            checkAuthentication();  // Verificação de autenticação
+            checkAuthentication();  // Verificação de autenticação ao carregar a página
         };
     </script>
 
@@ -131,6 +124,10 @@
     </style>
 </head>
 <body>
+    <!-- Tela de carregamento enquanto a verificação acontece -->
+    <div id="loading" style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+        <p>Carregando...</p>
+    </div>
 </body>
 </html>
 

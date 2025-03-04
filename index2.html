@@ -26,36 +26,39 @@
         };
         firebase.initializeApp(firebaseConfig);
 
-        function checkAuthentication() {
-            firebase.auth().onAuthStateChanged(user => {
-                if (user) {
-                    // Usuário autenticado, exibe o conteúdo
-                    document.getElementById('carregando').style.display = 'none';
-                    document.getElementById('conteudo').style.display = 'block';
-                } else {
-                    // Usuário não autenticado, esconde o conteúdo e redireciona
-                    document.getElementById('conteudo').style.display = 'none';
-                    window.location.href = "bloqueado.html";
-                }
+        // Verifica a autenticação assim que a página carregar
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                document.getElementById('carregando').style.display = 'none';
+                document.getElementById('conteudo').style.display = 'block';
+            } else {
+                window.location.href = "bloqueado.html";
+            }
+        });
+
+        function logout() {
+            firebase.auth().signOut().then(() => {
+                window.location.href = "login.html";
             });
-
-            // Caso demore mais de 5 segundos, oculta "Carregando..." para evitar erro de loop
-            setTimeout(() => {
-                if (document.getElementById('conteudo').style.display !== 'block') {
-                    document.getElementById('carregando').innerText = "Erro ao carregar. Tente recarregar a página.";
-                }
-            }, 5000);
         }
-
-        // Verifica autenticação ao carregar a página
-        window.onload = checkAuthentication;
     </script>
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
         body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: #f0f0f0; }
         #carregando { font-size: 20px; font-weight: bold; }
-        #conteudo { display: none; text-align: center; }
+        #conteudo { display: none; width: 100%; text-align: center; padding: 20px; }
+        .top-bar { width: 100%; padding: 15px; background: linear-gradient(to right, #004d00, #00cc99); color: white; font-size: 24px; font-weight: bold; text-align: left; position: fixed; top: 0; left: 0; }
+        .menu-icon { font-size: 24px; cursor: pointer; margin-right: 10px; }
+        .sidebar { width: 250px; height: 100vh; background: #004d00; color: white; position: fixed; top: 0; left: -250px; padding: 15px; transition: 0.3s; }
+        .sidebar.active { left: 0; }
+        .sidebar h2 { font-size: 20px; margin-bottom: 10px; }
+        .sidebar button { display: block; width: 100%; padding: 10px; margin-bottom: 5px; background: black; color: white; border: none; cursor: pointer; }
+        .submenu { display: none; text-align: center; margin-top: 10px; }
+        .submenu span { font-size: 30px; cursor: pointer; margin: 5px; display: inline-block; }
+        .content { display: none; padding: 20px; }
+        .content.active { display: block; }
+        footer { position: fixed; bottom: 0; width: 100%; background: black; color: white; text-align: center; padding: 10px; }
     </style>
 </head>
 <body>
@@ -63,13 +66,67 @@
     <div id="carregando">Carregando...</div>
 
     <div id="conteudo">
-        <h1>Bem-vindo ao Portal de Loterias Mac Point</h1>
-        <p>Seu acesso foi autorizado!</p>
-        <button onclick="firebase.auth().signOut().then(() => location.reload());">Sair</button>
+        <div class="top-bar">
+            <span class="menu-icon" onclick="toggleMenu()">☰</span>
+            Portal de Loterias Mac Point
+        </div>
+
+        <div class="sidebar" id="sidebar">
+            <h2>Menu</h2>
+            <button onclick="showSection('home')">Início</button>
+            <button onclick="showSection('about')">Sobre Nós</button>
+            <button onclick="showSection('contact')">Contato</button>
+            <h2>Outro Serviço</h2>
+            <button onclick="toggleSubMenu()">Mostrar Ícones</button>
+            <div class="submenu" id="submenu">
+                <span onclick="openPage('configuracoes.html')">⚙️</span>
+                <span onclick="openPage('eventos.html')">🪩</span>
+                <span onclick="openPage('documentos.html')">📚</span>
+                <span onclick="openPage('anuncios.html')">📢</span>
+                <span onclick="openPage('alvo.html')">🎯</span>
+                <span onclick="openPage('jogos.html')">🎰</span>
+            </div>
+            <button onclick="logout()">Sair</button>
+        </div>
+
+        <div id="home" class="content active">
+            <h1>Página Inicial</h1>
+            <p>Bem-vindo ao Portal de Loterias Mac Point!</p>
+        </div>
+        
+        <div id="about" class="content">
+            <h1>Sobre Nós</h1>
+            <p>Informações sobre nossa equipe e missão.</p>
+        </div>
+        
+        <div id="contact" class="content">
+            <h1>Contato</h1>
+            <p>Entre em contato conosco através do formulário abaixo.</p>
+        </div>
+
+        <footer>© 2025 Portal de Loterias Mac Point</footer>
     </div>
+
+    <script>
+        function showSection(section) {
+            document.querySelectorAll('.content').forEach(sec => sec.classList.remove('active'));
+            document.getElementById(section).classList.add('active');
+        }
+
+        function openPage(page) {
+            window.location.href = page;
+        }
+
+        function toggleMenu() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+
+        function toggleSubMenu() {
+            document.getElementById('submenu').style.display = document.getElementById('submenu').style.display === 'block' ? 'none' : 'block';
+        }
+    </script>
 
 </body>
 </html>
 
 
- 

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -26,8 +27,8 @@
         // Função para verificar a autenticação do usuário
         firebase.auth().onAuthStateChanged(user => {
             if (!user) {
-                // Usuário não autenticado → Redireciona imediatamente para a página de login
-                window.location.href = "login.html";
+                // Usuário não autenticado → Redireciona imediatamente para a página de bloqueio
+                window.location.href = "bloqueado.html";
             } else {
                 // Confirma a autenticação e verifica se o usuário foi removido
                 user.getIdToken(true)
@@ -35,7 +36,7 @@
                     .then(() => {
                         if (!firebase.auth().currentUser) {
                             firebase.auth().signOut();
-                            window.location.href = "login.html";
+                            window.location.href = "bloqueado.html"; // Redireciona para a página de bloqueio
                         } else {
                             // 🔹 Usuário autenticado → Carrega o conteúdo seguro
                             loadContent();
@@ -44,7 +45,7 @@
                     .catch(error => {
                         console.error("Erro na autenticação:", error);
                         firebase.auth().signOut();
-                        window.location.href = "login.html";
+                        window.location.href = "bloqueado.html"; // Redireciona para a página de bloqueio
                     });
             }
         });
@@ -138,5 +139,4 @@
 <body>
 </body>
 </html>
-
 

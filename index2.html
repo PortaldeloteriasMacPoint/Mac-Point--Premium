@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal de Loterias Mac Point</title>
-    
-    <!-- Firebase -->
+
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
 
@@ -18,48 +17,45 @@
             storageBucket: "mac-projeto-4e552.appspot.com",
             messagingSenderId: "537330451519",
             appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
-        };
+        };       firebase.initializeApp(firebaseConfig);
 
-        firebase.initializeApp(firebaseConfig);
-
-        // Verifica autenticação assim que a página carrega
-        window.onload = function() {
+        // Verifica a autenticação apenas se o usuário acessar um link direto
+        window.addEventListener("DOMContentLoaded", () => {
             firebase.auth().onAuthStateChanged(user => {
                 if (user) {
-                    // Usuário autenticado - Mostra o conteúdo e oculta "Carregando..."
-                    document.getElementById('conteudo').style.display = 'block';
-                    document.getElementById('loading').style.display = 'none';
+                    // Se estiver autenticado, exibe o conteúdo imediatamente
+                    document.getElementById("conteudo").style.display = "block";
+                    document.getElementById("carregando").style.display = "none";
                 } else {
-                    // Usuário não autenticado - Redireciona imediatamente para bloqueado.html
-                    window.location.replace("bloqueado.html");
+                    // Se não estiver autenticado e acessou via link direto, redireciona
+                    if (document.referrer === "") {
+                        window.location.replace("bloqueado.html");
+                    } else {
+                        document.getElementById("conteudo").style.display = "block";
+                        document.getElementById("carregando").style.display = "none";
+                    }
                 }
             });
-        };
+        });
     </script>
 
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
-        body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: #f0f0f0; position: relative; }
-        .top-bar { position: fixed; top: 0; width: 100%; height: 60px; background: linear-gradient(to right, #004d00, #00cc66); display: flex; align-items: center; justify-content: space-between; padding: 0 15px; color: white; font-size: 20px; font-weight: bold; }
-        .menu-icon { font-size: 30px; cursor: pointer; }
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f8f9fa; text-align: center; }
+        #carregando { font-size: 20px; margin-top: 50px; }
+        #conteudo { display: none; }
+        .top-bar { background: linear-gradient(to right, #004d00, #00cc66); color: white; padding: 15px; font-size: 20px; font-weight: bold; text-align: left; }
+        .menu-icon { font-size: 25px; cursor: pointer; }
         .sidebar { position: fixed; left: -250px; top: 0; width: 250px; height: 100%; background: #004d00; color: white; padding: 20px; transition: 0.3s; overflow-y: auto; }
         .sidebar.active { left: 0; }
-        .sidebar h2 { margin-bottom: 15px; }
         .sidebar button { width: 100%; padding: 10px; background: black; color: white; border: none; margin-bottom: 10px; cursor: pointer; }
-        .content { display: none; padding: 20px; text-align: center; }
-        .content.active { display: block; }
-        .submenu { display: none; }
-        .submenu.active { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
-        .submenu span { font-size: 30px; cursor: pointer; }
-        footer { position: fixed; bottom: 0; width: 100%; height: 40px; background: black; color: white; text-align: center; line-height: 40px; }
-        #loading { font-size: 20px; text-align: center; margin-top: 20%; }
+        .content { padding: 20px; text-align: center; }
     </style>
 </head>
 <body>
 
-    <div id="loading">Carregando...</div>
+    <div id="carregando">Carregando...</div>
 
-    <div id="conteudo" style="display: none;">
+    <div id="conteudo">
         <div class="top-bar">
             <span class="menu-icon" onclick="toggleMenu()">☰</span>
             Portal de Loterias Mac Point
@@ -68,8 +64,11 @@
         <div class="sidebar" id="sidebar">
             <h2>Menu</h2>
             <button onclick="showSection('home')">Início</button>
-            <button onclick="showSection('about')">Sobre Nós</button>
-            <button onclick="showSection('contact')">Contato</button>
+            <button onclick="showSection('modalidades')">Modalidades</button>
+            <button onclick="showSection('estatistica')">Menor Estatística</button>
+            <button onclick="showSection('planilhas')">Planilhas</button>
+            <button onclick="showSection('simuladores')">Simuladores</button>
+            <button onclick="showSection('desdobramento')">Desdobramento</button>
             <h2>Outro Serviço</h2>
             <button onclick="toggleSubMenu()">Mostrar Ícones</button>
             <div class="submenu" id="submenu">
@@ -82,19 +81,34 @@
             </div>
         </div>
 
-        <div id="home" class="content active">
+        <div id="home" class="content">
             <h1>Página Inicial</h1>
             <p>Bem-vindo ao Portal de Loterias Mac Point!</p>
         </div>
 
-        <div id="about" class="content">
-            <h1>Sobre Nós</h1>
-            <p>Informações sobre nossa equipe e missão.</p>
+        <div id="modalidades" class="content" style="display:none;">
+            <h1>Modalidades</h1>
+            <p>Conteúdo sobre modalidades de loteria.</p>
         </div>
 
-        <div id="contact" class="content">
-            <h1>Contato</h1>
-            <p>Entre em contato conosco através do formulário abaixo.</p>
+        <div id="estatistica" class="content" style="display:none;">
+            <h1>Menor Estatística</h1>
+            <p>Dados estatísticos sobre as loterias.</p>
+        </div>
+
+        <div id="planilhas" class="content" style="display:none;">
+            <h1>Planilhas</h1>
+            <p>Gerenciamento de planilhas para análise.</p>
+        </div>
+
+        <div id="simuladores" class="content" style="display:none;">
+            <h1>Simuladores</h1>
+            <p>Ferramentas para simulação de apostas.</p>
+        </div>
+
+        <div id="desdobramento" class="content" style="display:none;">
+            <h1>Desdobramento</h1>
+            <p>Criação de desdobramentos para apostas.</p>
         </div>
 
         <footer>© 2025 Portal de Loterias Mac Point</footer>
@@ -102,14 +116,10 @@
 
     <script>
         function showSection(section) {
-            document.querySelectorAll('.content').forEach(sec => {
-                sec.classList.remove('active');
+            const sections = document.querySelectorAll('.content');
+            sections.forEach(sec => {
+                sec.style.display = (sec.id === section) ? 'block' : 'none';
             });
-            document.getElementById(section).classList.add('active');
-        }
-
-        function openPage(page) {
-            window.location.href = page;
         }
 
         function toggleMenu() {
@@ -119,7 +129,13 @@
         function toggleSubMenu() {
             document.getElementById('submenu').classList.toggle('active');
         }
+
+        function openPage(page) {
+            window.location.href = page;
+        }
     </script>
 
 </body>
 </html>
+
+

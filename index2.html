@@ -24,50 +24,81 @@
             messagingSenderId: "537330451519",
             appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
         };
+        // Inicializa o Firebase
         firebase.initializeApp(firebaseConfig);
 
-        // Verifica a autenticação assim que a página carregar
+        // Verifica a autenticação do usuário
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
-                document.getElementById('carregando').style.display = 'none';
-                document.getElementById('conteudo').style.display = 'block';
+                // Se estiver autenticado, redireciona para index2.html (página protegida)
+                window.location.href = "index2.html";
             } else {
-                window.location.href = "bloqueado.html";
+                // Se não estiver autenticado, redireciona para a página de login
+                window.location.href = "login.html";
             }
         });
-
-        function logout() {
-            firebase.auth().signOut().then(() => {
-                window.location.href = "login.html";
-            });
-        }
     </script>
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
         body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: #f0f0f0; }
-        #carregando { font-size: 20px; font-weight: bold; }
-        #conteudo { display: none; width: 100%; text-align: center; padding: 20px; }
-        .top-bar { width: 100%; padding: 15px; background: linear-gradient(to right, #004d00, #00cc99); color: white; font-size: 24px; font-weight: bold; text-align: left; position: fixed; top: 0; left: 0; }
-        .menu-icon { font-size: 24px; cursor: pointer; margin-right: 10px; }
-        .sidebar { width: 250px; height: 100vh; background: #004d00; color: white; position: fixed; top: 0; left: -250px; padding: 15px; transition: 0.3s; }
-        .sidebar.active { left: 0; }
-        .sidebar h2 { font-size: 20px; margin-bottom: 10px; }
-        .sidebar button { display: block; width: 100%; padding: 10px; margin-bottom: 5px; background: black; color: white; border: none; cursor: pointer; }
-        .submenu { display: none; text-align: center; margin-top: 10px; }
-        .submenu span { font-size: 30px; cursor: pointer; margin: 5px; display: inline-block; }
-        .content { display: none; padding: 20px; }
-        .content.active { display: block; }
-        footer { position: fixed; bottom: 0; width: 100%; background: black; color: white; text-align: center; padding: 10px; }
+        #carregando { display: none; } /* Não exibe a mensagem de carregamento */
+        #conteudo { display: none; text-align: center; width: 80%; max-width: 1000px; margin: 0 auto; }
+
+        .top-bar {
+            background: #004d00;
+            color: white;
+            padding: 10px;
+            text-align: left;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background: #004d00;
+            color: white;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding-top: 60px;
+            display: none;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            border-right: 2px solid #ddd;
+        }
+
+        .sidebar.active {
+            display: flex;
+        }
+
+        .content {
+            display: none;
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #333;
+            color: white;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
     </style>
 </head>
 <body>
 
-    <div id="carregando">Carregando...</div>
-
+    <!-- O conteúdo será exibido diretamente quando o usuário estiver autenticado -->
     <div id="conteudo">
+        <!-- Conteúdo do site -->
         <div class="top-bar">
-            <span class="menu-icon" onclick="toggleMenu()">☰</span>
             Portal de Loterias Mac Point
         </div>
 
@@ -86,7 +117,6 @@
                 <span onclick="openPage('alvo.html')">🎯</span>
                 <span onclick="openPage('jogos.html')">🎰</span>
             </div>
-            <button onclick="logout()">Sair</button>
         </div>
 
         <div id="home" class="content active">
@@ -108,25 +138,27 @@
     </div>
 
     <script>
+        // Exibe a seção ao clicar
         function showSection(section) {
             document.querySelectorAll('.content').forEach(sec => sec.classList.remove('active'));
             document.getElementById(section).classList.add('active');
         }
 
+        // Abre uma nova página
         function openPage(page) {
             window.location.href = page;
         }
 
+        // Função para abrir/fechar o menu lateral
         function toggleMenu() {
             document.getElementById('sidebar').classList.toggle('active');
         }
 
+        // Função para abrir/fechar o submenu
         function toggleSubMenu() {
-            document.getElementById('submenu').style.display = document.getElementById('submenu').style.display === 'block' ? 'none' : 'block';
+            document.getElementById('submenu').classList.toggle('active');
         }
     </script>
 
 </body>
 </html>
-
-

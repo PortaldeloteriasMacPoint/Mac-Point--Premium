@@ -183,17 +183,21 @@
             firebase.auth().onAuthStateChanged(user => {
                 if (!user) {
                     window.location.href = "login.html";
-                } else {
-                    user.getIdTokenResult(true).then(idTokenResult => {
-                        if (!idTokenResult.claims) {
+                    return;
+                }
+
+                user.getIdToken(true)
+                    .then(() => user.reload())
+                    .then(() => {
+                        if (!firebase.auth().currentUser) {
                             firebase.auth().signOut();
                             window.location.href = "login.html";
                         }
-                    }).catch(() => {
+                    })
+                    .catch(() => {
                         firebase.auth().signOut();
                         window.location.href = "login.html";
                     });
-                }
             });
         });
 

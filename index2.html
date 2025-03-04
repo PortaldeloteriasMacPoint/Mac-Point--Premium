@@ -20,35 +20,36 @@
 
         firebase.initializeApp(firebaseConfig);
 
-        // 🔒 Proteção máxima: impedir acesso antes do carregamento da página
-        document.addEventListener("DOMContentLoaded", function () {
-            document.body.innerHTML = "<h1 style='text-align:center;'>Carregando...</h1>";
+        // Exibir apenas "Carregando..." antes da autenticação
+        document.body.innerHTML = "<h1 style='text-align:center;'>Carregando...</h1>";
 
-            firebase.auth().onAuthStateChanged(user => {
-                if (!user) {
-                    // Usuário não autenticado → Redireciona imediatamente
-                    window.location.href = "login.html";
-                } else {
-                    user.getIdToken(true)
-                        .then(() => user.reload()) // Atualiza os dados do usuário
-                        .then(() => {
-                            if (!firebase.auth().currentUser) {
-                                firebase.auth().signOut();
-                                window.location.href = "login.html";
-                            } else {
-                                // 🔹 Autenticado → Exibe o conteúdo seguro
-                                loadContent();
-                            }
-                        })
-                        .catch(() => {
+        // Função para verificar a autenticação do usuário
+        firebase.auth().onAuthStateChanged(user => {
+            if (!user) {
+                // Usuário não autenticado → Redireciona imediatamente para a página de login
+                window.location.href = "login.html";
+            } else {
+                // Confirma a autenticação e verifica se o usuário foi removido
+                user.getIdToken(true)
+                    .then(() => user.reload()) // Atualiza os dados do usuário
+                    .then(() => {
+                        if (!firebase.auth().currentUser) {
                             firebase.auth().signOut();
                             window.location.href = "login.html";
-                        });
-                }
-            });
+                        } else {
+                            // 🔹 Usuário autenticado → Carrega o conteúdo seguro
+                            loadContent();
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Erro na autenticação:", error);
+                        firebase.auth().signOut();
+                        window.location.href = "login.html";
+                    });
+            }
         });
 
-        // Carrega a página SOMENTE se o usuário for autenticado
+        // Função que carrega o conteúdo da página apenas se o usuário for autenticado
         function loadContent() {
             document.body.innerHTML = `
                 <div class="top-bar">
@@ -86,6 +87,35 @@
                 <footer id="footer">© 2025 Portal de Loterias Mac Point</footer>
             `;
         }
+
+        // Função para mostrar ou ocultar as seções no menu lateral
+        function showSection(section) {
+            const sections = document.querySelectorAll('.content');
+            sections.forEach(sec => {
+                if (sec.id === section) {
+                    sec.classList.add('active');
+                } else {
+                    sec.classList.remove('active');
+                }
+            });
+        }
+
+        // Função para abrir novas páginas ao clicar nos ícones do submenu
+        function openPage(page) {
+            window.location.href = page;
+        }
+
+        // Função para alternar a visibilidade do menu lateral
+        function toggleMenu() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+        }
+
+        // Função para alternar a visibilidade do submenu
+        function toggleSubMenu() {
+            const submenu = document.getElementById('submenu');
+            submenu.classList.toggle('active');
+        }
     </script>
 
     <style>
@@ -103,10 +133,10 @@
         .submenu.active { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
         .submenu span { font-size: 30px; cursor: pointer; }
         footer { position: fixed; bottom: 0; width: 100%; height: 40px; background: black; color: white; text-align: center; line-height: 40px; }
-        .hide-footer { display: none; }
     </style>
 </head>
 <body>
 </body>
 </html>
+
 

@@ -26,19 +26,25 @@
         };
         firebase.initializeApp(firebaseConfig);
 
-        // Verifica a autenticação do usuário
         function checkAuthentication() {
             firebase.auth().onAuthStateChanged(user => {
-                if (!user) {
-                    // Se não estiver autenticado, esconde o conteúdo e redireciona para bloqueado.html
+                if (user) {
+                    // Usuário autenticado, exibe o conteúdo
+                    document.getElementById('carregando').style.display = 'none';
+                    document.getElementById('conteudo').style.display = 'block';
+                } else {
+                    // Usuário não autenticado, esconde o conteúdo e redireciona
                     document.getElementById('conteudo').style.display = 'none';
                     window.location.href = "bloqueado.html";
-                } else {
-                    // Se estiver autenticado, exibe o conteúdo e oculta a mensagem de carregamento
-                    document.getElementById('conteudo').style.display = 'block';
-                    document.getElementById('carregando').style.display = 'none';
                 }
             });
+
+            // Caso demore mais de 5 segundos, oculta "Carregando..." para evitar erro de loop
+            setTimeout(() => {
+                if (document.getElementById('conteudo').style.display !== 'block') {
+                    document.getElementById('carregando').innerText = "Erro ao carregar. Tente recarregar a página.";
+                }
+            }, 5000);
         }
 
         // Verifica autenticação ao carregar a página
@@ -57,66 +63,13 @@
     <div id="carregando">Carregando...</div>
 
     <div id="conteudo">
-        <div class="top-bar">
-            <span class="menu-icon" onclick="toggleMenu()">☰</span>
-            Portal de Loterias Mac Point
-        </div>
-
-        <div class="sidebar" id="sidebar">
-            <h2>Menu</h2>
-            <button onclick="showSection('home')">Início</button>
-            <button onclick="showSection('about')">Sobre Nós</button>
-            <button onclick="showSection('contact')">Contato</button>
-            <h2>Outro Serviço</h2>
-            <button onclick="toggleSubMenu()">Mostrar Ícones</button>
-            <div class="submenu" id="submenu">
-                <span onclick="openPage('configuracoes.html')">⚙️</span>
-                <span onclick="openPage('eventos.html')">🪩</span>
-                <span onclick="openPage('documentos.html')">📚</span>
-                <span onclick="openPage('anuncios.html')">📢</span>
-                <span onclick="openPage('alvo.html')">🎯</span>
-                <span onclick="openPage('jogos.html')">🎰</span>
-            </div>
-        </div>
-
-        <div id="home" class="content active">
-            <h1>Página Inicial</h1>
-            <p>Bem-vindo ao Portal de Loterias Mac Point!</p>
-        </div>
-        
-        <div id="about" class="content">
-            <h1>Sobre Nós</h1>
-            <p>Informações sobre nossa equipe e missão.</p>
-        </div>
-        
-        <div id="contact" class="content">
-            <h1>Contato</h1>
-            <p>Entre em contato conosco através do formulário abaixo.</p>
-        </div>
-
-        <footer>© 2025 Portal de Loterias Mac Point</footer>
+        <h1>Bem-vindo ao Portal de Loterias Mac Point</h1>
+        <p>Seu acesso foi autorizado!</p>
+        <button onclick="firebase.auth().signOut().then(() => location.reload());">Sair</button>
     </div>
-
-    <script>
-        function showSection(section) {
-            document.querySelectorAll('.content').forEach(sec => sec.classList.remove('active'));
-            document.getElementById(section).classList.add('active');
-        }
-
-        function openPage(page) {
-            window.location.href = page;
-        }
-
-        function toggleMenu() {
-            document.getElementById('sidebar').classList.toggle('active');
-        }
-
-        function toggleSubMenu() {
-            document.getElementById('submenu').classList.toggle('active');
-        }
-    </script>
 
 </body>
 </html>
 
 
+ 

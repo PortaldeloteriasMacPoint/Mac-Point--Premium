@@ -22,17 +22,19 @@
 
         firebase.initializeApp(firebaseConfig);
 
-        // Verifica a autenticação rapidamente
-        firebase.auth().onAuthStateChanged(user => {
-            if (user) {
-                // Usuário autenticado - exibe o conteúdo do site
-                document.getElementById('conteudo').style.display = 'block';
-                document.getElementById('loading').style.display = 'none';
-            } else {
-                // Usuário não autenticado - redireciona imediatamente para bloqueado.html
-                window.location.href = "bloqueado.html";
-            }
-        });
+        // Verifica autenticação assim que a página carrega
+        window.onload = function() {
+            firebase.auth().onAuthStateChanged(user => {
+                if (user) {
+                    // Usuário autenticado - Mostra o conteúdo e oculta "Carregando..."
+                    document.getElementById('conteudo').style.display = 'block';
+                    document.getElementById('loading').style.display = 'none';
+                } else {
+                    // Usuário não autenticado - Redireciona imediatamente para bloqueado.html
+                    window.location.replace("bloqueado.html");
+                }
+            });
+        };
     </script>
 
     <style>
@@ -121,4 +123,3 @@
 
 </body>
 </html>
-

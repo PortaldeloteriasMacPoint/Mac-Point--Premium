@@ -28,11 +28,21 @@
 
         // Exibe "Carregando..." enquanto verifica a autenticação
         window.onload = function() {
-            document.body.innerHTML = "<h1 style='text-align:center;'>Carregando...</h1>";
+            // Criando um loader simples para mostrar na tela
+            const loadingDiv = document.createElement("div");
+            loadingDiv.classList.add("loading");
+            loadingDiv.innerHTML = "Carregando...";
+            document.body.appendChild(loadingDiv);
         };
 
         // Função para verificar a autenticação do usuário
         firebase.auth().onAuthStateChanged(user => {
+            // Removendo o "Carregando..." após a autenticação ser verificada
+            const loadingDiv = document.querySelector(".loading");
+            if (loadingDiv) {
+                loadingDiv.remove(); // Remove o carregamento
+            }
+
             if (!user) {
                 // Se não autenticado, redireciona para a página de bloqueio
                 window.location.href = "bloqueado.html";
@@ -125,14 +135,11 @@
             const submenu = document.getElementById('submenu');
             submenu.classList.toggle('active');
         }
-
-        // Adicionando um forçamento de recarregamento da página
-        window.location.reload(true); // Isso forçará a atualização completa da página
     </script>
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
-        body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: #f0f0f0; }
+        body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: #f0f0f0; position: relative; }
         .top-bar { position: fixed; top: 0; width: 100%; height: 60px; background: linear-gradient(to right, #004d00, #00cc66); display: flex; align-items: center; justify-content: space-between; padding: 0 15px; color: white; font-size: 20px; font-weight: bold; }
         .menu-icon { font-size: 30px; cursor: pointer; }
         .sidebar { position: fixed; left: -250px; top: 0; width: 250px; height: 100%; background: #004d00; color: white; padding: 20px; transition: 0.3s; overflow-y: auto; }
@@ -145,9 +152,20 @@
         .submenu.active { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
         .submenu span { font-size: 30px; cursor: pointer; }
         footer { position: fixed; bottom: 0; width: 100%; height: 40px; background: black; color: white; text-align: center; line-height: 40px; }
+
+        /* Estilos para o carregamento */
+        .loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            z-index: 1000;
+        }
     </style>
 </head>
 <body>
 </body>
 </html>
-

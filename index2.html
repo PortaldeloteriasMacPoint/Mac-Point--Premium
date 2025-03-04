@@ -1,24 +1,172 @@
-
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Protegida</title>
+    <title>Portal de Loterias Mac Point</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: #f0f0f0;
+        }
+
+        /* Borda superior fixa */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 60px;
+            background: linear-gradient(to right, #004d00, #00cc66);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 15px;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* Ícone menu hambúrguer */
+        .menu-icon {
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        /* Menu lateral */
+        .sidebar {
+            position: fixed;
+            left: -250px;
+            top: 0;
+            width: 250px;
+            height: 100%;
+            background: #004d00;
+            color: white;
+            padding: 20px;
+            transition: 0.3s;
+            overflow-y: auto;
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 15px;
+        }
+
+        .sidebar button {
+            width: 100%;
+            padding: 10px;
+            background: black;
+            color: white;
+            border: none;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        /* Submenu */
+        .submenu {
+            display: none;
+        }
+
+        .submenu.active {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .submenu span {
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        /* Rodapé */
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 40px;
+            background: black;
+            color: white;
+            text-align: center;
+            line-height: 40px;
+        }
+
+        /* Esconder rodapé ao abrir menu */
+        .hide-footer {
+            display: none;
+        }
+
+    </style>
 </head>
 <body>
-    <h2>Bem-vindo à Página Protegida!</h2>
-    <p>Apenas usuários autenticados podem ver este conteúdo.</p>
-    <button id="logoutButton">Sair</button>
+    <!-- Borda superior -->
+    <div class="top-bar">
+        <span class="menu-icon" onclick="toggleMenu()">☰</span>
+        Portal de Loterias Mac Point
+    </div>
 
-    <!-- Scripts Firebase -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+    <!-- Menu lateral -->
+    <div class="sidebar" id="sidebar">
+        <h2>Menu</h2>
+        <button onclick="showSection('home')">Início</button>
+        <button onclick="showSection('about')">Sobre Nós</button>
+        <button onclick="showSection('contact')">Contato</button>
 
+        <h2>Outro Serviço</h2>
+        <button onclick="toggleSubMenu()">Mostrar Ícones</button>
+        
+        <div class="submenu" id="submenu">
+            <span>⚙️</span> <span>🪩</span> <span>📚</span> 
+            <span>📢</span> <span>🎯</span> <span>🎰</span>
+        </div>
+    </div>
+
+    <!-- Rodapé -->
+    <footer id="footer">© 2025 Portal de Loterias Mac Point</footer>
+
+    <script>
+        function toggleMenu() {
+            const sidebar = document.getElementById("sidebar");
+            const footer = document.getElementById("footer");
+
+            sidebar.classList.toggle("active");
+            footer.classList.toggle("hide-footer");
+        }
+
+        function showSection(section) {
+            alert("Abrindo seção: " + section);
+            toggleMenu();
+        }
+
+        function toggleSubMenu() {
+            document.getElementById("submenu").classList.toggle("active");
+        }
+
+        // Firebase Auth (Evita acesso não autenticado)
+        document.addEventListener("DOMContentLoaded", function () {
+            firebase.auth().onAuthStateChanged(user => {
+                if (!user) {
+                    window.location.href = "login.html";
+                }
+            });
+        });
+
+        // Firebase Config
         const firebaseConfig = {
-            apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+            apiKey: "SUA_NOVA_CHAVE_AQUI",
             authDomain: "mac-projeto-4e552.firebaseapp.com",
             projectId: "mac-projeto-4e552",
             storageBucket: "mac-projeto-4e552.appspot.com",
@@ -26,25 +174,12 @@
             appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
         };
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-
-        // Verifica se o usuário está autenticado
-        onAuthStateChanged(auth, (user) => {
-            if (!user) {
-                window.location.href = "login.html"; // Redireciona se não estiver autenticado
-            }
-        });
-
-        // Logout
-        document.getElementById("logoutButton").addEventListener("click", () => {
-            signOut(auth).then(() => {
-                window.location.href = "login.html";
-            }).catch((error) => {
-                console.error("Erro ao sair:", error);
-            });
-        });
+        firebase.initializeApp(firebaseConfig);
     </script>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
 </body>
 </html>
 

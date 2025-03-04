@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal de Loterias Mac Point</title>
-    
+
     <!-- Evitar cache -->
     <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
 
+    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
 
@@ -23,45 +24,44 @@
             messagingSenderId: "537330451519",
             appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
         };
-
         firebase.initializeApp(firebaseConfig);
 
-        // Verifica a autenticação
-        firebase.auth().onAuthStateChanged(user => {
-            if (!user) {
-                // Se o usuário não estiver autenticado, redireciona para bloqueado.html
-                window.location.href = "bloqueado.html";
-            } else {
-                // Se autenticado, carrega a página normalmente
-                document.getElementById("conteudo").style.display = "block";
-            }
-        });
+        // Verifica a autenticação do usuário
+        function checkAuthentication() {
+            firebase.auth().onAuthStateChanged(user => {
+                if (!user) {
+                    // Se não estiver autenticado, esconde o conteúdo e redireciona para bloqueado.html
+                    document.getElementById('conteudo').style.display = 'none';
+                    window.location.href = "bloqueado.html";
+                } else {
+                    // Se estiver autenticado, exibe o conteúdo e oculta a mensagem de carregamento
+                    document.getElementById('conteudo').style.display = 'block';
+                    document.getElementById('carregando').style.display = 'none';
+                }
+            });
+        }
+
+        // Verifica autenticação ao carregar a página
+        window.onload = checkAuthentication;
     </script>
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
-        body { background: #f0f0f0; }
-        .top-bar { position: fixed; top: 0; width: 100%; height: 60px; background: linear-gradient(to right, #004d00, #00cc66); display: flex; align-items: center; justify-content: space-between; padding: 0 15px; color: white; font-size: 20px; font-weight: bold; }
-        .menu-icon { font-size: 30px; cursor: pointer; }
-        .sidebar { position: fixed; left: -250px; top: 0; width: 250px; height: 100%; background: #004d00; color: white; padding: 20px; transition: 0.3s; overflow-y: auto; }
-        .sidebar.active { left: 0; }
-        .sidebar h2 { margin-bottom: 15px; }
-        .sidebar button { width: 100%; padding: 10px; background: black; color: white; border: none; margin-bottom: 10px; cursor: pointer; }
-        .content { display: none; padding: 20px; text-align: center; }
-        .content.active { display: block; }
-        .submenu { display: none; }
-        .submenu.active { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
-        .submenu span { font-size: 30px; cursor: pointer; }
-        footer { position: fixed; bottom: 0; width: 100%; height: 40px; background: black; color: white; text-align: center; line-height: 40px; }
+        body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: #f0f0f0; }
+        #carregando { font-size: 20px; font-weight: bold; }
+        #conteudo { display: none; text-align: center; }
     </style>
 </head>
 <body>
 
-    <div id="conteudo" style="display: none;">
+    <div id="carregando">Carregando...</div>
+
+    <div id="conteudo">
         <div class="top-bar">
             <span class="menu-icon" onclick="toggleMenu()">☰</span>
             Portal de Loterias Mac Point
         </div>
+
         <div class="sidebar" id="sidebar">
             <h2>Menu</h2>
             <button onclick="showSection('home')">Início</button>
@@ -78,26 +78,29 @@
                 <span onclick="openPage('jogos.html')">🎰</span>
             </div>
         </div>
+
         <div id="home" class="content active">
             <h1>Página Inicial</h1>
             <p>Bem-vindo ao Portal de Loterias Mac Point!</p>
         </div>
+        
         <div id="about" class="content">
             <h1>Sobre Nós</h1>
             <p>Informações sobre nossa equipe e missão.</p>
         </div>
+        
         <div id="contact" class="content">
             <h1>Contato</h1>
             <p>Entre em contato conosco através do formulário abaixo.</p>
         </div>
+
         <footer>© 2025 Portal de Loterias Mac Point</footer>
     </div>
 
     <script>
         function showSection(section) {
-            document.querySelectorAll('.content').forEach(sec => {
-                sec.style.display = sec.id === section ? 'block' : 'none';
-            });
+            document.querySelectorAll('.content').forEach(sec => sec.classList.remove('active'));
+            document.getElementById(section).classList.add('active');
         }
 
         function openPage(page) {
@@ -115,4 +118,5 @@
 
 </body>
 </html>
+
 

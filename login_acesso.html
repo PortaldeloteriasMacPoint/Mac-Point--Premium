@@ -25,7 +25,7 @@
         // Verifica se já está autenticado e redireciona
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
-                window.location.href = "index2.html"; // Redireciona para a página protegida
+                window.location.href = "index2.html"; // Redireciona se já estiver logado
             }
         });
 
@@ -45,9 +45,9 @@
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-        body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: #f0f0f0; }
-        .login-container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0,0,0,0.2); width: 300px; text-align: center; }
-        h2 { margin-bottom: 20px; }
+        body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: black; }
+        .login-container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(255,255,255,0.2); width: 300px; text-align: center; }
+        h2 { margin-bottom: 20px; color: black; }
         input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
         button { width: 100%; padding: 10px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; }
         button:hover { background: #218838; }

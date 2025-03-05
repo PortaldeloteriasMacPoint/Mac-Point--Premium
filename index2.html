@@ -1,156 +1,109 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Protegida</title>
+    <title>MacPoint</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: #121212; color: white; overflow: hidden; }
 
-        body {
-            background-color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+        .top-bar {
+            position: fixed; top: 0; width: 100%; height: 60px; background: linear-gradient(to right, black, blue);
+            display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 1000;
         }
+        .menu-icon { font-size: 30px; cursor: pointer; }
+        .title { font-size: 24px; font-weight: bold; font-family: 'Caveat', cursive; }
 
-        .container {
-            background: #f9f9f9;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            width: 100%;
-            max-width: 350px;
+        .sidebar {
+            position: fixed; top: 0; left: -250px; width: 250px; height: 100%; background: black;
+            padding: 20px; box-shadow: 2px 0 5px rgba(255, 255, 255, 0.2); transition: 0.3s;
         }
+        .sidebar h2 { font-size: 18px; margin-bottom: 15px; }
+        .menu-btn { display: block; width: 100%; padding: 10px; background: black; color: white; border: 1px solid white; text-align: left; cursor: pointer; margin-bottom: 5px; }
+        .menu-btn:hover { background: white; color: black; }
+        
+        .submenu { display: flex; justify-content: space-between; margin-top: 10px; }
+        .submenu button { width: 30%; padding: 10px; font-size: 18px; cursor: pointer; background: none; border: none; color: white; }
+        .submenu button:hover { color: cyan; }
 
-        h2 {
-            color: black;
-            margin-bottom: 20px;
-        }
+        .content { display: none; padding: 20px; text-align: center; }
+        .active { display: block; }
 
-        .conteudo {
-            display: none;
+        .footer {
+            position: fixed; bottom: 0; width: 100%; text-align: center; padding: 10px; background: black;
         }
-
-        .mensagem {
-            margin-top: 15px;
-            padding: 10px;
-            border-radius: 4px;
-            font-weight: bold;
-            display: none;
-        }
-
-        .sucesso {
-            background: lightgreen;
-            color: black;
-        }
-
-        .erro {
-            background: red;
-            color: white;
-        }
+        .menu-open .footer { display: none; }
+        .menu-open .sidebar { left: 0; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h2>Página Protegida</h2>
-        <p id="verificando">Verificando autenticação...</p>
-
-        <div id="conteudoProtegido" class="conteudo">
-            <p>Bem-vindo! Você acessou a página protegida.</p>
-        </div>
-
-        <p id="mensagem" class="mensagem"></p>
+    <div class="top-bar">
+        <span class="menu-icon" onclick="toggleMenu()">☰</span>
+        <span class="title">MacPoint</span>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+    <div class="sidebar">
+        <h2>Menu</h2>
+        <button class="menu-btn" onclick="showSection('inicio')">Início</button>
+        <button class="menu-btn" onclick="showSection('modalidades')">Modalidades</button>
+        <button class="menu-btn" onclick="showSection('analise')">Análise Estatística</button>
+        <button class="menu-btn" onclick="showSection('simuladores')">Simuladores</button>
+        <button class="menu-btn" onclick="showSection('desdobramento')">Desdobramento</button>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
-            authDomain: "mac-projeto-4e552.firebaseapp.com",
-            projectId: "mac-projeto-4e552",
-            storageBucket: "mac-projeto-4e552.appspot.com",
-            messagingSenderId: "537330451519",
-            appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
-        };
+        <h2>Outro Serviço</h2>
+        <div class="submenu">
+            <button onclick="openPage('config')">⚙️</button>
+            <button onclick="openPage('diversao')">🪩</button>
+            <button onclick="openPage('livros')">📚</button>
+        </div>
+        <div class="submenu">
+            <button onclick="openPage('noticias')">📢</button>
+            <button onclick="openPage('alvo')">🎯</button>
+            <button onclick="openPage('cassino')">🎰</button>
+        </div>
+    </div>
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const mensagem = document.getElementById("mensagem");
-        const conteudoProtegido = document.getElementById("conteudoProtegido");
-        const verificando = document.getElementById("verificando");
+    <div id="inicio" class="content active"><h2>Bem-vindo ao MacPoint!</h2></div>
+    <div id="modalidades" class="content"><h2>Seção Modalidades</h2></div>
+    <div id="analise" class="content"><h2>Seção Análise Estatística</h2></div>
+    <div id="simuladores" class="content"><h2>Seção Simuladores</h2></div>
+    <div id="desdobramento" class="content"><h2>Seção Desdobramento</h2></div>
 
-        // Função que verifica se o usuário está autenticado
-        onAuthStateChanged(auth, (user) => {
-            if (!user) {
-                // Se o usuário não estiver autenticado, redireciona para a página bloqueada
-                window.location.href = "bloqueado.html";
-            } else {
-                // Usuário autenticado, esconde a verificação e exibe o conteúdo
-                verificando.style.display = "none";
-                conteudoProtegido.style.display = "block";
+    <div class="footer">© 2025 MacPoint - Todos os direitos reservados.</div>
+
+    <script>
+        function toggleMenu() {
+            document.body.classList.toggle("menu-open");
+        }
+
+        function showSection(section) {
+            let sections = document.querySelectorAll(".content");
+            sections.forEach(s => s.classList.remove("active"));
+            document.getElementById(section).classList.add("active");
+            toggleMenu();
+        }
+
+        function openPage(page) {
+            alert("Abrindo página: " + page);
+            toggleMenu();
+        }
+
+        document.body.addEventListener("click", function(event) {
+            if (!event.target.closest(".sidebar") && !event.target.closest(".menu-icon")) {
+                document.body.classList.remove("menu-open");
             }
         });
+
+        // PROTEÇÃO: Somente quem veio de login-acesso.html pode acessar
+        if (!sessionStorage.getItem("acessoLiberado")) {
+            document.body.innerHTML = "<h2>Acesso negado. Redirecionando...</h2>";
+            setTimeout(() => { window.location.href = "index.html"; }, 2000);
+        }
     </script>
 
 </body>
 </html>
 
-O que acontece agora:
-
-1. Verificação de autenticação: Assim que a página index2.html é carregada, o código Firebase verifica se o usuário está autenticado. Se não estiver autenticado, o usuário será redirecionado automaticamente para a página bloqueado.html.
-
-
-2. Proteção contra link direto: Se o usuário tentar acessar o link diretamente, sem estar autenticado, ele será redirecionado para a página de bloqueio, sem visualizar o conteúdo da página protegida.
-
-
-3. Página de bloqueio: Caso o usuário não tenha permissão para acessar, ele será redirecionado para a página bloqueado.html. Esse arquivo pode ser configurado com uma simples mensagem informando que o acesso foi bloqueado ou que é necessário login.
-
-
-
-bloqueado.html (Página de Acesso Bloqueado)
-
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acesso Bloqueado</title>
-    <style>
-        body {
-            background-color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            text-align: center;
-        }
-
-        .message {
-            background-color: #f44336;
-            color: white;
-            padding: 20px;
-            border-radius: 5px;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="message">
-        <h2>Acesso Bloqueado!</h2>
-        <p>Você não tem permissão para acessar esta página. Por favor, faça login primeiro.</p>
-    </div>
-
-</body>
-</html>
 

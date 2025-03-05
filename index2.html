@@ -9,7 +9,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
 
     <script>
-        // Configuração do Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
             authDomain: "mac-projeto-4e552.firebaseapp.com",
@@ -19,38 +18,44 @@
             appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
         };
 
-        // Inicializa o Firebase
         firebase.initializeApp(firebaseConfig);
 
-        // Verifica a autenticação
         firebase.auth().onAuthStateChanged(user => {
             if (!user) {
-                // Se não estiver autenticado, redireciona para login.html
+                // Se não estiver autenticado, redireciona para o login
                 window.location.href = "login.html";
             } else {
-                // Se estiver autenticado, o conteúdo será visível imediatamente
+                // Se estiver autenticado, o conteúdo é liberado automaticamente
                 document.getElementById("conteudo").style.display = "block";
             }
         });
     </script>
 
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+
         body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+            background: #f0f0f0;
         }
 
-        #conteudo {
-            display: none;
-            padding: 20px;
-            text-align: center;
-        }
+        #conteudo { display: none; }
 
-        h1 {
-            font-size: 2rem;
-            color: #333;
+        .top-bar {
+            background: #004d00;
+            color: white;
+            padding: 10px;
+            text-align: left;
+            font-size: 20px;
+            font-weight: bold;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
         }
 
         footer {
@@ -58,17 +63,104 @@
             padding: 20px;
             background: #333;
             color: white;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        .menu-lateral {
+            background-color: #004d00;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 200px;
+            position: fixed;
+            top: 80px;
+            left: 30px;
+        }
+
+        .menu-lateral a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 10px 0;
+        }
+
+        .menu-lateral a:hover {
+            background-color: #006400;
+        }
+
+        .main-content {
+            margin-left: 240px;
+            margin-top: 30px;
+            font-size: 18px;
+        }
+
+        .main-content h2 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        .main-content p {
+            margin: 10px 0;
+        }
+
+        .submenu {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .submenu a {
+            display: block;
+            width: 80px;
+            height: 80px;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            line-height: 80px;
+            font-size: 20px;
+            border-radius: 8px;
         }
     </style>
 </head>
 <body>
 
     <div id="conteudo">
-        <h1>Bem-vindo ao Portal de Loterias Mac Point!</h1>
-        <p>Conteúdo protegido. Você está autenticado e pode acessar o conteúdo.</p>
-    </div>
+        <!-- Conteúdo original do site -->
+        <div class="top-bar">
+            Portal de Loterias Mac Point
+        </div>
 
-    <footer>© 2025 Portal de Loterias Mac Point</footer>
+        <div class="menu-lateral">
+            <h3>Menu</h3>
+            <a href="#">Início</a>
+            <a href="#">Modalidades</a>
+            <a href="#">Menor Estatística</a>
+            <a href="#">Planilhas</a>
+            <a href="#">Simuladores</a>
+            <a href="#">Desdobramento</a>
+            <h4>Outro Serviço</h4>
+            <div class="submenu">
+                <a href="#">⚙️</a>
+                <a href="#">🪩</a>
+                <a href="#">📚</a>
+                <a href="#">📢</a>
+                <a href="#">🎯</a>
+                <a href="#">🎰</a>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <h2>Bem-vindo ao Portal de Loterias Mac Point!</h2>
+            <p>Este é o conteúdo protegido da página do site. Aqui você pode acessar várias funcionalidades, como:<br>
+            - Início, Modalidades, Estatísticas, Simuladores, e muito mais!</p>
+        </div>
+
+        <footer>© 2025 Portal de Loterias Mac Point</footer>
+    </div>
 
 </body>
 </html>
+

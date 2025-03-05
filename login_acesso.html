@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -13,7 +14,7 @@
         }
 
         body {
-            background-color: black;
+            background-color: white;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -21,17 +22,17 @@
         }
 
         .container {
-            background: #1a1a1a;
+            background: #f9f9f9;
             padding: 30px;
             border-radius: 8px;
-            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
             text-align: center;
             width: 100%;
             max-width: 350px;
         }
 
         h2 {
-            color: white;
+            color: black;
             margin-bottom: 20px;
         }
 
@@ -39,16 +40,16 @@
             width: 100%;
             padding: 10px;
             margin: 10px 0;
-            border: none;
+            border: 1px solid #ccc;
             border-radius: 4px;
-            background: #333;
-            color: white;
+            background: #fff;
+            color: black;
         }
 
         button {
             width: 100%;
             padding: 10px;
-            background: green;
+            background: #28a745;
             color: white;
             font-size: 16px;
             border: none;
@@ -58,7 +59,7 @@
         }
 
         button:hover {
-            background: darkgreen;
+            background: #218838;
         }
 
         .mensagem {
@@ -78,6 +79,19 @@
             background: red;
             color: white;
         }
+
+        .cadastro {
+            margin-top: 10px;
+        }
+
+        .cadastro a {
+            color: blue;
+            text-decoration: none;
+        }
+
+        .cadastro a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -88,6 +102,7 @@
         <input type="password" id="senha" placeholder="Senha">
         <button id="loginBtn">Entrar</button>
         <p id="mensagem" class="mensagem"></p>
+        <p class="cadastro">Não tem conta? <a href="cadastro.html">Cadastre-se</a></p>
     </div>
 
     <script type="module">
@@ -107,12 +122,18 @@
         const auth = getAuth(app);
 
         document.getElementById("loginBtn").addEventListener("click", () => {
-            const email = document.getElementById("email").value;
-            const senha = document.getElementById("senha").value;
+            const email = document.getElementById("email").value.trim();
+            const senha = document.getElementById("senha").value.trim();
             const mensagem = document.getElementById("mensagem");
 
-            // Oculta mensagens anteriores
             mensagem.style.display = "none";
+
+            if (email === "" || senha === "") {
+                mensagem.textContent = "Preencha todos os campos!";
+                mensagem.className = "mensagem erro";
+                mensagem.style.display = "block";
+                return;
+            }
 
             signInWithEmailAndPassword(auth, email, senha)
                 .then(() => {
@@ -120,11 +141,9 @@
                     mensagem.className = "mensagem sucesso";
                     mensagem.style.display = "block";
 
-                    // Limpa os campos após login
                     document.getElementById("email").value = "";
                     document.getElementById("senha").value = "";
 
-                    // Aguarda 2 segundos e redireciona
                     setTimeout(() => {
                         window.location.href = "index2.html";
                     }, 2000);
@@ -134,11 +153,9 @@
                     mensagem.className = "mensagem erro";
                     mensagem.style.display = "block";
 
-                    // Limpa os campos após erro
                     document.getElementById("email").value = "";
                     document.getElementById("senha").value = "";
 
-                    // Esconde a mensagem após 3 segundos
                     setTimeout(() => {
                         mensagem.style.display = "none";
                     }, 3000);
@@ -148,5 +165,4 @@
 
 </body>
 </html>
-
 

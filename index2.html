@@ -4,38 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página Protegida</title>
-
-    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
-
-    <!-- Impedir Cache -->
-    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
 
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            margin: 50px;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
         }
-        .content {
-            display: none;
+        .container {
+            max-width: 600px;
+            margin: 100px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        button {
+            background: #d9534f;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #c9302c;
         }
     </style>
 </head>
 <body>
-    <h1 id="status">Verificando autenticação...</h1>
-    
-    <div class="content">
-        <h2>Bem-vindo ao conteúdo exclusivo!</h2>
-        <p>Aqui está o conteúdo que só membros autenticados podem ver.</p>
+
+    <div class="container">
+        <h1>Bem-vindo à Página Protegida!</h1>
+        <p>Você está autenticado e pode visualizar este conteúdo.</p>
         <button onclick="logout()">Sair</button>
     </div>
 
     <script>
-        // Configuração do Firebase
+        // Configuração do Firebase (coloquei sua configuração aqui)
         const firebaseConfig = {
             apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
             authDomain: "mac-projeto-4e552.firebaseapp.com",
@@ -45,32 +59,27 @@
             appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
         };
 
-        // Inicializa Firebase
+        // Inicializa o Firebase
         firebase.initializeApp(firebaseConfig);
 
-        // Aguarda a autenticação antes de exibir a página
-        document.addEventListener("DOMContentLoaded", function() {
-            firebase.auth().onAuthStateChanged((user) => {
-                if (!user) {
-                    // Se não estiver autenticado, redireciona
-                    window.location.href = "bloqueado.html";
-                } else {
-                    // Se estiver autenticado, exibe o conteúdo
-                    document.getElementById("status").style.display = "none";
-                    document.querySelector(".content").style.display = "block";
-                }
-            });
+        // Verifica autenticação antes de carregar o conteúdo
+        firebase.auth().onAuthStateChanged((user) => {
+            if (!user) {
+                window.location.href = "bloqueado.html"; // Redireciona se não estiver autenticado
+            }
         });
 
-        // Função de logout
+        // Função para logout
         function logout() {
             firebase.auth().signOut().then(() => {
-                window.location.href = "login.html";
+                window.location.href = "login.html"; // Redireciona para o login após logout
+            }).catch((error) => {
+                console.error("Erro ao sair:", error);
             });
         }
     </script>
+
 </body>
 </html>
 
 
- 

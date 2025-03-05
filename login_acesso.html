@@ -9,7 +9,13 @@
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-
+<div class="login-container">
+        <h2>Login</h2>
+        <input type="email" id="email" placeholder="E-mail" required>
+        <input type="password" id="senha" placeholder="Senha" required>
+        <button onclick="login()">Entrar</button>
+        <p class="register-link">Não tem cadastro? <a href="cadastro.html">Cadastre-se</a></p>
+    </div>
 
 <!-- Scripts Firebase -->
 <script type="module">
@@ -56,22 +62,11 @@
             alert("Erro ao fazer login: " + error.message);
         }
     });
-</script>
-</body>
-</html>
-
-
-    
+</script>    
 </head>
 <body>
 
-    <div class="login-container">
-        <h2>Login</h2>
-        <input type="email" id="email" placeholder="E-mail" required>
-        <input type="password" id="senha" placeholder="Senha" required>
-        <button onclick="login()">Entrar</button>
-        <p class="register-link">Não tem cadastro? <a href="cadastro.html">Cadastre-se</a></p>
-    </div>
+    
 
 </body>
 </html>

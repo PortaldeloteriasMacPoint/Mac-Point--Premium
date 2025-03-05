@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -20,147 +22,68 @@
 
         firebase.initializeApp(firebaseConfig);
 
+        // Verifica autenticação antes de exibir conteúdo
         firebase.auth().onAuthStateChanged(user => {
             if (!user) {
-                // Se não estiver autenticado, redireciona para o login
                 window.location.href = "login.html";
             } else {
-                // Se estiver autenticado, o conteúdo é liberado automaticamente
                 document.getElementById("conteudo").style.display = "block";
             }
         });
     </script>
 
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
-
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            height: 100vh;
-            background: #f0f0f0;
-        }
-
-        #conteudo { display: none; }
-
-        .top-bar {
-            background: #004d00;
-            color: white;
-            padding: 10px;
-            text-align: left;
-            font-size: 20px;
-            font-weight: bold;
-            width: 100%;
-            position: fixed;
-            top: 0;
-            left: 0;
-        }
-
-        footer {
-            text-align: center;
-            padding: 20px;
-            background: #333;
-            color: white;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
-        }
-
-        .menu-lateral {
-            background-color: #004d00;
-            color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            width: 200px;
-            position: fixed;
-            top: 80px;
-            left: 30px;
-        }
-
-        .menu-lateral a {
-            color: white;
-            text-decoration: none;
-            display: block;
-            padding: 10px 0;
-        }
-
-        .menu-lateral a:hover {
-            background-color: #006400;
-        }
-
-        .main-content {
-            margin-left: 240px;
-            margin-top: 30px;
-            font-size: 18px;
-        }
-
-        .main-content h2 {
-            font-size: 24px;
-            color: #333;
-        }
-
-        .main-content p {
-            margin: 10px 0;
-        }
-
-        .submenu {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .submenu a {
-            display: block;
-            width: 80px;
-            height: 80px;
-            background-color: #333;
-            color: white;
-            text-align: center;
-            line-height: 80px;
-            font-size: 20px;
-            border-radius: 8px;
-        }
+        #conteudo { display: none; } /* Esconde conteúdo até autenticar */
+        body { font-family: Arial, sans-serif; text-align: center; }
+        nav { background: #004d00; padding: 10px; }
+        nav button { margin: 5px; padding: 10px; background: black; color: white; border: none; cursor: pointer; }
+        .icon-menu { display: flex; justify-content: center; margin-top: 20px; }
+        .icon-menu div { width: 50px; height: 50px; margin: 10px; background: black; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <div id="conteudo">
-        <!-- Conteúdo original do site -->
-        <div class="top-bar">
-            Portal de Loterias Mac Point
+        <header>
+            <h1>Portal de Loterias Mac Point</h1>
+            <nav>
+                <button onclick="mostrarSecao('inicio')">Início</button>
+                <button onclick="mostrarSecao('modalidades')">Modalidades</button>
+                <button onclick="mostrarSecao('estatistica')">Menor Estatística</button>
+                <button onclick="mostrarSecao('planilhas')">Planilhas</button>
+                <button onclick="mostrarSecao('simuladores')">Simuladores</button>
+                <button onclick="mostrarSecao('desdobramento')">Desdobramento</button>
+            </nav>
+        </header>
+
+        <!-- Ícones do submenu -->
+        <div class="icon-menu">
+            <div onclick="alert('Configurações')" title="Configurações">⚙️</div>
+            <div onclick="alert('Diversão')" title="Diversão">🪩</div>
+            <div onclick="alert('Biblioteca')" title="Biblioteca">📚</div>
+        </div>
+        <div class="icon-menu">
+            <div onclick="alert('Avisos')" title="Avisos">📢</div>
+            <div onclick="alert('Alvo')" title="Alvo">🎯</div>
+            <div onclick="alert('Cassino')" title="Cassino">🎰</div>
         </div>
 
-        <div class="menu-lateral">
-            <h3>Menu</h3>
-            <a href="#">Início</a>
-            <a href="#">Modalidades</a>
-            <a href="#">Menor Estatística</a>
-            <a href="#">Planilhas</a>
-            <a href="#">Simuladores</a>
-            <a href="#">Desdobramento</a>
-            <h4>Outro Serviço</h4>
-            <div class="submenu">
-                <a href="#">⚙️</a>
-                <a href="#">🪩</a>
-                <a href="#">📚</a>
-                <a href="#">📢</a>
-                <a href="#">🎯</a>
-                <a href="#">🎰</a>
-            </div>
-        </div>
+        <section id="inicio"> <h2>Bem-vindo ao Portal</h2> </section>
+        <section id="modalidades" style="display: none;"> <h2>Modalidades</h2> </section>
+        <section id="estatistica" style="display: none;"> <h2>Menor Estatística</h2> </section>
+        <section id="planilhas" style="display: none;"> <h2>Planilhas</h2> </section>
+        <section id="simuladores" style="display: none;"> <h2>Simuladores</h2> </section>
+        <section id="desdobramento" style="display: none;"> <h2>Desdobramento</h2> </section>
 
-        <div class="main-content">
-            <h2>Bem-vindo ao Portal de Loterias Mac Point!</h2>
-            <p>Este é o conteúdo protegido da página do site. Aqui você pode acessar várias funcionalidades, como:<br>
-            - Início, Modalidades, Estatísticas, Simuladores, e muito mais!</p>
-        </div>
-
-        <footer>© 2025 Portal de Loterias Mac Point</footer>
+        <script>
+            function mostrarSecao(secao) {
+                document.querySelectorAll("section").forEach(s => s.style.display = "none");
+                document.getElementById(secao).style.display = "block";
+            }
+        </script>
     </div>
 
 </body>
 </html>
+
 

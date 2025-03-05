@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -19,25 +20,20 @@
             messagingSenderId: "537330451519",
             appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
         };
-
         firebase.initializeApp(firebaseConfig);
 
-        // Verifica se já está autenticado e redireciona
-        firebase.auth().onAuthStateChanged(user => {
-            if (user) {
-                window.location.href = "index2.html"; // Redireciona se já estiver logado
-            }
-        });
-
+        // Função de login
         function login() {
-            const email = document.getElementById("email").value;
-            const senha = document.getElementById("senha").value;
+            const email = document.getElementById('email').value;
+            const senha = document.getElementById('senha').value;
 
             firebase.auth().signInWithEmailAndPassword(email, senha)
                 .then(() => {
-                    window.location.href = "index2.html"; // Redireciona ao fazer login com sucesso
+                    // Redireciona para a página protegida após o login bem-sucedido
+                    window.location.href = "index2.html";
                 })
                 .catch(error => {
+                    // Exibe uma mensagem de erro
                     alert("Erro ao fazer login: " + error.message);
                 });
         }
@@ -45,8 +41,8 @@
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-        body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: black; }
-        .login-container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(255,255,255,0.2); width: 300px; text-align: center; }
+        body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: black; color: white; }
+        .login-container { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(255,255,255,0.2); width: 300px; text-align: center; }
         h2 { margin-bottom: 20px; color: black; }
         input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
         button { width: 100%; padding: 10px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; }
@@ -69,4 +65,52 @@
 </body>
 </html>
 
+Explicação do código:
+
+Firebase: Está sendo usado para autenticação. A configuração do Firebase é feita no começo, e o script usa o firebase.auth().signInWithEmailAndPassword() para autenticar o usuário.
+
+Função login(): Essa função é chamada quando o usuário clica no botão de Entrar. Ela pega o email e a senha fornecidos, e tenta autenticar no Firebase. Se for bem-sucedido, o usuário será redirecionado para index2.html, que é a página protegida.
+
+Estilo da página: O fundo está configurado para preto, e o formulário de login tem uma aparência limpa e simples.
+
+
+Páginas protegidas
+
+Agora, para a página protegida, você pode ter um index2.html que só será acessado por usuários logados.
+
+<!-- index2.html (Página protegida) -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Protegida - Portal de Loterias Mac Point</title>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+    <script>
+        // Configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+            authDomain: "mac-projeto-4e552.firebaseapp.com",
+            projectId: "mac-projeto-4e552",
+            storageBucket: "mac-projeto-4e552.appspot.com",
+            messagingSenderId: "537330451519",
+            appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        // Verifica se o usuário está autenticado
+        firebase.auth().onAuthStateChanged(user => {
+            if (!user) {
+                // Redireciona para o login caso o usuário não esteja autenticado
+                window.location.href = "login_acesso.html";
+            }
+        });
+    </script>
+</head>
+<body>
+    <h1>Bem-vindo à Página Protegida!</h1>
+    <p>Somente usuários autenticados podem acessar este conteúdo.</p>
+</body>
+</html>
 

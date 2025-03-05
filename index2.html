@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -7,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal de Loterias Mac Point</title>
 
+    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
 
     <script>
+        // Configuração do Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
             authDomain: "mac-projeto-4e552.firebaseapp.com",
@@ -22,65 +22,68 @@
 
         firebase.initializeApp(firebaseConfig);
 
-        // Verifica autenticação antes de exibir conteúdo
+        // Verifica se o usuário está autenticado
         firebase.auth().onAuthStateChanged(user => {
             if (!user) {
-                window.location.href = "login.html";
-            } else {
-                document.getElementById("conteudo").style.display = "block";
+                window.location.href = "login_acesso.html"; // Redireciona se não estiver autenticado
             }
         });
+
+        function logout() {
+            firebase.auth().signOut().then(() => {
+                window.location.href = "login_acesso.html"; // Redireciona ao sair
+            }).catch(error => {
+                alert("Erro ao sair: " + error.message);
+            });
+        }
     </script>
 
     <style>
-        #conteudo { display: none; } /* Esconde conteúdo até autenticar */
-        body { font-family: Arial, sans-serif; text-align: center; }
-        nav { background: #004d00; padding: 10px; }
-        nav button { margin: 5px; padding: 10px; background: black; color: white; border: none; cursor: pointer; }
-        .icon-menu { display: flex; justify-content: center; margin-top: 20px; }
-        .icon-menu div { width: 50px; height: 50px; margin: 10px; background: black; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; cursor: pointer; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { text-align: center; background: #f8f9fa; padding: 20px; }
+        header { background: linear-gradient(to right, #004d00, #00cc99); color: white; padding: 15px; font-size: 20px; font-weight: bold; }
+        .menu-lateral { position: fixed; top: 0; left: 0; width: 250px; height: 100%; background: #004d00; color: white; padding-top: 60px; display: none; }
+        .menu-lateral a { display: block; color: white; padding: 10px; text-decoration: none; }
+        .menu-lateral a:hover { background: #008040; }
+        .menu-icon { position: absolute; top: 15px; left: 15px; font-size: 25px; cursor: pointer; }
+        .content { margin-left: 260px; padding: 20px; }
+        .icons { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
+        .icons div { font-size: 30px; background: black; color: white; padding: 15px; border-radius: 10px; cursor: pointer; }
+        .logout-btn { background: #dc3545; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer; margin-top: 20px; }
+        .logout-btn:hover { background: #c82333; }
     </style>
 </head>
 <body>
 
-    <div id="conteudo">
-        <header>
-            <h1>Portal de Loterias Mac Point</h1>
-            <nav>
-                <button onclick="mostrarSecao('inicio')">Início</button>
-                <button onclick="mostrarSecao('modalidades')">Modalidades</button>
-                <button onclick="mostrarSecao('estatistica')">Menor Estatística</button>
-                <button onclick="mostrarSecao('planilhas')">Planilhas</button>
-                <button onclick="mostrarSecao('simuladores')">Simuladores</button>
-                <button onclick="mostrarSecao('desdobramento')">Desdobramento</button>
-            </nav>
-        </header>
+    <header>
+        <span class="menu-icon" onclick="document.getElementById('menu').style.display='block'">&#9776;</span>
+        Portal de Loterias Mac Point
+    </header>
 
-        <!-- Ícones do submenu -->
-        <div class="icon-menu">
-            <div onclick="alert('Configurações')" title="Configurações">⚙️</div>
-            <div onclick="alert('Diversão')" title="Diversão">🪩</div>
-            <div onclick="alert('Biblioteca')" title="Biblioteca">📚</div>
+    <div id="menu" class="menu-lateral">
+        <a href="javascript:void(0)" onclick="document.getElementById('menu').style.display='none'">✖ Fechar</a>
+        <a href="#">Início</a>
+        <a href="#">Modalidades</a>
+        <a href="#">Menor Estatística</a>
+        <a href="#">Planilhas</a>
+        <a href="#">Simuladores</a>
+        <a href="#">Desdobramento</a>
+    </div>
+
+    <div class="content">
+        <h2>Bem-vindo ao Portal</h2>
+        <p>Seu espaço para análises e estatísticas das loterias.</p>
+        
+        <div class="icons">
+            <div>⚙️</div>
+            <div>🪩</div>
+            <div>📚</div>
+            <div>📢</div>
+            <div>🎯</div>
+            <div>🎰</div>
         </div>
-        <div class="icon-menu">
-            <div onclick="alert('Avisos')" title="Avisos">📢</div>
-            <div onclick="alert('Alvo')" title="Alvo">🎯</div>
-            <div onclick="alert('Cassino')" title="Cassino">🎰</div>
-        </div>
 
-        <section id="inicio"> <h2>Bem-vindo ao Portal</h2> </section>
-        <section id="modalidades" style="display: none;"> <h2>Modalidades</h2> </section>
-        <section id="estatistica" style="display: none;"> <h2>Menor Estatística</h2> </section>
-        <section id="planilhas" style="display: none;"> <h2>Planilhas</h2> </section>
-        <section id="simuladores" style="display: none;"> <h2>Simuladores</h2> </section>
-        <section id="desdobramento" style="display: none;"> <h2>Desdobramento</h2> </section>
-
-        <script>
-            function mostrarSecao(secao) {
-                document.querySelectorAll("section").forEach(s => s.style.display = "none");
-                document.getElementById(secao).style.display = "block";
-            }
-        </script>
+        <button class="logout-btn" onclick="logout()">Sair</button>
     </div>
 
 </body>

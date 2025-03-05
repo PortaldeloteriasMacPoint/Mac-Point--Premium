@@ -97,7 +97,7 @@
         });
 
         // PROTEÇÃO: Somente quem veio de login-acesso.html pode acessar
-        if (!sessionStorage.getItem("acessoLiberado")) {
+        if (!localStorage.getItem("acessoLiberado")) {
             document.body.innerHTML = "<h2>Acesso negado. Redirecionando...</h2>";
             setTimeout(() => { window.location.href = "index.html"; }, 2000);
         }

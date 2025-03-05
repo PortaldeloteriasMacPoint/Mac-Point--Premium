@@ -145,7 +145,7 @@
                     mensagem.style.display = "block";
 
                     // Armazena um token temporário na sessão para permitir o acesso à página protegida
-                    sessionStorage.setItem("acesso_autorizado", "true");
+                    localStorage.setItem("acesso_autorizado", "true");
 
                     // Limpa os campos antes de redirecionar
                     document.getElementById("email").value = "";

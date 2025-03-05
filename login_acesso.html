@@ -1,108 +1,99 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
-
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: Arial, sans-serif;
         }
+
         body {
+            background-color: black;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #000;
-            font-family: Arial, sans-serif;
         }
-        .login-container {
-            background: #222;
-            padding: 20px;
+
+        .container {
+            background: #1a1a1a;
+            padding: 30px;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
             text-align: center;
             width: 100%;
             max-width: 350px;
         }
+
         h2 {
-            color: #fff;
+            color: white;
             margin-bottom: 20px;
         }
-        .input-group {
-            margin-bottom: 15px;
-        }
+
         input {
             width: 100%;
             padding: 10px;
+            margin: 10px 0;
             border: none;
             border-radius: 4px;
-            font-size: 16px;
-        }
-        .btn {
-            background: #4CAF50;
+            background: #333;
             color: white;
-            border: none;
-            padding: 10px;
+        }
+
+        button {
             width: 100%;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        .btn:hover {
-            background: #45a049;
-        }
-        .message {
-            display: none;
             padding: 10px;
-            margin-top: 10px;
+            background: green;
+            color: white;
+            font-size: 16px;
+            border: none;
             border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: darkgreen;
+        }
+
+        .mensagem {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
             font-weight: bold;
         }
-        .success {
-            background: #a5d6a7;
+
+        .sucesso {
+            background: lightgreen;
             color: black;
         }
-        .error {
-            background: #e57373;
+
+        .erro {
+            background: red;
             color: white;
-        }
-        .hide {
-            display: none;
-        }
-        .register-link {
-            margin-top: 10px;
-            display: block;
-            color: #4CAF50;
-            text-decoration: none;
-            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
-    <div class="login-container">
+    <div class="container">
         <h2>Login</h2>
-        <div class="message success hide" id="successMessage">Login efetuado com sucesso!</div>
-        <div class="message error hide" id="errorMessage">Erro ao fazer login!</div>
-
-        <div class="input-group">
-            <input type="email" id="email" placeholder="E-mail">
-        </div>
-        <div class="input-group">
-            <input type="password" id="password" placeholder="Senha">
-        </div>
-        <button class="btn" onclick="login()">Entrar</button>
-        <a href="cadastro.html" class="register-link">Criar conta</a>
+        <input type="email" id="email" placeholder="E-mail">
+        <input type="password" id="senha" placeholder="Senha">
+        <button id="loginBtn">Entrar</button>
+        <p id="mensagem" class="mensagem"></p>
     </div>
 
-    <script>
-        // Configuração do Firebase
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+
         const firebaseConfig = {
             apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
             authDomain: "mac-projeto-4e552.firebaseapp.com",
@@ -112,41 +103,47 @@
             appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
         };
 
-        // Inicializa o Firebase
-        firebase.initializeApp(firebaseConfig);
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
 
-        function login() {
+        document.getElementById("loginBtn").addEventListener("click", () => {
             const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
-            const successMessage = document.getElementById("successMessage");
-            const errorMessage = document.getElementById("errorMessage");
+            const senha = document.getElementById("senha").value;
+            const mensagem = document.getElementById("mensagem");
 
-            firebase.auth().signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    successMessage.classList.remove("hide");
-                    errorMessage.classList.add("hide");
+            // Oculta mensagens anteriores
+            mensagem.style.display = "none";
 
-                    // Limpa os campos de login
+            signInWithEmailAndPassword(auth, email, senha)
+                .then(() => {
+                    mensagem.textContent = "Login realizado com sucesso!";
+                    mensagem.className = "mensagem sucesso";
+                    mensagem.style.display = "block";
+
+                    // Limpa os campos após login
                     document.getElementById("email").value = "";
-                    document.getElementById("password").value = "";
+                    document.getElementById("senha").value = "";
+
+                    // Aguarda 2 segundos e redireciona
+                    setTimeout(() => {
+                        window.location.href = "index2.html";
+                    }, 2000);
+                })
+                .catch(() => {
+                    mensagem.textContent = "Erro no login! Verifique os dados.";
+                    mensagem.className = "mensagem erro";
+                    mensagem.style.display = "block";
+
+                    // Limpa os campos após erro
+                    document.getElementById("email").value = "";
+                    document.getElementById("senha").value = "";
 
                     // Esconde a mensagem após 3 segundos
                     setTimeout(() => {
-                        successMessage.classList.add("hide");
-                        window.location.href = "index2.html"; // Redireciona para página protegida
-                    }, 3000);
-                })
-                .catch((error) => {
-                    errorMessage.textContent = "Erro: " + error.message;
-                    errorMessage.classList.remove("hide");
-                    successMessage.classList.add("hide");
-
-                    // Esconde a mensagem de erro após 3 segundos
-                    setTimeout(() => {
-                        errorMessage.classList.add("hide");
+                        mensagem.style.display = "none";
                     }, 3000);
                 });
-        }
+        });
     </script>
 
 </body>

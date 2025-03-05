@@ -1,73 +1,180 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Portal de Loterias Mac Point</title>
-
-    <!-- Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-<div class="login-container">
-        <h2>Login</h2>
-        <input type="email" id="email" placeholder="E-mail" required>
-        <input type="password" id="senha" placeholder="Senha" required>
-        <button onclick="login()">Entrar</button>
-        <p class="register-link">Não tem cadastro? <a href="cadastro.html">Cadastre-se</a></p>
-    </div>
-
-<!-- Scripts Firebase -->
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
-
-    const firebaseConfig = {
-        apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
-        authDomain: "mac-projeto-4e552.firebaseapp.com",
-        projectId: "mac-projeto-4e552",
-        storageBucket: "mac-projeto-4e552.appspot.com",
-        messagingSenderId: "537330451519",
-        appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    document.getElementById("loginForm").addEventListener("submit", async (e) => {
-        e.preventDefault();
-        
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
-        const successMessage = document.getElementById("successMessage");
-
-        try {
-            const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            console.log("Usuário autenticado:", userCredential.user);
-
-            // Exibe a mensagem de sucesso
-            successMessage.style.display = "block";
-            successMessage.innerText = "Login efetuado com sucesso!";
-
-            // Limpa os campos de entrada
-            document.getElementById("email").value = '';
-            document.getElementById("password").value = '';
-
-            // Aguarda 1,5 segundos e redireciona
-            setTimeout(() => {
-                successMessage.style.display = "none"; // Esconde a mensagem
-                window.location.href = "index2.html"; // Redireciona
-            }, 1500);
-        } catch (error) {
-            alert("Erro ao fazer login: " + error.message);
+    <title>Login</title>
+    <style>
+        /* Resetando estilos padrões */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-    });
-</script>    
+
+        /* Corpo da página */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+        }
+
+        /* Container do formulário */
+        .login-container {
+            background-color: #222;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2rem;
+            font-weight: 600;
+        }
+
+        /* Estilo dos campos de entrada */
+        .input-field {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #444;
+            border-radius: 5px;
+            background-color: #333;
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        /* Estilo do botão de login */
+        .login-button {
+            width: 100%;
+            padding: 15px;
+            background-color: #28a745;
+            color: #fff;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .login-button:hover {
+            background-color: #218838;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .login-container {
+                padding: 30px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .input-field {
+                padding: 12px;
+                font-size: 0.9rem;
+            }
+
+            .login-button {
+                padding: 12px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            .input-field {
+                padding: 10px;
+                font-size: 0.8rem;
+            }
+
+            .login-button {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="login-container">
+        <h1>Entrar no Sistema</h1>
+        <!-- Corrigido: Adicionado o ID 'loginForm' para o formulário -->
+        <form id="loginForm" method="POST">
+            <!-- Corrigido: Adicionado IDs aos campos de entrada -->
+            <input type="email" id="email" class="input-field" placeholder="Usuário (Email)" required>
+            <input type="password" id="password" class="input-field" placeholder="Senha" required>
+            <button type="submit" class="login-button">Entrar</button>
+        </form>
 
-    
+        <!-- Mensagem de sucesso após login -->
+        <div id="successMessage" style="display: none; margin-top: 10px; color: #28a745; font-weight: bold;"></div>
+    </div>
 
+    <!-- Scripts Firebase -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+
+        // Configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+            authDomain: "mac-projeto-4e552.firebaseapp.com",
+            projectId: "mac-projeto-4e552",
+            storageBucket: "mac-projeto-4e552.appspot.com",
+            messagingSenderId: "537330451519",
+            appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Evento de submissão do formulário
+        document.getElementById("loginForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const successMessage = document.getElementById("successMessage");
+
+            try {
+                // Autenticação com Firebase
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                console.log("Usuário autenticado:", userCredential.user);
+
+                // Exibe a mensagem de sucesso
+                successMessage.style.display = "block";
+                successMessage.innerText = "Login efetuado com sucesso!";
+
+                // Limpa os campos de entrada
+                document.getElementById("email").value = '';
+                document.getElementById("password").value = '';
+
+                // Aguarda 1,5 segundos e redireciona
+                setTimeout(() => {
+                    successMessage.style.display = "none"; // Esconde a mensagem
+                    window.location.href = "index2.html"; // Redireciona
+                }, 1500);
+            } catch (error) {
+                alert("Erro ao fazer login: " + error.message);
+            }
+        });
+    </script>
 </body>
 </html>
 

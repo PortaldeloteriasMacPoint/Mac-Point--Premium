@@ -44,21 +44,22 @@
             messagingSenderId: "537330451519",
             appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
         };
+
+        // Inicializa Firebase
         firebase.initializeApp(firebaseConfig);
 
-        // Esconde todo o conteúdo até verificar a autenticação
-        document.body.style.display = "none";
-
-        firebase.auth().onAuthStateChanged((user) => {
-            if (!user) {
-                // Redireciona para bloqueado.html se não estiver autenticado
-                window.location.href = "bloqueado.html";
-            } else {
-                // Exibe o conteúdo se estiver autenticado
-                document.body.style.display = "block";
-                document.querySelector(".content").style.display = "block";
-                document.getElementById("status").style.display = "none";
-            }
+        // Aguarda a autenticação antes de exibir a página
+        document.addEventListener("DOMContentLoaded", function() {
+            firebase.auth().onAuthStateChanged((user) => {
+                if (!user) {
+                    // Se não estiver autenticado, redireciona
+                    window.location.href = "bloqueado.html";
+                } else {
+                    // Se estiver autenticado, exibe o conteúdo
+                    document.getElementById("status").style.display = "none";
+                    document.querySelector(".content").style.display = "block";
+                }
+            });
         });
 
         // Função de logout
@@ -72,3 +73,4 @@
 </html>
 
 
+ 

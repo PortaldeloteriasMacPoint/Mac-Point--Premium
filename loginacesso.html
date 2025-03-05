@@ -1,107 +1,112 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Portal de Loterias Mac Point</title>
-    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js"></script>
+    <title>Cadastro</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-        }
-        body {
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+        }
+
+        body {
+            background-color: black;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            overflow: hidden;
         }
+
         .container {
-            background-color: white;
-            width: 100%;
-            max-width: 400px;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        h2 {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
             text-align: center;
+            width: 100%;
+            max-width: 350px;
+        }
+
+        h2 {
+            color: black;
             margin-bottom: 20px;
         }
-        .input-group {
-            margin-bottom: 15px;
-        }
-        .input-group input {
+
+        input {
             width: 100%;
             padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            font-size: 16px;
-        }
-        .input-group input:focus {
-            border-color: #00cc99;
-        }
-        .button {
-            width: 100%;
-            padding: 10px;
-            background-color: #004d00;
-            color: white;
+            margin: 10px 0;
             border: none;
-            border-radius: 5px;
+            border-radius: 4px;
+            background: #ddd;
+            color: black;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: green;
+            color: white;
             font-size: 16px;
+            border: none;
+            border-radius: 4px;
             cursor: pointer;
-            transition: 0.3s;
-        }
-        .button:hover {
-            background-color: #00cc99;
-        }
-        .switch-container {
-            text-align: center;
             margin-top: 10px;
         }
-        .switch-container a {
-            text-decoration: none;
-            color: #004d00;
+
+        button:hover {
+            background: darkgreen;
+        }
+
+        .mensagem {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
             font-weight: bold;
         }
-        .loading {
-            display: none;
-            text-align: center;
-            font-size: 20px;
-            font-weight: bold;
-            margin-top: 20px;
+
+        .sucesso {
+            background: lightgreen;
+            color: black;
+        }
+
+        .erro {
+            background: red;
+            color: white;
+        }
+
+        .link-login {
+            margin-top: 15px;
+            display: block;
+            color: blue;
+            text-decoration: none;
+        }
+
+        .link-login:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
 
-    <div class="container" id="auth-container">
-        <h2>Portal de Loterias</h2>
-        
-        <div class="input-group" id="email-group">
-            <input type="email" id="email" placeholder="E-mail" required>
-        </div>
-        
-        <div class="input-group" id="password-group">
-            <input type="password" id="password" placeholder="Senha" required>
-        </div>
-        
-        <button class="button" id="login-btn" onclick="login()">Login</button>
-        <button class="button" id="register-btn" onclick="register()" style="display:none;">Cadastrar</button>
-
-        <div class="switch-container" id="switch-container">
-            <a href="#" onclick="toggleForm()">Não tem uma conta? Cadastre-se</a>
-        </div>
-
-        <div class="loading" id="loading">Carregando...</div>
+    <div class="container">
+        <h2>Cadastro</h2>
+        <input type="email" id="email" placeholder="E-mail">
+        <input type="password" id="senha" placeholder="Senha">
+        <input type="password" id="confirmaSenha" placeholder="Confirme a senha">
+        <button id="cadastroBtn">Cadastrar</button>
+        <p id="mensagem" class="mensagem"></p>
+        <a href="login.html" class="link-login">Já tem uma conta? Faça login</a>
     </div>
 
-    <script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+
         const firebaseConfig = {
             apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
             authDomain: "mac-projeto-4e552.firebaseapp.com",
@@ -111,65 +116,68 @@
             appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
         };
 
-        firebase.initializeApp(firebaseConfig);
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
 
-        // Função para alternar entre login e cadastro
-        function toggleForm() {
-            const loginBtn = document.getElementById('login-btn');
-            const registerBtn = document.getElementById('register-btn');
-            const switchContainer = document.getElementById('switch-container');
-            const emailGroup = document.getElementById('email-group');
-            const passwordGroup = document.getElementById('password-group');
+        document.getElementById("cadastroBtn").addEventListener("click", () => {
+            const email = document.getElementById("email").value;
+            const senha = document.getElementById("senha").value;
+            const confirmaSenha = document.getElementById("confirmaSenha").value;
+            const mensagem = document.getElementById("mensagem");
 
-            if (loginBtn.style.display === 'none') {
-                loginBtn.style.display = 'block';
-                registerBtn.style.display = 'none';
-                switchContainer.innerHTML = '<a href="#" onclick="toggleForm()">Não tem uma conta? Cadastre-se</a>';
-                emailGroup.querySelector('input').placeholder = 'E-mail';
-                passwordGroup.querySelector('input').placeholder = 'Senha';
-            } else {
-                loginBtn.style.display = 'none';
-                registerBtn.style.display = 'block';
-                switchContainer.innerHTML = '<a href="#" onclick="toggleForm()">Já tem uma conta? Faça login</a>';
-                emailGroup.querySelector('input').placeholder = 'E-mail';
-                passwordGroup.querySelector('input').placeholder = 'Senha';
+            mensagem.style.display = "none";
+
+            // Valida se todos os campos estão preenchidos
+            if (!email || !senha || !confirmaSenha) {
+                mensagem.textContent = "Preencha todos os campos!";
+                mensagem.className = "mensagem erro";
+                mensagem.style.display = "block";
+                return;
             }
-        }
 
-        // Função para login
-        function login() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            document.getElementById('loading').style.display = 'block';
+            // Valida se as senhas são iguais
+            if (senha !== confirmaSenha) {
+                mensagem.textContent = "As senhas não coincidem!";
+                mensagem.className = "mensagem erro";
+                mensagem.style.display = "block";
+                return;
+            }
 
-            firebase.auth().signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    document.getElementById('loading').style.display = 'none';
-                    window.location.href = 'index2.html'; // Página principal após login
+            createUserWithEmailAndPassword(auth, email, senha)
+                .then(() => {
+                    mensagem.textContent = "Cadastro realizado com sucesso!";
+                    mensagem.className = "mensagem sucesso";
+                    mensagem.style.display = "block";
+
+                    // Limpa os campos após cadastro
+                    document.getElementById("email").value = "";
+                    document.getElementById("senha").value = "";
+                    document.getElementById("confirmaSenha").value = "";
+
+                    // Aguarda 2 segundos e redireciona para o login
+                    setTimeout(() => {
+                        window.location.href = "login.html";
+                    }, 2000);
                 })
                 .catch((error) => {
-                    document.getElementById('loading').style.display = 'none';
-                    alert("Erro ao fazer login: " + error.message);
-                });
-        }
+                    let erroMsg = "Erro ao cadastrar!";
 
-        // Função para registro
-        function register() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            document.getElementById('loading').style.display = 'block';
+                    if (error.code === "auth/email-already-in-use") {
+                        erroMsg = "E-mail já cadastrado!";
+                    } else if (error.code === "auth/invalid-email") {
+                        erroMsg = "E-mail inválido!";
+                    } else if (error.code === "auth/weak-password") {
+                        erroMsg = "Senha muito fraca! Mínimo de 6 caracteres.";
+                    }
 
-            firebase.auth().createUserWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    document.getElementById('loading').style.display = 'none';
-                    window.location.href = 'index2.html'; // Página principal após cadastro
-                })
-                .catch((error) => {
-                    document.getElementById('loading').style.display = 'none';
-                    alert("Erro ao criar conta: " + error.message);
+                    mensagem.textContent = erroMsg;
+                    mensagem.className = "mensagem erro";
+                    mensagem.style.display = "block";
                 });
-        }
+        });
     </script>
+
 </body>
 </html>
+
 

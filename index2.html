@@ -1,123 +1,54 @@
+
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página de Login e Conteúdo Protegido</title>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
-
+    <title>Área Protegida</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-        }
-        body {
             font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #fff; /* Plano de fundo branco */
-            color: black;
-            height: 100vh;
+        }
+
+        body {
+            background-color: black;
+            color: white;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden; /* Garante que a tela não fique rolando */
+            height: 100vh;
+            flex-direction: column;
+            text-align: center;
         }
+
         .container {
-            background: rgba(0, 0, 0, 0.9); /* Fundo preto para o login */
+            background: #1a1a1a;
             padding: 30px;
             border-radius: 8px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-            width: 100%;
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
             max-width: 400px;
         }
-        h1 {
-            color: #4CAF50;
+
+        h2 {
             margin-bottom: 20px;
-        }
-        input {
-            width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 16px;
-            background-color: #222; /* Cor mais escura para os campos */
-            color: white;
-        }
-        button {
-            width: 100%;
-            padding: 15px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            font-size: 16px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        .notification {
-            padding: 10px;
-            margin-top: 15px;
-            font-weight: bold;
-            border-radius: 4px;
-        }
-        .success {
-            background-color: #4CAF50;
-            color: white;
-        }
-        .error {
-            background-color: #e57373;
-            color: white;
-        }
-        .hidden {
-            display: none;
-        }
-        .content-protegido {
-            background: #fff;
-            color: #333;
-            padding: 30px;
-            border-radius: 8px;
-            width: 100%;
-            max-width: 600px;
-            display: none; /* Inicialmente oculto */
-        }
-        .logout-btn {
-            background-color: #f44336;
-            color: white;
-            padding: 10px;
-            font-size: 16px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
-    <!-- Formulário de Login -->
-    <div class="container" id="loginContainer">
-        <h1>Login</h1>
-        <input type="email" id="email" placeholder="Email" required>
-        <input type="password" id="password" placeholder="Senha" required>
-        <button onclick="loginUser()">Entrar</button>
-        <p><a href="cadastro.html" style="color: #4CAF50;">Ainda não tem conta? Cadastre-se</a></p>
-
-        <div id="notification" class="notification hidden"></div>
+    <div class="container" id="conteudo" style="display: none;">
+        <h2>Bem-vindo à Área Protegida</h2>
+        <p>Este é o conteúdo secreto disponível apenas para usuários autenticados.</p>
+        <button onclick="logout()">Sair</button>
     </div>
 
-    <!-- Conteúdo Protegido -->
-    <div class="content-protegido" id="contentContainer">
-        <h1>Bem-vindo à Página Protegida</h1>
-        <p>Agora você pode acessar o conteúdo exclusivo!</p>
-        <button class="logout-btn" onclick="logout()">Sair</button>
-    </div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 
-    <script>
-        // Configuração do Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
             authDomain: "mac-projeto-4e552.firebaseapp.com",
@@ -127,59 +58,28 @@
             appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
         };
 
-        // Inicializa o Firebase
-        firebase.initializeApp(firebaseConfig);
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
 
-        // Verifica se o usuário está autenticado
-        firebase.auth().onAuthStateChanged((user) => {
-            if (user) {
-                // Se o usuário estiver autenticado, exibe o conteúdo protegido
-                document.getElementById('loginContainer').style.display = 'none'; // Esconde o login
-                document.getElementById('contentContainer').style.display = 'block'; // Exibe o conteúdo
+        // Verifica se o usuário está autenticado e se veio do login corretamente
+        onAuthStateChanged(auth, (user) => {
+            if (user && sessionStorage.getItem("acesso_autorizado") === "true") {
+                document.getElementById("conteudo").style.display = "block";
             } else {
-                // Caso contrário, exibe o formulário de login
-                document.getElementById('loginContainer').style.display = 'block'; // Exibe o login
-                document.getElementById('contentContainer').style.display = 'none'; // Esconde o conteúdo
+                // Redireciona para a página bloqueada se não estiver logado corretamente
+                window.location.href = "bloqueado.html";
             }
         });
 
-        // Função de login
-        function loginUser() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            firebase.auth().signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    const notification = document.getElementById('notification');
-                    notification.classList.remove('hidden');
-                    notification.classList.add('success');
-                    notification.textContent = 'Login realizado com sucesso!';
-                    setTimeout(() => {
-                        // Após o login, a página será atualizada e o conteúdo será exibido
-                        location.reload();
-                    }, 2000);
-                })
-                .catch((error) => {
-                    const notification = document.getElementById('notification');
-                    notification.classList.remove('hidden');
-                    notification.classList.add('error');
-                    notification.textContent = 'Erro ao realizar login: ' + error.message;
-                    setTimeout(() => {
-                        notification.classList.add('hidden');
-                    }, 3000);
-                });
-        }
-
-        // Função de logout
         function logout() {
-            firebase.auth().signOut().then(() => {
-                location.reload(); // Ao sair, a página será recarregada e o login será exibido
-            }).catch((error) => {
-                console.error("Erro ao sair:", error);
+            signOut(auth).then(() => {
+                sessionStorage.removeItem("acesso_autorizado"); // Remove acesso
+                window.location.href = "login_acesso.html";
             });
         }
     </script>
 
 </body>
 </html>
+
 

@@ -3,53 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Protegida</title>
+    <title>Página de Login e Conteúdo Protegido</title>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
 
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
+            background-color: #000;
+            color: white;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         .container {
-            max-width: 600px;
-            margin: 100px auto;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background: #111;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            display: none; /* Inicialmente oculto */
         }
         h1 {
             color: #4CAF50;
+            margin-bottom: 20px;
+        }
+        input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: #222;
+            color: white;
         }
         button {
-            background: #d9534f;
+            width: 100%;
+            padding: 15px;
+            background-color: #4CAF50;
             color: white;
             border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
             font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
         }
         button:hover {
-            background: #c9302c;
+            background-color: #45a049;
+        }
+        .notification {
+            padding: 10px;
+            margin-top: 15px;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .error {
+            background-color: #e57373;
+            color: white;
+        }
+        .hidden {
+            display: none;
+        }
+        .content-protegido {
+            background: #fff;
+            color: #333;
+            padding: 30px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 600px;
+            display: none; /* Inicialmente oculto */
+        }
+        .logout-btn {
+            background-color: #f44336;
+            color: white;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>Bem-vindo à Página Protegida!</h1>
-        <p>Você está autenticado e pode visualizar este conteúdo.</p>
-        <button onclick="logout()">Sair</button>
+    <!-- Formulário de Login -->
+    <div class="container" id="loginContainer">
+        <h1>Login</h1>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Senha" required>
+        <button onclick="loginUser()">Entrar</button>
+        <p><a href="cadastro.html" style="color: #4CAF50;">Ainda não tem conta? Cadastre-se</a></p>
+
+        <div id="notification" class="notification hidden"></div>
+    </div>
+
+    <!-- Conteúdo Protegido -->
+    <div class="content-protegido" id="contentContainer">
+        <h1>Bem-vindo à Página Protegida</h1>
+        <p>Agora você pode acessar o conteúdo exclusivo!</p>
+        <button class="logout-btn" onclick="logout()">Sair</button>
     </div>
 
     <script>
-        // Configuração do Firebase (coloquei sua configuração aqui)
+        // Configuração do Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
             authDomain: "mac-projeto-4e552.firebaseapp.com",
@@ -62,17 +130,50 @@
         // Inicializa o Firebase
         firebase.initializeApp(firebaseConfig);
 
-        // Verifica autenticação antes de carregar o conteúdo
+        // Verifica se o usuário está autenticado
         firebase.auth().onAuthStateChanged((user) => {
-            if (!user) {
-                window.location.href = "bloqueado.html"; // Redireciona se não estiver autenticado
+            if (user) {
+                // Se o usuário estiver autenticado, exibe o conteúdo protegido
+                document.getElementById('loginContainer').style.display = 'none'; // Esconde o login
+                document.getElementById('contentContainer').style.display = 'block'; // Exibe o conteúdo
+            } else {
+                // Caso contrário, exibe o formulário de login
+                document.getElementById('loginContainer').style.display = 'block'; // Exibe o login
+                document.getElementById('contentContainer').style.display = 'none'; // Esconde o conteúdo
             }
         });
 
-        // Função para logout
+        // Função de login
+        function loginUser() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            firebase.auth().signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    const notification = document.getElementById('notification');
+                    notification.classList.remove('hidden');
+                    notification.classList.add('success');
+                    notification.textContent = 'Login realizado com sucesso!';
+                    setTimeout(() => {
+                        // Após o login, a página será atualizada e o conteúdo será exibido
+                        location.reload();
+                    }, 2000);
+                })
+                .catch((error) => {
+                    const notification = document.getElementById('notification');
+                    notification.classList.remove('hidden');
+                    notification.classList.add('error');
+                    notification.textContent = 'Erro ao realizar login: ' + error.message;
+                    setTimeout(() => {
+                        notification.classList.add('hidden');
+                    }, 3000);
+                });
+        }
+
+        // Função de logout
         function logout() {
             firebase.auth().signOut().then(() => {
-                window.location.href = "login.html"; // Redireciona para o login após logout
+                location.reload(); // Ao sair, a página será recarregada e o login será exibido
             }).catch((error) => {
                 console.error("Erro ao sair:", error);
             });
@@ -81,5 +182,4 @@
 
 </body>
 </html>
-
 

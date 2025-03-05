@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Portal de Loterias Mac Point</title>
 
+    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
 
@@ -19,123 +20,53 @@
             appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
         };
 
-        // Inicializa o Firebase
         firebase.initializeApp(firebaseConfig);
 
-        // Função de login
+        // Verifica se já está autenticado e redireciona
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                window.location.href = "index2.html"; // Redireciona para a página protegida
+            }
+        });
+
         function login() {
             const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
+            const senha = document.getElementById("senha").value;
 
-            firebase.auth().signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    // Após o login bem-sucedido, redireciona para index2.html (página protegida)
-                    window.location.href = "index2.html";
+            firebase.auth().signInWithEmailAndPassword(email, senha)
+                .then(() => {
+                    window.location.href = "index2.html"; // Redireciona ao fazer login com sucesso
                 })
-                .catch((error) => {
+                .catch(error => {
                     alert("Erro ao fazer login: " + error.message);
                 });
         }
     </script>
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
-        }
-
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: #f4f4f4;
-        }
-
-        .login-container {
-            width: 100%;
-            max-width: 400px;
-            padding: 30px;
-            background: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-
-        .login-container h2 {
-            margin-bottom: 20px;
-            font-size: 1.8rem;
-            color: #333;
-            font-weight: 600;
-        }
-
-        input {
-            width: 100%;
-            padding: 14px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 1rem;
-            color: #333;
-        }
-
-        button {
-            width: 100%;
-            padding: 14px;
-            background: #004d00;
-            color: white;
-            font-size: 1.1rem;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        button:hover {
-            background: #003a00;
-        }
-
-        @media (max-width: 768px) {
-            .login-container {
-                padding: 20px;
-            }
-
-            .login-container h2 {
-                font-size: 1.6rem;
-            }
-
-            input, button {
-                font-size: 1rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .login-container {
-                max-width: 100%;
-                padding: 15px;
-            }
-
-            .login-container h2 {
-                font-size: 1.4rem;
-            }
-
-            input, button {
-                font-size: 0.9rem;
-            }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: #f0f0f0; }
+        .login-container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0,0,0,0.2); width: 300px; text-align: center; }
+        h2 { margin-bottom: 20px; }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
+        button { width: 100%; padding: 10px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #218838; }
+        .register-link { margin-top: 10px; font-size: 14px; }
+        .register-link a { color: #007bff; text-decoration: none; }
+        .register-link a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
 
     <div class="login-container">
         <h2>Login</h2>
-        <input type="email" id="email" placeholder="Email" required>
-        <input type="password" id="password" placeholder="Senha" required>
+        <input type="email" id="email" placeholder="E-mail" required>
+        <input type="password" id="senha" placeholder="Senha" required>
         <button onclick="login()">Entrar</button>
+        <p class="register-link">Não tem cadastro? <a href="cadastro.html">Cadastre-se</a></p>
     </div>
 
 </body>
 </html>
+
 

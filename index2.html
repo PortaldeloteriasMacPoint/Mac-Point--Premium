@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Área Protegida</title>
+    <title>Página Protegida</title>
     <style>
         * {
             margin: 0;
@@ -14,40 +13,67 @@
         }
 
         body {
-            background-color: black;
-            color: white;
+            background-color: white;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            flex-direction: column;
-            text-align: center;
         }
 
         .container {
-            background: #1a1a1a;
+            background: #f9f9f9;
             padding: 30px;
             border-radius: 8px;
-            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
-            max-width: 400px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 100%;
+            max-width: 350px;
         }
 
         h2 {
+            color: black;
             margin-bottom: 20px;
+        }
+
+        .conteudo {
+            display: none;
+        }
+
+        .mensagem {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .sucesso {
+            background: lightgreen;
+            color: black;
+        }
+
+        .erro {
+            background: red;
+            color: white;
         }
     </style>
 </head>
 <body>
 
-    <div class="container" id="conteudo" style="display: none;">
-        <h2>Bem-vindo à Área Protegida</h2>
-        <p>Este é o conteúdo secreto disponível apenas para usuários autenticados.</p>
-        <button onclick="logout()">Sair</button>
+    <div class="container">
+        <h2>Página Protegida</h2>
+        <p id="verificando">Verificando autenticação...</p>
+
+        <div id="conteudoProtegido" class="conteudo">
+            <p>Bem-vindo! Você acessou a página protegida.</p>
+        </div>
+
+        <p id="mensagem" class="mensagem"></p>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
@@ -60,26 +86,71 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        const mensagem = document.getElementById("mensagem");
+        const conteudoProtegido = document.getElementById("conteudoProtegido");
+        const verificando = document.getElementById("verificando");
 
-        // Verifica se o usuário está autenticado e se veio do login corretamente
+        // Função que verifica se o usuário está autenticado
         onAuthStateChanged(auth, (user) => {
-            if (user && sessionStorage.getItem("acesso_autorizado") === "true") {
-                document.getElementById("conteudo").style.display = "block";
-            } else {
-                // Redireciona para a página bloqueada se não estiver logado corretamente
+            if (!user) {
+                // Se o usuário não estiver autenticado, redireciona para a página bloqueada
                 window.location.href = "bloqueado.html";
+            } else {
+                // Usuário autenticado, esconde a verificação e exibe o conteúdo
+                verificando.style.display = "none";
+                conteudoProtegido.style.display = "block";
             }
         });
-
-        function logout() {
-            signOut(auth).then(() => {
-                sessionStorage.removeItem("acesso_autorizado"); // Remove acesso
-                window.location.href = "login_acesso.html";
-            });
-        }
     </script>
 
 </body>
 </html>
 
+O que acontece agora:
+
+1. Verificação de autenticação: Assim que a página index2.html é carregada, o código Firebase verifica se o usuário está autenticado. Se não estiver autenticado, o usuário será redirecionado automaticamente para a página bloqueado.html.
+
+
+2. Proteção contra link direto: Se o usuário tentar acessar o link diretamente, sem estar autenticado, ele será redirecionado para a página de bloqueio, sem visualizar o conteúdo da página protegida.
+
+
+3. Página de bloqueio: Caso o usuário não tenha permissão para acessar, ele será redirecionado para a página bloqueado.html. Esse arquivo pode ser configurado com uma simples mensagem informando que o acesso foi bloqueado ou que é necessário login.
+
+
+
+bloqueado.html (Página de Acesso Bloqueado)
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acesso Bloqueado</title>
+    <style>
+        body {
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .message {
+            background-color: #f44336;
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="message">
+        <h2>Acesso Bloqueado!</h2>
+        <p>Você não tem permissão para acessar esta página. Por favor, faça login primeiro.</p>
+    </div>
+
+</body>
+</html>
 

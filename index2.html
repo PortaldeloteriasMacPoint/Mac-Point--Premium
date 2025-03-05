@@ -3,12 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal de Loterias Mac Point</title>
-
-    <!-- Firebase -->
+    <title>Portal de Loterias Mac Point - Página Protegida</title>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-
     <script>
         // Configuração do Firebase
         const firebaseConfig = {
@@ -19,74 +16,83 @@
             messagingSenderId: "537330451519",
             appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
         };
-
         firebase.initializeApp(firebaseConfig);
 
         // Verifica se o usuário está autenticado
         firebase.auth().onAuthStateChanged(user => {
             if (!user) {
-                window.location.href = "login_acesso.html"; // Redireciona se não estiver autenticado
+                // Redireciona para o login caso o usuário não esteja autenticado
+                window.location.href = "login_acesso.html";
             }
         });
-
-        function logout() {
-            firebase.auth().signOut().then(() => {
-                window.location.href = "login_acesso.html"; // Redireciona ao sair
-            }).catch(error => {
-                alert("Erro ao sair: " + error.message);
-            });
-        }
     </script>
 
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-        body { text-align: center; background: #f8f9fa; padding: 20px; }
-        header { background: linear-gradient(to right, #004d00, #00cc99); color: white; padding: 15px; font-size: 20px; font-weight: bold; }
-        .menu-lateral { position: fixed; top: 0; left: 0; width: 250px; height: 100%; background: #004d00; color: white; padding-top: 60px; display: none; }
-        .menu-lateral a { display: block; color: white; padding: 10px; text-decoration: none; }
-        .menu-lateral a:hover { background: #008040; }
-        .menu-icon { position: absolute; top: 15px; left: 15px; font-size: 25px; cursor: pointer; }
-        .content { margin-left: 260px; padding: 20px; }
-        .icons { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
-        .icons div { font-size: 30px; background: black; color: white; padding: 15px; border-radius: 10px; cursor: pointer; }
-        .logout-btn { background: #dc3545; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer; margin-top: 20px; }
-        .logout-btn:hover { background: #c82333; }
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        .content {
+            margin-top: 20px;
+        }
+        .box {
+            background: #28a745;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        footer {
+            text-align: center;
+            padding: 10px;
+            background: #222;
+            color: white;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
 
-    <header>
-        <span class="menu-icon" onclick="document.getElementById('menu').style.display='block'">&#9776;</span>
-        Portal de Loterias Mac Point
-    </header>
-
-    <div id="menu" class="menu-lateral">
-        <a href="javascript:void(0)" onclick="document.getElementById('menu').style.display='none'">✖ Fechar</a>
-        <a href="#">Início</a>
-        <a href="#">Modalidades</a>
-        <a href="#">Menor Estatística</a>
-        <a href="#">Planilhas</a>
-        <a href="#">Simuladores</a>
-        <a href="#">Desdobramento</a>
-    </div>
-
-    <div class="content">
-        <h2>Bem-vindo ao Portal</h2>
-        <p>Seu espaço para análises e estatísticas das loterias.</p>
+    <div class="container">
+        <h1>Bem-vindo ao Portal de Loterias Mac Point!</h1>
         
-        <div class="icons">
-            <div>⚙️</div>
-            <div>🪩</div>
-            <div>📚</div>
-            <div>📢</div>
-            <div>🎯</div>
-            <div>🎰</div>
-        </div>
+        <div class="content">
+            <div class="box">
+                <h2>Conteúdo Exclusivo</h2>
+                <p>Somente usuários autenticados têm acesso a este conteúdo.</p>
+                <p>Informações sobre as modalidades de loteria, estatísticas e muito mais podem ser acessadas aqui.</p>
+            </div>
 
-        <button class="logout-btn" onclick="logout()">Sair</button>
+            <div class="box">
+                <h3>Notícias da Loteria</h3>
+                <p>Atualização: Novos sorteios estarão disponíveis em breve! Fique ligado para mais detalhes.</p>
+            </div>
+
+            <div class="box">
+                <h3>Ferramentas e Simuladores</h3>
+                <p>Utilize nossas ferramentas para analisar probabilidades, calcular apostas e muito mais.</p>
+            </div>
+        </div>
     </div>
+
+    <footer>
+        <p>&copy; 2025 Portal de Loterias Mac Point - Todos os direitos reservados</p>
+    </footer>
 
 </body>
 </html>
-
 

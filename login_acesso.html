@@ -10,47 +10,58 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
 
-    <script>
-        // Configuração do Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
-            authDomain: "mac-projeto-4e552.firebaseapp.com",
-            projectId: "mac-projeto-4e552",
-            storageBucket: "mac-projeto-4e552.appspot.com",
-            messagingSenderId: "537330451519",
-            appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
-        };
-        firebase.initializeApp(firebaseConfig);
 
-        // Função de login
-        function login() {
-            const email = document.getElementById('email').value;
-            const senha = document.getElementById('senha').value;
+<!-- Scripts Firebase -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
 
-            firebase.auth().signInWithEmailAndPassword(email, senha)
-                .then(() => {
-                    // Redireciona para a página protegida após o login bem-sucedido
-                    window.location.href = "index2.html";
-                })
-                .catch(error => {
-                    // Exibe uma mensagem de erro
-                    alert("Erro ao fazer login: " + error.message);
-                });
+    const firebaseConfig = {
+        apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+        authDomain: "mac-projeto-4e552.firebaseapp.com",
+        projectId: "mac-projeto-4e552",
+        storageBucket: "mac-projeto-4e552.appspot.com",
+        messagingSenderId: "537330451519",
+        appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const successMessage = document.getElementById("successMessage");
+
+        try {
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            console.log("Usuário autenticado:", userCredential.user);
+
+            // Exibe a mensagem de sucesso
+            successMessage.style.display = "block";
+            successMessage.innerText = "Login efetuado com sucesso!";
+
+            // Limpa os campos de entrada
+            document.getElementById("email").value = '';
+            document.getElementById("password").value = '';
+
+            // Aguarda 1,5 segundos e redireciona
+            setTimeout(() => {
+                successMessage.style.display = "none"; // Esconde a mensagem
+                window.location.href = "index2.html"; // Redireciona
+            }, 1500);
+        } catch (error) {
+            alert("Erro ao fazer login: " + error.message);
         }
-    </script>
+    });
+</script>
+</body>
+</html>
 
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-        body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: black; color: white; }
-        .login-container { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(255,255,255,0.2); width: 300px; text-align: center; }
-        h2 { margin-bottom: 20px; color: black; }
-        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
-        button { width: 100%; padding: 10px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; }
-        button:hover { background: #218838; }
-        .register-link { margin-top: 10px; font-size: 14px; }
-        .register-link a { color: #007bff; text-decoration: none; }
-        .register-link a:hover { text-decoration: underline; }
-    </style>
+
+    
 </head>
 <body>
 

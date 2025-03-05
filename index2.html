@@ -1,11 +1,41 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal de Loterias Mac Point - Página Protegida</title>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+    <title>Página Protegida</title>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
+
+    <!-- Impedir Cache -->
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        .content {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Página Protegida</h1>
+    <p>Se você está vendo isso, é porque está autenticado.</p>
+
+    <div class="content">
+        <h2>Bem-vindo ao conteúdo exclusivo!</h2>
+        <p>Aqui está o conteúdo que só membros autenticados podem ver.</p>
+        <button onclick="logout()">Sair</button>
+    </div>
+
     <script>
         // Configuração do Firebase
         const firebaseConfig = {
@@ -19,80 +49,22 @@
         firebase.initializeApp(firebaseConfig);
 
         // Verifica se o usuário está autenticado
-        firebase.auth().onAuthStateChanged(user => {
+        firebase.auth().onAuthStateChanged((user) => {
             if (!user) {
-                // Redireciona para o login caso o usuário não esteja autenticado
-                window.location.href = "login_acesso.html";
+                window.location.href = "bloqueado.html"; // Redireciona se não estiver autenticado
+            } else {
+                document.querySelector(".content").style.display = "block"; // Exibe o conteúdo se autenticado
             }
         });
+
+        // Função de logout
+        function logout() {
+            firebase.auth().signOut().then(() => {
+                window.location.href = "login.html";
+            });
+        }
     </script>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f4f4;
-            padding: 20px;
-        }
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            color: #333;
-        }
-        .content {
-            margin-top: 20px;
-        }
-        .box {
-            background: #28a745;
-            color: white;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-        footer {
-            text-align: center;
-            padding: 10px;
-            background: #222;
-            color: white;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="container">
-        <h1>Bem-vindo ao Portal de Loterias Mac Point!</h1>
-        
-        <div class="content">
-            <div class="box">
-                <h2>Conteúdo Exclusivo</h2>
-                <p>Somente usuários autenticados têm acesso a este conteúdo.</p>
-                <p>Informações sobre as modalidades de loteria, estatísticas e muito mais podem ser acessadas aqui.</p>
-            </div>
-
-            <div class="box">
-                <h3>Notícias da Loteria</h3>
-                <p>Atualização: Novos sorteios estarão disponíveis em breve! Fique ligado para mais detalhes.</p>
-            </div>
-
-            <div class="box">
-                <h3>Ferramentas e Simuladores</h3>
-                <p>Utilize nossas ferramentas para analisar probabilidades, calcular apostas e muito mais.</p>
-            </div>
-        </div>
-    </div>
-
-    <footer>
-        <p>&copy; 2025 Portal de Loterias Mac Point - Todos os direitos reservados</p>
-    </footer>
-
 </body>
 </html>
+
 

@@ -119,7 +119,7 @@
         </div>
 
         <!-- Conteúdo Principal -->
-        <div class="conteudo-principal" id="protectedContent">
+        <div class="conteudo-principal" id="protectedContent" style="display:none;">
             <h1>Conteúdo Protegido</h1>
             <p>Bem-vindo à área protegida! Somente usuários autenticados podem acessar esse conteúdo.</p>
 
@@ -159,16 +159,19 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // Verifica se o usuário está autenticado ao carregar a página
-        onAuthStateChanged(auth, user => {
-            if (!user) {
-                // Se não estiver autenticado, redireciona para a página de login
-                window.location.href = "index.html";  // Ou pode redirecionar para uma página de bloqueio
-            } else {
-                // Se estiver autenticado, mostra o conteúdo protegido
-                document.getElementById("protectedContent").style.display = "block";
-            }
-        });
+        // Aguardar o carregamento da página para verificar a autenticação
+        window.onload = () => {
+            // Verifica o status de autenticação
+            onAuthStateChanged(auth, user => {
+                if (user) {
+                    // Se o usuário estiver autenticado, exibe o conteúdo
+                    document.getElementById("protectedContent").style.display = "block";
+                } else {
+                    // Se o usuário não estiver autenticado, redireciona para a página de login
+                    window.location.href = "index.html";
+                }
+            });
+        }
 
         // Função de logout
         function logout() {

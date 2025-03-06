@@ -122,7 +122,7 @@
         /* Ícones do submenu */
         .icon-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(3, 0fr);
             gap: 10px;
             padding: 10px 20px;
         }
@@ -137,12 +137,13 @@
 <body>
 
     <div class="top-bar">
-        <span class="menu-icon" onclick="toggleMenu()">🕵🏻‍♂️</span>
-        <span class="site-name">Portal de Loterias Mac Point </span>
+        <span class="menu-icon" onclick="toggleMenu()">⋮ 🕵🏻‍♂️</span>
+        <span class="site-name">🍀 Portal de Loterias Mac Point 🍀</span>
     </div>
 
     <div class="sidebar" id="sidebar">
-        <div class="menu-title">Menu</div>
+             <div class="menu-title"></div>
+        <div class="menu-title">💠 Menu 💠</div>
         <span class="menu-btn" onclick="showSection('inicio')">Início</span>
         <span class="menu-btn" onclick="showSection('modalidades')">Modalidades</span>
         <span class="menu-btn" onclick="showSection('analise')">Análise Estatística</span>
@@ -150,7 +151,7 @@
         <span class="menu-btn" onclick="showSection('desdobramento')">Desdobramento</span>
         <span class="menu-btn" onclick="showSection('tabelas')">Tabelas</span>
 
-        <div class="menu-title">Outro Serviço</div>
+        <div class="menu-title"> Outro Serviço</div>
         <div class="icon-grid">
             <span class="icon-btn" onclick="showSection('configuracoes')">⚙️</span>
             <span class="icon-btn" onclick="showSection('disco')">🪩</span>
@@ -158,6 +159,7 @@
             <span class="icon-btn" onclick="showSection('megafone')">📢</span>
             <span class="icon-btn" onclick="showSection('alvo')">🎯</span>
             <span class="icon-btn" onclick="showSection('cassino')">🎰</span>
+             <div class="menu-title"> BOA SORTE </div>
         </div>
     </div>
 

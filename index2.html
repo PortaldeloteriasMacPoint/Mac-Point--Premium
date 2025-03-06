@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Protegida</title>
+    <title>MacPonte e Ponte Caviate</title>
     <style>
         * {
             margin: 0;
@@ -11,139 +12,195 @@
             box-sizing: border-box;
             font-family: Arial, sans-serif;
         }
+
         body {
             background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
+            text-align: center;
         }
-        .container {
-            display: flex;
-            width: 100%;
-            max-width: 1200px;
-        }
-        /* Menu Lateral */
-        .menu-lateral {
-            width: 250px;
-            background-color: #28a745;
+
+        /* Barra superior */
+        .top-bar {
+            background: linear-gradient(to right, black, green);
             color: white;
-            height: 100vh;
-            padding: 20px;
+            padding: 15px;
+            text-align: center;
             position: fixed;
-            left: 0;
             top: 0;
-            overflow-y: auto;
-        }
-        .menu-lateral h2 {
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-        .menu-lateral ul {
-            list-style-type: none;
-        }
-        .menu-lateral li {
-            margin: 10px 0;
-        }
-        .menu-lateral a {
-            text-decoration: none;
-            color: white;
-            font-size: 18px;
-            display: block;
-            padding: 10px;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-        }
-        .menu-lateral a:hover {
-            background-color: #218838;
-        }
-        .menu-lateral .submenu {
-            display: none;
-            margin-top: 10px;
-            margin-left: 20px;
-        }
-        .menu-lateral .submenu a {
-            font-size: 16px;
-            padding: 8px 15px;
-        }
-
-        /* Conteúdo Principal */
-        .conteudo-principal {
-            margin-left: 250px;
-            padding: 20px;
+            left: 0;
             width: 100%;
-        }
-        .conteudo-principal h1 {
-            font-size: 28px;
-            margin-bottom: 20px;
-        }
-        .conteudo-principal p {
-            font-size: 18px;
-            color: black;
-        }
-        .conteudo-principal button {
-            padding: 10px 20px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        .conteudo-principal button:hover {
-            background-color: #218838;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
         }
 
-        /* Logout Button */
-        .button-container {
-            margin-top: 20px;
+        .site-name {
+            font-size: 20px;
+            font-weight: bold;
         }
+
+        .menu-icon {
+            font-size: 30px;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        /* Menu lateral */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background: linear-gradient(to bottom, #004d00, #008000);
+            border-right: 3px solid #90EE90;
+            transition: left 0.3s;
+            padding-top: 60px;
+            z-index: 999;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #90EE90 transparent;
+        }
+
+        .menu-title {
+            color: white;
+            font-size: 18px;
+            margin: 10px;
+            font-weight: bold;
+        }
+
+        .menu-btn, .icon-btn {
+            display: block;
+            background: black;
+            color: white;
+            padding: 10px;
+            margin: 5px 15px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid #90EE90;
+        }
+
+        .section {
+            display: none;
+            padding: 20px;
+            margin-top: 70px;
+        }
+
+        .active {
+            display: block;
+        }
+
+        .cover-photo {
+            margin-top: 70px;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .description {
+            padding: 20px;
+            font-size: 18px;
+        }
+
+        /* Rodapé */
+        .footer {
+            background: black;
+            color: white;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .hide-footer {
+            transform: translateY(100%);
+        }
+
+        /* Ícones do submenu */
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            padding: 10px 20px;
+        }
+
+        .icon-btn {
+            font-size: 24px;
+            padding: 15px;
+        }
+
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- Menu Lateral -->
-        <div class="menu-lateral" id="menuLateral">
-            <h2>Menu</h2>
-            <ul>
-                <li><a href="#">Início</a></li>
-                <li><a href="#">Modalidades</a></li>
-                <li><a href="#">Estatísticas</a></li>
-                <li><a href="#">Planilhas</a></li>
-                <li><a href="#">Simuladores</a></li>
-                <li><a href="#">Desdobramento</a></li>
-                <li><a href="#">Outro Serviço</a></li>
-                <li><a href="#">Configurações</a></li>
-            </ul>
-        </div>
+    <div class="top-bar">
+        <span class="menu-icon" onclick="toggleMenu()">☰</span>
+        <span class="site-name">MacPonte e Ponte Caviate</span>
+    </div>
 
-        <!-- Conteúdo Principal -->
-        <div class="conteudo-principal" id="protectedContent" style="display:none;">
-            <h1>Conteúdo Protegido</h1>
-            <p>Bem-vindo à área protegida! Somente usuários autenticados podem acessar esse conteúdo.</p>
+    <div class="sidebar" id="sidebar">
+        <div class="menu-title">Menu</div>
+        <span class="menu-btn" onclick="showSection('inicio')">Início</span>
+        <span class="menu-btn" onclick="showSection('modalidades')">Modalidades</span>
+        <span class="menu-btn" onclick="showSection('analise')">Análise Estatística</span>
+        <span class="menu-btn" onclick="showSection('simuladores')">Simuladores</span>
+        <span class="menu-btn" onclick="showSection('desdobramento')">Desdobramento</span>
+        <span class="menu-btn" onclick="showSection('tabelas')">Tabelas</span>
 
-            <!-- Seções -->
-            <div class="section" id="secao1">
-                <h2>Seção 1 - Modalidades</h2>
-                <p>Conteúdo sobre modalidades...</p>
-            </div>
-            <div class="section" id="secao2">
-                <h2>Seção 2 - Estatísticas</h2>
-                <p>Conteúdo sobre estatísticas...</p>
-            </div>
-            <div class="section" id="secao3">
-                <h2>Seção 3 - Planilhas</h2>
-                <p>Conteúdo sobre planilhas...</p>
-            </div>
-
-            <div class="button-container">
-                <button onclick="logout()">Sair</button>
-            </div>
+        <div class="menu-title">Outro Serviço</div>
+        <div class="icon-grid">
+            <span class="icon-btn" onclick="showSection('configuracoes')">⚙️</span>
+            <span class="icon-btn" onclick="showSection('disco')">🪩</span>
+            <span class="icon-btn" onclick="showSection('biblioteca')">📚</span>
+            <span class="icon-btn" onclick="showSection('megafone')">📢</span>
+            <span class="icon-btn" onclick="showSection('alvo')">🎯</span>
+            <span class="icon-btn" onclick="showSection('cassino')">🎰</span>
         </div>
     </div>
 
-    <script type="module">
+    <div class="section active" id="inicio">
+        <img src="https://via.placeholder.com/800x300" class="cover-photo" alt="Foto de Capa">
+        <p class="description">Bem-vindo à plataforma MacPonte e Ponte Caviate! Aqui você encontra estatísticas, simuladores e muito mais.</p>
+    </div>
+
+    <div class="section" id="modalidades">
+        <h2>Modalidades</h2>
+        <p>Conteúdo sobre modalidades...</p>
+    </div>
+
+    <div class="section" id="analise">
+        <h2>Análise Estatística</h2>
+        <p>Conteúdo sobre análise estatística...</p>
+    </div>
+
+    <div class="section" id="simuladores">
+        <h2>Simuladores</h2>
+        <p>Conteúdo sobre simuladores...</p>
+    </div>
+
+    <div class="section" id="desdobramento">
+        <h2>Desdobramento</h2>
+        <p>Conteúdo sobre desdobramento...</p>
+    </div>
+
+    <div class="section" id="tabelas">
+        <h2>Tabelas</h2>
+        <p>Conteúdo sobre tabelas...</p>
+    </div>
+
+    <!-- Seções para os ícones -->
+    <div class="section" id="configuracoes"><h2>Configurações</h2><p>Configurações do sistema...</p></div>
+    <div class="section" id="disco"><h2>Discoteca</h2><p>Playlist e músicas...</p></div>
+    <div class="section" id="biblioteca"><h2>Biblioteca</h2><p>Livros e conteúdos educacionais...</p></div>
+    <div class="section" id="megafone"><h2>Notificações</h2><p>Últimas novidades...</p></div>
+    <div class="section" id="alvo"><h2>Desafios</h2><p>Metas e desafios diários...</p></div>
+    <div class="section" id="cassino"><h2>Jogos</h2><p>Entretenimento e sorte...</p></div>
+
+    <div class="footer" id="footer">© 2025 MacPonte e Ponte Caviate</div>
+<script type="module">
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
 
@@ -181,6 +238,34 @@
             }).catch(error => {
                 console.log("Erro ao sair: ", error);
             });
+        }
+    </script>
+
+    <script>
+        function toggleMenu() {
+            var sidebar = document.getElementById("sidebar");
+            var footer = document.getElementById("footer");
+            if (sidebar.style.left === "0px") {
+                sidebar.style.left = "-250px";
+                footer.classList.remove("hide-footer");
+            } else {
+                sidebar.style.left = "0px";
+                footer.classList.add("hide-footer");
+            }
+        }
+
+        document.body.addEventListener("click", function(event) {
+            var sidebar = document.getElementById("sidebar");
+            if (!sidebar.contains(event.target) && event.target.className !== "menu-icon") {
+                sidebar.style.left = "-250px";
+                document.getElementById("footer").classList.remove("hide-footer");
+            }
+        });
+
+        function showSection(sectionId) {
+            document.querySelectorAll(".section").forEach(section => section.classList.remove("active"));
+            document.getElementById(sectionId).classList.add("active");
+            toggleMenu();
         }
     </script>
 

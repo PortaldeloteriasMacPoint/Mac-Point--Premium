@@ -12,14 +12,14 @@
             font-family: Arial, sans-serif;
         }
         body {
-            background-color: white;
+            background-color: #000; /* Plano de fundo preto */
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
         }
         .container {
-            background: #f9f9f9;
+            background: #fff; /* Formulário branco */
             padding: 30px;
             border-radius: 8px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
@@ -69,16 +69,25 @@
             background: red;
             color: white;
         }
+        .cadastro-link {
+            margin-top: 15px;
+            color: #007bff;
+            text-decoration: none;
+        }
+        .cadastro-link:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
         <h2>Login</h2>
-        <input type="email" id="email" placeholder="E-mail">
-        <input type="password" id="senha" placeholder="Senha">
+        <input type="email" id="email" placeholder="E-mail" />
+        <input type="password" id="senha" placeholder="Senha" />
         <button id="loginBtn">Entrar</button>
         <p id="mensagem" class="mensagem"></p>
+        <p><a href="loginacesso.html" class="cadastro-link">Não tem cadastro? Cadastre-se.</a></p> <!-- Link para o cadastro -->
     </div>
 
     <script type="module">
@@ -86,13 +95,13 @@
         import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 
         const firebaseConfig = {
-            apiKey: "SUA_API_KEY",
-            authDomain: "SEU_AUTH_DOMAIN",
-            projectId: "SEU_PROJECT_ID",
-            storageBucket: "SEU_STORAGE_BUCKET",
-            messagingSenderId: "SEU_MESSAGING_SENDER_ID",
-            appId: "SEU_APP_ID"
-        };
+            apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+            authDomain: "mac-projeto-4e552.firebaseapp.com",
+            projectId: "mac-projeto-4e552",
+            storageBucket: "mac-projeto-4e552.appspot.com",
+            messagingSenderId: "537330451519",
+            appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
+        };   
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
@@ -137,3 +146,4 @@
 
 </body>
 </html>
+

@@ -1,50 +1,186 @@
-
 <!DOCTYPE html>
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página Protegida</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+        .container {
+            display: flex;
+            width: 100%;
+            max-width: 1200px;
+        }
+        /* Menu Lateral */
+        .menu-lateral {
+            width: 250px;
+            background-color: #28a745;
+            color: white;
+            height: 100vh;
+            padding: 20px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            overflow-y: auto;
+        }
+        .menu-lateral h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .menu-lateral ul {
+            list-style-type: none;
+        }
+        .menu-lateral li {
+            margin: 10px 0;
+        }
+        .menu-lateral a {
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            display: block;
+            padding: 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .menu-lateral a:hover {
+            background-color: #218838;
+        }
+        .menu-lateral .submenu {
+            display: none;
+            margin-top: 10px;
+            margin-left: 20px;
+        }
+        .menu-lateral .submenu a {
+            font-size: 16px;
+            padding: 8px 15px;
+        }
+
+        /* Conteúdo Principal */
+        .conteudo-principal {
+            margin-left: 250px;
+            padding: 20px;
+            width: 100%;
+        }
+        .conteudo-principal h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        .conteudo-principal p {
+            font-size: 18px;
+            color: black;
+        }
+        .conteudo-principal button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .conteudo-principal button:hover {
+            background-color: #218838;
+        }
+
+        /* Logout Button */
+        .button-container {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Bem-vindo à Página Protegida!</h1>
-    <button id="logoutBtn">Sair</button>
+
+    <div class="container">
+        <!-- Menu Lateral -->
+        <div class="menu-lateral" id="menuLateral">
+            <h2>Menu</h2>
+            <ul>
+                <li><a href="#">Início</a></li>
+                <li><a href="#">Modalidades</a></li>
+                <li><a href="#">Estatísticas</a></li>
+                <li><a href="#">Planilhas</a></li>
+                <li><a href="#">Simuladores</a></li>
+                <li><a href="#">Desdobramento</a></li>
+                <li><a href="#">Outro Serviço</a></li>
+                <li><a href="#">Configurações</a></li>
+            </ul>
+        </div>
+
+        <!-- Conteúdo Principal -->
+        <div class="conteudo-principal" id="protectedContent">
+            <h1>Conteúdo Protegido</h1>
+            <p>Bem-vindo à área protegida! Somente usuários autenticados podem acessar esse conteúdo.</p>
+
+            <!-- Seções -->
+            <div class="section" id="secao1">
+                <h2>Seção 1 - Modalidades</h2>
+                <p>Conteúdo sobre modalidades...</p>
+            </div>
+            <div class="section" id="secao2">
+                <h2>Seção 2 - Estatísticas</h2>
+                <p>Conteúdo sobre estatísticas...</p>
+            </div>
+            <div class="section" id="secao3">
+                <h2>Seção 3 - Planilhas</h2>
+                <p>Conteúdo sobre planilhas...</p>
+            </div>
+
+            <div class="button-container">
+                <button onclick="logout()">Sair</button>
+            </div>
+        </div>
+    </div>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
 
         const firebaseConfig = {
-            apiKey: "SUA_API_KEY",
-            authDomain: "SEU_AUTH_DOMAIN",
-            projectId: "SEU_PROJECT_ID",
-            storageBucket: "SEU_STORAGE_BUCKET",
-            messagingSenderId: "SEU_MESSAGING_SENDER_ID",
-            appId: "SEU_APP_ID"
+            apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+            authDomain: "mac-projeto-4e552.firebaseapp.com",
+            projectId: "mac-projeto-4e552",
+            storageBucket: "mac-projeto-4e552.appspot.com",
+            messagingSenderId: "537330451519",
+            appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
         };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // 🔹 Verifica se o usuário está logado e tem permissão para ver a página
-        onAuthStateChanged(auth, (user) => {
-            const acessoAutorizado = localStorage.getItem("acesso_autorizado");
-
-            if (!user || acessoAutorizado !== "true") {
-                localStorage.removeItem("acesso_autorizado"); // 🔹 Remove permissão errada
-                window.location.href = "index.html"; // 🔹 Redireciona para a página pública
+        // Verifica se o usuário está autenticado ao carregar a página
+        onAuthStateChanged(auth, user => {
+            if (!user) {
+                // Se não estiver autenticado, redireciona para a página de login
+                window.location.href = "index.html";  // Ou pode redirecionar para uma página de bloqueio
+            } else {
+                // Se estiver autenticado, mostra o conteúdo protegido
+                document.getElementById("protectedContent").style.display = "block";
             }
         });
 
-        // 🔹 Logout do usuário
-        document.getElementById("logoutBtn").addEventListener("click", () => {
+        // Função de logout
+        function logout() {
             signOut(auth).then(() => {
-                localStorage.removeItem("acesso_autorizado"); // 🔹 Remove permissão
-                window.location.href = "login_acesso.html"; // 🔹 Volta para login
+                // Redireciona para a página de login após o logout
+                window.location.href = "index.html";
+            }).catch(error => {
+                console.log("Erro ao sair: ", error);
             });
-        });
+        }
     </script>
+
 </body>
 </html>
-
 

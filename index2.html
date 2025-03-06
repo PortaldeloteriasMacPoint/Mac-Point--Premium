@@ -1,106 +1,241 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MacPoint</title>
+    <title>Portal de Loterias Mac Point</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-        body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: #121212; color: white; overflow: hidden; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
 
+        body {
+            background: white;
+            text-align: center;
+        }
+
+        /* Borda superior fixa */
         .top-bar {
-            position: fixed; top: 0; width: 100%; height: 60px; background: linear-gradient(to right, black, blue);
-            display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 1000;
+            position: fixed;
+            width: 100%;
+            height: 60px;
+            background: linear-gradient(to right, darkgreen, lightgreen);
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            top: 0;
+            left: 0;
+            z-index: 1000;
         }
-        .menu-icon { font-size: 30px; cursor: pointer; }
-        .title { font-size: 24px; font-weight: bold; font-family: 'Caveat', cursive; }
 
-        .sidebar {
-            position: fixed; top: 0; left: -250px; width: 250px; height: 100%; background: black;
-            padding: 20px; box-shadow: 2px 0 5px rgba(255, 255, 255, 0.2); transition: 0.3s;
+        .top-bar h1 {
+            font-family: Impact, sans-serif;
+            font-size: 24px;
         }
-        .sidebar h2 { font-size: 18px; margin-bottom: 15px; }
-        .menu-btn { display: block; width: 100%; padding: 10px; background: black; color: white; border: 1px solid white; text-align: left; cursor: pointer; margin-bottom: 5px; }
-        .menu-btn:hover { background: white; color: black; }
-        
-        .submenu { display: flex; justify-content: space-between; margin-top: 10px; }
-        .submenu button { width: 30%; padding: 10px; font-size: 18px; cursor: pointer; background: none; border: none; color: white; }
-        .submenu button:hover { color: cyan; }
 
-        .content { display: none; padding: 20px; text-align: center; }
-        .active { display: block; }
+        /* Menu lateral */
+        .menu-lateral {
+            position: fixed;
+            left: -250px;
+            top: 60px;
+            width: 250px;
+            height: 100%;
+            background: darkgreen;
+            padding-top: 20px;
+            transition: left 0.3s;
+            z-index: 999;
+        }
 
+        .menu-lateral a {
+            display: block;
+            padding: 15px;
+            color: white;
+            text-decoration: none;
+            border-bottom: 1px solid lightgreen;
+            text-align: left;
+        }
+
+        .menu-lateral a:hover {
+            background: lightgreen;
+            color: black;
+        }
+
+        /* Ícone do menu */
+        .menu-icon {
+            cursor: pointer;
+            font-size: 24px;
+            margin-right: 15px;
+        }
+
+        /* Conteúdo principal */
+        .content {
+            margin-top: 80px;
+            padding: 20px;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .visible {
+            display: block;
+        }
+
+        /* Rodapé */
         .footer {
-            position: fixed; bottom: 0; width: 100%; text-align: center; padding: 10px; background: black;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: black;
+            color: white;
+            text-align: center;
+            padding: 10px;
         }
-        .menu-open .footer { display: none; }
-        .menu-open .sidebar { left: 0; }
+
+        /* Botão de Sair */
+        #botaoSair {
+            margin-top: 20px;
+            padding: 10px;
+            background: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        #botaoSair:hover {
+            background: darkred;
+        }
     </style>
 </head>
 <body>
 
+    <!-- Barra superior fixa -->
     <div class="top-bar">
-        <span class="menu-icon" onclick="toggleMenu()">☰</span>
-        <span class="title">MacPoint</span>
+        <span class="menu-icon" onclick="abrirMenu()">☰</span>
+        <h1>Portal de Loterias Mac Point</h1>
     </div>
 
-    <div class="sidebar">
-        <h2>Menu</h2>
-        <button class="menu-btn" onclick="showSection('inicio')">Início</button>
-        <button class="menu-btn" onclick="showSection('modalidades')">Modalidades</button>
-        <button class="menu-btn" onclick="showSection('analise')">Análise Estatística</button>
-        <button class="menu-btn" onclick="showSection('simuladores')">Simuladores</button>
-        <button class="menu-btn" onclick="showSection('desdobramento')">Desdobramento</button>
+    <!-- Menu lateral -->
+    <div class="menu-lateral" id="menu">
+        <a href="#" onclick="mostrarSecao('inicio')">Início</a>
+        <a href="#" onclick="mostrarSecao('modalidades')">Modalidades</a>
+        <a href="#" onclick="mostrarSecao('analise')">Análise Estatística</a>
+        <a href="#" onclick="mostrarSecao('planilha')">Planilha</a>
+        <a href="#" onclick="mostrarSecao('simulador')">Simulador</a>
+        <button id="botaoSair">Sair</button>
+    </div>
 
-        <h2>Outro Serviço</h2>
-        <div class="submenu">
-            <button onclick="openPage('config')">⚙️</button>
-            <button onclick="openPage('diversao')">🪩</button>
-            <button onclick="openPage('livros')">📚</button>
+    <!-- Conteúdo principal -->
+    <div class="content">
+        <div id="inicio" class="section visible">
+            <h2>Bem-vindo ao Portal de Loterias</h2>
+            <p>Seu hub de estatísticas e análises para loterias.</p>
         </div>
-        <div class="submenu">
-            <button onclick="openPage('noticias')">📢</button>
-            <button onclick="openPage('alvo')">🎯</button>
-            <button onclick="openPage('cassino')">🎰</button>
+
+        <div id="modalidades" class="section">
+            <h2>Modalidades</h2>
+            <p>Aqui estão as diferentes loterias disponíveis.</p>
+        </div>
+
+        <div id="analise" class="section">
+            <h2>Análise Estatística</h2>
+            <p>Dados e probabilidades das apostas.</p>
+        </div>
+
+        <div id="planilha" class="section">
+            <h2>Planilhas</h2>
+            <p>Planilhas personalizadas para análise.</p>
+        </div>
+
+        <div id="simulador" class="section">
+            <h2>Simulador</h2>
+            <p>Teste estratégias de apostas.</p>
         </div>
     </div>
 
-    <div id="inicio" class="content active"><h2>Bem-vindo ao MacPoint!</h2></div>
-    <div id="modalidades" class="content"><h2>Seção Modalidades</h2></div>
-    <div id="analise" class="content"><h2>Seção Análise Estatística</h2></div>
-    <div id="simuladores" class="content"><h2>Seção Simuladores</h2></div>
-    <div id="desdobramento" class="content"><h2>Seção Desdobramento</h2></div>
+    <!-- Rodapé -->
+    <div class="footer">
+        &copy; 2025 Portal de Loterias Mac Point
+    </div>
 
-    <div class="footer">© 2025 MacPoint - Todos os direitos reservados.</div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 
-    <script>
-        function toggleMenu() {
-            document.body.classList.toggle("menu-open");
-        }
+        const firebaseConfig = {
+            apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+            authDomain: "mac-projeto-4e552.firebaseapp.com",
+            projectId: "mac-projeto-4e552",
+            storageBucket: "mac-projeto-4e552.appspot.com",
+            messagingSenderId: "537330451519",
+            appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
+        };
 
-        function showSection(section) {
-            let sections = document.querySelectorAll(".content");
-            sections.forEach(s => s.classList.remove("active"));
-            document.getElementById(section).classList.add("active");
-            toggleMenu();
-        }
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
 
-        function openPage(page) {
-            alert("Abrindo página: " + page);
-            toggleMenu();
-        }
+        // Verificar autenticação
+        onAuthStateChanged(auth, (user) => {
+            const acessoAutorizado = localStorage.getItem("acesso_autorizado");
 
-        document.body.addEventListener("click", function(event) {
-            if (!event.target.closest(".sidebar") && !event.target.closest(".menu-icon")) {
-                document.body.classList.remove("menu-open");
+            if (!user || acessoAutorizado !== "true") {
+                localStorage.removeItem("acesso_autorizado");
+                window.location.href = "index.html";
             }
         });
 
-        // PROTEÇÃO: Somente quem veio de login-acesso.html pode acessar
-        if (!localStorage.getItem("acessoLiberado")) {
-            document.body.innerHTML = "<h2>Acesso negado. Redirecionando...</h2>";
-            setTimeout(() => { window.location.href = "index.html"; }, 2000);
+        // Impedir voltar no navegador
+        history.pushState(null, null, window.location.href);
+        window.onpopstate = function () {
+            history.go(1);
+        };
+
+        // Impedir acesso direto sem login
+        document.addEventListener("DOMContentLoaded", function () {
+            if (document.referrer.indexOf("login_acesso.html") === -1) {
+                localStorage.removeItem("acesso_autorizado");
+                window.location.href = "index.html";
+            }
+        });
+
+        // Botão de sair
+        document.getElementById("botaoSair").addEventListener("click", () => {
+            signOut(auth).then(() => {
+                localStorage.removeItem("acesso_autorizado");
+                window.location.href = "login_acesso.html";
+            });
+        });
+
+        // Menu lateral
+        function abrirMenu() {
+            document.getElementById("menu").style.left = "0";
         }
+
+        function fecharMenu() {
+            document.getElementById("menu").style.left = "-250px";
+        }
+
+        // Mostrar seções
+        function mostrarSecao(secao) {
+            const secoes = document.querySelectorAll(".section");
+            secoes.forEach((s) => s.classList.remove("visible"));
+
+            document.getElementById(secao).classList.add("visible");
+
+            fecharMenu();
+        }
+
+        // Fechar menu ao clicar fora
+        document.addEventListener("click", function (event) {
+            if (!document.getElementById("menu").contains(event.target) && event.target.className !== "menu-icon") {
+                fecharMenu();
+            }
+        });
     </script>
 
 </body>

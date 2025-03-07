@@ -1,139 +1,252 @@
 
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plataforma Mac Point Premium</title>
+    <title>Portal de Loterias Mac Point</title>
     <style>
-        /* Seus estilos anteriores */
-        .submenu {
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: black;
+            color: white;
+            text-align: center;
+        }
+
+        /* Barra superior */
+        .top-bar {
+            background: linear-gradient(to right, black, green);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .site-name {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .menu-icon {
+            font-size: 20px;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        /* Menu lateral */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background: linear-gradient(to bottom, #004d00, #008000);
+            border-right: 3px solid #90EE90;
+            transition: left 0.3s;
+            padding-top: 60px;
+            z-index: 999;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #90EE90 transparent;
+        }
+
+        .menu-title {
+            color: white;
+            font-size: 18px;
+            margin: 10px;
+            font-weight: bold;
+        }
+
+        .menu-btn, .icon-btn {
+            display: block;
+            background: black;
+            color: white;
+            padding: 10px;
+            margin: 5px 15px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid #90EE90;
+        }
+
+        .section {
             display: none;
+            padding: 20px;
+            margin-top: 70px;
         }
-        .submenu a {
-            padding-left: 20px;
-        }
-        .menu-open .submenu {
+
+        .active {
             display: block;
         }
+
+        .cover-photo {
+            margin-top: 90px;
+            width: 100%; /* Aumenta a largura da foto */
+            height: 400px; /* Aumenta a altura da foto */
+            object-fit: cover; /* Faz a imagem cobrir a área sem distorção */
+        }
+
+        .description {
+            padding: 20px;
+            font-size: 18px;
+        }
+
+        /* Rodapé */
+        .footer {
+            background: black;
+            color: white;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .hide-footer {
+            transform: translateY(100%);
+        }
+
+        /* Ícones do submenu */
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(2,1fr);
+            gap: 2px;
+            padding: 5px 5px;
+        }
+
+        .icon-btn {
+            font-size: 20px;
+            padding: 10px;
+        }
+
+        /* Botões laranja dentro das seções */
+        .orange-btn {
+            background-color: orange;
+            color: white;
+            padding: 12px;
+            margin: 10px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <div class="menu-toggle" onclick="toggleMenu()">&#9776;</div>
-        <h1 class="header-title">Título Chamativo</h1>
-        <div class="user-icon" onclick="toggleUserMenu()">⚙️</div>
-        <img src="caminho/para/sua/imagem.jpg" alt="Imagem da Capa">
+    <div class="top-bar">
+        <span class="menu-icon" onclick="toggleMenu()">⋮🕵🏻‍♂️</span>
+        <span class="site-name">Portal de Loterias Mac Point</span>
     </div>
 
-    <div class="menu" id="menu">
-        <a href="#">Início</a>
-        <a href="#" onclick="toggleSubMenu(event, 'modalidadesSubMenu')">Modalidades</a>
-        <div class="submenu" id="modalidadesSubMenu">
-            <a href="link1.html">GRUPO dos bichos</a>
-            <a href="link2.html">GRUPOS de soma</a>
-            <a href="link3.html">Fibonacci</a>
-            <a href="link4.html">Números primos</a>
-            <a href="link5.html">Mini quadrantes</a>
+    <div class="sidebar" id="sidebar">
+        <div class="menu-title">💠 Menu 💠</div>
+        <span class="menu-btn" onclick="showSection('inicio')">Início</span>
+        <span class="menu-btn" onclick="showSection('modalidades')">Modalidades</span>
+        <span class="menu-btn" onclick="showSection('analise')">Análise Estatística</span>
+        <span class="menu-btn" onclick="showSection('simuladores')">Simuladores</span>
+        <span class="menu-btn" onclick="showSection('desdobramento')">Desdobramento</span>
+        <span class="menu-btn" onclick="showSection('tabelas')">Tabelas</span>
+
+        <div class="menu-title">Outro Serviço</div>
+        <div class="icon-grid">
+            <span class="icon-btn" onclick="showSection('configuracoes')">⚙️</span>
+            <span class="icon-btn" onclick="showSection('disco')">🪩</span>
+            <span class="icon-btn" onclick="showSection('biblioteca')">📚</span>
+            <span class="icon-btn" onclick="showSection('megafone')">📢</span>
+            <span class="icon-btn" onclick="showSection('alvo')">🎯</span>
+            <span class="icon-btn" onclick="showSection('cassino')">🎰</span>
         </div>
-        <a href="#" onclick="toggleSubMenu(event, 'analisesEstatisticasSubMenu')">Análises Estatísticas</a>
-        <div class="submenu" id="analisesEstatisticasSubMenu">
-            <a href="analise1.html">Frequência de Números</a>
-            <a href="analise2.html">Média de Resultados</a>
-            <a href="analise3.html">Histórico de Ganhos</a>
-        </div>
-        <a href="#">Desdobramento</a>
-        <a href="#">Simuladores</a>
-        <a href="#">Tabelas</a>
-        <a href="#">Ebooks</a>
-        <a href="#">Planilhas</a>
-        <a href="#">Subnóis</a>
     </div>
 
-    <div class="user-menu" id="userMenu">
-        <a href="#" onclick="logout()">Sair</a>
+    <div class="section active" id="inicio">
+        <img src="Screenshot_20250112-173043-1.jpg" class="cover-photo" alt="Foto de Capa">
+        <p class="description">Bem-vindo à plataforma " PORTAL DE LOTERIAS MAC POINT "! Aqui você encontra estatísticas, simuladores e muito mais.</p>
+        <a href="outra_pagina.html" class="orange-btn">Acessar Mais Informações</a>
     </div>
 
-    <div class="footer">
-        Rodapé do Site
+    <div class="section" id="modalidades">
+        <h2>Modalidades</h2>
+        <p>Conteúdo sobre modalidades...</p>
+        <a href="outra_pagina.html" class="orange-btn">Acessar Mais Informações</a>
     </div>
 
-    <!-- Scripts do Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+    <div class="section" id="analise">
+        <h2>Análise Estatística</h2>
+        <p>Conteúdo sobre análise estatística...</p>
+        <a href="outra_pagina.html" class="orange-btn">Acessar Mais Informações</a>
+    </div>
+
+    <div class="section" id="simuladores">
+        <h2>Simuladores</h2>
+        <p>Conteúdo sobre simuladores...</p>
+        <a href="outra_pagina.html" class="orange-btn">Acessar Mais Informações</a>
+    </div>
+
+    <div class="section" id="desdobramento">
+        <h2>Desdobramento</h2>
+        <p>Conteúdo sobre desdobramento...</p>
+        <a href="outra_pagina.html" class="orange-btn">Acessar Mais Informações</a>
+    </div>
+
+    <div class="section" id="tabelas">
+        <h2>Tabelas</h2>
+        <p>Conteúdo sobre tabelas...</p>
+        <a href="outra_pagina.html" class="orange-btn">Acessar Mais Informações</a>
+    </div>
+
+    <!-- Seções para os ícones -->
+    <div class="section" id="configuracoes"><h2>Configurações</h2><p>Configurações do sistema...</p></div>
+    <div class="section" id="disco"><h2>Discoteca</h2><p>Playlist e músicas...</p></div>
+    <div class="section" id="biblioteca"><h2>Biblioteca</h2><p>Livros e conteúdos educacionais...</p></div>
+    <div class="section" id="megafone"><h2>Notificações</h2><p>Últimas novidades...</p></div>
+    <div class="section" id="alvo"><h2>Desafios</h2><p>Metas e desafios diários...</p></div>
+    <div class="section" id="cassino"><h2>Jogos</h2><p>Entretenimento e sorte...</p></div>
+
+    <div class="footer" id="footer">© 2025 MacPonte e Ponte Caviate</div>
+
     <script>
-        // Configuração do Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
-            authDomain: "mac-projeto-4e552.firebaseapp.com",
-            projectId: "mac-projeto-4e552",
-            storageBucket: "mac-projeto-4e552.appspot.com",
-            messagingSenderId: "537330451519",
-            appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
-        };
-
-        // Inicializando o Firebase
-        firebase.initializeApp(firebaseConfig);
-
-        // Referências do Firestore e Auth
-        const db = firebase.firestore();
-        const auth = firebase.auth();
-
-        // Verifica se o usuário está autenticado e tem status ativo
-        auth.onAuthStateChanged(async (user) => {
-            if (user) {
-                const userRef = db.collection('users').doc(user.uid);
-                const doc = await userRef.get();
-                if (doc.exists && doc.data().subscriptionActive && doc.data().subscriptionEndDate > firebase.firestore.Timestamp.now()) {
-                    console.log("Usuário autenticado e ativo");
-                } else {
-                    window.location.href = 'bloqueado.html';
-                }
-            } else {
-                window.location.href = 'login.html';
-            }
-        });
-
-        // Função para deslogar
-        function logout() {
-            auth.signOut().then(() => {
-                window.location.href = 'login.html';
-            });
-        }
-
-        // Funções de manipulação de menu
         function toggleMenu() {
-            const menu = document.getElementById('menu');
-            menu.classList.toggle('menu-open');
-        }
-
-        function toggleUserMenu() {
-            const userMenu = document.getElementById('userMenu');
-            userMenu.style.display = userMenu.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function toggleSubMenu(event, subMenuId) {
-            event.preventDefault();
-            const submenu = document.getElementById(subMenuId);
-            submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
-        }
-
-        document.addEventListener('click', function(event) {
-            const menu = document.getElementById('menu');
-            const menuToggle = document.querySelector('.menu-toggle');
-            if (!menu.contains(event.target) && !menuToggle.contains(event.target)) {
-                menu.classList.remove('menu-open');
+            var sidebar = document.getElementById("sidebar");
+            var footer = document.getElementById("footer");
+            if (sidebar.style.left === "0px") {
+                sidebar.style.left = "-250px";
+                footer.classList.remove("hide-footer");
+            } else {
+                sidebar.style.left = "0px";
+                footer.classList.add("hide-footer");
             }
+        }
 
-            const userMenu = document.getElementById('userMenu');
-            const userIcon = document.querySelector('.user-icon');
-            if (!userMenu.contains(event.target) && !userIcon.contains(event.target)) {
-                userMenu.style.display = 'none';
+        document.body.addEventListener("click", function(event) {
+            var sidebar = document.getElementById("sidebar");
+            if (!sidebar.contains(event.target) && event.target.className !== "menu-icon") {
+                sidebar.style.left = "-250px";
+                document.getElementById("footer").classList.remove("hide-footer");
             }
         });
+
+        function showSection(sectionId) {
+            document.querySelectorAll(".section").forEach(section => section.classList.remove("active"));
+            document.getElementById(sectionId).classList.add("active");
+            toggleMenu();
+        }
     </script>
 
 </body>

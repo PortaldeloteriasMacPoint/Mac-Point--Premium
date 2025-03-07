@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -215,7 +216,7 @@
         }
     </style>
 </head>
-<body onclick="closeMenu(event)" class="main-page">
+<body class="main-page">
 
     <div class="top-bar">
         <span class="menu-icon" onclick="toggleMenu()">⋮🕵🏻‍♂️</span>
@@ -313,60 +314,39 @@
             updateDots();
         }
 
-        // Atualiza os pontos de navegação
         function updateDots() {
             dots.forEach((dot, index) => {
-                dot.classList.remove("active");
-                if (index === currentIndex) {
-                    dot.classList.add("active");
-                }
+                dot.classList.toggle("active", index === currentIndex);
             });
         }
 
-        // Função para avançar a cada 2 segundos
-        setInterval(() => {
-            currentIndex = (currentIndex + 1) % images.length
+        // Inicializar o carrossel
+        function initCarousel() {
+            setInterval(() => {
+                currentIndex = (currentIndex + 1) % images.length;
+                moveToIndex(currentIndex);
+            }, 3000); // Muda a cada 3 segundos
+        }
 
+        initCarousel();
 
-
-
-Aqui está a continuação do código completo, com as funcionalidades restantes para o carrossel, o menu lateral e outras interações do site:
-
-// Avança para a próxima imagem do carrossel
-            moveToIndex(currentIndex);
-        }, 2000); // A cada 2 segundos
-
-        // Funções do menu lateral
+        // Função de controle do menu lateral
         function toggleMenu() {
             const sidebar = document.getElementById("sidebar");
-            const currentLeft = sidebar.style.left;
-            sidebar.style.left = currentLeft === "-250px" ? "0" : "-250px";
+            const currentLeft = sidebar.style.left === "-250px" ? "0" : "-250px";
+            sidebar.style.left = currentLeft;
         }
 
-        function closeMenu(event) {
-            const sidebar = document.getElementById("sidebar");
-            const sidebarRect = sidebar.getBoundingClientRect();
-            if (
-                event.clientX < sidebarRect.left || 
-                event.clientX > sidebarRect.right ||
-                event.clientY < sidebarRect.top || 
-                event.clientY > sidebarRect.bottom
-            ) {
-                sidebar.style.left = "-250px";
-            }
-        }
-
+        // Função para exibir seções
         function showSection(sectionId) {
-            const sections = document.querySelectorAll('.section');
-            sections.forEach(section => section.classList.remove('active'));
-            const activeSection = document.getElementById(sectionId);
-            if (activeSection) {
-                activeSection.classList.add('active');
-            }
-            const sidebar = document.getElementById("sidebar");
-            sidebar.style.left = "-250px"; // Fechar menu ao selecionar uma seção
+            const sections = document.querySelectorAll(".section");
+            sections.forEach(section => {
+                section.classList.remove("active");
+            });
+            document.getElementById(sectionId).classList.add("active");
+            document.getElementById("sidebar").style.left = "-250px"; // Fecha o menu ao abrir seção
         }
     </script>
 </body>
 </html>
- 
+

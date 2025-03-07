@@ -111,8 +111,7 @@
             width: 90%;
             max-width: 600px;
             margin: auto;
-            overflow-x: auto;
-            scroll-behavior: smooth;
+            overflow: hidden;
             white-space: nowrap;
         }
 
@@ -126,6 +125,28 @@
             max-width: 600px;
             border-radius: 10px;
             display: inline-block;
+        }
+
+        .carousel-dots {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 5px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: white;
+            opacity: 0.6;
+            cursor: pointer;
+        }
+
+        .dot.active {
+            opacity: 1;
         }
 
         /* Rodapé */
@@ -163,6 +184,19 @@
             margin: auto;
             cursor: pointer;
         }
+
+        /* Botão Simuladores */
+        .btn-simuladores {
+            background-color: orange;
+            padding: 10px;
+            border-radius: 5px;
+            color: black;
+            cursor: pointer;
+            font-size: 18px;
+            text-decoration: none;
+            border: 2px solid #90EE90;
+        }
+
     </style>
 </head>
 <body onclick="closeMenu(event)">
@@ -186,6 +220,9 @@
             <span class="icon-btn" onclick="window.location.href='configuracoes.html'">⚙️</span>
             <span class="icon-btn" onclick="window.location.href='disco.html'">🪩</span>
             <span class="icon-btn" onclick="window.location.href='biblioteca.html'">📚</span>
+            <span class="icon-btn" onclick="window.location.href='noticias.html'">📢</span>
+            <span class="icon-btn" onclick="window.location.href='metas.html'">🎯</span>
+            <span class="icon-btn" onclick="window.location.href='jogos.html'">🎰</span>
         </div>
     </div>
 
@@ -213,6 +250,7 @@
     <div class="section" id="simuladores">
         <h2>Simuladores</h2>
         <p>Teste suas estratégias antes de apostar.</p>
+        <a href="simuladores.html" class="btn-simuladores">Ir para Simuladores</a>
     </div>
 
     <div class="section" id="desdobramento">
@@ -220,27 +258,60 @@
         <p>Crie jogos estratégicos com desdobramento.</p>
     </div>
 
+    <!-- Carrossel -->
+    <div class="carousel-container">
+        <div class="carousel" id="carousel">
+            <img src="imagem1.jpg" alt="Imagem 1">
+            <img src="imagem2.jpg" alt="Imagem 2">
+            <img src="imagem3.jpg" alt="Imagem 3">
+        </div>
+        <div class="carousel-dots" id="dots"></div>
+    </div>
+
     <script>
-        function toggleMenu(event) {
-            event.stopPropagation();
-            var sidebar = document.getElementById("sidebar");
-            sidebar.style.left = sidebar.style.left === "0px" ? "-250px" : "0px";
+        let currentIndex = 0;
+        const carousel = document.getElementById("carousel");
+        const dotsContainer = document.getElementById("dots");
+        const images = document.querySelectorAll(".carousel img");
+
+        // Criar os pontos de navegação
+        images.forEach((_, index) => {
+            const dot = document.createElement("div");
+            dot.classList.add("dot");
+            dot.addEventListener("click", () => moveToIndex(index));
+            dotsContainer.appendChild(dot);
+        });
+
+        const dots = document.querySelectorAll(".dot");
+
+        // Função para mover o carrossel
+        function moveToIndex(index) {
+            currentIndex = index;
+            const offset = -600 * index; // Assume que cada imagem tem 600px de largura
+            carousel.style.transform = `translateX(${offset}px)`;
+            updateDots();
         }
 
-        function closeMenu(event) {
-            var sidebar = document.getElementById("sidebar");
-            if (event.target.closest(".sidebar") || event.target.closest(".menu-icon")) return;
-            sidebar.style.left = "-250px";
+        // Atualiza os pontos de navegação
+        function updateDots() {
+            dots.forEach((dot, index) => {
+                dot.classList.remove("active");
+                if (index === currentIndex) {
+                    dot.classList.add("active");
+                }
+            });
         }
 
-        function showSection(sectionId) {
-            document.querySelectorAll(".section").forEach(section => section.classList.remove("active"));
-            document.getElementById(sectionId).classList.add("active");
-            toggleMenu(event);
-        }
+        // Função para avançar a cada 2 segundos
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % images.length;
+            moveToIndex(currentIndex);
+        }, 2000);
+
+        // Inicializa o carrossel
+        moveToIndex(currentIndex);
     </script>
 
 </body>
 </html>
-
 

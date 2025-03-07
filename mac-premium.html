@@ -21,7 +21,7 @@
 
         /* Barra superior */
         .top-bar {
-            background: linear-gradient(to right, black, green);
+            background: linear-gradient(to right, #006400, #00FF7F);
             color: white;
             padding: 15px;
             text-align: center;
@@ -37,6 +37,18 @@
 
         .site-name {
             font-size: 20px;
+            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .site-name span:first-child {
+            font-family: 'Impact', sans-serif;
+        }
+
+        .site-name span:last-child {
+            font-family: 'Caveat', sans-serif;
             font-weight: bold;
         }
 
@@ -68,6 +80,8 @@
             font-size: 18px;
             margin: 10px;
             font-weight: bold;
+            display: flex;
+            align-items: center;
         }
 
         .menu-btn, .icon-btn {
@@ -94,10 +108,10 @@
         }
 
         .cover-photo {
-            margin-top: 90px;
-            width: 100%; /* Aumenta a largura da foto */
-            height: 400px; /* Aumenta a altura da foto */
-            object-fit: cover; /* Faz a imagem cobrir a área sem distorção */
+            margin-top: 30px; /* Ajusta a posição da foto */
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
         }
 
         .description {
@@ -124,7 +138,7 @@
         /* Ícones do submenu */
         .icon-grid {
             display: grid;
-            grid-template-columns: repeat(2,1fr);
+            grid-template-columns: repeat(2, 1fr);
             gap: 2px;
             padding: 5px 5px;
         }
@@ -146,109 +160,127 @@
             cursor: pointer;
         }
 
+        /* Estilo para a seta do submenu */
+        .submenu-toggle {
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        /* Estilo para o submenu */
+        .submenu {
+            display: none;
+            flex-direction: column;
+            margin-top: 10px;
+        }
+
+        .submenu.active {
+            display: flex;
+        }
     </style>
+    <!-- Importação das fontes -->
+    <link href="https://fonts.googleapis.com/css2?family=Impact&family=Caveat:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <div class="top-bar">
-        <span class="menu-icon" onclick="toggleMenu()">⋮🕵🏻‍♂️</span>
-        <span class="site-name">Portal de Loterias Mac Point</span>
-    </div>
-
-    <div class="sidebar" id="sidebar">
-        <div class="menu-title">💠 Menu 💠</div>
-        <span class="menu-btn" onclick="showSection('inicio')">Início</span>
-        <span class="menu-btn" onclick="showSection('modalidades')">Modalidades</span>
-        <span class="menu-btn" onclick="showSection('analise')">Análise Estatística</span>
-        <span class="menu-btn" onclick="showSection('simuladores')">Simuladores</span>
-        <span class="menu-btn" onclick="showSection('desdobramento')">Desdobramento</span>
-        <span class="menu-btn" onclick="showSection('tabelas')">Tabelas</span>
-
-        <div class="menu-title">Outro Serviço</div>
-        <div class="icon-grid">
-            <span class="icon-btn" onclick="showSection('configuracoes')">⚙️</span>
-            <span class="icon-btn" onclick="showSection('disco')">🪩</span>
-            <span class="icon-btn" onclick="showSection('biblioteca')">📚</span>
-            <span class="icon-btn" onclick="showSection('megafone')">📢</span>
-            <span class="icon-btn" onclick="showSection('alvo')">🎯</span>
-            <span class="icon-btn" onclick="showSection('cassino')">🎰</span>
+        <span class="menu-icon" onclick="toggleSidebar()">☰</span>
+        <div class="site-name">
+            <span>Portal de Loterias</span>
+            <span>Mac Point</span>
         </div>
     </div>
 
-    <div class="section active" id="inicio">
-        <img src="Screenshot_20250112-173043-1.jpg" class="cover-photo" alt="Foto de Capa">
-        <p class="description">Bem-vindo à plataforma " PORTAL DE LOTERIAS MAC POINT "! Aqui você encontra estatísticas, simuladores e muito mais.</p>
-        <a href="outra_pagina.html" class="orange-btn">Acessar Mais Informações</a>
+    <div id="sidebar" class="sidebar">
+        <div class="menu-title">
+            Menu
+        </div>
+        <a href="#" class="menu-btn" onclick="showSection('home')">Início</a>
+        <a href="#" class="menu-btn" onclick="showSection('modalities')">Modalidades</a>
+        <a href="#" class="menu-btn" onclick="showSection('stats')">Estatísticas</a>
+        <a href="#" class="menu-btn" onclick="showSection('sheets')">Planilhas</a>
+        <a href="#" class="menu-btn" onclick="showSection('simulators')">Simuladores</a>
+        
+        <div class="menu-title">
+            Outro Serviço <span class="submenu-toggle" onclick="toggleSubmenu()">▼</span>
+        </div>
+        <div id="submenu" class="submenu">
+            <div class="icon-grid">
+                <div class="icon-btn">⚙️</div>
+                <div class="icon-btn">🪩</div>
+                <div class="icon-btn">📚</div>
+                <div class="icon-btn">📢</div>
+                <div class="icon-btn">🎯</div>
+                <div class="icon-btn">🎰</div>
+            </div>
+        </div>
     </div>
 
-    <div class="section" id="modalidades">
-        <h2>Modalidades</h2>
-        <p>Conteúdo sobre modalidades...</p>
-        <a href="outra_pagina.html" class="orange-btn">Acessar Mais Informações</a>
+    <div class="main-content">
+        <div id="home" class="section active">
+            <img class="cover-photo" src="https://via.placeholder.com/1200x400" alt="Foto de Capa">
+            <div class="description">
+                <h2>Bem-vindo ao Portal de Loterias Mac Point!</h2>
+                <p>Explore os melhores recursos e estatísticas sobre as loterias.</p>
+                <button class="orange-btn">Saiba Mais</button>
+            </div>
+        </div>
+
+        <div id="modalities" class="section">
+            <h2>Modalidades</h2>
+            <p>Explore as diferentes modalidades das loterias.</p>
+            <button class="orange-btn">Descubra mais</button>
+        </div>
+
+        <div id="stats" class="section">
+            <h2>Estatísticas</h2>
+            <p>Veja as estatísticas mais recentes das loterias.</p>
+            <button class="orange-btn">Veja Estatísticas</button>
+        </div>
+
+        <div id="sheets" class="section">
+            <h2>Planilhas</h2>
+            <p>Acesse as planilhas de análise das loterias.</p>
+            <button class="orange-btn">Baixar Planilhas</button>
+        </div>
+
+        <div id="simulators" class="section">
+            <h2>Simuladores</h2>
+            <p>Use os simuladores para testar suas apostas.</p>
+            <button class="orange-btn">Acessar Simuladores</button>
+        </div>
     </div>
 
-    <div class="section" id="analise">
-        <h2>Análise Estatística</h2>
-        <p>Conteúdo sobre análise estatística...</p>
-        <a href="outra_pagina.html" class="orange-btn">Acessar Mais Informações</a>
+    <div class="footer hide-footer">
+        <p>&copy; 2025 Portal de Loterias Mac Point. Todos os direitos reservados.</p>
     </div>
-
-    <div class="section" id="simuladores">
-        <h2>Simuladores</h2>
-        <p>Conteúdo sobre simuladores...</p>
-        <a href="outra_pagina.html" class="orange-btn">Acessar Mais Informações</a>
-    </div>
-
-    <div class="section" id="desdobramento">
-        <h2>Desdobramento</h2>
-        <p>Conteúdo sobre desdobramento...</p>
-        <a href="outra_pagina.html" class="orange-btn">Acessar Mais Informações</a>
-    </div>
-
-    <div class="section" id="tabelas">
-        <h2>Tabelas</h2>
-        <p>Conteúdo sobre tabelas...</p>
-        <a href="outra_pagina.html" class="orange-btn">Acessar Mais Informações</a>
-    </div>
-
-    <!-- Seções para os ícones -->
-    <div class="section" id="configuracoes"><h2>Configurações</h2><p>Configurações do sistema...</p></div>
-    <div class="section" id="disco"><h2>Discoteca</h2><p>Playlist e músicas...</p></div>
-    <div class="section" id="biblioteca"><h2>Biblioteca</h2><p>Livros e conteúdos educacionais...</p></div>
-    <div class="section" id="megafone"><h2>Notificações</h2><p>Últimas novidades...</p></div>
-    <div class="section" id="alvo"><h2>Desafios</h2><p>Metas e desafios diários...</p></div>
-    <div class="section" id="cassino"><h2>Jogos</h2><p>Entretenimento e sorte...</p></div>
-
-    <div class="footer" id="footer">© 2025 MacPonte e Ponte Caviate</div>
 
     <script>
-        function toggleMenu() {
+        // Função para alternar o menu lateral
+        function toggleSidebar() {
             var sidebar = document.getElementById("sidebar");
-            var footer = document.getElementById("footer");
             if (sidebar.style.left === "0px") {
                 sidebar.style.left = "-250px";
-                footer.classList.remove("hide-footer");
             } else {
                 sidebar.style.left = "0px";
-                footer.classList.add("hide-footer");
             }
         }
 
-        document.body.addEventListener("click", function(event) {
-            var sidebar = document.getElementById("sidebar");
-            if (!sidebar.contains(event.target) && event.target.className !== "menu-icon") {
-                sidebar.style.left = "-250px";
-                document.getElementById("footer").classList.remove("hide-footer");
-            }
-        });
-
+        // Função para mostrar a seção correspondente
         function showSection(sectionId) {
-            document.querySelectorAll(".section").forEach(section => section.classList.remove("active"));
-            document.getElementById(sectionId).classList.add("active");
-            toggleMenu();
+            var sections = document.querySelectorAll('.section');
+            sections.forEach(function(section) {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+            toggleSidebar();  // Fecha o menu lateral ao abrir uma seção
+        }
+
+        // Função para alternar o submenu
+        function toggleSubmenu() {
+            var submenu = document.getElementById("submenu");
+            submenu.classList.toggle('active');
         }
     </script>
-
 </body>
 </html>
 

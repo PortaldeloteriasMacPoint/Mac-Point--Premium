@@ -195,11 +195,27 @@
             font-size: 18px;
             text-decoration: none;
             border: 2px solid #90EE90;
+            margin-top: 20px;
         }
 
+        /* Página Principal - Exclusivo */
+        .main-page .carousel-container,
+        .main-page .footer {
+            display: block;
+        }
+
+        .main-page .btn-simuladores {
+            margin-bottom: 50px; /* Para dar espaço ao conteúdo da seção */
+        }
+
+        /* Outras páginas - Exclusivo */
+        .other-pages .carousel-container,
+        .other-pages .footer {
+            display: none;
+        }
     </style>
 </head>
-<body onclick="closeMenu(event)">
+<body onclick="closeMenu(event)" class="main-page">
 
     <div class="top-bar">
         <span class="menu-icon" onclick="toggleMenu()">⋮🕵🏻‍♂️</span>
@@ -268,6 +284,11 @@
         <div class="carousel-dots" id="dots"></div>
     </div>
 
+    <!-- Rodapé -->
+    <div class="footer">
+        <p>&copy; 2025 Portal de Loterias Mac Point. Todos os direitos reservados.</p>
+    </div>
+
     <script>
         let currentIndex = 0;
         const carousel = document.getElementById("carousel");
@@ -304,41 +325,48 @@
 
         // Função para avançar a cada 2 segundos
         setInterval(() => {
-            currentIndex = (currentIndex + 1) % images.length;
+            currentIndex = (currentIndex + 1) % images.length
+
+
+
+
+Aqui está a continuação do código completo, com as funcionalidades restantes para o carrossel, o menu lateral e outras interações do site:
+
+// Avança para a próxima imagem do carrossel
             moveToIndex(currentIndex);
-        }, 2000);
+        }, 2000); // A cada 2 segundos
 
-        // Inicializa o carrossel
-        moveToIndex(currentIndex);
-
-        // Função para abrir/fechar o menu
+        // Funções do menu lateral
         function toggleMenu() {
             const sidebar = document.getElementById("sidebar");
-            if (sidebar.style.left === "-250px") {
-                sidebar.style.left = "0";
-            } else {
+            const currentLeft = sidebar.style.left;
+            sidebar.style.left = currentLeft === "-250px" ? "0" : "-250px";
+        }
+
+        function closeMenu(event) {
+            const sidebar = document.getElementById("sidebar");
+            const sidebarRect = sidebar.getBoundingClientRect();
+            if (
+                event.clientX < sidebarRect.left || 
+                event.clientX > sidebarRect.right ||
+                event.clientY < sidebarRect.top || 
+                event.clientY > sidebarRect.bottom
+            ) {
                 sidebar.style.left = "-250px";
             }
         }
 
-        // Função para exibir uma seção do menu
-        function showSection(id) {
+        function showSection(sectionId) {
             const sections = document.querySelectorAll('.section');
-            sections.forEach((section) => section.classList.remove('active'));
-            const activeSection = document.getElementById(id);
-            activeSection.classList.add('active');
-            toggleMenu(); // Fecha o menu quando uma seção for aberta
-        }
-
-        // Função para fechar o menu se clicar fora
-        function closeMenu(event) {
-            const sidebar = document.getElementById("sidebar");
-            if (!sidebar.contains(event.target) && !document.querySelector('.menu-icon').contains(event.target)) {
-                sidebar.style.left = '-250px';
+            sections.forEach(section => section.classList.remove('active'));
+            const activeSection = document.getElementById(sectionId);
+            if (activeSection) {
+                activeSection.classList.add('active');
             }
+            const sidebar = document.getElementById("sidebar");
+            sidebar.style.left = "-250px"; // Fechar menu ao selecionar uma seção
         }
     </script>
-
 </body>
 </html>
-
+ 

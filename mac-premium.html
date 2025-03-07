@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -80,8 +79,7 @@
             font-size: 18px;
             margin: 10px;
             font-weight: bold;
-            display: flex;
-            align-items: center;
+            text-align: center;
         }
 
         .menu-btn, .icon-btn {
@@ -108,7 +106,7 @@
         }
 
         .cover-photo {
-            margin-top: 30px; /* Ajusta a posição da foto */
+            margin-top: 30px;
             width: 100%;
             height: 400px;
             object-fit: cover;
@@ -138,14 +136,14 @@
         /* Ícones do submenu */
         .icon-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 2px;
             padding: 5px 5px;
         }
 
         .icon-btn {
-            font-size: 20px;
-            padding: 10px;
+            font-size: 16px;
+            padding: 8px;
         }
 
         /* Botões laranja dentro das seções */
@@ -205,14 +203,41 @@
         </div>
         <div id="submenu" class="submenu">
             <div class="icon-grid">
-                <div class="icon-btn">⚙️</div>
-                <div class="icon-btn">🪩</div>
-                <div class="icon-btn">📚</div>
-                <div class="icon-btn">📢</div>
-                <div class="icon-btn">🎯</div>
-                <div class="icon-btn">🎰</div>
+                <a href="pagina1.html" class="icon-btn">⚙️</a>
+                <a href="pagina2.html" class="icon-btn">🪩</a>
+                <a href="pagina3.html" class="icon-btn">📚</a>
+                <a href="pagina4.html" class="icon-btn">📢</a>
+                <a href="pagina5.html" class="icon-btn">🎯</a>
+                <a href="pagina6.html" class="icon-btn">🎰</a>
             </div>
         </div>
+
+        <div class="menu-title">
+            Seção 1
+        </div>
+        <a href="#" class="menu-btn" onclick="showSection('section1')">Botão 1</a>
+        <a href="#" class="menu-btn" onclick="showSection('section2')">Botão 2</a>
+
+        <div class="menu-title">
+            Seção 2
+        </div>
+        <a href="#" class="menu-btn" onclick="showSection('section3')">Botão 3</a>
+        <a href="#" class="menu-btn" onclick="showSection('section4')">Botão 4</a>
+
+        <div class="menu-title">
+            Seção 3
+        </div>
+        <a href="#" class="menu-btn" onclick="showSection('section5')">Botão 5</a>
+
+        <div class="menu-title">
+            Seção 4
+        </div>
+        <a href="#" class="menu-btn" onclick="showSection('section6')">Botão 6</a>
+
+        <div class="menu-title">
+            Seção 5
+        </div>
+        <a href="#" class="menu-btn" onclick="showSection('section7')">Botão 7</a>
     </div>
 
     <div class="main-content">
@@ -248,6 +273,41 @@
             <p>Use os simuladores para testar suas apostas.</p>
             <button class="orange-btn">Acessar Simuladores</button>
         </div>
+
+        <div id="section1" class="section">
+            <h2>Seção 1</h2>
+            <button class="orange-btn">Ação 1</button>
+        </div>
+
+        <div id="section2" class="section">
+            <h2>Seção 2</h2>
+            <button class="orange-btn">Ação 2</button>
+        </div>
+
+        <div id="section3" class="section">
+            <h2>Seção 3</h2>
+            <button class="orange-btn">Ação 3</button>
+        </div>
+
+        <div id="section4" class="section">
+            <h2>Seção 4</h2>
+            <button class="orange-btn">Ação 4</button>
+        </div>
+
+        <div id="section5" class="section">
+            <h2>Seção 5</h2>
+            <button class="orange-btn">Ação 5</button>
+        </div>
+
+        <div id="section6" class="section">
+            <h2>Seção 6</h2>
+            <button class="orange-btn">Ação 6</button>
+        </div>
+
+        <div id="section7" class="section">
+            <h2>Seção 7</h2>
+            <button class="orange-btn">Ação 7</button>
+        </div>
     </div>
 
     <div class="footer hide-footer">
@@ -255,7 +315,6 @@
     </div>
 
     <script>
-        // Função para alternar o menu lateral
         function toggleSidebar() {
             var sidebar = document.getElementById("sidebar");
             if (sidebar.style.left === "0px") {
@@ -265,7 +324,6 @@
             }
         }
 
-        // Função para mostrar a seção correspondente
         function showSection(sectionId) {
             var sections = document.querySelectorAll('.section');
             sections.forEach(function(section) {
@@ -275,7 +333,6 @@
             toggleSidebar();  // Fecha o menu lateral ao abrir uma seção
         }
 
-        // Função para alternar o submenu
         function toggleSubmenu() {
             var submenu = document.getElementById("submenu");
             submenu.classList.toggle('active');

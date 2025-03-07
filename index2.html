@@ -202,7 +202,7 @@
 <body onclick="closeMenu(event)">
 
     <div class="top-bar">
-        <span class="menu-icon" onclick="toggleMenu(event)">⋮🕵🏻‍♂️</span>
+        <span class="menu-icon" onclick="toggleMenu()">⋮🕵🏻‍♂️</span>
         <span class="site-name">Portal de Loterias Mac Point</span>
     </div>
 
@@ -310,6 +310,33 @@
 
         // Inicializa o carrossel
         moveToIndex(currentIndex);
+
+        // Função para abrir/fechar o menu
+        function toggleMenu() {
+            const sidebar = document.getElementById("sidebar");
+            if (sidebar.style.left === "-250px") {
+                sidebar.style.left = "0";
+            } else {
+                sidebar.style.left = "-250px";
+            }
+        }
+
+        // Função para exibir uma seção do menu
+        function showSection(id) {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach((section) => section.classList.remove('active'));
+            const activeSection = document.getElementById(id);
+            activeSection.classList.add('active');
+            toggleMenu(); // Fecha o menu quando uma seção for aberta
+        }
+
+        // Função para fechar o menu se clicar fora
+        function closeMenu(event) {
+            const sidebar = document.getElementById("sidebar");
+            if (!sidebar.contains(event.target) && !document.querySelector('.menu-icon').contains(event.target)) {
+                sidebar.style.left = '-250px';
+            }
+        }
     </script>
 
 </body>

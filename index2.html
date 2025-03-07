@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal de Loterias Mac Point </title>
+    <title>Portal de Loterias Mac Point</title>
     <style>
         * {
             margin: 0;
@@ -14,15 +13,16 @@
         }
 
         body {
-            background-color: #f4f4f4;
+            background-color: black;
+            color: white;
             text-align: center;
         }
 
         /* Barra superior */
         .top-bar {
             background: linear-gradient(to right, black, green);
-            color: white ;
-            padding: 5px;
+            color: white;
+            padding: 15px;
             text-align: center;
             position: fixed;
             top: 0;
@@ -35,14 +35,14 @@
         }
 
         .site-name {
-            font-size: 25px;
+            font-size: 18px;
             font-weight: bold;
         }
 
         .menu-icon {
-            font-size: 25px;
+            font-size: 30px;
             cursor: pointer;
-            padding: 2px;
+            padding: 5px;
         }
 
         /* Menu lateral */
@@ -53,39 +53,38 @@
             width: 250px;
             height: 100%;
             background: linear-gradient(to bottom, #004d00, #008000);
-            border-right: 1px solid #90EE90;
+            border-right: 3px solid #90EE90;
             transition: left 0.3s;
-            padding-top: 20px;
+            padding-top: 40px;
             z-index: 999;
             overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: #90EE90 transparent;
         }
 
         .menu-title {
             color: white;
-            font-size: 18px;
+            font-size: 20px;
             margin: 10px;
             font-weight: bold;
         }
 
-        .menu-btn, .icon-btn {
+        .menu-btn {
             display: block;
             background: black;
             color: white;
-            padding: 2px;
-            margin: 10px 10px;
+            padding: 10px;
+            margin: 10px 15px;
             text-align: center;
             text-decoration: none;
-            border-radius: 10px;
+            border-radius: 8px;
             cursor: pointer;
             border: 2px solid #90EE90;
+            font-size: 18px;
         }
 
         .section {
             display: none;
-            padding: 10px;
-            margin-top: 70px;
+            padding: 20px;
+            margin-top: 80px;
         }
 
         .active {
@@ -93,14 +92,15 @@
         }
 
         .cover-photo {
-            margin-top: 200px;
-            max-width: 100%;
+            margin-top: 100px;
+            max-width: 90%;
             height: auto;
+            border-radius: 10px;
         }
 
         .description {
             padding: 20px;
-            font-size: 18px;
+            font-size: 20px;
         }
 
         /* Rodapé */
@@ -122,14 +122,51 @@
         /* Ícones do submenu */
         .icon-grid {
             display: grid;
-            grid-template-columns: repeat(3,1fr);
-            gap: 1px;
-            padding: 5px 5px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            padding: 15px;
         }
 
         .icon-btn {
-            font-size: 30px;
+            font-size: 35px;
             padding: 10px;
+            background: black;
+            color: white;
+            border: 2px solid #90EE90;
+            border-radius: 10px;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: auto;
+            cursor: pointer;
+        }
+
+        /* Botão Laranja */
+        .orange-btn {
+            background-color: orange;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            padding: 12px 25px;
+            border: 2px solid #ff8c00;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 15px;
+            display: block;
+            width: 80%;
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .orange-btn:hover {
+            background-color: darkorange;
+            border-color: #ff4500;
+            transform: scale(1.05);
         }
 
     </style>
@@ -142,16 +179,14 @@
     </div>
 
     <div class="sidebar" id="sidebar">
-             <div class="menu-title"></div>
         <div class="menu-title">💠 Menu 💠</div>
         <span class="menu-btn" onclick="showSection('inicio')">Início</span>
         <span class="menu-btn" onclick="showSection('modalidades')">Modalidades</span>
         <span class="menu-btn" onclick="showSection('analise')">Análise Estatística</span>
         <span class="menu-btn" onclick="showSection('simuladores')">Simuladores</span>
         <span class="menu-btn" onclick="showSection('desdobramento')">Desdobramento</span>
-        <span class="menu-btn" onclick="showSection('tabelas')">Tabelas</span>
 
-        <div class="menu-title"> Outro Serviço</div>
+        <div class="menu-title">Outro Serviço</div>
         <div class="icon-grid">
             <span class="icon-btn" onclick="showSection('configuracoes')">⚙️</span>
             <span class="icon-btn" onclick="showSection('disco')">🪩</span>
@@ -159,47 +194,19 @@
             <span class="icon-btn" onclick="showSection('megafone')">📢</span>
             <span class="icon-btn" onclick="showSection('alvo')">🎯</span>
             <span class="icon-btn" onclick="showSection('cassino')">🎰</span>
-             <div class="menu-title"> BOA SORTE </div>
         </div>
     </div>
 
     <div class="section active" id="inicio">
         <img src="Screenshot_20250112-173043-1.jpg" class="cover-photo" alt="Foto de Capa">
-        <p class="description">Bem-vindo à plataforma " PORTAL DE LOTERIAS MAC POINT "! Aqui você encontra estatísticas, simuladores e muito mais.</p>
+        <p class="description">Bem-vindo ao Portal de Loterias Mac Point! Estatísticas, simuladores e muito mais.</p>
     </div>
 
     <div class="section" id="modalidades">
         <h2>Modalidades</h2>
         <p>Conteúdo sobre modalidades...</p>
+        <button class="orange-btn" onclick="window.location.href='outra_pagina.html'">Acessar Modalidades</button>
     </div>
-
-    <div class="section" id="analise">
-        <h2>Análise Estatística</h2>
-        <p>Conteúdo sobre análise estatística...</p>
-    </div>
-
-    <div class="section" id="simuladores">
-        <h2>Simuladores</h2>
-        <p>Conteúdo sobre simuladores...</p>
-    </div>
-
-    <div class="section" id="desdobramento">
-        <h2>Desdobramento</h2>
-        <p>Conteúdo sobre desdobramento...</p>
-    </div>
-
-    <div class="section" id="tabelas">
-        <h2>Tabelas</h2>
-        <p>Conteúdo sobre tabelas...</p>
-    </div>
-
-    <!-- Seções para os ícones -->
-    <div class="section" id="configuracoes"><h2>Configurações</h2><p>Configurações do sistema...</p></div>
-    <div class="section" id="disco"><h2>Discoteca</h2><p>Playlist e músicas...</p></div>
-    <div class="section" id="biblioteca"><h2>Biblioteca</h2><p>Livros e conteúdos educacionais...</p></div>
-    <div class="section" id="megafone"><h2>Notificações</h2><p>Últimas novidades...</p></div>
-    <div class="section" id="alvo"><h2>Desafios</h2><p>Metas e desafios diários...</p></div>
-    <div class="section" id="cassino"><h2>Jogos</h2><p>Entretenimento e sorte...</p></div>
 
     <div class="footer" id="footer">© 2025 MacPonte e Ponte Caviate</div>
 <script type="module">
@@ -243,6 +250,7 @@
         }
     </script>
 
+    
     <script>
         function toggleMenu() {
             var sidebar = document.getElementById("sidebar");
@@ -256,14 +264,6 @@
             }
         }
 
-        document.body.addEventListener("click", function(event) {
-            var sidebar = document.getElementById("sidebar");
-            if (!sidebar.contains(event.target) && event.target.className !== "menu-icon") {
-                sidebar.style.left = "-250px";
-                document.getElementById("footer").classList.remove("hide-footer");
-            }
-        });
-
         function showSection(sectionId) {
             document.querySelectorAll(".section").forEach(section => section.classList.remove("active"));
             document.getElementById(sectionId).classList.add("active");
@@ -273,4 +273,6 @@
 
 </body>
 </html>
+
+
 

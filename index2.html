@@ -91,16 +91,67 @@
             display: block;
         }
 
+        /* Foto de Capa */
         .cover-photo {
-            margin-top: 100px;
-            max-width: 90%;
-            height: auto;
+            margin-top: 80px;
+            width: 95%;
+            max-height: 350px;
+            object-fit: cover;
             border-radius: 10px;
         }
 
         .description {
             padding: 20px;
             font-size: 20px;
+        }
+
+        /* Carrossel */
+        .carousel-container {
+            position: relative;
+            width: 90%;
+            max-width: 600px;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        .carousel {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .carousel img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .carousel-text {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            color: white;
+            font-size: 16px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .dots {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .dot {
+            height: 12px;
+            width: 12px;
+            margin: 0 5px;
+            background-color: gray;
+            border-radius: 50%;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .active-dot {
+            background-color: white;
         }
 
         /* Rodapé */
@@ -142,39 +193,12 @@
             margin: auto;
             cursor: pointer;
         }
-
-        /* Botão Laranja */
-        .orange-btn {
-            background-color: orange;
-            color: white;
-            font-size: 20px;
-            font-weight: bold;
-            padding: 12px 25px;
-            border: 2px solid #ff8c00;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-top: 15px;
-            display: block;
-            width: 80%;
-            max-width: 300px;
-            margin-left: auto;
-            margin-right: auto;
-            text-align: center;
-            transition: 0.3s;
-        }
-
-        .orange-btn:hover {
-            background-color: darkorange;
-            border-color: #ff4500;
-            transform: scale(1.05);
-        }
-
     </style>
 </head>
-<body>
+<body onclick="closeMenu(event)">
 
     <div class="top-bar">
-        <span class="menu-icon" onclick="toggleMenu()">⋮🕵🏻‍♂️</span>
+        <span class="menu-icon" onclick="toggleMenu(event)">⋮🕵🏻‍♂️</span>
         <span class="site-name">Portal de Loterias Mac Point</span>
     </div>
 
@@ -183,96 +207,56 @@
         <span class="menu-btn" onclick="showSection('inicio')">Início</span>
         <span class="menu-btn" onclick="showSection('modalidades')">Modalidades</span>
         <span class="menu-btn" onclick="showSection('analise')">Análise Estatística</span>
-        <span class="menu-btn" onclick="showSection('simuladores')">Simuladores</span>
-        <span class="menu-btn" onclick="showSection('desdobramento')">Desdobramento</span>
 
         <div class="menu-title">Outro Serviço</div>
         <div class="icon-grid">
-            <span class="icon-btn" onclick="showSection('configuracoes')">⚙️</span>
-            <span class="icon-btn" onclick="showSection('disco')">🪩</span>
-            <span class="icon-btn" onclick="showSection('biblioteca')">📚</span>
-            <span class="icon-btn" onclick="showSection('megafone')">📢</span>
-            <span class="icon-btn" onclick="showSection('alvo')">🎯</span>
-            <span class="icon-btn" onclick="showSection('cassino')">🎰</span>
+            <span class="icon-btn" onclick="window.location.href='configuracoes.html'">⚙️</span>
+            <span class="icon-btn" onclick="window.location.href='disco.html'">🪩</span>
+            <span class="icon-btn" onclick="window.location.href='biblioteca.html'">📚</span>
         </div>
     </div>
 
     <div class="section active" id="inicio">
-        <img src="Screenshot_20250112-173043-1.jpg" class="cover-photo" alt="Foto de Capa">
+        <img src="capa.jpg" class="cover-photo" alt="Foto de Capa">
         <p class="description">Bem-vindo ao Portal de Loterias Mac Point! Estatísticas, simuladores e muito mais.</p>
+
+        <!-- Carrossel -->
+        <div class="carousel-container">
+            <div class="carousel" id="carousel">
+                <img src="curso1.jpg" alt="Curso 1">
+                <img src="curso2.jpg" alt="Curso 2">
+                <img src="curso3.jpg" alt="Curso 3">
+                <img src="curso4.jpg" alt="Curso 4">
+                <img src="curso5.jpg" alt="Curso 5">
+            </div>
+            <div class="dots">
+                <span class="dot active-dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+        </div>
     </div>
 
-    <div class="section" id="modalidades">
-        <h2>Modalidades</h2>
-        <p>Conteúdo sobre modalidades...</p>
-        <button class="orange-btn" onclick="window.location.href='outra_pagina.html'">Acessar Modalidades</button>
-    </div>
-
-    <div class="footer" id="footer">© 2025 MacPonte e Ponte Caviate</div>
-<script type="module">
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
-            authDomain: "mac-projeto-4e552.firebaseapp.com",
-            projectId: "mac-projeto-4e552",
-            storageBucket: "mac-projeto-4e552.appspot.com",
-            messagingSenderId: "537330451519",
-            appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-
-        // Aguardar o carregamento da página para verificar a autenticação
-        window.onload = () => {
-            // Verifica o status de autenticação
-            onAuthStateChanged(auth, user => {
-                if (user) {
-                    // Se o usuário estiver autenticado, exibe o conteúdo
-                    document.getElementById("protectedContent").style.display = "block";
-                } else {
-                    // Se o usuário não estiver autenticado, redireciona para a página de login
-                    window.location.href = "index.html";
-                }
-            });
-        }
-
-        // Função de logout
-        function logout() {
-            signOut(auth).then(() => {
-                // Redireciona para a página de login após o logout
-                window.location.href = "index.html";
-            }).catch(error => {
-                console.log("Erro ao sair: ", error);
-            });
-        }
-    </script>
-
-    
     <script>
-        function toggleMenu() {
+        function toggleMenu(event) {
+            event.stopPropagation();
             var sidebar = document.getElementById("sidebar");
-            var footer = document.getElementById("footer");
-            if (sidebar.style.left === "0px") {
-                sidebar.style.left = "-250px";
-                footer.classList.remove("hide-footer");
-            } else {
-                sidebar.style.left = "0px";
-                footer.classList.add("hide-footer");
-            }
+            sidebar.style.left = sidebar.style.left === "0px" ? "-250px" : "0px";
+        }
+
+        function closeMenu(event) {
+            var sidebar = document.getElementById("sidebar");
+            if (event.target.closest(".sidebar") || event.target.closest(".menu-icon")) return;
+            sidebar.style.left = "-250px";
         }
 
         function showSection(sectionId) {
             document.querySelectorAll(".section").forEach(section => section.classList.remove("active"));
             document.getElementById(sectionId).classList.add("active");
-            toggleMenu();
+            toggleMenu(event);
         }
     </script>
 
 </body>
 </html>
-
-
 

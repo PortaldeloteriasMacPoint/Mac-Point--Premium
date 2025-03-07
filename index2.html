@@ -111,7 +111,9 @@
             width: 90%;
             max-width: 600px;
             margin: auto;
-            overflow: hidden;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            white-space: nowrap;
         }
 
         .carousel {
@@ -121,37 +123,9 @@
 
         .carousel img {
             width: 100%;
+            max-width: 600px;
             border-radius: 10px;
-        }
-
-        .carousel-text {
-            position: absolute;
-            bottom: 10px;
-            width: 100%;
-            color: white;
-            font-size: 16px;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 5px;
-            border-radius: 5px;
-        }
-
-        .dots {
-            text-align: center;
-            margin-top: 10px;
-        }
-
-        .dot {
-            height: 12px;
-            width: 12px;
-            margin: 0 5px;
-            background-color: gray;
-            border-radius: 50%;
             display: inline-block;
-            cursor: pointer;
-        }
-
-        .active-dot {
-            background-color: white;
         }
 
         /* Rodapé */
@@ -164,10 +138,6 @@
             width: 100%;
             text-align: center;
             transition: 0.3s;
-        }
-
-        .hide-footer {
-            transform: translateY(100%);
         }
 
         /* Ícones do submenu */
@@ -207,6 +177,9 @@
         <span class="menu-btn" onclick="showSection('inicio')">Início</span>
         <span class="menu-btn" onclick="showSection('modalidades')">Modalidades</span>
         <span class="menu-btn" onclick="showSection('analise')">Análise Estatística</span>
+        <span class="menu-btn" onclick="showSection('planilhas')">Planilhas</span>
+        <span class="menu-btn" onclick="showSection('simuladores')">Simuladores</span>
+        <span class="menu-btn" onclick="showSection('desdobramento')">Desdobramento</span>
 
         <div class="menu-title">Outro Serviço</div>
         <div class="icon-grid">
@@ -216,25 +189,35 @@
         </div>
     </div>
 
+    <!-- Seções -->
     <div class="section active" id="inicio">
         <img src="capa.jpg" class="cover-photo" alt="Foto de Capa">
         <p class="description">Bem-vindo ao Portal de Loterias Mac Point! Estatísticas, simuladores e muito mais.</p>
+    </div>
 
-        <!-- Carrossel -->
-        <div class="carousel-container">
-            <div class="carousel" id="carousel">
-                <img src="curso1.jpg" alt="Curso 1">
-                <img src="curso2.jpg" alt="Curso 2">
-                <img src="curso3.jpg" alt="Curso 3">
-                <img src="curso4.jpg" alt="Curso 4">
-                <img src="curso5.jpg" alt="Curso 5">
-            </div>
-            <div class="dots">
-                <span class="dot active-dot"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
-            </div>
-        </div>
+    <div class="section" id="modalidades">
+        <h2>Modalidades de Apostas</h2>
+        <p>Aqui estão as diversas modalidades de loteria disponíveis.</p>
+    </div>
+
+    <div class="section" id="analise">
+        <h2>Análise Estatística</h2>
+        <p>Estatísticas detalhadas para melhorar suas chances.</p>
+    </div>
+
+    <div class="section" id="planilhas">
+        <h2>Planilhas</h2>
+        <p>Baixe planilhas para organizar suas apostas.</p>
+    </div>
+
+    <div class="section" id="simuladores">
+        <h2>Simuladores</h2>
+        <p>Teste suas estratégias antes de apostar.</p>
+    </div>
+
+    <div class="section" id="desdobramento">
+        <h2>Desdobramento</h2>
+        <p>Crie jogos estratégicos com desdobramento.</p>
     </div>
 
     <script>
@@ -259,4 +242,5 @@
 
 </body>
 </html>
+
 

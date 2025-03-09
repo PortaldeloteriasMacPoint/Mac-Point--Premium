@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Loterias</title>
+    <style>
+        /* Estilo geral do corpo */
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 10px;
+        }
+
+        /* Cabeçalho */
+        .header {
+            background: linear-gradient(to right, #006400, #32cd32);
+            width: 100%;
+            padding: 15px;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 10;
+        }
+
+        .menu-toggle {
+            position: absolute;
+            left: 20px;
+            top: 15px;
+            cursor: pointer;
+            font-size: 25px;
+        }
+
+        h1 {
+            color: white;
+            font-family: 'Impact', sans-serif;
+            font-size: 28px;
+        }
+
+        /* Imagem de capa */
+        .cover-photo {
+            margin-top: 80px; /* Para garantir que a imagem de capa não fique atrás do header fixo */
+            text-align: center;
+        }
+
+        .cover-image {
+            width: 100%;
+            max-width: 1200px;
+            height: auto;
+        }
+
+        /* Botões abaixo da imagem de capa */
+        .buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        button {
+            background-color: #006400;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #32cd32;
+        }
+
+        /* Seções de conteúdo */
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 50px;
+        }
+
+        .section {
+            display: none;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .section h2 {
+            color: #32cd32;
+        }
+
+        .section p {
+            color: white;
+        }
+
+        /* Rodapé */
+        .footer {
+            background-color: #006400;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 5;
+        }
+
+        /* Estilos para o menu de navegação */
+        .menu-toggle {
+            font-size: 25px;
+            cursor: pointer;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+            <h1>Bem-vindo ao Portal de Loterias</h1>
+        </header>
+
+        <div class="cover-photo">
+            <img src="capa.jpg" alt="Capa" class="cover-image">
+        </div>
+
+        <div class="buttons">
+            <button onclick="showSection('inicio')">Início</button>
+            <button onclick="showSection('subnós')">Subnós</button>
+            <button onclick="showSection('contato')">Contato</button>
+            <button onclick="window.location.href='paginaPremium.html'">Página Premium</button>
+        </div>
+
+        <div class="content">
+            <section id="inicio" class="section">
+                <h2>Início</h2>
+                <p>Conteúdo de boas-vindas aqui...</p>
+            </section>
+            <section id="subnós" class="section">
+                <h2>Sobre Nós</h2>
+                <p>Informações sobre nossa empresa...</p>
+            </section>
+            <section id="contato" class="section">
+                <h2>Contato</h2>
+                <p>Detalhes para entrar em contato...</p>
+            </section>
+        </div>
+
+        <footer class="footer">
+            <p>&copy; 2025 Portal de Loterias. Todos os direitos reservados.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Função para mostrar uma seção e esconder as outras
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.style.display = 'none';  // Esconde todas as seções
+            });
+
+            const sectionToShow = document.getElementById(sectionId);
+            if (sectionToShow) {
+                sectionToShow.style.display = 'block';  // Exibe a seção clicada
+            }
+        }
+
+        // Função para abrir/fechar o menu (caso necessário)
+        function toggleMenu() {
+            alert("Menu será aberto ou fechado!");
+        }
+    </script>
+</body>
+</html>
+

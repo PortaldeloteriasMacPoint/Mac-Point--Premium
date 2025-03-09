@@ -45,16 +45,18 @@
 
         /* Borda larga com botões ajustados */
         .top-bar {
-            background: linear-gradient(to right, #043d1d, #064420); /* Gradiente Verde */
+            background: linear-gradient(to right, #043d1d, #064420);
             padding: 10px;
             display: flex;
-            justify-content: space-around;
+            justify-content: center;
             align-items: center;
+            flex-wrap: wrap;
             border-radius: 12px;
             margin: 15px auto;
             max-width: 95%;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
             position: relative;
+            gap: 12px; /* Espaço entre os botões */
         }
 
         /* Linha divisória */
@@ -67,11 +69,12 @@
             left: 0;
         }
 
+        /* Estilização dos botões */
         .top-bar button {
-            background: #ff9800; /* Laranja */
+            background: #ff9800;
             color: black;
             border: none;
-            padding: 6px 12px;
+            padding: 8px 16px;
             font-size: 16px;
             font-family: Impact, sans-serif;
             font-weight: bold;
@@ -79,30 +82,25 @@
             cursor: pointer;
             transition: all 0.3s ease-in-out;
             box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
-            width: 18%;
-            max-width: 110px;
+            min-width: 120px;
+            text-align: center;
         }
 
         .top-bar button:hover {
-            background: #4caf50; /* Verde */
+            background: #4caf50;
             transform: scale(1.1);
             box-shadow: 0px 5px 12px rgba(0, 255, 0, 0.3);
         }
 
         /* Botão de Logout */
         .logout-btn {
-            background: #d32f2f; /* Vermelho */
+            background: #d32f2f;
             color: black;
             font-weight: bold;
-            width: auto;
-            padding: 6px 12px;
-            font-size: 16px;
-            font-family: Impact, sans-serif;
         }
 
         .logout-btn:hover {
             background: #ff5252;
-            transform: scale(1.1);
         }
 
         /* Seções de conteúdo */
@@ -141,11 +139,12 @@
         /* Responsividade */
         @media (max-width: 600px) {
             .top-bar {
-                flex-wrap: wrap;
+                gap: 8px; /* Reduz o espaço entre os botões em telas menores */
             }
             .top-bar button {
-                width: 45%;
-                max-width: 100px;
+                min-width: 100px; /* Ajuste para telas pequenas */
+                font-size: 14px;
+                padding: 6px 12px;
             }
         }
     </style>

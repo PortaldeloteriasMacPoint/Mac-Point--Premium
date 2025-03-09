@@ -46,7 +46,7 @@
         /* Borda larga com botões ajustados */
         .top-bar {
             background: linear-gradient(to right, #043d1d, #064420); /* Gradiente Verde */
-            padding: 12px;
+            padding: 10px;
             display: flex;
             justify-content: space-around;
             align-items: center;
@@ -69,17 +69,18 @@
 
         .top-bar button {
             background: #ff9800; /* Laranja */
-            color: white;
+            color: black;
             border: none;
-            padding: 8px 16px;
-            font-size: 14px;
-            border-radius: 20px;
+            padding: 6px 12px;
+            font-size: 16px;
+            font-family: Impact, sans-serif;
+            font-weight: bold;
+            border-radius: 15px;
             cursor: pointer;
             transition: all 0.3s ease-in-out;
             box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
-            width: 20%;
-            max-width: 130px;
-            font-weight: bold;
+            width: 18%;
+            max-width: 110px;
         }
 
         .top-bar button:hover {
@@ -91,10 +92,12 @@
         /* Botão de Logout */
         .logout-btn {
             background: #d32f2f; /* Vermelho */
-            color: white;
+            color: black;
             font-weight: bold;
             width: auto;
-            padding: 8px 16px;
+            padding: 6px 12px;
+            font-size: 16px;
+            font-family: Impact, sans-serif;
         }
 
         .logout-btn:hover {
@@ -141,7 +144,8 @@
                 flex-wrap: wrap;
             }
             .top-bar button {
-                width: 48%;
+                width: 45%;
+                max-width: 100px;
             }
         }
     </style>

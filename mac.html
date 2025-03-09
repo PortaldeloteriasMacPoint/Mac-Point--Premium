@@ -43,11 +43,11 @@
 
         /* Borda larga com botões */
         .top-bar {
-            background: linear-gradient(to right, #444, #222);
-            padding: 15px;
+            background: #064420; /* Verde escuro */
+            padding: 10px;
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             border-radius: 10px;
             margin: 10px auto;
             max-width: 95%;
@@ -57,9 +57,9 @@
             background-color: darkorange;
             color: white;
             border: none;
-            padding: 12px 20px;
-            font-size: 16px;
-            border-radius: 8px;
+            padding: 8px 15px;
+            font-size: 14px;
+            border-radius: 5px;
             cursor: pointer;
             transition: 0.3s;
         }
@@ -81,7 +81,7 @@
 
         /* Rodapé fixo */
         .footer {
-            background-color: #222;
+            background-color: #064420; /* Verde escuro */
             color: white;
             padding: 10px;
             text-align: center;
@@ -98,7 +98,7 @@
         
         <!-- Foto de Capa -->
         <div class="cover-photo">
-            <img src="capa.jpg" alt="Capa">
+            <img src="Screenshot_20250123-232747-1.jpg " alt="Capa">
         </div>
 
         <!-- Borda larga com botões -->
@@ -126,7 +126,7 @@
         </div>
 
         <!-- Rodapé -->
-        <footer class="footer">
+        <footer class="footer" id="footer">
             <p>&copy; 2025 Portal de Loterias. Todos os direitos reservados.</p>
         </footer>
 
@@ -142,9 +142,16 @@
             // Exibir apenas a seção selecionada
             document.getElementById(sectionId).style.display = 'block';
 
-            // Ocultar o rodapé ao abrir uma seção
-            document.querySelector('.footer').style.display = 'none';
+            // Mostrar o rodapé apenas na página de "Início"
+            if (sectionId === 'inicio') {
+                document.getElementById('footer').style.display = 'block';
+            } else {
+                document.getElementById('footer').style.display = 'none';
+            }
         }
+
+        // Mostrar o "Início" ao carregar a página
+        showSection('inicio');
     </script>
 </body>
 </html>

@@ -10,19 +10,19 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: Arial, sans-serif;
         }
 
         body {
             background-color: black;
             color: white;
-            font-family: Arial, sans-serif;
             text-align: center;
         }
 
         /* Container principal */
         .container {
             max-width: 1200px;
-            width: 100%;
+            width: 90%;
             margin: auto;
             padding-bottom: 60px; /* Espaço para o rodapé */
         }
@@ -39,34 +39,40 @@
             height: auto;
             display: block;
             margin: auto;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(255, 255, 255, 0.1);
         }
 
         /* Borda larga com botões */
         .top-bar {
             background: #064420; /* Verde escuro */
-            padding: 10px;
+            padding: 12px;
             display: flex;
             justify-content: center;
-            gap: 8px;
-            border-radius: 10px;
-            margin: 10px auto;
+            gap: 10px;
+            border-radius: 12px;
+            margin: 15px auto;
             max-width: 95%;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
         }
 
         .top-bar button {
             background-color: darkorange;
             color: white;
             border: none;
-            padding: 8px 15px;
-            font-size: 14px;
-            border-radius: 5px;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 25px;
             cursor: pointer;
-            transition: 0.3s;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
         }
 
         .top-bar button:hover {
             background-color: lightgreen;
             color: black;
+            transform: scale(1.05);
+            box-shadow: 0px 5px 10px rgba(0, 255, 0, 0.3);
         }
 
         /* Seções de conteúdo */
@@ -77,19 +83,29 @@
 
         .section {
             display: none;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(255, 255, 255, 0.1);
+        }
+
+        .section h2 {
+            color: lightgreen;
         }
 
         /* Rodapé fixo */
         .footer {
             background-color: #064420; /* Verde escuro */
             color: white;
-            padding: 10px;
+            padding: 12px;
             text-align: center;
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
             display: block;
+            font-size: 14px;
+            box-shadow: 0px -3px 6px rgba(0, 0, 0, 0.3);
         }
     </style>
 </head>
@@ -98,7 +114,7 @@
         
         <!-- Foto de Capa -->
         <div class="cover-photo">
-            <img src="Screenshot_20250123-232747-1.jpg " alt="Capa">
+            <img src="Screenshot_20250123-232747-1.jpg" alt="Capa">
         </div>
 
         <!-- Borda larga com botões -->

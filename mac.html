@@ -45,37 +45,61 @@
 
         /* Borda larga com botões ajustados */
         .top-bar {
-            background: #064420; /* Verde escuro */
-            padding: 10px;
+            background: linear-gradient(to right, #043d1d, #064420); /* Gradiente Verde */
+            padding: 12px;
             display: flex;
-            justify-content: center;
+            justify-content: space-around;
             align-items: center;
-            gap: 5px;
             border-radius: 12px;
             margin: 15px auto;
             max-width: 95%;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+            position: relative;
+        }
+
+        /* Linha divisória */
+        .divider {
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.2);
+            position: absolute;
+            bottom: 0;
+            left: 0;
         }
 
         .top-bar button {
-            background-color: darkorange;
+            background: #ff9800; /* Laranja */
             color: white;
             border: none;
-            padding: 6px 12px;
+            padding: 8px 16px;
             font-size: 14px;
-            border-radius: 15px;
+            border-radius: 20px;
             cursor: pointer;
             transition: all 0.3s ease-in-out;
             box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
-            width: 22%;
-            max-width: 120px;
+            width: 20%;
+            max-width: 130px;
+            font-weight: bold;
         }
 
         .top-bar button:hover {
-            background-color: lightgreen;
-            color: black;
-            transform: scale(1.05);
-            box-shadow: 0px 5px 10px rgba(0, 255, 0, 0.3);
+            background: #4caf50; /* Verde */
+            transform: scale(1.1);
+            box-shadow: 0px 5px 12px rgba(0, 255, 0, 0.3);
+        }
+
+        /* Botão de Logout */
+        .logout-btn {
+            background: #d32f2f; /* Vermelho */
+            color: white;
+            font-weight: bold;
+            width: auto;
+            padding: 8px 16px;
+        }
+
+        .logout-btn:hover {
+            background: #ff5252;
+            transform: scale(1.1);
         }
 
         /* Seções de conteúdo */
@@ -98,7 +122,7 @@
 
         /* Rodapé fixo */
         .footer {
-            background-color: #064420; /* Verde escuro */
+            background-color: #064420;
             color: white;
             padding: 12px;
             text-align: center;
@@ -136,6 +160,8 @@
             <button onclick="showSection('subnos')">Sobre Nós</button>
             <button onclick="showSection('contato')">Contato</button>
             <button onclick="window.location.href='paginaPremium.html'">Premium</button>
+            <button class="logout-btn" onclick="logout()">Sair</button>
+            <div class="divider"></div>
         </nav>
 
         <!-- Conteúdo das Seções -->
@@ -161,28 +187,45 @@
 
     </div>
 
+    <!-- Firebase Authentication -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+
     <script>
+        // Configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "SUA_API_KEY",
+            authDomain: "SEU_AUTH_DOMAIN",
+            projectId: "SEU_PROJECT_ID",
+            storageBucket: "SEU_STORAGE_BUCKET",
+            messagingSenderId: "SEU_MESSAGING_SENDER_ID",
+            appId: "SEU_APP_ID"
+        };
+
+        // Inicializar Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
         function showSection(sectionId) {
-            // Ocultar todas as seções
             document.querySelectorAll('.section').forEach(section => {
                 section.style.display = 'none';
             });
-
-            // Exibir apenas a seção selecionada
             document.getElementById(sectionId).style.display = 'block';
-
-            // Mostrar o rodapé apenas na página de "Início"
-            if (sectionId === 'inicio') {
-                document.getElementById('footer').style.display = 'block';
-            } else {
-                document.getElementById('footer').style.display = 'none';
-            }
+            document.getElementById('footer').style.display = sectionId === 'inicio' ? 'block' : 'none';
         }
 
-        // Mostrar o "Início" ao carregar a página
+        // Logout do Firebase
+        function logout() {
+            auth.signOut().then(() => {
+                window.location.href = "login.html"; // Redirecionar para login
+            }).catch(error => {
+                alert("Erro ao sair: " + error.message);
+            });
+        }
+
+        // Mostrar a seção inicial ao carregar a página
         showSection('inicio');
     </script>
 </body>
 </html>
-
 

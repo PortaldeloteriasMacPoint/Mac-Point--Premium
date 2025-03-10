@@ -37,26 +37,27 @@
         .user-info {
             display: flex;
             align-items: center;
-            gap: 5px; /* Reduzi a distância entre a foto e o ícone */
-        }
-
-        /* Ícone do menu de três pontos */
-        .menu-icon {
-            font-size: 24px;
-            cursor: pointer;
-            color: white;
-            font-weight: bold;
-            position: relative; /* Garante que fique visível */
-            display: flex;
-            align-items: center; /* Centraliza o ícone */
+            gap: 10px;
         }
 
         /* Foto do usuário */
         .user-photo {
-            width: 40px;
-            height: 40px;
+            width: 35px; /* Reduzi um pouco para melhor encaixe */
+            height: 35px;
             border-radius: 50%;
             border: 2px solid white;
+        }
+
+        /* Ícone do menu de três pontos */
+        .menu-icon {
+            font-size: 22px; /* Mantive um tamanho adequado */
+            cursor: pointer;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px; /* Garante um clique fácil */
+            height: 30px;
         }
 
         /* Foto de capa */
@@ -104,52 +105,6 @@
             color: black;
         }
 
-        /* Seção de perfil */
-        .profile-section {
-            padding: 20px;
-            text-align: center;
-        }
-
-        .profile-section input {
-            background: black;
-            color: white;
-            border: 1px solid white;
-            padding: 5px;
-            margin: 5px;
-        }
-
-        .profile-section button {
-            background: orange;
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-        }
-
-        /* Botão IPRPM */
-        .iprpm-btn {
-            background: darkorange;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            border-radius: 15px;
-            cursor: pointer;
-            animation: pulsar 1.5s infinite;
-        }
-
-        @keyframes pulsar {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        /* Seções */
-        .section {
-            padding: 10px;
-            margin-top: -10px;
-        }
-
         /* Rodapé */
         .footer {
             background: linear-gradient(to right, black, darkgreen);
@@ -161,10 +116,8 @@
             text-align: center;
         }
 
+        /* Ajustes para telas menores */
         @media screen and (max-width: 480px) {
-            .top-bar {
-                padding: 10px;
-            }
             .top-bar h1 {
                 font-size: 16px;
             }
@@ -173,7 +126,9 @@
                 height: 30px;
             }
             .menu-icon {
-                font-size: 22px;
+                font-size: 20px;
+                width: 25px;
+                height: 25px;
             }
         }
     </style>
@@ -190,35 +145,14 @@
         </div>
     </div>
 
+    <!-- Foto de capa -->
+    <div class="photo-cover"></div>
+
     <!-- Menu lateral -->
     <div id="menu" class="menu">
         <button onclick="showSection('inicio')">Início</button>
         <button onclick="showSection('perfil')">Perfil</button>
         <button onclick="showSection('estatisticas')">Estatísticas</button>
-    </div>
-
-    <!-- Foto de capa -->
-    <div class="photo-cover"></div>
-
-    <!-- Seções -->
-    <div id="inicio" class="section">
-        <h2>Bem-vindo, <span id="welcome-user">Usuário</span>!</h2>
-        <p>O Portal Mac Point é a sua melhor ferramenta para análises e estatísticas de jogos!</p>
-    </div>
-
-    <!-- Seção de perfil -->
-    <div id="perfil" class="section profile-section" style="display: none;">
-        <h2>Perfil do Usuário</h2>
-        <img id="profile-photo" class="user-photo" src="default.jpg" alt="Foto do Perfil">
-        <input type="file" id="photo-input" accept="image/*">
-        <input type="text" id="name-input" placeholder="Alterar Nome">
-        <button onclick="updateProfile()">Salvar</button>
-    </div>
-
-    <!-- Seção de estatísticas -->
-    <div id="estatisticas" class="section" style="display: none;">
-        <h2>Estatísticas</h2>
-        <button class="iprpm-btn">IPRPM</button>
     </div>
 
     <!-- Rodapé -->
@@ -238,11 +172,8 @@
             document.getElementById(sectionId).style.display = 'block';
             toggleMenu();
         }
-
-        function updateProfile() {
-            alert('Perfil atualizado!');
-        }
     </script>
 </body>
 </html>
+
 

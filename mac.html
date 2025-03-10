@@ -136,6 +136,14 @@
                 height: 25px;
             }
         }
+
+        /* Seções ocultas */
+        .section {
+            display: none;
+        }
+        .section.active {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -160,6 +168,20 @@
         <button onclick="showSection('estatisticas')">Estatísticas</button>
     </div>
 
+    <!-- Seções do conteúdo -->
+    <div id="inicio" class="section active">
+        <h2>Bem-vindo ao Portal Mac Point</h2>
+        <p>Conteúdo da seção de Início.</p>
+    </div>
+    <div id="perfil" class="section">
+        <h2>Seu Perfil</h2>
+        <p>Conteúdo da seção de Perfil.</p>
+    </div>
+    <div id="estatisticas" class="section">
+        <h2>Estatísticas</h2>
+        <p>Conteúdo da seção de Estatísticas.</p>
+    </div>
+
     <!-- Rodapé -->
     <div class="footer">
         <p>© 2025 Portal Mac Point - Todos os direitos reservados.</p>
@@ -172,13 +194,12 @@
 
         function showSection(sectionId) {
             document.querySelectorAll('.section').forEach(section => {
-                section.style.display = 'none';
+                section.classList.remove('active');
             });
-            document.getElementById(sectionId).style.display = 'block';
+            document.getElementById(sectionId).classList.add('active');
             toggleMenu();
         }
     </script>
 </body>
 </html>
-
 

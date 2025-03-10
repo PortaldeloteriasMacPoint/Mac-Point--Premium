@@ -37,15 +37,18 @@
         .user-info {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 5px; /* Reduzi a distância entre a foto e o ícone */
         }
 
         /* Ícone do menu de três pontos */
         .menu-icon {
-            font-size: 18px;
+            font-size: 24px;
             cursor: pointer;
             color: white;
             font-weight: bold;
+            position: relative; /* Garante que fique visível */
+            display: flex;
+            align-items: center; /* Centraliza o ícone */
         }
 
         /* Foto do usuário */
@@ -63,7 +66,7 @@
             background-image: url('Screenshot_20250123-232747-1.jpg'); 
             background-size: cover;
             background-position: center;
-            margin-top: 50px; /* Ajustei para ficar mais próximo */
+            margin-top: 50px;
         }
 
         /* Menu lateral */
@@ -144,7 +147,7 @@
         /* Seções */
         .section {
             padding: 10px;
-            margin-top: -10px; /* Aproximar da foto de capa */
+            margin-top: -10px;
         }
 
         /* Rodapé */

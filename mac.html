@@ -1,14 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal Mac Point</title>
-    
-    <!-- Importação do FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> 
     <style>
         body {
             margin: 0;
@@ -16,12 +12,11 @@
             background-color: black;
             color: white;
             text-align: center;
-            padding-top: 50px;
         }
 
         /* Borda larga superior */
         .top-bar {
-            background: linear-gradient(to right, black, darkgreen);
+            background: linear-gradient(to right, darkgreen, lightgreen);
             padding: 10px 15px;
             display: flex;
             justify-content: space-between;
@@ -30,8 +25,6 @@
             top: 0;
             width: 100%;
             z-index: 10;
-            box-sizing: border-box;
-            padding-right: 20px; /* Garante espaço para os ícones */
         }
 
         .top-bar h1 {
@@ -46,82 +39,114 @@
             gap: 10px;
         }
 
-        /* Ícone de menu (três pontos verticais) */
+        /* Ícone de menu */
         .menu-icon {
             font-size: 24px;
-            font-weight: bold; /* Negrito */
             cursor: pointer;
             color: white;
-            display: block;
+            font-weight: bold;
         }
 
         /* Foto do usuário */
         .user-photo {
-            width: 35px;
-            height: 35px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             border: 2px solid white;
-            display: block;
         }
 
         /* Foto de capa */
         .photo-cover {
             width: 100%;
-            height: 200px;
-            background-image: url('Screenshot_20250123-232747-1.jpg'); /* Substituir pelo link correto */
+            height: 180px;
+            background-image: url('Screenshot_20250123-232747-1.jpg'); 
             background-size: cover;
             background-position: center;
-            margin-top: 60px; /* Evita sobreposição com a top-bar */
+            margin-top: 40px; /* Reduzi a distância entre a borda e a foto */
         }
 
-        /* Menu suspenso */
-        .menu-lateral {
-            display: none;
-            position: absolute;
-            background: white;
+        /* Menu lateral */
+        .menu {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background: linear-gradient(to bottom, darkgreen, lightgreen);
+            transition: 0.3s;
+            padding-top: 60px;
+            color: white;
+        }
+
+        .menu.open {
+            left: 0;
+        }
+
+        .menu button {
+            display: block;
+            width: 90%;
+            margin: 10px auto;
             padding: 10px;
+            background: black;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
             border-radius: 5px;
-            width: 200px;
-            right: 10px;
-            top: 50px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
-        .menu-lateral button {
+        .menu button:hover {
+            background: #20b2aa;
+            color: black;
+        }
+
+        /* Seção de perfil */
+        .profile-section {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .profile-section input {
+            background: black;
+            color: white;
+            border: 1px solid white;
+            padding: 5px;
+            margin: 5px;
+        }
+
+        .profile-section button {
             background: orange;
             color: white;
             border: none;
             padding: 10px;
-            margin: 5px 0;
             cursor: pointer;
-            font-weight: bold;
-            width: 100%;
-            border-radius: 5px;
         }
 
-        .menu-lateral button:hover {
-            background-color: #00CED1;
-            color: black;
+        /* Botão IPRPM */
+        .iprpm-btn {
+            background: darkorange;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 15px;
+            cursor: pointer;
+            animation: pulsar 1.5s infinite;
+        }
+
+        @keyframes pulsar {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
 
         /* Seções */
         .section {
-            padding: 20px;
-            display: none;
+            padding: 10px;
+            margin-top: -10px; /* Aproximar da foto de capa */
         }
 
-        /* Exibir a seção "Início" por padrão */
-        #inicio {
-            display: block;
-        }
-
-        /* Destaque do usuário */
-        #welcome-user {
-            color: #00CED1; /* Verde Oceânico */
-            font-weight: bold;
-        }
-
-        /* Rodapé fixo */
+        /* Rodapé */
         .footer {
             background: linear-gradient(to right, black, darkgreen);
             color: white;
@@ -132,7 +157,6 @@
             text-align: center;
         }
 
-        /* Ajuste para telas pequenas */
         @media screen and (max-width: 480px) {
             .top-bar {
                 padding: 10px;
@@ -151,63 +175,70 @@
     </style>
 </head>
 <body>
+    <!-- Borda larga superior -->
     <div class="top-bar">
         <h1>PORTAL MAC POINT</h1>
         <div class="user-info">
             <img id="user-photo" class="user-photo" src="default.jpg" alt="Foto do Usuário">
             <div class="menu-icon" onclick="toggleMenu()">
-                <i class="fas fa-ellipsis-v"></i> <!-- Ícone FontAwesome atualizado -->
+                <i class="fas fa-ellipsis-v"></i>
             </div>
         </div>
     </div>
 
-    <div class="photo-cover"></div> <!-- Foto de capa -->
-
-    <div id="menu-lateral" class="menu-lateral">
-        <button onclick="showSection('inicio')">INÍCIO</button>
-        <button onclick="showSection('contato')">CONTATO</button>
-        <button onclick="showSection('perfil')">PERFIL</button>
-        <button onclick="logout()">SAIR</button>
+    <!-- Menu lateral -->
+    <div id="menu" class="menu">
+        <button onclick="showSection('inicio')">Início</button>
+        <button onclick="showSection('perfil')">Perfil</button>
+        <button onclick="showSection('estatisticas')">Estatísticas</button>
     </div>
 
+    <!-- Foto de capa -->
+    <div class="photo-cover"></div>
+
+    <!-- Seções -->
     <div id="inicio" class="section">
         <h2>Bem-vindo, <span id="welcome-user">Usuário</span>!</h2>
         <p>O Portal Mac Point é a sua melhor ferramenta para análises e estatísticas de jogos!</p>
-        <button class="button" onclick="window.location.href='premium.html'">Acessar Premium</button>
     </div>
 
-    <div id="contato" class="section">
-        <h2>Contato</h2>
-        <p>Entre em contato pelo WhatsApp: 📱</p>
-    </div>
-
-    <div id="perfil" class="section">
+    <!-- Seção de perfil -->
+    <div id="perfil" class="section profile-section" style="display: none;">
         <h2>Perfil do Usuário</h2>
-        <p>Aqui você pode gerenciar suas configurações.</p>
+        <img id="profile-photo" class="user-photo" src="default.jpg" alt="Foto do Perfil">
+        <input type="file" id="photo-input" accept="image/*">
+        <input type="text" id="name-input" placeholder="Alterar Nome">
+        <button onclick="updateProfile()">Salvar</button>
     </div>
 
+    <!-- Seção de estatísticas -->
+    <div id="estatisticas" class="section" style="display: none;">
+        <h2>Estatísticas</h2>
+        <button class="iprpm-btn">IPRPM</button>
+    </div>
+
+    <!-- Rodapé -->
     <div class="footer">
         <p>© 2025 Portal Mac Point - Todos os direitos reservados.</p>
     </div>
 
     <script>
         function toggleMenu() {
-            const menu = document.getElementById("menu-lateral");
-            menu.style.display = menu.style.display === "block" ? "none" : "block";
+            document.getElementById('menu').classList.toggle('open');
         }
 
-        function showSection(section) {
-            document.querySelectorAll('.section').forEach(sec => sec.style.display = "none");
-            document.getElementById(section).style.display = "block";
-            document.getElementById("menu-lateral").style.display = "none";
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.style.display = 'none';
+            });
+            document.getElementById(sectionId).style.display = 'block';
+            toggleMenu();
         }
 
-        function logout() {
-            alert("Logout realizado!"); // Simulação, ajuste conforme Firebase
-            window.location.href = "login.html";
+        function updateProfile() {
+            alert('Perfil atualizado!');
         }
     </script>
 </body>
 </html>
-
 

@@ -5,16 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal de Loterias Mac Point</title>
     <style>
+        /* Estilo geral */
         body {
             margin: 0;
             font-family: Arial, sans-serif;
             background-color: black;
             color: white;
             text-align: center;
+            padding-top: 50px;
         }
+        /* Top Bar */
         .top-bar {
             background: linear-gradient(to right, black, darkgreen);
-            padding: 5px 15px;
+            padding: 10px 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -28,6 +31,7 @@
             margin: 0;
             color: white;
         }
+        /* Ícones de usuário */
         .user-info {
             display: flex;
             align-items: center;
@@ -39,6 +43,7 @@
             border-radius: 50%;
             margin-right: 10px;
         }
+        /* Submenu */
         .sub-menu, .menu-lateral {
             display: none;
             position: absolute;
@@ -48,53 +53,72 @@
             right: 0;
             top: 50px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 200px;
         }
         .sub-menu button, .menu-lateral button {
-            background: orange;
-            color: black;
+            background: darkgreen;
+            color: white;
             border: none;
             padding: 10px;
-            margin: 5px;
+            margin: 5px 0;
             cursor: pointer;
             font-weight: bold;
             width: 100%;
-            border-radius: 8px;
         }
+        /* Menu lateral */
         .menu {
             background: darkgreen;
             padding: 10px;
             margin-top: 50px;
         }
         .menu button {
-            background: #00bfae; /* Verde Oceânico */
+            background: white;
             color: black;
             border: none;
             padding: 10px;
             margin: 5px;
             font-weight: bold;
             cursor: pointer;
-            border-radius: 8px;
-            width: 100%;
+            width: auto;
+            border-radius: 10px;
         }
+        .menu button:hover {
+            background-color: #00FF00;
+            color: black;
+        }
+        /* Seções */
         .section {
             padding: 20px;
+            display: none;
         }
-        footer {
-            background: linear-gradient(to right, darkgreen, black);
+        /* Perfil */
+        #profile-page {
+            background-color: black;
+            color: white;
+            padding: 20px;
+            margin-top: 50px;
+            width: 80%;
+            margin: 0 auto;
+            border-radius: 5px;
+            text-align: center;
+        }
+        #profile-page input {
+            margin: 10px;
             padding: 10px;
-            position: fixed;
-            bottom: 0;
+            width: 80%;
+            border-radius: 5px;
+            border: none;
+        }
+        /* Foto de capa */
+        .photo-cover {
             width: 100%;
-            z-index: 5;
+            height: 200px;
+            background-image: url('https://your-image-link-here.jpg');
+            background-size: cover;
+            background-position: center;
+            margin-top: 50px;
         }
-        .menu-lateral {
-            position: absolute;
-            top: 80px;
-            left: 10px;
-            width: 200px;
-            background-color: white;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-        }
+        /* Mensagens */
         .welcome-message {
             font-size: 24px;
             margin-top: 100px;
@@ -103,12 +127,13 @@
             font-weight: bold;
             color: #00FF00;
         }
-        .banner-photo {
+        /* Rodapé */
+        footer {
+            background: linear-gradient(to right, darkgreen, black);
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
             width: 100%;
-            height: 200px;
-            background: url('banner.jpg') no-repeat center center;
-            background-size: cover;
-            margin-top: 70px;
         }
     </style>
 </head>
@@ -133,13 +158,7 @@
         </div>
     </div>
 
-    <div class="Screenshot_20250123-232747-1.jpg"></div>
-
-    <!-- Saudação personalizada -->
-    <div class="welcome-message" id="welcome-message">
-        Seja bem-vindo, <span id="welcome-user" class="highlight">Usuário</span>!<br>
-        O portal de loterias Mac Point.
-    </div>
+    <div class="photo-cover"></div>
 
     <div class="menu">
         <button onclick="showSection('inicio')">INÍCIO</button>
@@ -147,27 +166,41 @@
         <button onclick="showSection('sobre')">SOBRE NÓS</button>
     </div>
 
+    <!-- Saudação personalizada -->
+    <div class="welcome-message" id="welcome-message">
+        Seja bem-vindo, <span id="welcome-user" class="highlight">Usuário</span>!<br>
+        O portal de loterias Mac Point.
+    </div>
+
     <div id="inicio" class="section">Seja bem-vindo ao Portal de Loterias Mac Point!</div>
-    <div id="contato" class="section" style="display: none;">
+    <div id="contato" class="section">
         <h2>Contato</h2>
         <p>Entre em contato pelo WhatsApp: 📱</p>
     </div>
-    <div id="sobre" class="section" style="display: none;">
+    <div id="sobre" class="section">
         <h2>Sobre Nós</h2>
         <p>Informações sobre o site.</p>
+    </div>
+
+    <div id="profile-page" style="display: none;">
+        <h2>Alterar Perfil</h2>
+        <input type="text" id="new-name" placeholder="Novo Nome">
+        <input type="file" id="new-photo" onchange="uploadPhoto()">
+        <button onclick="saveProfile()">Salvar</button>
     </div>
 
     <footer>Todos os direitos reservados - Mac Point</footer>
 
     <script>
+        /* Funções JavaScript */
         function toggleSubMenu() {
-            let menu = document.getElementById("sub-menu");
+            const menu = document.getElementById("sub-menu");
             menu.style.display = menu.style.display === "block" ? "none" : "block";
         }
 
         function toggleMenuLateral(event) {
             event.stopPropagation();
-            let menuLateral = document.getElementById("menu-lateral");
+            const menuLateral = document.getElementById("menu-lateral");
             menuLateral.style.display = menuLateral.style.display === "block" ? "none" : "block";
         }
 
@@ -183,13 +216,42 @@
         }
 
         function openProfile() {
-            alert("Aqui o usuário pode alterar a foto e nome.");
+            document.getElementById('profile-page').style.display = 'block';
         }
 
         function openPremium() {
             window.location.href = "premium.html";
         }
 
+        function uploadPhoto() {
+            const file = document.getElementById("new-photo").files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById("user-photo").src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function saveProfile() {
+            const newName = document.getElementById("new-name").value;
+            if (newName) {
+                firebase.auth().currentUser.updateProfile({
+                    displayName: newName
+                }).then(() => {
+                    document.getElementById("user-name").textContent = newName;
+                    document.getElementById('profile-page').style.display = 'none';
+                    alert('Perfil atualizado com sucesso!');
+                }).catch((error) => {
+                    alert('Erro ao atualizar perfil: ' + error.message);
+                });
+            } else {
+                alert('Nome não pode ser vazio!');
+            }
+        }
+
+        // Firebase Configuração
         const firebaseConfig = {
             apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
             authDomain: "mac-projeto-4e552.firebaseapp.com",
@@ -202,17 +264,14 @@
 
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
-                document.getElementById("user-name").textContent = user.displayName || "Usuário";
-                document.getElementById("user-photo").src = user.photoURL || "default.jpg";
-                document.getElementById("welcome-user").textContent = user.displayName || "Usuário";
+                document.getElementById('user-name').textContent = user.displayName || "Usuário";
+                document.getElementById('user-photo').src = user.photoURL || "default.jpg";
             } else {
                 window.location.href = "login.html";
             }
         });
     </script>
-
-    <script defer src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-    <script defer src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
 </body>
 </html>
 
+ 

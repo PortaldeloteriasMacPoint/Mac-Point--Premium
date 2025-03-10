@@ -14,7 +14,7 @@
             padding-top: 50px;
         }
 
-        /* Top Bar */
+        /* Borda larga superior */
         .top-bar {
             background: linear-gradient(to right, black, darkgreen);
             padding: 10px 15px;
@@ -28,7 +28,7 @@
         }
 
         .top-bar h1 {
-            font-size: 20px;
+            font-size: 18px;
             margin: 0;
             color: white;
         }
@@ -51,7 +51,7 @@
             color: white;
         }
 
-        /* Ícone de menu (três pontos) */
+        /* Ícone de menu */
         .menu-icon {
             font-size: 24px;
             cursor: pointer;
@@ -82,8 +82,8 @@
         }
 
         .menu-lateral button {
-            background: white;
-            color: black;
+            background: orange;
+            color: white;
             border: none;
             padding: 10px;
             margin: 5px 0;
@@ -104,8 +104,13 @@
             display: none;
         }
 
-        /* Botão laranja */
-        .premium-button {
+        /* Exibir a seção "Início" por padrão */
+        #inicio {
+            display: block;
+        }
+
+        /* Botões */
+        .button {
             background: orange;
             color: white;
             padding: 10px;
@@ -114,28 +119,20 @@
             cursor: pointer;
         }
 
-        .premium-button:hover {
+        .button:hover {
             background-color: #00CED1;
             color: black;
         }
 
-        /* Perfil */
-        #profile-page {
-            background-color: black;
+        /* Rodapé fixo */
+        .footer {
+            background: linear-gradient(to right, black, darkgreen);
             color: white;
-            padding: 20px;
-            width: 80%;
-            margin: 0 auto;
-            border-radius: 5px;
-            text-align: center;
-        }
-
-        #profile-page input {
-            margin: 10px;
             padding: 10px;
-            width: 80%;
-            border-radius: 5px;
-            border: none;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
         }
     </style>
 </head>
@@ -161,7 +158,8 @@
     <div id="inicio" class="section">
         <h2>Bem-vindo, <span id="welcome-user">Usuário</span>!</h2>
         <p>O Portal de Loterias Mac Point é a sua melhor ferramenta para análises e estatísticas de jogos!</p>
-        <button class="premium-button" onclick="window.location.href='premium.html'">Acessar Premium</button>
+        <button class="button" onclick="window.location.href='premium.html'">Acessar Premium</button>
+        <button class="button">VPM Atualizado</button>
     </div>
 
     <div id="contato" class="section">
@@ -174,7 +172,11 @@
         <img id="user-photo-section" class="user-photo" src="default.jpg" alt="Foto do Usuário">
         <input type="text" id="new-name" placeholder="Novo Nome">
         <input type="file" id="new-photo" onchange="uploadPhoto()">
-        <button onclick="saveProfile()">Salvar</button>
+        <button class="button" onclick="saveProfile()">Salvar</button>
+    </div>
+
+    <div class="footer">
+        <p>© 2025 Portal de Loterias Mac Point - Todos os direitos reservados.</p>
     </div>
 
     <script>
@@ -223,28 +225,6 @@
                 alert('Nome não pode ser vazio!');
             }
         }
-
-        // Firebase Configuração
-        const firebaseConfig = {
-            apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
-            authDomain: "mac-projeto-4e552.firebaseapp.com",
-            projectId: "mac-projeto-4e552",
-            storageBucket: "mac-projeto-4e552.appspot.com",
-            messagingSenderId: "537330451519",
-            appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
-        };
-        firebase.initializeApp(firebaseConfig);
-
-        firebase.auth().onAuthStateChanged(user => {
-            if (user) {
-                document.getElementById('welcome-user').textContent = user.displayName || "Usuário";
-                document.getElementById('user-name').textContent = user.displayName || "Usuário";
-                document.getElementById('user-photo').src = user.photoURL || "default.jpg";
-                document.getElementById('user-photo-section').src = user.photoURL || "default.jpg";
-            } else {
-                window.location.href = "login.html";
-            }
-        });
     </script>
 </body>
 </html>

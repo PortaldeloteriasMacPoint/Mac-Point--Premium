@@ -19,7 +19,8 @@
             background: linear-gradient(to right, black, darkgreen);
             padding: 10px 15px;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
+            align-items: center;
             position: fixed;
             top: 0;
             width: 100%;
@@ -32,6 +33,31 @@
             color: white;
         }
 
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-photo {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        .user-name {
+            font-size: 14px;
+            color: white;
+        }
+
+        /* Ícone de menu (três pontos) */
+        .menu-icon {
+            font-size: 24px;
+            cursor: pointer;
+            color: white;
+        }
+
         /* Foto de capa */
         .photo-cover {
             width: 100%;
@@ -40,13 +66,6 @@
             background-size: cover;
             background-position: center;
             margin-top: 50px;
-        }
-
-        /* Ícone de menu (três pontos) */
-        .menu-icon {
-            font-size: 24px;
-            cursor: pointer;
-            margin-top: 10px;
         }
 
         /* Menu suspenso */
@@ -118,23 +137,19 @@
             border-radius: 5px;
             border: none;
         }
-
-        .user-photo {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            margin: 10px;
-        }
     </style>
 </head>
 <body>
     <div class="top-bar">
         <h1>PORTAL DE LOTERIAS MAC POINT</h1>
+        <div class="user-info">
+            <img id="user-photo" class="user-photo" src="default.jpg" alt="Foto do Usuário">
+            <span id="user-name" class="user-name">Usuário</span>
+            <div class="menu-icon" onclick="toggleMenu()">⋮</div>
+        </div>
     </div>
 
     <div class="photo-cover"></div>
-
-    <div class="menu-icon" onclick="toggleMenu()">⋮</div>
 
     <div id="menu-lateral" class="menu-lateral">
         <button onclick="showSection('inicio')">INÍCIO</button>
@@ -156,7 +171,7 @@
 
     <div id="perfil" class="section">
         <h2>Alterar Perfil</h2>
-        <img id="user-photo" class="user-photo" src="default.jpg" alt="Foto do Usuário">
+        <img id="user-photo-section" class="user-photo" src="default.jpg" alt="Foto do Usuário">
         <input type="text" id="new-name" placeholder="Novo Nome">
         <input type="file" id="new-photo" onchange="uploadPhoto()">
         <button onclick="saveProfile()">Salvar</button>
@@ -186,6 +201,7 @@
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     document.getElementById("user-photo").src = e.target.result;
+                    document.getElementById("user-photo-section").src = e.target.result;
                 };
                 reader.readAsDataURL(file);
             }
@@ -198,6 +214,7 @@
                     displayName: newName
                 }).then(() => {
                     document.getElementById("welcome-user").textContent = newName;
+                    document.getElementById("user-name").textContent = newName;
                     alert('Perfil atualizado com sucesso!');
                 }).catch((error) => {
                     alert('Erro ao atualizar perfil: ' + error.message);
@@ -221,7 +238,9 @@
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
                 document.getElementById('welcome-user').textContent = user.displayName || "Usuário";
+                document.getElementById('user-name').textContent = user.displayName || "Usuário";
                 document.getElementById('user-photo').src = user.photoURL || "default.jpg";
+                document.getElementById('user-photo-section').src = user.photoURL || "default.jpg";
             } else {
                 window.location.href = "login.html";
             }
@@ -229,5 +248,4 @@
     </script>
 </body>
 </html>
-
 

@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal de Loterias</title>
+    <title>Portal de Loterias Mac Point</title>
     <style>
-        /* Estilos gerais */
         * {
             margin: 0;
             padding: 0;
@@ -14,221 +13,213 @@
         }
 
         body {
-            background-color: black;
-            color: white;
+            background-color: #f0f0f0;
             text-align: center;
         }
 
-        /* Container principal */
-        .container {
-            max-width: 1200px;
-            width: 90%;
-            margin: auto;
-            padding-bottom: 60px; /* Espaço para o rodapé */
-        }
-
-        /* Imagem de capa */
-        .cover-photo {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .cover-photo img {
-            width: 100%;
-            max-width: 1200px;
-            height: auto;
-            display: block;
-            margin: auto;
-            border-radius: 10px;
-            box-shadow: 0px 4px 8px rgba(255, 255, 255, 0.1);
-        }
-
-        /* Borda larga com botões ajustados */
+        /* Borda Superior */
         .top-bar {
-            background: linear-gradient(to right, #043d1d, #064420);
-            padding: 10px;
+            background: linear-gradient(to right, black, darkgreen);
+            color: white;
+            padding: 15px;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            border-radius: 12px;
-            margin: 15px auto;
-            max-width: 95%;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
-            position: relative;
-            gap: 12px; /* Espaço entre os botões */
-        }
-
-        /* Linha divisória */
-        .divider {
+            position: fixed;
+            top: 0;
             width: 100%;
-            height: 2px;
-            background: rgba(255, 255, 255, 0.2);
-            position: absolute;
-            bottom: 0;
-            left: 0;
+            height: 60px;
+            z-index: 1000;
         }
 
-        /* Estilização dos botões */
-        .top-bar button {
-            background: #ff9800;
-            color: black;
-            border: none;
-            padding: 8px 16px;
-            font-size: 16px;
-            font-family: Impact, sans-serif;
-            font-weight: bold;
-            border-radius: 15px;
+        /* Foto do usuário + Nome */
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-photo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid white;
+            margin-right: 10px;
+        }
+
+        .user-name {
+            font-family: 'Caveat', cursive;
+            font-size: 22px;
+        }
+
+        /* Ícones no topo */
+        .icons {
+            display: flex;
+            align-items: center;
+        }
+
+        .icon {
+            font-size: 20px;
+            margin-left: 15px;
             cursor: pointer;
-            transition: all 0.3s ease-in-out;
-            box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
-            min-width: 120px;
-            text-align: center;
         }
 
-        .top-bar button:hover {
-            background: #4caf50;
-            transform: scale(1.1);
-            box-shadow: 0px 5px 12px rgba(0, 255, 0, 0.3);
+        /* Foto de Capa */
+        .cover-photo {
+            width: 100%;
+            height: 200px;
+            background: url('sua-imagem.jpg') center/cover;
+            margin-top: 60px;
         }
 
-        /* Botão de Logout */
-        .logout-btn {
-            background: #d32f2f;
+        /* Menu abaixo da foto */
+        .main-menu {
+            background: white;
             color: black;
             font-weight: bold;
+            display: none;
+            position: absolute;
+            width: 100%;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        .logout-btn:hover {
-            background: #ff5252;
+        .main-menu button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            border: none;
+            background: white;
+            cursor: pointer;
         }
 
-        /* Seções de conteúdo */
-        .content {
-            margin-top: 20px;
-            padding: 20px;
+        .main-menu button:hover {
+            background: lightgray;
         }
 
+        /* Seções */
         .section {
             display: none;
-            background-color: rgba(255, 255, 255, 0.1);
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 8px rgba(255, 255, 255, 0.1);
         }
 
-        .section h2 {
-            color: lightgreen;
+        #home {
+            display: block;
         }
 
-        /* Rodapé fixo */
+        /* Contato */
+        .contact-info {
+            margin-top: 20px;
+        }
+
+        .whatsapp-icon {
+            font-size: 50px;
+            color: green;
+        }
+
+        /* Rodapé */
         .footer {
-            background-color: #064420;
+            background: #0a0a0a;
             color: white;
-            padding: 12px;
-            text-align: center;
+            padding: 10px;
             position: fixed;
             bottom: 0;
-            left: 0;
             width: 100%;
             display: block;
-            font-size: 14px;
-            box-shadow: 0px -3px 6px rgba(0, 0, 0, 0.3);
         }
 
-        /* Responsividade */
-        @media (max-width: 600px) {
-            .top-bar {
-                gap: 8px; /* Reduz o espaço entre os botões em telas menores */
-            }
-            .top-bar button {
-                min-width: 100px; /* Ajuste para telas pequenas */
-                font-size: 14px;
-                padding: 6px 12px;
+        /* Ocultar rodapé em outras seções */
+        .hidden-footer {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .user-name {
+                font-size: 18px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        
-        <!-- Foto de Capa -->
-        <div class="cover-photo">
-            <img src="Screenshot_20250123-232747-1.jpg" alt="Capa">
+
+    <!-- Borda Superior -->
+    <div class="top-bar">
+        <div class="user-info">
+            <img src="usuario.jpg" alt="Usuário" class="user-photo">
+            <span class="user-name">Nome do Usuário</span>
         </div>
-
-        <!-- Borda larga com botões menores e ajustados -->
-        <nav class="top-bar">
-            <button onclick="showSection('inicio')">Início</button>
-            <button onclick="showSection('subnos')">Sobre Nós</button>
-            <button onclick="showSection('contato')">Contato</button>
-            <button onclick="window.location.href='paginaPremium.html'">Premium</button>
-            <button class="logout-btn" onclick="logout()">Sair</button>
-            <div class="divider"></div>
-        </nav>
-
-        <!-- Conteúdo das Seções -->
-        <div class="content">
-            <section id="inicio" class="section">
-                <h2>Início</h2>
-                <p>Bem-vindo ao nosso portal!</p>
-            </section>
-            <section id="subnos" class="section">
-                <h2>Sobre Nós</h2>
-                <p>Conheça mais sobre nosso serviço.</p>
-            </section>
-            <section id="contato" class="section">
-                <h2>Contato</h2>
-                <p>Entre em contato conosco.</p>
-            </section>
+        <div class="icons">
+            <span class="icon" onclick="toggleSettings()">⚙️</span>
+            <span class="icon" onclick="toggleMenu()">⋮</span>
         </div>
-
-        <!-- Rodapé -->
-        <footer class="footer" id="footer">
-            <p>&copy; 2025 Portal de Loterias. Todos os direitos reservados.</p>
-        </footer>
-
     </div>
 
-    <!-- Firebase Authentication -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+    <!-- Foto de Capa -->
+    <div class="cover-photo"></div>
+
+    <!-- Menu Abaixo da Foto -->
+    <div class="main-menu" id="mainMenu">
+        <button onclick="showSection('home')">INÍCIO</button>
+        <button onclick="showSection('contact')">CONTATO</button>
+        <button onclick="showSection('about')">SOBRE NÓS</button>
+        <button onclick="openMainMenu()">VER MENU PRINCIPAL</button>
+    </div>
+
+    <!-- Seção: INÍCIO -->
+    <div id="home" class="section">
+        <h2>Bem-vindo ao Portal</h2>
+        <p>Apresentação do site...</p>
+    </div>
+
+    <!-- Seção: CONTATO -->
+    <div id="contact" class="section">
+        <h2>Contato</h2>
+        <div class="contact-info">
+            <span class="whatsapp-icon">📱</span>
+            <p>Email: contato@exemplo.com</p>
+            <p>Telefone: (11) 99999-9999</p>
+        </div>
+    </div>
+
+    <!-- Seção: SOBRE NÓS -->
+    <div id="about" class="section">
+        <h2>Sobre Nós</h2>
+        <p>Informações sobre o site...</p>
+    </div>
+
+    <!-- Rodapé -->
+    <div id="footer" class="footer">
+        <p>Título do rodapé - Beijo Oceânico</p>
+    </div>
 
     <script>
-        // Configuração do Firebase
-        const firebaseConfig = {
-            apiKey: "SUA_API_KEY",
-            authDomain: "SEU_AUTH_DOMAIN",
-            projectId: "SEU_PROJECT_ID",
-            storageBucket: "SEU_STORAGE_BUCKET",
-            messagingSenderId: "SEU_MESSAGING_SENDER_ID",
-            appId: "SEU_APP_ID"
-        };
+        function toggleMenu() {
+            let menu = document.getElementById('mainMenu');
+            menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+        }
 
-        // Inicializar Firebase
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
+        function toggleSettings() {
+            alert('Configurações do usuário');
+        }
 
         function showSection(sectionId) {
+            // Esconde todas as seções
             document.querySelectorAll('.section').forEach(section => {
                 section.style.display = 'none';
             });
+
+            // Exibe a seção selecionada
             document.getElementById(sectionId).style.display = 'block';
-            document.getElementById('footer').style.display = sectionId === 'inicio' ? 'block' : 'none';
+
+            // Oculta o rodapé em todas as seções, exceto INÍCIO
+            let footer = document.getElementById('footer');
+            footer.className = (sectionId === 'home') ? 'footer' : 'hidden-footer';
         }
 
-        // Logout do Firebase
-        function logout() {
-            auth.signOut().then(() => {
-                window.location.href = "login.html"; // Redirecionar para login
-            }).catch(error => {
-                alert("Erro ao sair: " + error.message);
-            });
+        function openMainMenu() {
+            window.location.href = 'menu_principal.html';
         }
-
-        // Mostrar a seção inicial ao carregar a página
-        showSection('inicio');
     </script>
+
 </body>
 </html>
+
 

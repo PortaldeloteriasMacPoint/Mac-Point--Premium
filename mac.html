@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal de Loterias Mac Point</title>
-    <!-- Importação correta do FontAwesome -->
+    <title>Portal Mac Point</title>
+    <!-- Importação do FontAwesome -->
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> 
 
     <style>
@@ -42,12 +42,12 @@
             gap: 10px;
         }
 
-        /* Ícone de menu */
+        /* Ícone de menu (três pontos verticais) */
         .menu-icon {
             font-size: 24px;
             cursor: pointer;
             color: white;
-            display: block; /* Garantir que ele apareça */
+            display: block;
         }
 
         /* Foto do usuário */
@@ -56,7 +56,7 @@
             height: 30px;
             border-radius: 50%;
             border: 2px solid white;
-            display: none; /* Somente aparece se houver uma foto */
+            display: block; /* Mostrar sempre */
         }
 
         /* Foto de capa */
@@ -77,10 +77,9 @@
             padding: 10px;
             border-radius: 5px;
             width: 200px;
-            left: 50%;
-            transform: translateX(-50%);
+            right: 10px;
+            top: 50px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            top: 270px;
         }
 
         .menu-lateral button {
@@ -111,6 +110,12 @@
             display: block;
         }
 
+        /* Destaque do usuário */
+        #welcome-user {
+            color: #00CED1; /* Verde Oceânico */
+            font-weight: bold;
+        }
+
         /* Rodapé fixo */
         .footer {
             background: linear-gradient(to right, black, darkgreen);
@@ -125,7 +130,7 @@
 </head>
 <body>
     <div class="top-bar">
-        <h1>PORTAL DE LOTERIAS MAC POINT</h1>
+        <h1>PORTAL MAC POINT</h1>
         <div class="user-info">
             <img id="user-photo" class="user-photo" src="default.jpg" alt="Foto do Usuário">
             <div class="menu-icon" onclick="toggleMenu()">
@@ -134,7 +139,7 @@
         </div>
     </div>
 
-    <div class="photo-cover"></div> <!-- Foto de capa corrigida -->
+    <div class="photo-cover"></div> <!-- Foto de capa -->
 
     <div id="menu-lateral" class="menu-lateral">
         <button onclick="showSection('inicio')">INÍCIO</button>
@@ -145,7 +150,7 @@
 
     <div id="inicio" class="section">
         <h2>Bem-vindo, <span id="welcome-user">Usuário</span>!</h2>
-        <p>O Portal de Loterias Mac Point é a sua melhor ferramenta para análises e estatísticas de jogos!</p>
+        <p>O Portal Mac Point é a sua melhor ferramenta para análises e estatísticas de jogos!</p>
         <button class="button" onclick="window.location.href='premium.html'">Acessar Premium</button>
     </div>
 
@@ -155,7 +160,7 @@
     </div>
 
     <div class="footer">
-        <p>© 2025 Portal de Loterias Mac Point - Todos os direitos reservados.</p>
+        <p>© 2025 Portal Mac Point - Todos os direitos reservados.</p>
     </div>
 
     <script>

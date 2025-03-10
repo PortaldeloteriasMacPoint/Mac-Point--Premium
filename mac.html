@@ -1,11 +1,13 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal Mac Point</title>
+    
     <!-- Importação do FontAwesome -->
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
         body {
@@ -47,6 +49,7 @@
         /* Ícone de menu (três pontos verticais) */
         .menu-icon {
             font-size: 24px;
+            font-weight: bold; /* Negrito */
             cursor: pointer;
             color: white;
             display: block;
@@ -65,7 +68,7 @@
         .photo-cover {
             width: 100%;
             height: 200px;
-            background-image: url('Screenshot_20250123-232747-1.jpg '); /* Substituir pelo link correto */
+            background-image: url('Screenshot_20250123-232747-1.jpg'); /* Substituir pelo link correto */
             background-size: cover;
             background-position: center;
             margin-top: 60px; /* Evita sobreposição com a top-bar */
@@ -153,7 +156,7 @@
         <div class="user-info">
             <img id="user-photo" class="user-photo" src="default.jpg" alt="Foto do Usuário">
             <div class="menu-icon" onclick="toggleMenu()">
-                <i class="fas fa-ellipsis-v"></i> <!-- Ícone FontAwesome -->
+                <i class="fas fa-ellipsis-v"></i> <!-- Ícone FontAwesome atualizado -->
             </div>
         </div>
     </div>

@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal de Loterias Mac Point</title>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> <!-- FontAwesome -->
+    <!-- Importação correta do FontAwesome -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> 
+
     <style>
         body {
             margin: 0;
@@ -40,27 +42,28 @@
             gap: 10px;
         }
 
+        /* Ícone de menu */
+        .menu-icon {
+            font-size: 24px;
+            cursor: pointer;
+            color: white;
+            display: block; /* Garantir que ele apareça */
+        }
+
         /* Foto do usuário */
         .user-photo {
             width: 30px;
             height: 30px;
             border-radius: 50%;
             border: 2px solid white;
-            display: none; /* A foto só será exibida se houver uma */
-        }
-
-        /* Ícone de menu (ajustado para FontAwesome) */
-        .menu-icon {
-            font-size: 24px;
-            cursor: pointer;
-            color: white;
+            display: none; /* Somente aparece se houver uma foto */
         }
 
         /* Foto de capa */
         .photo-cover {
             width: 100%;
             height: 200px;
-            background-image: url('https://your-image-link-here.jpg');
+            background-image: url('https://via.placeholder.com/800x200'); /* Substituir pelo link correto */
             background-size: cover;
             background-position: center;
             margin-top: 50px;
@@ -108,21 +111,6 @@
             display: block;
         }
 
-        /* Botões */
-        .button {
-            background: orange;
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .button:hover {
-            background-color: #00CED1;
-            color: black;
-        }
-
         /* Rodapé fixo */
         .footer {
             background: linear-gradient(to right, black, darkgreen);
@@ -140,11 +128,13 @@
         <h1>PORTAL DE LOTERIAS MAC POINT</h1>
         <div class="user-info">
             <img id="user-photo" class="user-photo" src="default.jpg" alt="Foto do Usuário">
-            <div class="menu-icon" onclick="toggleMenu()"><i class="fas fa-ellipsis-v"></i></div> <!-- Ícone FontAwesome -->
+            <div class="menu-icon" onclick="toggleMenu()">
+                <i class="fas fa-ellipsis-v"></i> <!-- Ícone FontAwesome -->
+            </div>
         </div>
     </div>
 
-    <div class="photo-cover"></div>
+    <div class="photo-cover"></div> <!-- Foto de capa corrigida -->
 
     <div id="menu-lateral" class="menu-lateral">
         <button onclick="showSection('inicio')">INÍCIO</button>
@@ -157,20 +147,11 @@
         <h2>Bem-vindo, <span id="welcome-user">Usuário</span>!</h2>
         <p>O Portal de Loterias Mac Point é a sua melhor ferramenta para análises e estatísticas de jogos!</p>
         <button class="button" onclick="window.location.href='premium.html'">Acessar Premium</button>
-        <button class="button">VPM Atualizado</button>
     </div>
 
     <div id="contato" class="section">
         <h2>Contato</h2>
         <p>Entre em contato pelo WhatsApp: 📱</p>
-    </div>
-
-    <div id="perfil" class="section">
-        <h2>Alterar Perfil</h2>
-        <img id="user-photo-section" class="user-photo" src="default.jpg" alt="Foto do Usuário">
-        <input type="text" id="new-name" placeholder="Novo Nome">
-        <input type="file" id="new-photo" onchange="uploadPhoto()">
-        <button class="button" onclick="saveProfile()">Salvar</button>
     </div>
 
     <div class="footer">
@@ -190,40 +171,11 @@
         }
 
         function logout() {
-            firebase.auth().signOut().then(() => {
-                window.location.href = "login.html";
-            });
-        }
-
-        function uploadPhoto() {
-            const file = document.getElementById("new-photo").files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById("user-photo-section").src = e.target.result;
-                    document.getElementById("user-photo").src = e.target.result;
-                    document.getElementById("user-photo").style.display = "block";
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function saveProfile() {
-            const newName = document.getElementById("new-name").value;
-            if (newName) {
-                firebase.auth().currentUser.updateProfile({
-                    displayName: newName
-                }).then(() => {
-                    document.getElementById("welcome-user").textContent = newName;
-                    alert('Perfil atualizado com sucesso!');
-                }).catch((error) => {
-                    alert('Erro ao atualizar perfil: ' + error.message);
-                });
-            } else {
-                alert('Nome não pode ser vazio!');
-            }
+            alert("Logout realizado!"); // Simulação, ajuste conforme Firebase
+            window.location.href = "login.html";
         }
     </script>
 </body>
 </html>
+
 

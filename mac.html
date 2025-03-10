@@ -21,9 +21,12 @@
             position: fixed;
             top: 0;
             width: 100%;
+            z-index: 10;
         }
         .top-bar h1 {
-            font-size: 18px;
+            font-size: 20px;
+            margin: 0;
+            color: white;
         }
         .user-info {
             display: flex;
@@ -47,14 +50,15 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         .sub-menu button, .menu-lateral button {
-            background: darkgreen;
-            color: white;
+            background: orange;
+            color: black;
             border: none;
             padding: 10px;
             margin: 5px;
             cursor: pointer;
             font-weight: bold;
             width: 100%;
+            border-radius: 8px;
         }
         .menu {
             background: darkgreen;
@@ -62,13 +66,15 @@
             margin-top: 50px;
         }
         .menu button {
-            background: white;
+            background: #00bfae; /* Verde Oceânico */
             color: black;
             border: none;
             padding: 10px;
             margin: 5px;
             font-weight: bold;
             cursor: pointer;
+            border-radius: 8px;
+            width: 100%;
         }
         .section {
             padding: 20px;
@@ -79,6 +85,7 @@
             position: fixed;
             bottom: 0;
             width: 100%;
+            z-index: 5;
         }
         .menu-lateral {
             position: absolute;
@@ -96,6 +103,13 @@
             font-weight: bold;
             color: #00FF00;
         }
+        .banner-photo {
+            width: 100%;
+            height: 200px;
+            background: url('banner.jpg') no-repeat center center;
+            background-size: cover;
+            margin-top: 70px;
+        }
     </style>
 </head>
 <body>
@@ -108,6 +122,7 @@
             <span id="three-dots" onclick="toggleMenuLateral(event)">⋮</span>
             <div id="sub-menu" class="sub-menu">
                 <button onclick="openProfile()">Perfil</button>
+                <button onclick="openPremium()">Premium</button>
                 <button onclick="logout()">Sair</button>
             </div>
             <div id="menu-lateral" class="menu-lateral">
@@ -118,16 +133,18 @@
         </div>
     </div>
 
-    <div class="menu">
-        <button onclick="showSection('inicio')">INÍCIO</button>
-        <button onclick="showSection('contato')">CONTATO</button>
-        <button onclick="showSection('sobre')">SOBRE NÓS</button>
-    </div>
+    <div class="banner-photo"></div>
 
     <!-- Saudação personalizada -->
     <div class="welcome-message" id="welcome-message">
         Seja bem-vindo, <span id="welcome-user" class="highlight">Usuário</span>!<br>
         O portal de loterias Mac Point.
+    </div>
+
+    <div class="menu">
+        <button onclick="showSection('inicio')">INÍCIO</button>
+        <button onclick="showSection('contato')">CONTATO</button>
+        <button onclick="showSection('sobre')">SOBRE NÓS</button>
     </div>
 
     <div id="inicio" class="section">Seja bem-vindo ao Portal de Loterias Mac Point!</div>
@@ -149,7 +166,7 @@
         }
 
         function toggleMenuLateral(event) {
-            event.stopPropagation();  // Prevents the menu from closing immediately
+            event.stopPropagation();
             let menuLateral = document.getElementById("menu-lateral");
             menuLateral.style.display = menuLateral.style.display === "block" ? "none" : "block";
         }
@@ -169,7 +186,10 @@
             alert("Aqui o usuário pode alterar a foto e nome.");
         }
 
-        // Firebase Configuração
+        function openPremium() {
+            window.location.href = "premium.html";
+        }
+
         const firebaseConfig = {
             apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
             authDomain: "mac-projeto-4e552.firebaseapp.com",
@@ -182,7 +202,6 @@
 
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
-                // Atualiza o nome e a foto do usuário
                 document.getElementById("user-name").textContent = user.displayName || "Usuário";
                 document.getElementById("user-photo").src = user.photoURL || "default.jpg";
                 document.getElementById("welcome-user").textContent = user.displayName || "Usuário";
@@ -190,43 +209,10 @@
                 window.location.href = "login.html";
             }
         });
-
-        // Proteção contra inspeção
-        document.addEventListener("keydown", event => {
-            if (event.key === "F12" || (event.ctrlKey && event.shiftKey && event.key === "I")) {
-                event.preventDefault();
-            }
-        });
-
-        document.addEventListener("contextmenu", event => event.preventDefault());
-
-        setInterval(() => {
-            if (window.outerWidth - window.innerWidth > 100 || window.outerHeight - window.innerHeight > 100) {
-                alert("Console detectado! Acesso negado.");
-                window.location.href = "bloqueado.html";
-            }
-        }, 1000);
-
-        // Proteção com PHP
-        fetch('https://seu-servidor-no-render.com/protecao.php')
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === "erro") {
-                    alert("Acesso negado! Você será redirecionado.");
-                    window.location.href = "bloqueado.html";
-                } else {
-                    console.log("Acesso permitido! Página carregando...");
-                }
-            })
-            .catch(error => {
-                console.error("Erro ao verificar autenticação", error);
-                alert("Erro ao verificar autenticação. Tente novamente.");
-            });
     </script>
 
     <script defer src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
     <script defer src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
-
 </body>
 </html>
 

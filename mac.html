@@ -36,7 +36,6 @@
         .user-info {
             display: flex;
             align-items: center;
-            gap: 10px;
         }
 
         .user-photo {
@@ -44,11 +43,7 @@
             height: 30px;
             border-radius: 50%;
             border: 2px solid white;
-        }
-
-        .user-name {
-            font-size: 14px;
-            color: white;
+            display: none; /* Ocultando a foto do usuário na borda */
         }
 
         /* Ícone de menu */
@@ -68,7 +63,7 @@
             margin-top: 50px;
         }
 
-        /* Menu suspenso */
+        /* Menu suspenso (agora posicionado abaixo da foto de capa) */
         .menu-lateral {
             display: none;
             position: absolute;
@@ -79,6 +74,7 @@
             left: 50%;
             transform: translateX(-50%);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            top: 270px; /* Ajustado para aparecer abaixo da foto de capa */
         }
 
         .menu-lateral button {
@@ -140,8 +136,6 @@
     <div class="top-bar">
         <h1>PORTAL DE LOTERIAS MAC POINT</h1>
         <div class="user-info">
-            <img id="user-photo" class="user-photo" src="default.jpg" alt="Foto do Usuário">
-            <span id="user-name" class="user-name">Usuário</span>
             <div class="menu-icon" onclick="toggleMenu()">⋮</div>
         </div>
     </div>
@@ -202,7 +196,6 @@
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    document.getElementById("user-photo").src = e.target.result;
                     document.getElementById("user-photo-section").src = e.target.result;
                 };
                 reader.readAsDataURL(file);
@@ -216,7 +209,6 @@
                     displayName: newName
                 }).then(() => {
                     document.getElementById("welcome-user").textContent = newName;
-                    document.getElementById("user-name").textContent = newName;
                     alert('Perfil atualizado com sucesso!');
                 }).catch((error) => {
                     alert('Erro ao atualizar perfil: ' + error.message);

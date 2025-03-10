@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal de Loterias Mac Point</title>
     <style>
-        /* Estilo geral */
         body {
             margin: 0;
             font-family: Arial, sans-serif;
@@ -20,8 +19,7 @@
             background: linear-gradient(to right, black, darkgreen);
             padding: 10px 15px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            justify-content: center;
             position: fixed;
             top: 0;
             width: 100%;
@@ -34,65 +32,50 @@
             color: white;
         }
 
-        .user-info {
-            display: flex;
-            align-items: center;
+        /* Foto de capa */
+        .photo-cover {
+            width: 100%;
+            height: 200px;
+            background-image: url('https://your-image-link-here.jpg');
+            background-size: cover;
+            background-position: center;
+            margin-top: 50px;
+        }
+
+        /* Ícone de menu (três pontos) */
+        .menu-icon {
+            font-size: 24px;
             cursor: pointer;
+            margin-top: 10px;
         }
 
-        .user-photo {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
-
-        /* Submenu */
-        .sub-menu, .menu-lateral {
+        /* Menu suspenso */
+        .menu-lateral {
             display: none;
             position: absolute;
             background: white;
             padding: 10px;
             border-radius: 5px;
-            right: 0;
-            top: 50px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             width: 200px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
-        .sub-menu button, .menu-lateral button {
-            background: darkgreen;
-            color: white;
+        .menu-lateral button {
+            background: white;
+            color: black;
             border: none;
             padding: 10px;
             margin: 5px 0;
             cursor: pointer;
             font-weight: bold;
             width: 100%;
+            border-radius: 5px;
         }
 
-        /* Menu lateral */
-        .menu {
-            background: darkgreen;
-            padding: 10px;
-            margin-top: 50px;
-        }
-
-        .menu button {
-            background: orange;
-            color: white;
-            border: none;
-            padding: 10px;
-            margin: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            width: auto;
-            border-radius: 10px;
-        }
-
-        /* Efeito Hover nos botões */
-        .menu button:hover {
-            background-color: #00b8b8; /* Verde Oceânico */
+        .menu-lateral button:hover {
+            background-color: #00CED1;
             color: black;
         }
 
@@ -102,12 +85,26 @@
             display: none;
         }
 
+        /* Botão laranja */
+        .premium-button {
+            background: orange;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .premium-button:hover {
+            background-color: #00CED1;
+            color: black;
+        }
+
         /* Perfil */
         #profile-page {
             background-color: black;
             color: white;
             padding: 20px;
-            margin-top: 50px;
             width: 80%;
             margin: 0 auto;
             border-radius: 5px;
@@ -122,121 +119,65 @@
             border: none;
         }
 
-        /* Foto de capa */
-        .photo-cover {
-            width: 100%;
-            height: 200px;
-            background-image: url('  Screenshot_20250123-232747-1.jpg '); /* Substitua pelo seu link de imagem */
-            background-size: cover;
-            background-position: center;
-            margin-top: 50px;
-        }
-
-        /* Mensagens */
-        .welcome-message {
-            font-size: 24px;
-            margin-top: 100px;
-        }
-
-        .highlight {
-            font-weight: bold;
-            color: #00FF00;
-        }
-
-        /* Rodapé */
-        footer {
-            background: linear-gradient(to right, darkgreen, black);
-            padding: 10px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
+        .user-photo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin: 10px;
         }
     </style>
 </head>
 <body>
     <div class="top-bar">
         <h1>PORTAL DE LOTERIAS MAC POINT</h1>
-        <div class="user-info" onclick="toggleSubMenu()">
-            <img id="user-photo" class="user-photo" src="default.jpg" alt="Foto do Usuário">
-            <span id="user-name">Usuário</span>
-            <span id="gear-icon" onclick="toggleMenuLateral(event)">⚙️</span>
-            <span id="three-dots" onclick="toggleMenuLateral(event)">⋮</span>
-            <div id="sub-menu" class="sub-menu">
-                <button onclick="openProfile()">Perfil</button>
-                <button onclick="openPremium()">Premium</button>
-                <button onclick="logout()">Sair</button>
-            </div>
-            <div id="menu-lateral" class="menu-lateral">
-                <button onclick="showSection('inicio')">INÍCIO</button>
-                <button onclick="showSection('contato')">CONTATO</button>
-                <button onclick="showSection('sobre')">SOBRE NÓS</button>
-            </div>
-        </div>
     </div>
 
     <div class="photo-cover"></div>
 
-    <div class="menu">
+    <div class="menu-icon" onclick="toggleMenu()">⋮</div>
+
+    <div id="menu-lateral" class="menu-lateral">
         <button onclick="showSection('inicio')">INÍCIO</button>
         <button onclick="showSection('contato')">CONTATO</button>
-        <button onclick="showSection('sobre')">SOBRE NÓS</button>
+        <button onclick="showSection('perfil')">PERFIL</button>
+        <button onclick="logout()">SAIR</button>
     </div>
 
-    <!-- Saudação personalizada -->
-    <div class="welcome-message" id="welcome-message">
-        Seja bem-vindo, <span id="welcome-user" class="highlight">Usuário</span>!<br>
-        O portal de loterias Mac Point.
+    <div id="inicio" class="section">
+        <h2>Bem-vindo, <span id="welcome-user">Usuário</span>!</h2>
+        <p>O Portal de Loterias Mac Point é a sua melhor ferramenta para análises e estatísticas de jogos!</p>
+        <button class="premium-button" onclick="window.location.href='premium.html'">Acessar Premium</button>
     </div>
 
-    <div id="inicio" class="section">Seja bem-vindo ao Portal de Loterias Mac Point!</div>
     <div id="contato" class="section">
         <h2>Contato</h2>
         <p>Entre em contato pelo WhatsApp: 📱</p>
     </div>
-    <div id="sobre" class="section">
-        <h2>Sobre Nós</h2>
-        <p>Informações sobre o site.</p>
-    </div>
 
-    <div id="profile-page" style="display: none;">
+    <div id="perfil" class="section">
         <h2>Alterar Perfil</h2>
+        <img id="user-photo" class="user-photo" src="default.jpg" alt="Foto do Usuário">
         <input type="text" id="new-name" placeholder="Novo Nome">
         <input type="file" id="new-photo" onchange="uploadPhoto()">
         <button onclick="saveProfile()">Salvar</button>
     </div>
 
-    <footer>Todos os direitos reservados - Mac Point</footer>
-
     <script>
-        /* Funções JavaScript */
-        function toggleSubMenu() {
-            const menu = document.getElementById("sub-menu");
+        function toggleMenu() {
+            const menu = document.getElementById("menu-lateral");
             menu.style.display = menu.style.display === "block" ? "none" : "block";
-        }
-
-        function toggleMenuLateral(event) {
-            event.stopPropagation();
-            const menuLateral = document.getElementById("menu-lateral");
-            menuLateral.style.display = menuLateral.style.display === "block" ? "none" : "block";
         }
 
         function showSection(section) {
             document.querySelectorAll('.section').forEach(sec => sec.style.display = "none");
             document.getElementById(section).style.display = "block";
+            document.getElementById("menu-lateral").style.display = "none";
         }
 
         function logout() {
             firebase.auth().signOut().then(() => {
                 window.location.href = "login.html";
             });
-        }
-
-        function openProfile() {
-            document.getElementById('profile-page').style.display = 'block';
-        }
-
-        function openPremium() {
-            window.location.href = "premium.html";
         }
 
         function uploadPhoto() {
@@ -256,8 +197,7 @@
                 firebase.auth().currentUser.updateProfile({
                     displayName: newName
                 }).then(() => {
-                    document.getElementById("user-name").textContent = newName;
-                    document.getElementById('profile-page').style.display = 'none';
+                    document.getElementById("welcome-user").textContent = newName;
                     alert('Perfil atualizado com sucesso!');
                 }).catch((error) => {
                     alert('Erro ao atualizar perfil: ' + error.message);
@@ -280,7 +220,7 @@
 
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
-                document.getElementById('user-name').textContent = user.displayName || "Usuário";
+                document.getElementById('welcome-user').textContent = user.displayName || "Usuário";
                 document.getElementById('user-photo').src = user.photoURL || "default.jpg";
             } else {
                 window.location.href = "login.html";
@@ -289,3 +229,5 @@
     </script>
 </body>
 </html>
+
+

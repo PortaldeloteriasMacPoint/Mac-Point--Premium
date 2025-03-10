@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal de Loterias Mac Point</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> <!-- FontAwesome -->
     <style>
         body {
             margin: 0;
@@ -36,17 +37,19 @@
         .user-info {
             display: flex;
             align-items: center;
+            gap: 10px;
         }
 
+        /* Foto do usuário */
         .user-photo {
             width: 30px;
             height: 30px;
             border-radius: 50%;
             border: 2px solid white;
-            display: none; /* Ocultando a foto do usuário na borda */
+            display: none; /* A foto só será exibida se houver uma */
         }
 
-        /* Ícone de menu */
+        /* Ícone de menu (ajustado para FontAwesome) */
         .menu-icon {
             font-size: 24px;
             cursor: pointer;
@@ -63,7 +66,7 @@
             margin-top: 50px;
         }
 
-        /* Menu suspenso (agora posicionado abaixo da foto de capa) */
+        /* Menu suspenso */
         .menu-lateral {
             display: none;
             position: absolute;
@@ -74,7 +77,7 @@
             left: 50%;
             transform: translateX(-50%);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            top: 270px; /* Ajustado para aparecer abaixo da foto de capa */
+            top: 270px;
         }
 
         .menu-lateral button {
@@ -136,7 +139,8 @@
     <div class="top-bar">
         <h1>PORTAL DE LOTERIAS MAC POINT</h1>
         <div class="user-info">
-            <div class="menu-icon" onclick="toggleMenu()">⋮</div>
+            <img id="user-photo" class="user-photo" src="default.jpg" alt="Foto do Usuário">
+            <div class="menu-icon" onclick="toggleMenu()"><i class="fas fa-ellipsis-v"></i></div> <!-- Ícone FontAwesome -->
         </div>
     </div>
 
@@ -197,6 +201,8 @@
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     document.getElementById("user-photo-section").src = e.target.result;
+                    document.getElementById("user-photo").src = e.target.result;
+                    document.getElementById("user-photo").style.display = "block";
                 };
                 reader.readAsDataURL(file);
             }

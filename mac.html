@@ -17,46 +17,50 @@
         /* Borda larga superior */
         .top-bar {
             background: linear-gradient(to right, black, darkgreen);
-            padding: 10px 15px;
+            padding: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: fixed;
             top: 0;
             width: 100%;
-            z-index: 10;
+            z-index: 1000; /* Aumentado para garantir que fique sempre visível */
         }
 
         .top-bar h1 {
             font-size: 18px;
             margin: 0;
             color: white;
+            flex-grow: 1;
+            text-align: left;
+            padding-left: 15px;
         }
 
         /* Área do usuário */
         .user-info {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            padding-right: 10px;
         }
 
         /* Foto do usuário */
         .user-photo {
-            width: 35px; /* Reduzi um pouco para melhor encaixe */
-            height: 35px;
+            width: 30px; /* Reduzido para melhorar encaixe */
+            height: 30px;
             border-radius: 50%;
             border: 2px solid white;
         }
 
         /* Ícone do menu de três pontos */
         .menu-icon {
-            font-size: 22px; /* Mantive um tamanho adequado */
+            font-size: 22px;
             cursor: pointer;
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 30px; /* Garante um clique fácil */
+            width: 30px;
             height: 30px;
         }
 
@@ -81,6 +85,7 @@
             transition: 0.3s;
             padding-top: 60px;
             color: white;
+            z-index: 999;
         }
 
         .menu.open {
@@ -122,8 +127,8 @@
                 font-size: 16px;
             }
             .user-photo {
-                width: 30px;
-                height: 30px;
+                width: 28px;
+                height: 28px;
             }
             .menu-icon {
                 font-size: 20px;

@@ -119,7 +119,21 @@
         #mensagem {
             margin-top: 12px;
             font-size: 14px;
-            color: red;
+            padding: 10px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        /* Estilo para mensagem de erro */
+        .erro {
+            background-color: red;
+            color: white;
+        }
+
+        /* Estilo para mensagem de sucesso */
+        .sucesso {
+            background-color: green;
+            color: black;
         }
 
         p {
@@ -161,8 +175,14 @@
                 let senha = document.getElementById("senha").value;
                 let mensagem = document.getElementById("mensagem");
 
+                // Limpa mensagens anteriores
+                mensagem.classList.remove("erro", "sucesso");
+                mensagem.style.display = 'none';
+
                 if (nome === "" || email === "" || senha === "") {
+                    mensagem.classList.add("erro");
                     mensagem.innerText = "Preencha todos os campos!";
+                    mensagem.style.display = 'block';
                     return;
                 }
 
@@ -172,11 +192,17 @@
                         return updateProfile(user, { displayName: nome });
                     })
                     .then(() => {
-                        alert("Cadastro realizado com sucesso!");
-                        window.location.href = "login.html";
+                        mensagem.classList.add("sucesso");
+                        mensagem.innerText = "Cadastro realizado com sucesso!";
+                        mensagem.style.display = 'block';
+                        setTimeout(() => {
+                            window.location.href = "login.html";
+                        }, 2000); // Aguarda 2 segundos antes de redirecionar
                     })
                     .catch((error) => {
+                        mensagem.classList.add("erro");
                         mensagem.innerText = "Erro: " + error.message;
+                        mensagem.style.display = 'block';
                     });
             });
         });
@@ -198,3 +224,4 @@
     </div>
 </body>
 </html>
+

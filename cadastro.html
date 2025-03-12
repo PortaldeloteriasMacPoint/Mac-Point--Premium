@@ -14,7 +14,6 @@
             align-items: center;
             font-family: 'Arial', sans-serif;
         }
-
         /* Container principal */
         .container {
             background: white;
@@ -174,6 +173,8 @@
                 let email = document.getElementById("email").value;
                 let senha = document.getElementById("senha").value;
                 let mensagem = document.getElementById("mensagem");
+                let recaptchaResponse = grecaptcha.getResponse();
+                let termos = document.getElementById("termos").checked;
 
                 // Limpa mensagens anteriores
                 mensagem.classList.remove("erro", "sucesso");
@@ -182,6 +183,20 @@
                 if (nome === "" || email === "" || senha === "") {
                     mensagem.classList.add("erro");
                     mensagem.innerText = "Preencha todos os campos!";
+                    mensagem.style.display = 'block';
+                    return;
+                }
+
+                if (!recaptchaResponse) {
+                    mensagem.classList.add("erro");
+                    mensagem.innerText = "Por favor, complete o reCAPTCHA!";
+                    mensagem.style.display = 'block';
+                    return;
+                }
+
+                if (!termos) {
+                    mensagem.classList.add("erro");
+                    mensagem.innerText = "Você precisa aceitar os termos e condições!";
                     mensagem.style.display = 'block';
                     return;
                 }
@@ -203,11 +218,9 @@
                         let mensagem = document.getElementById("mensagem");
                         mensagem.classList.add("erro");
 
-                        // Verifica se o erro é "email-already-in-use" e personaliza a mensagem
                         if (error.code === 'auth/email-already-in-use') {
                             mensagem.innerText = "Este e-mail já está em uso. Tente outro e-mail.";
                         } else {
-                            // Para outros erros, exibe uma mensagem genérica
                             mensagem.innerText = "Ocorreu um erro. Tente novamente mais tarde.";
                         }
 
@@ -227,6 +240,15 @@
         <input type="text" id="nome" placeholder="Nome completo">
         <input type="email" id="email" placeholder="E-mail">
         <input type="password" id="senha" placeholder="Senha">
+        
+        <!-- reCAPTCHA -->
+        <div class="g-recaptcha" data-sitekey="6LdCx_EqAAAAALglxJ8LUElGwD6QyDn84HhF4SEt"></div>
+
+        <!-- Caixa de seleção de termos -->
+        <label>
+            <input type="checkbox" id="termos"> Concordo com os <a href="#">termos e condições</a>
+        </label>
+        
         <button id="cadastrar">Cadastrar</button>
         <p id="mensagem"></p>
         <p>Já tem cadastro? <a href="login.html">Faça login</a></p>

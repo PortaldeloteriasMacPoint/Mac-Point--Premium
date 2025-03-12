@@ -200,8 +200,17 @@
                         }, 2000); // Aguarda 2 segundos antes de redirecionar
                     })
                     .catch((error) => {
+                        let mensagem = document.getElementById("mensagem");
                         mensagem.classList.add("erro");
-                        mensagem.innerText = "Erro: " + error.message;
+
+                        // Verifica se o erro é "email-already-in-use" e personaliza a mensagem
+                        if (error.code === 'auth/email-already-in-use') {
+                            mensagem.innerText = "Este e-mail já está em uso. Tente outro e-mail.";
+                        } else {
+                            // Para outros erros, exibe uma mensagem genérica
+                            mensagem.innerText = "Ocorreu um erro. Tente novamente mais tarde.";
+                        }
+
                         mensagem.style.display = 'block';
                     });
             });

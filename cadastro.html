@@ -107,8 +107,8 @@
             font-weight: bold;
             cursor: pointer;
             transition: 0.3s;
-            background: linear-gradient(135deg, #00cc00, #009900);
-            color: white;
+            background: green ;
+            color: black;
             box-shadow: 0px 3px 8px rgba(0, 128, 0, 0.3);
             opacity: 0.6;
             cursor: not-allowed;
@@ -149,8 +149,8 @@
         .termos {
             display: flex;
             align-items: center;
-            gap: 5px;
-            font-size: 14px;
+            gap: 10px;
+            font-size: 16px;
             color: black;
         }
 
@@ -236,9 +236,10 @@
         <input type="text" id="nome" placeholder="Nome completo">
         <input type="email" id="email" placeholder="E-mail">
         <input type="password" id="senha" placeholder="Senha">
-        <div class="g-recaptcha" data-sitekey="6LdCx_EqAAAAALglxJ8LUElGwD6QyDn84HhF4SEt"></div>
+        
         <div class="termos">
-            <input type="checkbox" id="termos"> <label for="termos">Li e concordo com os <a href="#">termos de uso</a></label>
+            <input type="checkbox" id="termos"> <label for="termos"> Li e concordo com <a href="#">Termos e condições de uso </a></label>
+            <div class="g-recaptcha" data-sitekey="6LdCx_EqAAAAALglxJ8LUElGwD6QyDn84HhF4SEt"></div>
         </div>
         <button id="cadastrar" disabled>Cadastrar</button>
         <p id="mensagem"></p>

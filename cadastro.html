@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -75,12 +75,12 @@
 
         /* Campos de entrada */
         input {
-            width: calc(100% - 22px);
+            width: 100%;
             padding: 12px;
             margin: 12px 0;
             border: 1px solid #333;
             border-radius: 12px;
-            font-size: 22px;
+            font-size: 16px;
             background: #f9f9f9;
             color: black;
             transition: 0.3s;
@@ -96,14 +96,34 @@
             color: #777;
         }
 
+        /* Caixa de seleção dos termos */
+        .termos {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+            color: black;
+            text-align: left;
+            width: 100%;
+        }
+
+        .termos input {
+            width: auto;
+            margin: 0;
+        }
+
+        /* reCAPTCHA */
+        .g-recaptcha {
+            margin-top: 12px;
+        }
+
         /* Botão de cadastro */
         button {
             width: 100%;
-          width: calc(100%-22px);  
             padding: 12px;
             border: none;
             border-radius: 12px;
-            font-size: 24px;
+            font-size: 18px;
             font-weight: bold;
             cursor: pointer;
             transition: 0.3s;
@@ -145,28 +165,12 @@
             text-decoration: underline;
         }
 
-        /* Caixa de seleção dos termos */
-        .termos {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 14px;
-            color: black;
-        }
-
-        .termos input {
-            width: auto;
-            margin: 0;
-        }
-
     </style>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <script src="proteção.js"></script> <!-- Chama a proteção externa -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-        
         const firebaseConfig = {
             apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
             authDomain: "mac-projeto-4e552.firebaseapp.com",
@@ -226,6 +230,7 @@
             });
         });
     </script>
+
 </head>
 <body>
     <div class="container">
@@ -237,15 +242,15 @@
         <input type="text" id="nome" placeholder="Nome completo">
         <input type="email" id="email" placeholder="E-mail">
         <input type="password" id="senha" placeholder="Senha">
-         <div class="termos">
-            <input type="checkbox" id="termos"> <label for="termos">Li e concordo com <a href="#">Termos e condições de uso </a></label></div>
-<div class="g-recaptcha" data-sitekey="6LdCx_EqAAAAALglxJ8LUElGwD6QyDn84HhF4SEt"></div>
-        <div
+        <div class="termos">
+            <input type="checkbox" id="termos"> <label for="termos">Li e concordo com os <a href="#">termos de uso</a></label>
         </div>
+        <div class="g-recaptcha" data-sitekey="6LdCx_EqAAAAALglxJ8LUElGwD6QyDn84HhF4SEt"></div>
         <button id="cadastrar" disabled>Cadastrar</button>
         <p id="mensagem"></p>
         <p>Já tem cadastro? <a href="login.html">Faça login</a></p>
     </div>
 </body>
 </html>
+
 

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Loterias Mac Point</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #111;
+            color: white;
+            text-align: center;
+        }
+
+        /* Borda superior */
+        .top-bar {
+            width: 100%;
+            height: 60px;
+            background: linear-gradient(to right, #013220, #00A86B);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 15px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        .top-bar h1 {
+            font-family: Impact, sans-serif;
+            font-size: 24px;
+            color: #00CED1;
+            text-shadow: 1px 1px 2px white;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+        }
+
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #444;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+        }
+
+        .menu-icon {
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Menu lateral */
+        .side-menu {
+            width: 250px;
+            height: calc(100vh - 60px);
+            position: fixed;
+            top: 60px;
+            left: -250px;
+            background: linear-gradient(to bottom, #013220, #00A86B);
+            padding: 20px;
+            transition: left 0.3s;
+            overflow-y: auto;
+            z-index: 1100;
+        }
+
+        .side-menu h2 {
+            color: white;
+            font-size: 22px;
+        }
+
+        .menu-btn {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            background-color: black;
+            color: white;
+            border-radius: 5px;
+            border: 1px solid white;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .menu-btn:hover {
+            background-color: #222;
+        }
+
+        .content {
+            margin-top: 80px;
+            padding: 20px;
+        }
+
+        /* Área onde as páginas externas serão carregadas */
+        .iframe-container {
+            width: 100%;
+            height: 80vh;
+            display: none;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Rodapé */
+        .footer {
+            width: 100%;
+            height: 50px;
+            background: linear-gradient(to right, #013220, #00A86B);
+            color: white;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .greeting {
+            background-color: black;
+            color: white;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .greeting span {
+            color: #00CED1;
+            font-weight: bold;
+        }
+
+        /* Fundo escuro ao abrir o menu */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 1050;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Borda Superior -->
+    <div class="top-bar">
+        <h1>Portal de Loterias Mac Point</h1>
+        <div class="user-profile">
+            <div id="profileIcon" class="profile-icon">U</div>
+            <span class="menu-icon" onclick="toggleMenu()">⋮</span>
+        </div>
+    </div>
+
+    <!-- Overlay para fechar o menu ao clicar fora -->
+    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+    <!-- Menu Lateral -->
+    <div class="side-menu" id="sideMenu">
+        <h2>Menu</h2>
+        <button class="menu-btn" onclick="openSection('inicio', '')">Início</button>
+        <button class="menu-btn" onclick="openSection('iframe', 'modalidades.html')">Modalidades</button>
+        <button class="menu-btn" onclick="openSection('iframe', 'analises.html')">Análises</button>
+        <button class="menu-btn" onclick="openSection('iframe', 'estatisticas.html')">Estatísticas</button>
+        <button class="menu-btn" onclick="openSection('iframe', 'grupos.html')">Grupos Padronizados</button>
+        <button class="menu-btn" onclick="openSection('iframe', 'desdobramentos.html')">Desdobramentos</button>
+        <button class="menu-btn" onclick="openSection('iframe', 'simuladores.html')">Simuladores</button>
+
+        <h2>Outros Serviços</h2>
+        <button class="menu-btn" onclick="openSection('iframe', 'planilhas.html')">Planilhas</button>
+        <button class="menu-btn" onclick="openSection('iframe', 'ebooks.html')">E-books</button>
+        <button class="menu-btn" onclick="openSection('iframe', 'tabelas.html')">Tabelas</button>
+    </div>
+
+    <!-- Conteúdo Principal -->
+    <div class="content">
+        <div class="greeting">Bem-vindo, <span id="userName">Usuário</span>!</div>
+
+        <div id="inicio">
+            <div class="cover-photo"></div>
+            <p>Descrição do Portal de Loterias Mac Point...</p>
+        </div>
+        
+        <!-- Container do iframe para carregar as páginas -->
+        <div id="iframe-container" class="iframe-container">
+            <iframe id="iframe-content"></iframe>
+        </div>
+    </div>
+
+    <!-- Rodapé -->
+    <div class="footer" id="footer">© 2025 Portal de Loterias Mac Point</div>
+
+    <script>
+        function toggleMenu() {
+            let menu = document.getElementById('sideMenu');
+            let overlay = document.getElementById('overlay');
+            let footer = document.getElementById('footer');
+
+            if (menu.style.left === '0px') {
+                menu.style.left = '-250px';
+                overlay.style.display = 'none';
+                footer.style.opacity = '1';
+            } else {
+                menu.style.left = '0px';
+                overlay.style.display = 'block';
+                footer.style.opacity = '0';
+            }
+        }
+
+        function openSection(section, url) {
+            document.getElementById('inicio').style.display = 'none';
+            document.getElementById('iframe-container').style.display = 'none';
+
+            if (section === 'iframe') {
+                document.getElementById('iframe-container').style.display = 'block';
+                document.getElementById('iframe-content').src = url;
+            } else {
+                document.getElementById('inicio').style.display = 'block';
+            }
+
+            toggleMenu();
+        }
+
+        // Simulação de usuário logado
+        let userName = "Carlos";
+        document.getElementById("userName").innerText = userName;
+        document.getElementById("profileIcon").innerText = userName.charAt(0).toUpperCase();
+    </script>
+
+</body>
+</html>

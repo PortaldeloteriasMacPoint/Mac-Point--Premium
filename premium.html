@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página Inicial</title>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <style>
+    /* Aqui começa o CSS */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #000;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      color: #fff;
+    }
+
+    /* Estilo para a foto de capa */
+    #cover-photo {
+      width: 100%;
+      height: 250px;
+      background-image: url('Screenshot_20250112-173043-1.jpg'); /* Sua foto de capa */
+      background-size: cover;
+      background-position: center;
+      margin-bottom: 20px;
+    }
+
+    /* Botão laranja com borda arredondada */
+    .button {
+      background-color: #FF7F00; /* Laranja escuro */
+      color: white;
+      padding: 15px 30px;
+      font-size: 16px;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      outline: none;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s ease;
+    }
+
+    .button:hover {
+      background-color: #e76f00; /* Cor mais escura ao passar o mouse */
+    }
+
+    /* Container da área principal */
+    .main-container {
+      text-align: center;
+      max-width: 1200px;
+      width: 90%;
+    }
+
+    /* Avatar em formato circular */
+    .avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background-color: #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      color: white;
+      margin: 0 auto;
+      margin-bottom: 20px;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .main-container {
+        width: 90%;
+        padding: 20px;
+      }
+
+      #cover-photo {
+        height: 180px;
+      }
+
+      .button {
+        font-size: 14px;
+        padding: 12px 25px;
+      }
+
+      .avatar {
+        width: 60px;
+        height: 60px;
+      }
+    }
+
+    /* Aqui termina o CSS */
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <!-- Foto de Capa -->
+    <div id="cover-photo"></div>
+    
+    <!-- Avatar com a inicial do nome -->
+    <div class="avatar" id="avatar">
+      <span id="avatar-initial">?</span> <!-- Inicial do nome do usuário -->
+    </div>
+
+    <!-- Botão de plataforma -->
+    <button class="button" onclick="goToPlatform()">Acessar Plataforma</button>
+  </div>
+
+  <script>
+    // Configuração do Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+      authDomain: "mac-projeto-4e552.firebaseapp.com",
+      projectId: "mac-projeto-4e552",
+      storageBucket: "mac-projeto-4e552.appspot.com",
+      messagingSenderId: "537330451519",
+      appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
+    };
+
+    // Inicializar o Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // Função para verificar o usuário autenticado e exibir o avatar
+    function initializeAvatar() {
+      const user = auth.currentUser;
+
+      if (user) {
+        const avatarElement = document.getElementById("avatar");
+        const avatarInitialElement = document.getElementById("avatar-initial");
+
+        // Verifica se o usuário tem foto de perfil
+        if (user.photoURL) {
+          const img = document.createElement("img");
+          img.src = user.photoURL;
+          avatarElement.innerHTML = '';
+          avatarElement.appendChild(img);
+        } else {
+          avatarInitialElement.textContent = user.displayName ? user.displayName.charAt(0).toUpperCase() : '?';
+        }
+      } else {
+        window.location.href = 'login.html';  // Redireciona para login se o usuário não estiver autenticado
+      }
+    }
+
+    // Função do botão para redirecionar para a plataforma
+    function goToPlatform() {
+      window.location.href = "home.html"; // Redireciona para a página da plataforma
+    }
+
+    // Função de login anônimo (para teste, use o login real com Firebase)
+    function loginAnonymously() {
+      auth.signInAnonymously()
+        .then(() => {
+          initializeAvatar();
+        })
+        .catch((error) => {
+          console.error("Erro de login:", error);
+        });
+    }
+
+    // Chama a função de login anonimamente para teste
+    loginAnonymously();
+  </script>
+</body>
+</html>
+

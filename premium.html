@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página Inicial</title>
+  
+  <!-- Scripts do Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+
+  <style>
+    /* Estilos do corpo e layout */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #000;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      color: #fff;
+    }
+
+    /* Foto de capa */
+    #cover-photo {
+      width: 100%;
+      height: 400px; /* Altura maior para um impacto visual */
+      background-image: url('Screenshot_20250112-173043-1.jpg'); /* Sua foto de capa */
+      background-size: cover;
+      background-position: center;
+      margin-bottom: 20px;
+    }
+
+    /* Botão laranja com borda arredondada */
+    .button {
+      background-color: #FF7F00; /* Laranja escuro */
+      color: white;
+      padding: 15px 30px;
+      font-size: 16px;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      outline: none;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s ease;
+    }
+
+    .button:hover {
+      background-color: #e76f00; /* Cor mais escura ao passar o mouse */
+    }
+
+    /* Container da área principal */
+    .main-container {
+      text-align: center;
+      max-width: 1200px;
+      width: 90%;
+      position: relative;
+    }
+
+    /* Avatar com a inicial do e-mail */
+    .avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background-color: #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      color: white;
+      margin: 0 auto;
+      margin-bottom: 20px;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .main-container {
+        width: 90%;
+        padding: 20px;
+      }
+
+      #cover-photo {
+        height: 250px; /* Altura reduzida para telas menores */
+      }
+
+      .button {
+        font-size: 14px;
+        padding: 12px 25px;
+      }
+
+      .avatar {
+        width: 60px;
+        height: 60px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <!-- Foto de Capa -->
+    <div id="cover-photo"></div>
+
+    <!-- Avatar com a inicial do e-mail -->
+    <div class="avatar" id="avatar">
+      <span id="avatar-initial">?</span> <!-- Inicial do e-mail do usuário -->
+    </div>
+
+    <!-- Botão de plataforma -->
+    <button class="button" onclick="goToPlatform()">Acessar Plataforma</button>
+  </div>
+
+  <script>
+    // Configuração do Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+      authDomain: "mac-projeto-4e552.firebaseapp.com",
+      projectId: "mac-projeto-4e552",
+      storageBucket: "mac-projeto-4e552.appspot.com",
+      messagingSenderId: "537330451519",
+      appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
+    };
+
+    // Inicializa o Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // Verifica o usuário logado
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        // Obtém o e-mail do usuário
+        const userEmail = user.email || 'email desconhecido';
+
+        // Pega a primeira letra do e-mail antes do "@" e transforma em maiúscula
+        const avatarInitial = userEmail.charAt(0).toUpperCase();
+
+        // Exibe a inicial no avatar
+        document.getElementById("avatar-initial").textContent = avatarInitial;
+
+        console.log("Usuário logado:", userEmail);
+      } else {
+        window.location.href = 'login.html'; // Redireciona para login se não estiver logado
+      }
+    });
+
+    // Função de navegação para a plataforma (home.html)
+    function goToPlatform() {
+      window.location.href = 'home.html'; // Redireciona para a página da plataforma
+    }
+  </script>
+</body>
+</html>
+

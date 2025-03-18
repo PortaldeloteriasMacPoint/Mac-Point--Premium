@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Loterias Mac Point - Início</title>
+    
+    <!-- Scripts do Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+    <script>
+        // Configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+            authDomain: "mac-projeto-4e552.firebaseapp.com",
+            projectId: "mac-projeto-4e552",
+            storageBucket: "mac-projeto-4e552.appspot.com",
+            messagingSenderId: "537330451519",
+            appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
+        };
+        firebase.initializeApp(firebaseConfig);
+    </script>
+
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: Arial, sans-serif; 
+        }
+        
+        body { 
+            background-color: black; 
+            color: white; 
+            text-align: center; 
+        }
+
+        /* Foto de Capa - Ajuste Proporcional */
+        .cover-photo {
+            width: 100%;
+            height: 60vh; /* Ajusta para um tamanho proporcional */
+            background: url('Screenshot_20250112-173043-1.jpg') no-repeat center center;
+            background-size: cover;
+        }
+
+        /* Saudação ao usuário */
+        .user-greeting {
+            margin-top: 20px;
+            font-size: 24px;
+            color: white;
+        }
+        
+        .user-name {
+            color: #00b5ad; /* Verde Oceânico */
+            font-weight: bold;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .user-greeting {
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .user-greeting {
+                font-size: 18px;
+            }
+        }
+
+        
+    </style>
+</head>
+<body>
+
+    <!-- Foto de Capa -->
+    <div class="cover-photo"></div>
+
+    <!-- Saudação ao usuário logado -->
+    <div class="user-greeting">
+        Bem-vindo, <span class="user-name" id="userName">Carregando...</span>
+    </div>
+
+   
+   <script>
+        // Função para obter o usuário logado e exibir o nome
+        firebase.auth().onAuthStateChanged(user => {
+            const userNameElement = document.getElementById("userName");
+            if (user) {
+                userNameElement.textContent = user.displayName || user.email;
+            } else {
+                userNameElement.textContent = "Usuário não autenticado";
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Loterias Mac Point</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-color: white;
+            color: black;
+            text-align: center;
+        }
+        .top-bar {
+            width: 100%;
+            height: 60px;
+            background: linear-gradient(to right, #0F1E54, #1A237E);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 15px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            border-bottom: 4px solid white;
+        }
+        .top-bar h1 {
+            font-family: Impact, sans-serif;
+            font-size: 36px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px orange;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .user-photo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid white;
+            object-fit: cover;
+        }
+        .menu-icon {
+            font-size: 24px;
+            cursor: pointer;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <h1>Mac Point</h1>
+        <div class="user-info">
+            <img src="https://via.placeholder.com/40" alt="Usuário" class="user-photo" id="userPhoto">
+            <span id="userName">Carregando...</span>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            firebase.auth().onAuthStateChanged(function(user) {
+                if (user) {
+                    document.getElementById("userName").textContent = user.displayName || "Usuário";
+                    document.getElementById("userPhoto").src = user.photoURL || "https://via.placeholder.com/40";
+                } else {
+                    window.location.href = "login.html";
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+

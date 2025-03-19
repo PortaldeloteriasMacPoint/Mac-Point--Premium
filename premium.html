@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-vindo</title>
+    <style>
+        /* Estilos básicos para a página */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        /* Foto de capa */
+        .cover-photo {
+            width: 100%;
+            height: 300px;
+            background-image: url('caminho/para/sua/imagem.jpg'); /* Altere o caminho da imagem */
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        /* Texto de boas-vindas */
+        .welcome-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* Avatar do usuário */
+        .avatar {
+            width: 50px;
+            height: 50px;
+            background-color: #3498db;
+            border-radius: 50%;
+            color: white;
+            text-align: center;
+            line-height: 50px;
+            font-size: 20px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        /* Botão centralizado */
+        .center-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .button {
+            background-color: #3498db;
+            color: white;
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Foto de Capa -->
+    <div class="cover-photo">
+        <div class="welcome-message" id="welcome-message">
+            Bem-vindo, <span id="user-name">Usuário</span>!
+        </div>
+    </div>
+
+    <!-- Botão Centralizado -->
+    <div class="center-button">
+        <button class="button" onclick="goToPlatform()">Ir para a Plataforma</button>
+    </div>
+
+    <!-- Script de Autenticação Firebase -->
+    <script type="module">
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+
+        // Configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+            authDomain: "mac-projeto-4e552.firebaseapp.com",
+            projectId: "mac-projeto-4e552",
+            storageBucket: "mac-projeto-4e552.appspot.com",
+            messagingSenderId: "537330451519",
+            appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Função para carregar o nome e avatar do usuário
+        window.onload = () => {
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    // Exibir nome do usuário e avatar
+                    const userName = user.displayName || user.email.split('@')[0]; // Pega nome ou e-mail
+                    const userEmail = user.email;
+                    const userInitial = userEmail.charAt(0).toUpperCase(); // Primeira letra do e-mail
+
+                    // Atualiza o nome e avatar
+                    document.getElementById("user-name").textContent = userName;
+                    document.getElementById("welcome-message").innerHTML = `Bem-vindo, <span id="user-name">${userName}</span>!`;
+
+                    // Cria avatar com a inicial do e-mail
+                    const avatarElement = document.createElement("div");
+                    avatarElement.className = "avatar";
+                    avatarElement.textContent = userInitial;
+
+                    // Coloca o avatar na área de boas-vindas
+                    document.getElementById("welcome-message").prepend(avatarElement);
+                } else {
+                    // Redireciona para a página de login se o usuário não estiver autenticado
+                    window.location.href = "index.html";
+                }
+            });
+        };
+
+        // Função para redirecionar para a plataforma
+        function goToPlatform() {
+            window.location.href = "plataforma.html"; // Substitua pelo link da sua plataforma
+        }
+    </script>
+
+</body>
+</html>
+

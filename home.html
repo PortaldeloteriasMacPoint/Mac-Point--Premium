@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Loterias Mac Point</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+</head>
+<body>
+    <div class="header">
+        <h1>Portal de Loterias Mac Point</h1>
+        <div class="user-menu">
+            <div class="profile-pic-container">
+                <img id="profile-pic" src="default-avatar.png" alt="Foto do Usuário">
+            </div>
+            <div class="user-info">
+                <p id="welcome-message">Bem-vindo</p>
+                <div class="settings-icon" onclick="toggleSubmenu()">⚙️</div>
+            </div>
+            <div id="submenu" class="submenu">
+                <button onclick="alterarStatus()">Alterar Status</button>
+                <button onclick="acessarPremium()">Acessar Premium</button>
+                <button onclick="logout()">Sair</button>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <img class="cover-photo" src="cover-image.jpg" alt="Foto de Capa">
+    </div>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+            authDomain: "mac-projeto-4e552.firebaseapp.com",
+            projectId: "mac-projeto-4e552",
+            storageBucket: "mac-projeto-4e552.appspot.com",
+            messagingSenderId: "537330451519",
+            appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        function toggleSubmenu() {
+            document.getElementById("submenu").classList.toggle("show");
+        }
+
+        function alterarStatus() {
+            let newPhoto = prompt("Insira a URL da nova foto:");
+            let newName = prompt("Digite o novo nome de boas-vindas:");
+            if (newPhoto) document.getElementById("profile-pic").src = newPhoto;
+            if (newName) document.getElementById("welcome-message").innerText = "Bem-vindo, " + newName;
+        }
+
+        function acessarPremium() {
+            alert("Redirecionando para versão Premium...");
+        }
+
+        function logout() {
+            firebase.auth().signOut().then(() => {
+                window.location.href = "login.html";
+            }).catch((error) => {
+                console.error("Erro ao sair:", error);
+            });
+        }
+    </script>
+</body>
+</html>
+
+

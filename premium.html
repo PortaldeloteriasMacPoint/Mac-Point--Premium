@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-vindo - Mac Point</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+        }
+
+        /* Foto de capa */
+        .cover-photo {
+            width: 100%;
+            height: 300px;
+            background-image: url('caminho/para/sua/imagem.jpg'); /* Altere o caminho da imagem */
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        /* Texto de boas-vindas */
+        .welcome-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* Avatar do usuário */
+        .avatar {
+            width: 50px;
+            height: 50px;
+            background-color: #3498db;
+            border-radius: 50%;
+            color: white;
+            text-align: center;
+            line-height: 50px;
+            font-size: 20px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        /* Seções */
+        .section {
+            margin: 20px;
+            text-align: center;
+        }
+
+        /* Botão Menu Principal */
+        .menu-principal, .sair {
+            background-color: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 10px;
+        }
+
+        .menu-principal:hover, .sair:hover {
+            background-color: #c0392b;
+        }
+
+        /* Estilo do email do usuário */
+        .user-email {
+            background-color: #2c3e50;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: 2px solid #000;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        /* Incentivo a ser Premium */
+        .premium-incentive {
+            margin-top: 20px;
+            font-size: 20px;
+            color: #f39c12;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #2c3e50;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Foto de Capa -->
+    <div class="cover-photo">
+        <div class="welcome-message" id="welcome-message">
+            Bem-vindo, <span id="user-name">Usuário</span>!
+        </div>
+    </div>
+
+    <!-- Seção de informações do usuário -->
+    <div class="section">
+        <div class="avatar" id="avatar"></div>
+        <div class="user-email" id="user-email">Email: <span id="user-email-text">usuario@exemplo.com</span></div>
+    </div>
+
+    <!-- Botões -->
+    <div class="section">
+        <button class="menu-principal" id="menu-principal" onclick="menuPrincipal()">Menu Principal (Gratuito)</button>
+        <button class="sair" id="logout" onclick="logout()">Sair</button>
+    </div>
+
+    <!-- Incentivo a ser Premium -->
+    <div class="premium-incentive">
+        Torne-se Premium e aproveite conteúdos exclusivos!
+    </div>
+
+    <footer>
+        <p>© 2025 Portal de Loterias Mac Point</p>
+    </footer>
+
+    <!-- Script de Autenticação Firebase -->
+    <script type="module">
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+
+        // Configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+            authDomain: "mac-projeto-4e552.firebaseapp.com",
+            projectId: "mac-projeto-4e552",
+            storageBucket: "mac-projeto-4e552.appspot.com",
+            messagingSenderId: "537330451519",
+            appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Função para carregar o nome, avatar e email do usuário
+        window.onload = () => {
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    // Exibir nome do usuário e avatar
+                    const userName = user.displayName || user.email.split('@')[0]; // Pega nome ou e-mail
+                    const userEmail = user.email;
+                    const userInitial = userEmail.charAt(0).toUpperCase(); // Primeira letra do e-mail
+
+                    // Atualiza o nome e avatar no HTML
+                    document.getElementById("user-name").textContent = userName;
+                    document.getElementById("user-email-text").textContent = userEmail;
+
+                    // Cria avatar com a inicial do e-mail
+                    const avatarElement = document.getElementById("avatar");
+                    avatarElement.textContent = userInitial;
+
+                    // Permite que o usuário saia
+                    document.getElementById("logout").disabled = false;
+                } else {
+                    // Redireciona para a página de login se o usuário não estiver autenticado
+                    window.location.href = "login.html";
+                }
+            });
+        };
+
+        // Função para o logout
+        function logout() {
+            signOut(auth).then(() => {
+                alert("Você saiu com sucesso!");
+                window.location.href = "login.html"; // Redireciona para a página de login
+            }).catch((error) => {
+                console.error("Erro ao sair:", error);
+            });
+        }
+
+        // Função para o menu principal
+        function menuPrincipal() {
+            window.location.href = "index.html"; // Redireciona para o menu principal
+        }
+    </script>
+
+</body>
+</html>
+

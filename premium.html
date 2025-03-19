@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página Premium</title>
+  
+  <!-- Scripts do Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #000;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      color: #fff;
+    }
+
+    /* Esconde a página até o Firebase carregar */
+    .main-container {
+      display: none;
+      text-align: center;
+    }
+
+    #cover-photo {
+      width: 100%;
+      height: 400px;
+      background-image: url('Screenshot_20250112-173043-1.jpg');
+      background-size: cover;
+      background-position: center;
+      margin-bottom: 20px;
+    }
+
+    .button {
+      background-color: #FF7F00;
+      color: white;
+      padding: 15px 30px;
+      font-size: 16px;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s ease;
+    }
+
+    .button:hover {
+      background-color: #e76f00;
+    }
+
+    .avatar-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background-color: #444;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      color: white;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    /* Estiliza o carregamento */
+    #loading {
+      font-size: 18px;
+      color: #FF7F00;
+    }
+
+    @media (max-width: 768px) {
+      #cover-photo {
+        height: 250px;
+      }
+
+      .avatar {
+        width: 60px;
+        height: 60px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Exibição do carregamento antes de exibir a página -->
+  <p id="loading">Carregando...</p>
+
+  <div class="main-container" id="main-container">
+    <div id="cover-photo"></div>
+
+    <div class="avatar-container">
+      <div class="avatar" id="avatar">
+        <span id="avatar-initial">?</span>
+      </div>
+      <p id="user-email"></p>
+    </div>
+
+    <button class="button" onclick="goToPlatform()">Acessar Plataforma</button>
+  </div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+      authDomain: "mac-projeto-4e552.firebaseapp.com",
+      projectId: "mac-projeto-4e552",
+      storageBucket: "mac-projeto-4e552.appspot.com",
+      messagingSenderId: "537330451519",
+      appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        // Obtém os dados do usuário
+        const userEmail = user.email || "Usuário desconhecido";
+        const userName = user.displayName ? user.displayName.split(" ")[0] : userEmail.split('@')[0];
+        const userPhoto = user.photoURL;
+
+        // Atualiza o nome na página
+        document.getElementById("user-email").textContent = `Seja bem-vindo, ${userName}`;
+
+        // Atualiza o avatar
+        const avatarContainer = document.getElementById("avatar");
+        const avatarInitial = document.getElementById("avatar-initial");
+
+        if (userPhoto) {
+          avatarInitial.style.display = "none";
+          const img = document.createElement("img");
+          img.src = userPhoto;
+          img.alt = "Foto de perfil";
+          img.loading = "lazy";
+          avatarContainer.innerHTML = "";
+          avatarContainer.appendChild(img);
+        } else {
+          avatarInitial.textContent = userName.charAt(0).toUpperCase();
+        }
+
+        // Remove o "Carregando..." e exibe a página
+        document.getElementById("loading").style.display = "none";
+        document.getElementById("main-container").style.display = "block";
+
+      } else {
+        // Se não estiver autenticado, redireciona para login
+        window.location.href = 'login.html';
+      }
+    });
+
+    function goToPlatform() {
+      window.location.href = 'home.html';
+    }
+  </script>
+</body>
+</html>
+
+

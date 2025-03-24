@@ -69,7 +69,7 @@
             font-family: Impact, sans-serif;
             font-size: 30px;
             color: #006747;
-            text-shadow: 2px 2px 2px black;
+            text-shadow: 1px 1px 2px black;
             margin-top: 1px;
         }
 
@@ -121,7 +121,7 @@
         button {
             width: 100%;
             padding: 12px;
-            border: 2px solid #000;
+            border: 2px solid #000; /* Contorno preto */
             border-radius: 12px;
             font-size: 18px;
             font-weight: bold;
@@ -144,23 +144,26 @@
         }
 
         /* Mensagens de erro ou sucesso */
-        .notificacao {
-            display: none;
+        #mensagem {
             margin-top: 12px;
             font-size: 14px;
             color: white;
+            background-color: red; /* Notificação de erro */
             padding: 10px;
             border-radius: 10px;
-            border: 2px solid black;
-            text-shadow: 1px 1px 2px black;
+            border: 2px solid black; /* Contorno preto */
+            text-shadow: 1px 1px 2px black; /* Texto com contorno */
         }
 
-        #mensagem.erro {
-            background-color: red;
-        }
-
-        #mensagem.sucesso {
-            background-color: green;
+        #sucesso {
+            margin-top: 12px;
+            font-size: 14px;
+            color: white;
+            background-color: green; /* Notificação de sucesso */
+            padding: 10px;
+            border-radius: 10px;
+            border: 2px solid black; /* Contorno preto */
+            text-shadow: 1px 1px 2px black; /* Texto com contorno */
         }
 
         p {
@@ -177,15 +180,89 @@
         a:hover {
             text-decoration: underline;
         }
+
     </style>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+            authDomain: "mac-projeto-4e552.firebaseapp.com",
+            projectId: "mac-projeto-4e552",
+            storageBucket: "mac-projeto-4e552.appspot.com",
+            messagingSenderId: "537330451519",
+            appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const botaoCadastro = document.getElementById("cadastrar");
+            const termos = document.getElementById("termos");
+
+            termos.addEventListener("change", () => {
+                botaoCadastro.disabled = !termos.checked;
+                botaoCadastro.classList.toggle("ativo", termos.checked);
+            });
+
+            botaoCadastro.addEventListener("click", () => {
+                let nome = document.getElementById("nome").value;
+                let email = document.getElementById("email").value;
+                let senha = document.getElementById("senha").value;
+                let mensagem = document.getElementById("mensagem");
+                let sucesso = document.getElementById("sucesso");
+
+                let recaptchaResponse = grecaptcha.getResponse();
+
+                // Limpar mensagens anteriores
+                mensagem.innerText = "";
+                sucesso.innerText = "";
+
+                if (!termos.checked) {
+                    mensagem.innerText = "Você deve aceitar os termos para continuar.";
+                    return;
+                }
+
+                if (recaptchaResponse === "") {
+                    mensagem.innerText = "Por favor, complete o reCAPTCHA.";
+                    return;
+                }
+
+                if (nome === "" || email === "" || senha === "") {
+                    mensagem.innerText = "Preencha todos os campos!";
+                    return;
+                }
+
+                createUserWithEmailAndPassword(auth, email, senha)
+                    .then((userCredential) => {
+                        const user = userCredential.user;
+                        return updateProfile(user, { displayName: nome });
+                    })
+                    .then(() => {
+                        sucesso.innerText = "Cadastro realizado com sucesso!";
+                        sucesso.style.backgroundColor = "green";
+                        sucesso.style.color = "white";
+                        sucesso.style.border = "2px solid black";
+                        window.location.href = "login.html";
+                    })
+                    .catch((error) => {
+                        console.error("Erro de autenticação:", error.message); // Para depuração no console
+                        mensagem.innerText = "Algo deu errado! Tente novamente mais tarde.";
+                        mensagem.style.backgroundColor = "red";
+                        mensagem.style.color = "white";
+                        mensagem.style.border = "2px solid black";
+                    });
+            });
+        });
+    </script>
 </head>
 <body>
     <div class="container">
         <div class="icone-titulo">
-            <div class="foto-icone">
-                <span>🍀</span>
-            </div>
+            <div class="foto-icone">🍀</div>
         </div>
         <h2>PORTAL de LOTERIAS</h2>
         <h3 class="titulo-macpoint">Mac Point</h3>
@@ -197,10 +274,10 @@
         </div>
         <div class="g-recaptcha" data-sitekey="6LdCx_EqAAAAALglxJ8LUElGwD6QyDn84HhF4SEt"></div>
         <button id="cadastrar" disabled>Cadastrar</button>
-        <p id="mensagem" class="notificacao"></p>
+        <p id="mensagem"></p>
+        <p id="sucesso"></p>
         <p>Já tem cadastro? <a href="login.html">Faça login</a></p>
     </div>
 </body>
 </html>
-
 

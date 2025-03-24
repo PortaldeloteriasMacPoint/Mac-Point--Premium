@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal de Loterias - MAC POINT</title>
     <style>
-        /* Fundo da página */
         body {
             background: linear-gradient(135deg, black, #002200, #007700);
             height: 100vh;
@@ -15,7 +14,6 @@
             font-family: 'Arial', sans-serif;
         }
 
-        /* Container principal */
         .container {
             background: white;
             padding: 35px;
@@ -29,7 +27,6 @@
             justify-content: center;
         }
 
-        /* Ícone do trevo (🍀) */
         .icone-titulo {
             display: flex;
             align-items: center;
@@ -38,31 +35,34 @@
         }
 
         .foto-icone {
-            width: 50px;
-            height: 50px;
+            width: 60px; /* Aumentei o tamanho para dar mais destaque */
+            height: 60px;
             background: linear-gradient(135deg, #004d00, #00cc00);
             display: flex;
             justify-content: center;
             align-items: center;
             border-radius: 50%;
-            font-size: 24px;
+            font-size: 28px;
             font-weight: bold;
             color: white;
+            border: 3px solid black; /* Contorno preto no círculo */
             box-shadow: 0px 4px 10px rgba(0, 128, 0, 0.5);
         }
 
-        /* Títulos */
         .titulos {
             text-align: center;
         }
 
         h2 {
             font-family: Impact, sans-serif;
-            font-size: 20px;
+            font-size: 24px; /* Aumentei o tamanho para destaque */
             font-weight: bold;
             color: #009900;
-            text-shadow: 2px 2px 2px black;
+            text-shadow: 2px 2px 2px black; /* Contorno preto no título */
             margin: 0;
+            text-transform: uppercase;
+            border: 2px solid black; /* Contorno preto no título */
+            padding: 5px;
         }
 
         .titulo-macpoint {
@@ -71,9 +71,11 @@
             color: #006747;
             text-shadow: 1px 1px 2px black;
             margin-top: 1px;
+            text-transform: uppercase;
+            border: 2px solid black; /* Contorno preto no título */
+            padding: 5px;
         }
 
-        /* Campos de entrada */
         input {
             width: 100%;
             padding: 12px;
@@ -96,7 +98,6 @@
             color: #777;
         }
 
-        /* Caixa de seleção dos termos */
         .termos {
             display: flex;
             align-items: center;
@@ -112,34 +113,32 @@
             margin: 0;
         }
 
-        /* reCAPTCHA */
         .g-recaptcha {
             margin-top: 12px;
         }
 
-        /* Botão de cadastro */
         button {
             width: 100%;
             padding: 12px;
-            border: 2px solid #000; /* Contorno preto */
+            border: 2px solid #000;
             border-radius: 12px;
             font-size: 18px;
             font-weight: bold;
             cursor: pointer;
             transition: 0.3s;
-            background-color: #66cc66; /* Verde claro */
+            background-color: #66cc66;
             color: white;
             box-shadow: 0px 3px 8px rgba(0, 128, 0, 0.3);
-            text-shadow: 1px 1px 2px black; /* Contorno da escrita */
+            text-shadow: 1px 1px 2px black;
         }
 
         button:hover {
-            background-color: #4cbb62; /* Verde escuro */
+            background-color: #4cbb62;
         }
 
         button:active {
-            background-color: #4cbb62; /* Verde escuro */
-            text-shadow: 1px 1px 2px black; /* Contorno da escrita */
+            background-color: #4cbb62;
+            text-shadow: 1px 1px 2px black;
         }
 
         button:disabled {
@@ -147,27 +146,28 @@
             cursor: not-allowed;
         }
 
-        /* Mensagens de erro ou sucesso */
         #mensagem {
+            display: none;
             margin-top: 12px;
             font-size: 14px;
             color: white;
-            background-color: red; /* Notificação de erro */
+            background-color: red;
             padding: 10px;
             border-radius: 10px;
-            border: 2px solid black; /* Contorno preto */
-            text-shadow: 1px 1px 2px black; /* Texto com contorno */
+            border: 2px solid black;
+            text-shadow: 1px 1px 2px black;
         }
 
         #sucesso {
+            display: none;
             margin-top: 12px;
             font-size: 14px;
             color: white;
-            background-color: green; /* Notificação de sucesso */
+            background-color: green;
             padding: 10px;
             border-radius: 10px;
-            border: 2px solid black; /* Contorno preto */
-            text-shadow: 1px 1px 2px black; /* Texto com contorno */
+            border: 2px solid black;
+            text-shadow: 1px 1px 2px black;
         }
 
         p {
@@ -220,22 +220,24 @@
 
                 let recaptchaResponse = grecaptcha.getResponse();
 
-                // Limpar mensagens anteriores
                 mensagem.innerText = "";
                 sucesso.innerText = "";
 
                 if (!termos.checked) {
                     mensagem.innerText = "Você deve aceitar os termos para continuar.";
+                    mensagem.style.display = "block";
                     return;
                 }
 
                 if (recaptchaResponse === "") {
                     mensagem.innerText = "Por favor, complete o reCAPTCHA.";
+                    mensagem.style.display = "block";
                     return;
                 }
 
                 if (nome === "" || email === "" || senha === "") {
                     mensagem.innerText = "Preencha todos os campos!";
+                    mensagem.style.display = "block";
                     return;
                 }
 
@@ -246,11 +248,13 @@
                     })
                     .then(() => {
                         sucesso.innerText = "Cadastro realizado com sucesso!";
+                        sucesso.style.display = "block";
                         window.location.href = "login.html";
                     })
                     .catch((error) => {
-                        console.error("Erro de autenticação:", error.message); // Para depuração no console
+                        console.error("Erro de autenticação:", error.message);
                         mensagem.innerText = "Algo deu errado! Tente novamente mais tarde.";
+                        mensagem.style.display = "block";
                     });
             });
         });

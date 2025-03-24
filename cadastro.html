@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -121,7 +121,7 @@
         button {
             width: 100%;
             padding: 12px;
-            border: none;
+            border: 2px solid #000; /* Contorno preto */
             border-radius: 12px;
             font-size: 18px;
             font-weight: bold;
@@ -143,11 +143,27 @@
             background: linear-gradient(135deg, #009900, #007700);
         }
 
-        /* Mensagem de erro ou sucesso */
+        /* Mensagens de erro ou sucesso */
         #mensagem {
             margin-top: 12px;
             font-size: 14px;
-            color: red;
+            color: white;
+            background-color: red; /* Notificação de erro */
+            padding: 10px;
+            border-radius: 10px;
+            border: 2px solid black; /* Contorno preto */
+            text-shadow: 1px 1px 2px black; /* Texto com contorno */
+        }
+
+        #sucesso {
+            margin-top: 12px;
+            font-size: 14px;
+            color: white;
+            background-color: green; /* Notificação de sucesso */
+            padding: 10px;
+            border-radius: 10px;
+            border: 2px solid black; /* Contorno preto */
+            text-shadow: 1px 1px 2px black; /* Texto com contorno */
         }
 
         p {
@@ -197,8 +213,13 @@
                 let email = document.getElementById("email").value;
                 let senha = document.getElementById("senha").value;
                 let mensagem = document.getElementById("mensagem");
+                let sucesso = document.getElementById("sucesso");
 
                 let recaptchaResponse = grecaptcha.getResponse();
+
+                // Limpar mensagens anteriores
+                mensagem.innerText = "";
+                sucesso.innerText = "";
 
                 if (!termos.checked) {
                     mensagem.innerText = "Você deve aceitar os termos para continuar.";
@@ -221,16 +242,16 @@
                         return updateProfile(user, { displayName: nome });
                     })
                     .then(() => {
-                        alert("Cadastro realizado com sucesso!");
+                        sucesso.innerText = "Cadastro realizado com sucesso!";
                         window.location.href = "login.html";
                     })
                     .catch((error) => {
-                        mensagem.innerText = "Erro: " + error.message;
+                        console.error("Erro de autenticação:", error.message); // Para depuração no console
+                        mensagem.innerText = "Algo deu errado! Tente novamente mais tarde.";
                     });
             });
         });
     </script>
-
 </head>
 <body>
     <div class="container">
@@ -248,9 +269,8 @@
         <div class="g-recaptcha" data-sitekey="6LdCx_EqAAAAALglxJ8LUElGwD6QyDn84HhF4SEt"></div>
         <button id="cadastrar" disabled>Cadastrar</button>
         <p id="mensagem"></p>
+        <p id="sucesso"></p>
         <p>Já tem cadastro? <a href="login.html">Faça login</a></p>
     </div>
 </body>
 </html>
-
-

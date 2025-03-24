@@ -29,33 +29,7 @@
             justify-content: center;
         }
 
-        /* Ícone do trevo (🍀) */
-        .icone-titulo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .foto-icone {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #004d00, #00cc00);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 50%;
-            font-size: 24px;
-            font-weight: bold;
-            color: white;
-            box-shadow: 0px 4px 10px rgba(0, 128, 0, 0.5);
-        }
-
         /* Títulos */
-        .titulos {
-            text-align: center;
-        }
-
         h2 {
             font-family: Impact, sans-serif;
             font-size: 20px;
@@ -112,11 +86,6 @@
             margin: 0;
         }
 
-        /* reCAPTCHA */
-        .g-recaptcha {
-            margin-top: 12px;
-        }
-
         /* Botão de cadastro */
         button {
             width: 100%;
@@ -126,21 +95,19 @@
             font-size: 18px;
             font-weight: bold;
             cursor: pointer;
-            transition: 0.3s;
-            background: linear-gradient(135deg, #00cc00, #009900);
+            background-color: #00cc00; /* Verde claro */
             color: white;
             box-shadow: 0px 3px 8px rgba(0, 128, 0, 0.3);
-            opacity: 0.6;
+            transition: 0.3s;
+        }
+
+        button:disabled {
+            background-color: #b3e6b3; /* Botão desativado */
             cursor: not-allowed;
         }
 
-        button.ativo {
-            opacity: 1;
-            cursor: pointer;
-        }
-
         button:hover {
-            background: linear-gradient(135deg, #009900, #007700);
+            background-color: #009900; /* Verde escuro ao passar o mouse */
         }
 
         /* Mensagens de erro ou sucesso */
@@ -205,7 +172,6 @@
 
             termos.addEventListener("change", () => {
                 botaoCadastro.disabled = !termos.checked;
-                botaoCadastro.classList.toggle("ativo", termos.checked);
             });
 
             botaoCadastro.addEventListener("click", () => {
@@ -255,9 +221,6 @@
 </head>
 <body>
     <div class="container">
-        <div class="icone-titulo">
-            <div class="foto-icone">🍀</div>
-        </div>
         <h2>PORTAL de LOTERIAS</h2>
         <h3 class="titulo-macpoint">Mac Point</h3>
         <input type="text" id="nome" placeholder="Nome completo">
@@ -274,3 +237,4 @@
     </div>
 </body>
 </html>
+

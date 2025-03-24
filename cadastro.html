@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal de Loterias - MAC POINT</title>
     <style>
-        /* Fundo da página */
         body {
             background: linear-gradient(135deg, black, #002200, #007700);
             height: 100vh;
@@ -15,7 +14,6 @@
             font-family: 'Arial', sans-serif;
         }
 
-        /* Container principal */
         .container {
             background: white;
             padding: 35px;
@@ -29,7 +27,6 @@
             justify-content: center;
         }
 
-        /* Ícone do trevo (🍀) */
         .icone-titulo {
             display: flex;
             align-items: center;
@@ -49,18 +46,6 @@
             font-weight: bold;
             color: white;
             box-shadow: 0px 4px 10px rgba(0, 128, 0, 0.5);
-            
-        }
-
-        .foto-icone span {
-            border: 2px solid black; /* Contorno preto no ícone */
-            padding: 2px;
-            border-radius: 50%;
-        }
-
-        /* Títulos */
-        .titulos {
-            text-align: center;
         }
 
         h2 {
@@ -70,18 +55,16 @@
             color: #009900;
             text-shadow: 2px 2px 2px black;
             margin: 0;
-            text-shadow: 2px 2px 2px black; /* Contorno preto no texto */
         }
 
         .titulo-macpoint {
             font-family: Impact, sans-serif;
             font-size: 30px;
             color: #006747;
-            text-shadow: 2px 2px 2px black; /* Contorno preto no texto */
+            text-shadow: 2px 2px 2px black;
             margin-top: 1px;
         }
 
-        /* Campos de entrada */
         input {
             width: 100%;
             padding: 12px;
@@ -104,7 +87,6 @@
             color: #777;
         }
 
-        /* Caixa de seleção dos termos */
         .termos {
             display: flex;
             align-items: center;
@@ -120,20 +102,17 @@
             margin: 0;
         }
 
-        /* reCAPTCHA */
         .g-recaptcha {
             margin-top: 12px;
         }
 
-        /* Botão de cadastro */
         button {
             width: 100%;
             padding: 12px;
-            border: 2px solid #000; /* Contorno preto */
+            border: 2px solid #000;
             border-radius: 12px;
             font-size: 18px;
             font-weight: bold;
-            cursor: pointer;
             transition: 0.3s;
             background: linear-gradient(135deg, #00cc00, #009900);
             color: white;
@@ -151,27 +130,23 @@
             background: linear-gradient(135deg, #009900, #007700);
         }
 
-        /* Mensagens de erro ou sucesso */
-        #mensagem {
+        #mensagem, #sucesso {
+            display: none;
             margin-top: 12px;
             font-size: 14px;
             color: white;
-            background-color: red; /* Notificação de erro */
             padding: 10px;
             border-radius: 10px;
-            border: 2px solid black; /* Contorno preto */
-            text-shadow: 1px 1px 2px black; /* Texto com contorno */
+            border: 2px solid black;
+            text-shadow: 1px 1px 2px black;
+        }
+
+        #mensagem {
+            background-color: red;
         }
 
         #sucesso {
-            margin-top: 12px;
-            font-size: 14px;
-            color: white;
-            background-color: green; /* Notificação de sucesso */
-            padding: 10px;
-            border-radius: 10px;
-            border: 2px solid black; /* Contorno preto */
-            text-shadow: 1px 1px 2px black; /* Texto com contorno */
+            background-color: green;
         }
 
         p {
@@ -188,7 +163,6 @@
         a:hover {
             text-decoration: underline;
         }
-
     </style>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
@@ -215,3 +189,5 @@
     </div>
 </body>
 </html>
+
+

@@ -127,20 +127,24 @@
             font-weight: bold;
             cursor: pointer;
             transition: 0.3s;
-            background: linear-gradient(135deg, #00cc00, #009900);
+            background-color: #66cc66; /* Verde claro */
             color: white;
             box-shadow: 0px 3px 8px rgba(0, 128, 0, 0.3);
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        button.ativo {
-            opacity: 1;
-            cursor: pointer;
+            text-shadow: 1px 1px 2px black; /* Contorno da escrita */
         }
 
         button:hover {
-            background: green;
+            background-color: #4cbb62; /* Verde escuro */
+        }
+
+        button:active {
+            background-color: #4cbb62; /* Verde escuro */
+            text-shadow: 1px 1px 2px black; /* Contorno da escrita */
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
 
         /* Mensagens de erro ou sucesso */
@@ -180,7 +184,6 @@
         a:hover {
             text-decoration: underline;
         }
-
     </style>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script type="module">

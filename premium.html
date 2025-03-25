@@ -1,227 +1,245 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal de Loterias Mac Point</title>
+    <title>Mac Point</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
         }
         body {
-            background-color: white;
-            color: black;
-            text-align: center;
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            border: 2px solid black;
         }
         .top-bar {
             width: 100%;
-            height: 60px;
-            background: linear-gradient(to right, #0F1E54, #1A237E);
+            background: darkcyan;
+            color: white;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 15px;
+            padding: 10px 20px;
             position: fixed;
             top: 0;
             left: 0;
+            border-bottom: 2px solid black;
+            height: 60px;
             z-index: 1000;
-            border-bottom: 4px solid white;
-        }
-        .top-bar h1 {
-            font-family: Impact, sans-serif;
-            font-size: 36px;
-            font-weight: bold;
-            color: white;
-            text-shadow: 2px 2px 4px orange;
-        }
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .user-photo {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 2px solid white;
-            object-fit: cover;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         .menu-icon {
             font-size: 24px;
             cursor: pointer;
-            color: white;
         }
-        .side-menu {
-            width: 250px;
-            height: calc(100vh - 60px);
-            position: fixed;
-            top: 60px;
-            left: -250px;
-            background: linear-gradient(to bottom, #0F1E54, #1A237E);
-            padding: 15px;
-            transition: left 0.3s;
-            overflow-y: auto;
-            z-index: 1100;
-            border-right: 2px solid white;
+        .title {
+            font-size: 18px;
+            font-weight: bold;
         }
-        .side-menu h2 {
-            color: white;
-            font-size: 20px;
-            text-align: left;
-            margin-bottom: 10px;
-            border-bottom: 2px solid orange;
-            padding-bottom: 5px;
+        .icons-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        .menu-btn, .input-field {
-            width: 100%;
-            padding: 12px;
-            margin: 5px 0;
-            background-color: black;
-            color: white;
-            border-radius: 10px;
-            border: 1px solid white;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            text-align: left;
-            font-size: 16px;
-        }
-        .menu-btn:hover {
-            background-color: #FF4500;
-        }
-        .locked-btn {
-            background-color: #444;
-            color: #ccc;
-            cursor: not-allowed;
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            padding: 12px;
-            border-radius: 10px;
-            border: 1px solid white;
-            margin: 5px 0;
-            font-size: 18px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid black;
         }
-        .locked-btn::before {
-            content: "🔒";
-            font-size: 22px;
+        .profile-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
         }
-        .cover-photo {
-            background-image: url('https://i.postimg.cc/tTMTLLdH/Screenshot-20250112-173043-1.jpg');
-            background-size: cover;
-            background-position: center;
-            height: 400px;
-            margin-top: 70px;
-        }
-        .greeting {
-            background-color: black;
-            color: white;
-            padding: 10px;
-            font-size: 18px;
-            border-radius: 10px;
-            width: 60%;
-            margin: -50px auto 20px auto;
-        }
-        .greeting span {
-            color: #00CED1;
-            font-weight: bold;
-            text-shadow: 2px 2px 4px black;
-            font-size: 22px;
-        }
-        .iframe-container {
-            display: none;
+        .menu {
             position: fixed;
             top: 60px;
+            left: -260px;
+            width: 260px;
+            height: calc(100% - 60px);
+            background: white;
+            border-right: 3px solid black;
+            transition: left 0.3s;
+            overflow-y: auto;
+            padding-bottom: 20px;
+            scrollbar-color: darkorange white;
+        }
+        .menu.open {
             left: 0;
-            width: 100%;
+        }
+        .menu h2 {
+            font-size: 24px;
+            color: #008B8B;
+            text-shadow: 1px 1px 2px black;
+            padding: 15px;
+            text-align: center;
+            position: relative;
+        }
+        .menu h2::after {
+            content: "";
+            display: block;
+            width: 200px;
+            height: 2px;
+            background-color: darkorange;
+            margin: 8px auto 0;
+        }
+        .menu ul li {
+            padding: 12px;
+            border: 2px solid black;
+            text-align: center;
+            border-radius: 5px;
+            margin-bottom: 6px;
+            background: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .menu ul li:hover {
+            background: darkcyan;
+            color: white;
+        }
+        
+
+#btnSair {
+    background-color:red;
+    color: white;
+    border: 2px solid white;
+    padding: 10px 20px;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 200px;
+    display: block;
+    margin: 10px auto;
+    text-shadow: 1px 1px 2px black;
+}
+
+#btnSair:hover {
+    background-color: #333;
+}
+
+
+        .content {
+            margin-top: 60px;
             height: calc(100vh - 60px);
-            background-color: white;
+            width: 100%;
         }
         iframe {
             width: 100%;
             height: 100%;
             border: none;
         }
-        .footer {
-            width: 100%;
-            height: 50px;
-            background: linear-gradient(to right, #0F1E54, #1A237E);
-            color: white;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.3s;
-            opacity: 1;
-        }
-        .footer.hidden {
-            opacity: 0;
-        }
-        .side-menu::-webkit-scrollbar {
-            width: 8px;
-        }
-        .side-menu::-webkit-scrollbar-track {
-            background: black;
-        }
-        .side-menu::-webkit-scrollbar-thumb {
-            background: orange;
-            border-radius: 4px;
-        }
-        .input-field::placeholder {
-            color: #ccc;
-        }
     </style>
 </head>
-<body>
+<body onclick="closeMenu(event)">
     <div class="top-bar">
-        <h1>Mac Point</h1>
-        <div class="user-info">
-            <img src="https://via.placeholder.com/40" alt="Usuário" class="user-photo" id="userPhoto">
-            <span class="menu-icon" onclick="toggleMenu()">⋮</span>
+        <div class="title">Portal de Loterias Mac Point</div>
+        <div class="icons-container">
+            <div class="profile-icon" onclick="chooseProfilePicture()">
+                <img id="profile-image" src="Screenshot_20250322-201229-1.jpg" alt="Perfil">
+                <input type="file" id="file-input" style="display:none" accept="image/*" onchange="uploadProfilePicture(event)">
+            </div>
+            <div class="menu-icon" onclick="toggleMenu(event)">⋮</div>
         </div>
     </div>
-    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
-    <div class="side-menu" id="sideMenu">
-        <h2>📌 Menu Gratuito</h2>
-        <button class="menu-btn" onclick="openSection('home.html')">🏠 Início</button>
-        <button class="menu-btn" onclick="openSection('gerador.html')">🎲 Gerador de Números</button>
-        <button class="menu-btn" onclick="openSection('historico.html')">📋 Histórico de Sorteios</button>
-        <button class="menu-btn" onclick="openSection('estatistica.html')">📊 Menor Estatística</button>
-        <button class="menu-btn" onclick="openSection('dicas.html')">📖 Dicas e Estratégias</button>
-        <button class="menu-btn" onclick="openSection('noticias.html')">📢 Notícias</button>
-        <button class="menu-btn" onclick="openSection('forum.html')">💬 Fórum da Comunidade</button>
-        <button class="menu-btn" onclick="openSection('config.html')">⚙️ Configurações</button>
-        <h2>🔒 Conteúdo Exclusivo</h2>
-        <button class="locked-btn">📊 Análise Estatística Completa</button>
-        <button class="locked-btn">📋 Planilhas Avançadas</button>
-        <button class="locked-btn">🎯 Simuladores Personalizados</button>
-        <button class="locked-btn">🔢 Desdobramentos</button>
-        <button class="locked-btn">🎰 Probabilidades Avançadas</button>
-        <button class="locked-btn">📩 Suporte VIP</button>
-        <h2>🌟 Menu Premium 🌟</h2>
-        <button class="menu-btn" onclick="openSection('premium.html')">🔓 Liberar Acesso</button>
+    <div class="menu" id="menu" onclick="event.stopPropagation()">
+        <h2>Menu Gratuito</h2>
+        <ul>
+            <li onclick="loadPage('home.html')">Início</li>
+            <li onclick="loadPage('resultados.html')">Resultados Recentes</li>
+            <li onclick="loadPage('gerador.html')">Gerador de Jogos</li>
+            <li onclick="loadPage('simuladores.html')">Simuladores</li>
+            <li onclick="loadPage('desdobramentos.html')">Desdobramentos</li>
+            <li onclick="loadPage('batepapo.html')">Fórum da Comunidade</li>
+            <li onclick="loadPage('tabelas.html')">Tabelas</li>
+        </ul>
+        <h2>🏆Área VIP 🏆</h2>
+        <ul>
+            <button id="btnSair" onclick="sair()">Sair</button>
     </div>
-    <div class="cover-photo"></div>
-    <div class="greeting">Bem-vindo, <span id="userName">Usuário</span>!</div>
-    <div class="iframe-container" id="iframe-container">
-        <iframe id="iframe-content"></iframe>
+    <div class="content">
+        <iframe id="iframe-content" src="home.html"></iframe>
     </div>
-    <div class="footer">© 2025 Portal de Loterias Mac Point</div>
     <script>
-        function toggleMenu() {
-            let menu = document.getElementById('sideMenu');
-            menu.style.left = menu.style.left === '0px' ? '-250px' : '0px';
+        function toggleMenu(event) {
+            event.stopPropagation();
+            document.getElementById("menu").classList.toggle("open");
         }
-        function openSection(url) {
-            document.getElementById('iframe-container').style.display = 'block';
-            document.getElementById('iframe-content').src = url;
-            toggleMenu();
+        function closeMenu(event) {
+            if (!document.getElementById("menu").contains(event.target) && document.getElementById("menu").classList.contains("open")) {
+                document.getElementById("menu").classList.remove("open");
+            }
+        }
+        function loadPage(page) {
+            document.getElementById("iframe-content").src = page;
+            document.getElementById("menu").classList.remove("open");
+        }
+        function chooseProfilePicture() {
+            document.getElementById("file-input").click();
+        }
+        function uploadProfilePicture(event) {
+            let file = event.target.files[0];
+            if (file) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById("profile-image").src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
         }
     </script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        let savedImage = localStorage.getItem("profileImage");
+        if (savedImage) {
+            document.getElementById("profile-image").src = savedImage;
+        }
+    });
+
+    function chooseProfilePicture() {
+        document.getElementById("file-input").click();
+    }
+
+    function uploadProfilePicture(event) {
+        let file = event.target.files[0];
+        if (file) {
+            let reader = new FileReader();
+            reader.onload = function(e) {
+                let imageSrc = e.target.result;
+                document.getElementById("profile-image").src = imageSrc;
+                localStorage.setItem("profileImage", imageSrc);
+            }
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        let userLoggedIn = sessionStorage.getItem("userLoggedIn");
+        if (!userLoggedIn) {
+            window.location.href = "login.html";
+        }
+    });
+
+    function sair() {
+        sessionStorage.removeItem("userLoggedIn");
+        window.location.href = "login.html";
+    }
+</script>    
 </body>
 </html>
+
+
+!

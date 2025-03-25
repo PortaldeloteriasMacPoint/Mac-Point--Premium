@@ -225,19 +225,19 @@
         }
     }
 </script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        let userLoggedIn = sessionStorage.getItem("userLoggedIn");
-        if (!userLoggedIn) {
-            window.location.href = "login.html";
-        }
-    });
-
-    function sair() {
-        sessionStorage.removeItem("userLoggedIn");
+<Script>
+document.addEventListener("DOMContentLoaded", function() {
+    let userLoggedIn = localStorage.getItem("userLoggedIn");
+    if (!userLoggedIn) {
         window.location.href = "login.html";
     }
-</script>    
+});
+
+function sair() {
+    localStorage.removeItem("userLoggedIn");
+    window.location.href = "login.html";
+}
+</Script>
 </body>
 </html>
 

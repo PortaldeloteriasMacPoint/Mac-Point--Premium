@@ -226,16 +226,24 @@
     }
 </script>
 <Script>
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+const auth = getAuth();
+
 document.addEventListener("DOMContentLoaded", function() {
-    let userLoggedIn = localStorage.getItem("userLoggedIn");
-    if (!userLoggedIn) {
-        window.location.href = "login.html";
-    }
+    onAuthStateChanged(auth, (user) => {
+        if (!user) {
+            window.location.href = "login.html";
+        }
+    });
 });
 
 function sair() {
-    localStorage.removeItem("userLoggedIn");
-    window.location.href = "login.html";
+    signOut(auth).then(() => {
+        window.location.href = "login.html";
+    }).catch((error) => {
+        console.error("Erro ao sair:", error);
+    });
 }
 </Script>
 </body>

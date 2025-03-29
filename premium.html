@@ -1,268 +1,314 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mac Point</title>
+    <title>MacPoint</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             font-family: Arial, sans-serif;
-            background: #f4f4f4;
-            border: 2px solid black;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
         }
-        .top-bar {
+
+        .borda-superior {
             width: 100%;
-            background: #000080;
+            background-color:#2c3e50 ;
             color: white;
+
+font-family: Impact, sans-serif;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 10px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 10px 20px;
             position: fixed;
             top: 0;
             left: 0;
-            border-bottom: 2px solid black;
-            height: 60px;
             z-index: 1000;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            text-shadow: 1px 1px 2px black;
+              text-shadow: 
+  2px 2px 0px black, 
+  -2px -2px 0px black, 
+  2px -2px 0px black, 
+  -2px 2px 0px black;
+          border: 5px solid black
         }
-        .menu-icon {
-            font-size: 24px;
-            cursor: pointer;
-        }
-        .title {
-            font-size: 18px;
-            font-weight: bold;
-        }
-        .icons-container {
+   .icone-container {
             display: flex;
             align-items: center;
             gap: 10px;
         }
-        .profile-icon {
+
+        .foto-icone, .icone {
             width: 40px;
             height: 40px;
-            background: white;
             border-radius: 50%;
+            border: 2px solid black;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
+            background-color: white;
             cursor: pointer;
-            border: 2px solid black;
         }
-        .profile-icon img {
+
+        .foto-icone img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
             border-radius: 50%;
-            
-            .divisor {
-    width: 100%;
-    height: 2px;
-    background-color: #00ff7f; /* Verde Oceânico  */
-    border: 1px solid black; /* Contorno preto */
-    margin-top: 5px;
-            }
         }
-        .menu {
-            position: fixed;
+  .submenu {
+            display: none;
+            position: absolute;
             top: 60px;
-            left: -260px;
-            width: 260px;
-            height: calc(100% - 60px);
+            right: 10px;
             background: white;
-            border-right: 3px solid black;
-            transition: left 0.3s;
-            overflow-y: auto;
-            padding-bottom: 20px;
-            scrollbar-color: #000080;
-        }
-        .menu.open {
-            left: 0;
-        }
-        .menu h2 {
-            font-size: 24px;
-            color: #008B8B;
-            text-shadow: 1px 1px 2px black;
-            padding: 15px;
-            text-align: center;
-            position: relative;
-        }
-        .menu h2::after {
-            content: "";
-            display: block;
-            width: 160px;
-            height: 2px;
-            background-color: #000080;
-            margin: 8px auto 0;
-        }
-        .menu ul li {
-            padding: 12px;
-            border: 2px solid black;
-            text-align: center;
+            padding: 10px;
             border-radius: 5px;
-            margin-bottom: 6px;
-            background: white;
-            cursor: pointer;
-            transition: 0.3s;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1001;
         }
-        .menu ul li:hover {
-            background:#000080;
-            color: white;
+
+        .submenu h3 {
+            color: #007777;
+font-weight: bold;
+            text-align: center;
+            border-bottom: 2px solid black;
+        }
+
+        .submenu button {
+            display: block;
+            width: 100%;
+            padding: 5px;
+            margin-top: 5px;
+            background: white;
+            border: 2px solid black;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+.menu-lateral {
+            width: 250px;
+            background:#34495e;
+            position: fixed;
+            left: -250px;
+            top: 70px;
+            height: calc(100vh - 70px); /* Ajustando para não ultrapassar a altura da tela */
+            overflow-y: auto;/* Garante que a barra de rolagem apareça se necessário */
+            transition: left 0.3s;
+            padding: 10px;
+            border-right: 2px solid black;
+         z-index:1002;
+           text-shadow: 
+  1px 1px 0px white , 
+  -1px -1px 0px white , 
+  1px -1px 0px white , 
+  -1px 1px 0px white ;  
         }
         
+.menu-lateral::-webkit-scrollbar {
+    width: 10px;
+}
 
-#btnSair {
-    background-color:red;
-    color: white;
+.menu-lateral::-webkit-scrollbar-thumb {
+    background: black;
     border: 2px solid white;
-    padding: 10px 20px;
-    font-size: 20px;
-    cursor: pointer;
-    border-radius: 15px;
-    width: 100%;
-    max-width: 250px;
-    display: block;
-    margin: 10px auto;
-    text-shadow: 1px 1px 2px black;
+    border-radius: 5px;
 }
 
-#btnSair:hover {
-    background-color: #333;
+.menu-lateral::-webkit-scrollbar-track {
+    background: #34495e;
+    border-left: 2px solid black;
 }
 
-
-        .content {
-            margin-top: 60px;
-            height: calc(100vh - 60px);
-            width: 100%;
+.menu-lateral {
+    scrollbar-color: black white;
+}
+  .menu-lateral h3 {
+            color: darkcyan;
+            font-weight: bold;
+            border-bottom: 5px solid black;
+            text-align: center;
+            font-size: 24px;
+         z-index:1001;
         }
-        iframe {
+.menu-lateral button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            background: white;
+            border: 2px solid black;
+            border-radius: 5px;
+            cursor: pointer;
+        z-index: 1001;  
+        }
+.iframe-container {
+            width: 100%;
+            height: calc(100vh - 60px);
+            position: absolute;
+            top: 60px;
+            left: 0;
+            z-index: 999;
+            display: none;
+        }
+.iframe-container iframe {
             width: 100%;
             height: 100%;
-            border: none;
         }
-    </style>
-</head>
-<body onclick="closeMenu(event)">
-    <div class="top-bar">
-        <div class="title">Portal de Loterias Mac Point</div>
-        <div class="icons-container">
-            <div class="profile-icon" onclick="chooseProfilePicture()">
-                <img id="profile-image" src="Screenshot_20250322-201229-1.jpg" alt="Perfil">
-                <input type="file" id="file-input" style="display:none" accept="image/*" onchange="uploadProfilePicture(event)">
-            </div>
-            <div class="menu-icon" onclick="toggleMenu(event)">⋮</div>
-        </div>
-      <div class="borda-larga">
-    <h1>🍀</h1></h1>
-</div>
-<div class="divisor"></div>
 
-  
-    </div>
-    <div class="menu" id="menu" onclick="event.stopPropagation()">
-        <h2>Menu Gratuito</h2>
-        <ul>
-            <li onclick="loadPage('home.html')">Início</li>
-            <li onclick="loadPage('resultados.html')">Resultados Recentes</li>
-            <li onclick="loadPage('gerador.html')">Gerador de Jogos</li>
-            <li onclick="loadPage('simuladores.html')">Simuladores</li>
-            <li onclick="loadPage('desdobramentos.html')">Desdobramentos</li>
-            <li onclick="loadPage('batepapo.html')">Fórum da Comunidade</li>
-            <li onclick="loadPage('tabelas.html')">Tabelas</li>
-        </ul>
-        <h2>🏆Área VIP 🏆</h2>
-        <ul>
-            <button id="btnSair" onclick="sair()">Sair</button>
-    </div>
-    <div class="content">
-        <iframe id="iframe-content" src="home.html"></iframe>
-    </div>
-    <script>
-        function toggleMenu(event) {
-            event.stopPropagation();
-            document.getElementById("menu").classList.toggle("open");
+        .content {
+            position: relative;
+            z-index: 1000;
         }
-        function closeMenu(event) {
-            if (!document.getElementById("menu").contains(event.target) && document.getElementById("menu").classList.contains("open")) {
-                document.getElementById("menu").classList.remove("open");
+</style>
+</head>
+<body>
+    <div class="borda-superior">
+        <span>🍀 Mac Point</span>
+        <div class="icone-container">
+            <div class="foto-icone" onclick="escolherFoto()">
+                <img id="fotoUsuario" src="Screenshot_20250322-201229-1.jpg" alt="Foto do Usuário">
+            </div>
+            <div class="foto-icone" onclick="toggleSubmenu()">⚙️</div>
+            <div class="icone" onclick="toggleMenu()">☰</div>
+        </div>
+    </div>
+
+    <div class="submenu" id="submenuConfig">
+        <h3>Configurações</h3>
+        <button onclick="logout()">Sair</button>
+    </div>
+
+    <div class="menu-lateral" id="menuLateral">
+        <h3>Menu Free</h3>
+        <button onclick="abrirIframe('home.html')">Início </button>
+        <button onclick="abrirIframe('modalidades.html')">Modalidades</button>
+<button onclick="abrirIframe('resulados.html')">Resultados Recentes </button>
+      <button onclick="abrirIframe('simuladores .html')">Simuladores</button>
+        <button onclick="abrirIframe('gerador .html')">Gerador  Jogos</button>
+     <button onclick="abrirIframe('desdobramentos .html')">Desdobramentos  </button>
+      <button onclick="abrirIframe('comunidade .html')">Foŕum da Comunidade</button>
+        <h3>🏆 Área Vip 🏆</h3>
+        <button onclick="abrirIframe('pagina4.html')">Plano Premium</button>
+      <button onclick="abrirIframe('pagina4.html')">Plano Premium</button>
+ <button onclick="abrirIframe('pagina5.html')">Plano Master </button>
+    </div>
+
+    <div class="iframe-container" id="iframeContainer">
+        <iframe id="iframe" src="home.html" width="100%" height="100%"></iframe>
+    </div>
+
+    <input type="file" id="inputFoto" style="display: none;" onchange="salvarFoto(event)">
+<script src="script.js"></script>  
+    <script src="proteção.js"></script>  
+    <script type="module">
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+        authDomain: "mac-projeto-4e552.firebaseapp.com",
+        projectId: "mac-projeto-4e552",
+        storageBucket: "mac-projeto-4e552.appspot.com",
+        messagingSenderId: "537330451519",
+        appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Verifica o status de autenticação ao carregar a página
+    window.onload = () => {
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                // Usuário autenticado, exibe o conteúdo protegido
+                document.getElementById("protectedContent").style.display = "block";
+            } else {
+                // Redireciona para a página de login se não estiver autenticado
+                window.location.href = "index.html";
             }
+        });
+    };
+</script>
+    <cript>
+        // Bloqueia F12, Ctrl+Shift+I e clique com botão direito
+document.addEventListener("keydown", function(event) {
+  if (event.key === "F12" || (event.ctrlKey && event.shiftKey && event.key === "I")) {
+    event.preventDefault();
+  }
+});
+
+document.addEventListener("contextmenu", function(event) {
+  event.preventDefault();
+});
+
+// Detecta se DevTools está aberto e redireciona
+setInterval(function() {
+  if (window.outerWidth - window.innerWidth > 100 || window.outerHeight - window.innerHeight > 100) {
+    alert("Console detectado! Acesso negado.");
+    window.location.href = "bloqueado.html";
+  }
+}, 1000);
+    </cript>
+      <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const fotoSalva = localStorage.getItem("fotoUsuario");
+            if (fotoSalva) {
+                document.getElementById("fotoUsuario").src = fotoSalva;
+            }
+        });
+
+        function toggleSubmenu() {
+            const submenu = document.getElementById('submenuConfig');
+            submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
         }
-        function loadPage(page) {
-            document.getElementById("iframe-content").src = page;
-            document.getElementById("menu").classList.remove("open");
+
+        function toggleMenu() {
+            const menuLateral = document.getElementById('menuLateral');
+            const iframeContainer = document.getElementById('iframeContainer');
+            const currentLeft = menuLateral.style.left === '0px' ? '-250px' : '0px';
+            menuLateral.style.left = currentLeft;
+            iframeContainer.style.zIndex = currentLeft === '0px' ? '0' : '999';
         }
-        function chooseProfilePicture() {
-            document.getElementById("file-input").click();
+
+        function abrirIframe(url) {
+            const iframe = document.getElementById('iframe');
+            iframe.src = url;
+            const iframeContainer = document.getElementById('iframeContainer');
+            iframeContainer.style.display = 'block';
+            document.getElementById('menuLateral').style.left = '-250px';
         }
-        function uploadProfilePicture(event) {
-            let file = event.target.files[0];
+
+        function escolherFoto() {
+            document.getElementById('inputFoto').click();
+        }
+
+        function salvarFoto(event) {
+            const fotoUsuario = document.getElementById('fotoUsuario');
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onloadend = function() {
+                const imgData = reader.result;
+                fotoUsuario.src = imgData;
+                localStorage.setItem("fotoUsuario", imgData);
+            };
             if (file) {
-                let reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById("profile-image").src = e.target.result;
-                }
                 reader.readAsDataURL(file);
             }
         }
+
+        function logout() {
+            window.location.href = 'logotipo.html';
+        }
     </script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        let savedImage = localStorage.getItem("profileImage");
-        if (savedImage) {
-            document.getElementById("profile-image").src = savedImage;
-        }
-    });
-
-    function chooseProfilePicture() {
-        document.getElementById("file-input").click();
-    }
-
-    function uploadProfilePicture(event) {
-        let file = event.target.files[0];
-        if (file) {
-            let reader = new FileReader();
-            reader.onload = function(e) {
-                let imageSrc = e.target.result;
-                document.getElementById("profile-image").src = imageSrc;
-                localStorage.setItem("profileImage", imageSrc);
-            }
-            reader.readAsDataURL(file);
-        }
-    }
-</script>
-<Script>
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-const auth = getAuth();
-
-document.addEventListener("DOMContentLoaded", function() {
-    onAuthStateChanged(auth, (user) => {
-        if (!user) {
-            window.location.href = "login.html";
-        }
-    });
-});
-
-function sair() {
-    signOut(auth).then(() => {
-        window.location.href = "login.html";
-    }).catch((error) => {
-        console.error("Erro ao sair:", error);
-    });
-}
-</Script>
 </body>
 </html>
-
-
-!

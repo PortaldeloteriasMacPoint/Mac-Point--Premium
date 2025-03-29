@@ -169,11 +169,74 @@ font-weight: bold;
             position: relative;
             z-index: 1000;
         }
-</style>
+
+    .capa-container {
+        width: 100%;
+        height: auto;
+        margin-top: 70px;
+        background-color: black;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .foto-capa {
+        width: 100%;
+        max-height: 60vh;
+        object-fit: cover;
+    }
+
+    .descricao {
+        width: 100%;
+        max-width: 800px;
+        text-align: center;
+        color: white;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.8);
+        margin-top: -5px;
+    }
+
+    .descricao h1 {
+        font-size: 28px;
+        margin-bottom: 10px;
+    }
+
+    .descricao p {
+        font-size: 18px;
+        line-height: 1.5;
+    }
+
+    @media (max-width: 768px) {
+        .descricao h1 {
+            font-size: 22px;
+        }
+
+        .descricao p {
+            font-size: 16px;
+        }
+        }
+
+
+
+
+
+
+footer {
+    background-color: #004d00; /* Verde escuro */
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 14px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    border-top: 2px solid black; /* Contorno preto leve */
+}
+      </style>
 </head>
 <body>
     <div class="borda-superior">
-        <span>🍀 Mac Point</span>
+        <span>🍀 MAC POINT </span>
         <div class="icone-container">
             <div class="foto-icone" onclick="escolherFoto()">
                 <img id="fotoUsuario" src="Screenshot_20250322-201229-1.jpg" alt="Foto do Usuário">
@@ -187,7 +250,15 @@ font-weight: bold;
         <h3>Configurações</h3>
         <button onclick="logout()">Sair</button>
     </div>
-
+<div class="capa-container">
+    <img src="Screenshot_20250112-173043-1.jpg" alt="Foto de Capa" class="foto-capa">
+    <div class="descricao">
+        <h1>Bem-vindo ao Mac Point</h1>
+          </div>
+</div>
+   <footer>
+    <p>© Copyrith 2025 / O Portal de Loterias Mac Point é uma plataforma independente,não possui vínculo com a Caixa Econômica Federal  - Todos os direitos reservados</p>
+</footer> 
     <div class="menu-lateral" id="menuLateral">
         <h3>Menu Free</h3>
         <button onclick="abrirIframe('home.html')">Início </button>
@@ -307,8 +378,35 @@ setInterval(function() {
         }
 
         function logout() {
-            window.location.href = 'logotipo.html';
+            window.location.href = 'logout.html';
         }
-    </script>
+    
+document.addEventListener("DOMContentLoaded", function() {
+    const rodape = document.getElementById("rodape");
+    const iframe = document.getElementById("frame");
+    const botoes = document.querySelectorAll(".botao-secao");
+
+    botoes.forEach(botao => {
+        botao.addEventListener("click", function() {
+            const secao = botao.getAttribute("data-secao");
+            iframe.src = secao + ".html";
+            rodape.style.display = "none";
+        });
+    });
+
+    iframe.onload = function() {
+        if (iframe.contentDocument && iframe.contentDocument.body.childElementCount > 0) {
+            rodape.style.display = "none";
+        }
+    };
+
+    document.getElementById("botao-inicio").addEventListener("click", function() {
+        iframe.src = "about:blank";
+        rodape.style.display = "block";
+    });
+});
+</script>
+
+
 </body>
 </html>

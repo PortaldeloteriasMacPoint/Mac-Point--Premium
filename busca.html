@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Busca Mega-Sena</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="taufic.js"></script>
+</head>
+<body>
+    <h1>Buscar Resultados da Mega-Sena</h1>
+
+    <div>
+        <label for="resultados">Digite os resultados (separados por vírgula):</label>
+        <input type="text" id="resultados" placeholder="Exemplo: 1,2,3,4,5">
+        <button onclick="buscarResultados()">Buscar</button>
+    </div>
+
+    <div>
+        <h3 id="atraso"></h3>
+        <h3 id="forte"></h3>
+    </div>
+
+    <canvas id="grafico" width="400" height="200"></canvas>
+    
+    <script>
+        function buscarResultados() {
+            const inputResultados = document.getElementById('resultados').value;
+            const resultados = inputResultados.split(',').map(num => parseInt(num.trim()));
+
+            if (resultados.length === 0 || resultados.some(isNaN)) {
+                alert('Por favor, insira números válidos separados por vírgula.');
+                return;
+            }
+
+            adicionarResultados(resultados);
+        }
+    </script>
+</body>
+</html>
+

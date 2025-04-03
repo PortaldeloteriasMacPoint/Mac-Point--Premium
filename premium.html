@@ -379,34 +379,29 @@ Hello ...  Bem-vindo (a) ao Portal de Loterias Mac Point! • Saudações e obri
         });
     };
 </script>
- <script>   
-const allowedEmailHashed = "e99a18c428cb38d5f260853678922e03"; // Hash do e-mail autorizado
-
-function hashEmail(email) {
-    return CryptoJS.MD5(email.trim().toLowerCase()).toString();
-}
-
-function getUserEmail() {
-    return sessionStorage.getItem("userEmail");
-}
-
+<script>
 function checkConsoleAccess() {
-    const userEmail = getUserEmail();
-    if (!userEmail || hashEmail(userEmail) !== allowedEmailHashed) {
-        document.body.innerHTML = `
-            <div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: red; display: flex; justify-content: center; align-items: center; text-align: center;">
-                <div style="background: black; color: white; padding: 20px; border-radius: 10px; border: 2px solid black; font-family: Arial, sans-serif;">
-                    <h1 style="color: white; text-shadow: 2px 2px 0 black;">⚠️ Console Detectado! 🔒</h1>
-                    <p style="color: red; text-shadow: 1px 1px 0 white;">Acesso negado!</p>
-                    <p>O sistema detectou uma tentativa de acesso não autorizado.</p>
-                    <p>Você será redirecionado...</p>
-                </div>
-            </div>
-        `;
-        setTimeout(() => {
-            window.location.href = "login.html";
-        }, 3000);
-    }
+    fetch('verifica_email.php')
+        .then(response => response.json())
+        .then(data => {
+            if (!data.autorizado) {
+                document.body.innerHTML = `
+                    <div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.9); display: flex; justify-content: center; align-items: center; text-align: center; z-index: 9999;">
+                        <div style="background: red; color: white; padding: 20px; border-radius: 10px; border: 2px solid black; font-family: Arial, sans-serif; max-width: 80%; box-shadow: 0 0 10px black;">
+                            <h1 style="color: white; text-shadow: 2px 2px 0 black;">⚠️ Console Detectado! 🔒</h1>
+                            <p style="color: yellow; text-shadow: 1px 1px 0 black; font-weight: bold;">Acesso Negado!</p>
+                            <p>O sistema detectou uma tentativa de acesso não autorizado.</p>
+                            <p style="font-weight: bold; color: white;">Sua conta está bloqueada.</p>
+                            <p>Você será redirecionado...</p>
+                        </div>
+                    </div>
+                `;
+                setTimeout(() => {
+                    window.location.href = "login.html";
+                }, 3000);
+            }
+        })
+        .catch(error => console.error('Erro ao verificar acesso:', error));
 }
 
 window.addEventListener("keydown", (e) => {
@@ -420,16 +415,8 @@ window.addEventListener("contextmenu", (e) => {
     e.preventDefault();
     checkConsoleAccess();
 });
-
-</script>
-
-
- 
-
-
-
-
- <script>
+</script> 
+    <script>
         document.addEventListener("DOMContentLoaded", () => {
 const fotoSalva = localStorage.getItem("fotoUsuario");
             if (fotoSalva) {

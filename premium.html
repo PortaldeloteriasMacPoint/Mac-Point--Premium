@@ -379,104 +379,52 @@ Hello ...  Bem-vindo (a) ao Portal de Loterias Mac Point! • Saudações e obri
         });
     };
 </script>
-document.addEventListener('keydown', function (event) {
-    if (event.key === 'F12' || (event.ctrlKey && event.shiftKey && event.key === 'I')) {
-        verificarAcesso();
+ <script>   
+const allowedEmailHashed = "e99a18c428cb38d5f260853678922e03"; // Hash do e-mail autorizado
+
+function hashEmail(email) {
+    return CryptoJS.MD5(email.trim().toLowerCase()).toString();
+}
+
+function getUserEmail() {
+    return sessionStorage.getItem("userEmail");
+}
+
+function checkConsoleAccess() {
+    const userEmail = getUserEmail();
+    if (!userEmail || hashEmail(userEmail) !== allowedEmailHashed) {
+        document.body.innerHTML = `
+            <div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: red; display: flex; justify-content: center; align-items: center; text-align: center;">
+                <div style="background: black; color: white; padding: 20px; border-radius: 10px; border: 2px solid black; font-family: Arial, sans-serif;">
+                    <h1 style="color: white; text-shadow: 2px 2px 0 black;">⚠️ Console Detectado! 🔒</h1>
+                    <p style="color: red; text-shadow: 1px 1px 0 white;">Acesso negado!</p>
+                    <p>O sistema detectou uma tentativa de acesso não autorizado.</p>
+                    <p>Você será redirecionado...</p>
+                </div>
+            </div>
+        `;
+        setTimeout(() => {
+            window.location.href = "login.html";
+        }, 3000);
+    }
+}
+
+window.addEventListener("keydown", (e) => {
+    if (e.key === "F12" || (e.ctrlKey && e.shiftKey && e.key === "I")) {
+        e.preventDefault();
+        checkConsoleAccess();
     }
 });
 
-document.addEventListener('contextmenu', function (event) {
-    event.preventDefault();
-    verificarAcesso();
+window.addEventListener("contextmenu", (e) => {
+    e.preventDefault();
+    checkConsoleAccess();
 });
 
-function verificarAcesso() {
-    fetch('verificar_usuario.php')
-        .then(response => response.json())
-        .then(data => {
-            const emailsAutorizados = [
-                "5e884898da28047151d0e56f8dc6292773603d0d6aabbddbc3fbb8db",
-                "1f3870be274f6c49b3e31a0c6728957f1d639e38",
-                "9f9d51bc70ef21ca5c14f307980a29d8ef15b16f",
-                "d2d0714f014d9781c8d05d6c659c3a98f8c2a1c4"
-            ];
-            if (!emailsAutorizados.includes(data.emailHash)) {
-                bloquearAcesso();
-            }
-        });
-}
+</script>
 
-function bloquearAcesso() {
-    localStorage.setItem('console_bloqueado', 'true');
-    window.location.href = 'login.html';
-}
 
-window.onload = function () {
-    if (localStorage.getItem('console_bloqueado') === 'true') {
-        exibirAlerta();
-    }
-};
-
-function exibirAlerta() {
-    document.body.innerHTML = `
-        <div class="container">
-            <div class="icons">⚠️🕵🏻‍♂️🔒</div>
-            <h1>Console Detectado!</h1>
-            <p>Acesso Negado</p>
-        </div>
-        <style>
-            body {
-                background-color: #111;
-                font-family: Arial, sans-serif;
-                text-align: center;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-                margin: 0;
-                padding: 0;
-            }
-            .container {
-                background-color: red;
-                padding: 5vw;
-                border-radius: 2vw;
-                border: 0.5vw solid black;
-                box-shadow: 0 0 2vw rgba(0, 0, 0, 0.7);
-                animation: piscando 1s infinite alternate;
-                max-width: 90%;
-            }
-            h1 {
-                font-size: 3vw;
-                color: white;
-                text-shadow: -0.3vw -0.3vw 0 black, 0.3vw -0.3vw 0 black, -0.3vw 0.3vw 0 black, 0.3vw 0.3vw 0 black;
-                margin-bottom: 2vw;
-            }
-            p {
-                font-size: 2vw;
-                color: black;
-                font-weight: bold;
-                text-shadow: -0.2vw -0.2vw 0 white, 0.2vw -0.2vw 0 white, -0.2vw 0.2vw 0 white, 0.2vw 0.2vw 0 white;
-            }
-            .icons {
-                font-size: 4vw;
-                margin-bottom: 1vw;
-            }
-            @keyframes piscando {
-                0% { opacity: 1; }
-                100% { opacity: 0.5; }
-            }
-            @media (max-width: 600px) {
-                h1 { font-size: 5vw; }
-                p { font-size: 4vw; }
-                .container {
-                    padding: 8vw;
-                    border-radius: 4vw;
-                }
-                .icons { font-size: 6vw; }
-            }
-        </style>
-    `;
-}
+ 
 
 
 

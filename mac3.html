@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificação</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
+            color: white;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .loading-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 8px solid transparent;
+            border-top: 8px solid #00f;
+            border-right: 8px solid #004;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        p {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style> 
+<script src="script.js"></script>
+ <script src="proteção.js"></script>
+<script>
+// Bloqueia F12, Ctrl+Shift+I e clique com botão direito
+document.addEventListener("keydown", function(event) {
+  if (event.key === "F12" || (event.ctrlKey && event.shiftKey && event.key === "I")) {
+    event.preventDefault();
+  }
+});
+
+document.addEventListener("contextmenu", function(event) {
+  event.preventDefault();
+});
+
+// Detecta se DevTools está aberto e redireciona
+setInterval(function() {
+  if (window.outerWidth - window.innerWidth > 100 || window.outerHeight - window.innerHeight > 100) {
+    alert("Console detectado! Acesso negado.");
+    window.location.href = "bloqueado.html";
+  }
+}, 1000);
+</script>
+
+
+
+<script type="module">
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+        authDomain: "mac-projeto-4e552.firebaseapp.com",
+        projectId: "mac-projeto-4e552",
+        storageBucket: "mac-projeto-4e552.appspot.com",
+        messagingSenderId: "537330451519",
+        appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Verifica o status de autenticação ao carregar a página
+    window.onload = () => {
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                // Usuário autenticado, exibe o conteúdo protegido
+                document.getElementById("protectedContent").style.display = "block";
+            } else {
+                // Redireciona para a página de login se não estiver autenticado
+                window.location.href = "index.html";
+            }
+        });
+    };
+    </script>
+ <script>
+        window.onload = function() {
+            let messages = [
+                "Aguarde um pouco...",
+                "Verificando a página...",
+                "Página atualizada!"
+            ];
+            let messageIndex = 0;
+            let messageElement = document.getElementById("status-message");
+
+            function updateMessage() {
+                if (messageIndex < messages.length) {
+                    messageElement.textContent = messages[messageIndex];
+                    messageIndex++;
+                    setTimeout(updateMessage, 1500); // Troca a mensagem a cada 1.5s
+                } else {
+                    setTimeout(() => {
+                        fetch('pagina2.html', { method: 'HEAD' })
+                            .then(response => {
+                                if (response.ok) {
+                                    window.location.href = 'resultados.html';
+                                } else {
+                                    window.location.href = 'premium.html';
+                                }
+                            })
+                            .catch(() => {
+                                window.location.href = 'premium.html';
+                            });
+                    }, 1000);
+                }
+            }
+            updateMessage();
+        };
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="loading-circle"></div>
+        <p id="status-message">Aguarde um pouco...</p>
+    </div>
+</body>
+</html>

@@ -1,8 +1,9 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <title>MacPoint</title>
     <style>
         * {
@@ -19,18 +20,17 @@
             align-items: center;
             position: relative;
         }
-
-        .borda-superior {
+  .borda-superior {
             width: 100%;
-            background-color: darkgreen;
+            background-color: #355E3B ;
             color: white;
 
 font-family: Impact, sans-serif;
             font-size: 24px;
             font-weight: bold;
-            padding: 15px;
+            padding: 10px;
             display: flex;
-            align-items: center;
+align-items: center;
             justify-content: space-between;
             position: fixed;
             top: 0;
@@ -40,7 +40,7 @@ font-family: Impact, sans-serif;
   1px 1px 0px black, 
   -1px -1px 0px black, 
   1px -1px 0px black, 
-  -1px 1px 0px black;
+-1px 1px 0px black;
           border: 5px solid black
         }
    .icone-container {
@@ -48,8 +48,7 @@ font-family: Impact, sans-serif;
             align-items: center;
             gap: 10px;
         }
-
-        .foto-icone, .icone {
+ .foto-icone, .icone {
             width: 40px;
             height: 40px;
             border-radius: 50%;
@@ -60,8 +59,7 @@ font-family: Impact, sans-serif;
             background-color: white;
             cursor: pointer;
         }
-
-        .foto-icone img {
+ .foto-icone img {
             width: 100%;
             height: 100%;
             border-radius: 50%;
@@ -71,18 +69,25 @@ font-family: Impact, sans-serif;
             position: absolute;
             top: 60px;
             right: 10px;
-            background: black ;
+           background: #355E3B;
             padding: 10px;
             border-radius: 5px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+           border:  2px solid black;
             z-index: 1001;
+   
         }
 
         .submenu h3 {
-            color: #007777;
+            color: white;
 font-weight: bold;
             text-align: center;
-            border-bottom: 1px solid white ;
+            border-bottom: 2px solid black;
+        text-shadow: 
+1px 1px 0px black, 
+-1px -1px 0px black, 
+  1px -1px 0px black, 
+  -1px 1px 0px black;  
+        
         }
 
         .submenu button {
@@ -90,19 +95,20 @@ font-weight: bold;
             width: 100%;
             padding: 5px;
             margin-top: 5px;
-            background: white ;
+            background: red;
             border: 2px solid White ;
             border-radius: 5px;
             cursor: pointer;
-            collor: white;
+          color: white;
+         
         }
 .menu-lateral {
             width: 250px;
-            background: darkgreen ;
+            background-color: #355E3B;
             position: fixed;
-            left: -250px;
+           left: -250px;
             top: 70px;
-            height: calc(100vh - 70px); /* Ajustando para não ultrapassar a altura da tela */
+height: calc(100vh - 70px); /* Ajustando para não ultrapassar a altura da tela */
             overflow-y: auto;/* Garante que a barra de rolagem apareça se necessário */
             transition: left 0.3s;
             padding: 10px;
@@ -112,47 +118,88 @@ font-weight: bold;
   1px 1px 0px white , 
   -1px -1px 0px white , 
   1px -1px 0px white , 
-  -1px 1px 0px white ; 
-    color: white; 
-        }
-        
+  -1px 1px 0px white ;  
+   }
+ /* Estilo do título do menu com a seta */
+.menu-item {
+    padding: 15px;
+    background: #355E3B;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+/* Estilo do submenu */
+.submenu-vip {
+    display: none; /* Inicialmente escondido */
+    padding-left: 20px;
+    background: white  ;
+    width: 100%;
+}
+.submenu-vip.open {
+    display: block; /* Exibe o submenu */
+}
+
+      
 .menu-lateral::-webkit-scrollbar {
-    width: 10px;
+    width: 10px; 
 }
 
 .menu-lateral::-webkit-scrollbar-thumb {
-    background: white ;
-    border: 2px solid black ;
-    border-radius: 5px;
+    background: White;
+    border: 1px solid black;
+    border-radius: 2px; 
 }
 
 .menu-lateral::-webkit-scrollbar-track {
-    background: darkorange;
+    background: #34495e;
     border-left: 2px solid black;
+  
 }
-
 .menu-lateral {
-    scrollbar-color: black white;
+    scrollbar-color: black;
 }
   .menu-lateral h3 {
-            color: white  ;
-            font-weight: bold;
-            border-bottom: 5px solid black;
-            text-align: center;
-            font-size: 24px;
-         z-index:1001;
-        }
+    color: black;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 10px 0;
+margin-bottom: 10px;
+    margin-top: 10px;
+    text-align: center;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-bottom: 5px solid white;
+    border: 2px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.menu-lateral h3 i {
+    margin-left: 10px;
+}
+
+
+
+.menu-lateral h3 i {
+    margin-left: 10px;
+}
 .menu-lateral button {
             display: block;
             width: 100%;
             padding: 10px;
             margin-top: 5px;
-            background: black;
-            border: 2px solid white;
+            background: white ;
+            border: 2px solid black;
             border-radius: 5px;
             cursor: pointer;
+            font-size: 15px;
+            font-family: 'Roboto', sans-serif;
         z-index: 1001;  
-    color: white;
+  color: black;
+  font-weight: bold; /* Deixa o texto em negrito */
         }
 .iframe-container {
             width: 100%;
@@ -160,7 +207,7 @@ font-weight: bold;
             position: absolute;
             top: 60px;
             left: 0;
-            z-index: 999;
+   z-index: 999;
             display: none;
         }
 .iframe-container iframe {
@@ -171,120 +218,139 @@ font-weight: bold;
         .content {
             position: relative;
             z-index: 1000;
-        }
-
-    .capa-container {
-        width: 100%;
-        height: auto;
-        margin-top: 70px;
-        background-color: black ;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .foto-capa {
-        width: 100%;
-        max-height: 60vh;
-        object-fit: cover;
-    }
-
-    .descricao {
-        width: 100%;
-        max-width: 800px;
-        text-align: center;
-        color: white  ;
-        padding: 20px;
-        background: rgba(0, 0, 0, 0.8);
-        margin-top: -5px;
-    }
-
-    .descricao h1 {
-        font-size: 28px;
-        margin-bottom: 10px;
-    }
-
-    .descricao p {
-        font-size: 18px;
-        line-height: 1.5;
-    }
-
-    @media (max-width: 768px) {
-        .descricao h1 {
-            font-size: 22px;
-        }
-
-        .descricao p {
-            font-size: 16px;
-        }
-        }
-
-
-
-
-
-
-footer {
-    background-color: #004d00; /* Verde escuro */
-    color: white;
-    text-align: center;
-    padding: 10px 0;
-    font-size: 14px;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    border-top: 1px solid black; /* Contorno preto leve */
-}
-      </style>
+      
+.menu-lateral button.active {
+    background-color: green;
+    border-color: yellow;
+    color: black;
+}        
+</style>
 </head>
 <body>
-    <div class="borda-superior">
-        <span>🍀 MAC POINT </span>
+  <div class="borda-superior">
+        <span>🍀 Mac Point</span>
         <div class="icone-container">
             <div class="foto-icone" onclick="escolherFoto()">
-                <img id="fotoUsuario" src="Screenshot_20250322-201229-1.jpg" alt="Foto do Usuário">
+                <img id="fotoUsuario" src="default.jpg" alt="Foto do Usuário">
             </div>
             <div class="foto-icone" onclick="toggleSubmenu()">⚙️</div>
             <div class="icone" onclick="toggleMenu()">☰</div>
         </div>
     </div>
-
-    <div class="submenu" id="submenuConfig">
+ <div class="submenu" id="submenuConfig">
         <h3>Configurações</h3>
         <button onclick="logout()">Sair</button>
     </div>
-<div class="capa-container">
-    <img src="Screenshot_20250112-173043-1.jpg" alt="Foto de Capa" class="foto-capa">
-    <div class="descricao">
-        <h1>Bem-vindo (a) ao PORTAL de LOTERIAS MAC POINT. </h1>
-          </div>
-</div>
-   <footer>
-    <p>© Copyrith 2025 / O Portal de Loterias Mac Point é uma plataforma independente,não possui vínculo com a Caixa Econômica Federal  - Todos os direitos reservados</p>
-</footer> 
-    <div class="menu-lateral" id="menuLateral">
-        <h3>Menu Free</h3>
-        <button onclick="abrirIframe('home.html')">Início </button>
-        <button onclick="abrirIframe('modalidades.html')">Modalidades</button>
-<button onclick="abrirIframe('resulados.html')">Resultados Recentes </button>
-      <button onclick="abrirIframe('simuladores .html')">Simuladores</button>
-        <button onclick="abrirIframe('gerador .html')">Gerador  Jogos</button>
-     <button onclick="abrirIframe('desdobramentos .html')">Desdobramentos  </button>
-      <button onclick="abrirIframe('comunidade .html')">Foŕum da Comunidade</button>
-        <h3>🏆 Área Vip 🏆</h3>
-        <button onclick="abrirIframe('pagina4.html')">Plano Premium</button>
-      <button onclick="abrirIframe('pagina4.html')">Plano Premium</button>
- <button onclick="abrirIframe('pagina5.html')">Plano Master </button>
-    </div>
+<div class="menu-lateral" id="menuLateral">
+    <h3>✨ Menu Free ✨</h3>
+    <button onclick="abrirIframe('home.html')">Início </button>
+    <button onclick="abrirIframe('mac1.html')">Modalidades</button>
+    <button onclick="abrirIframe('mac2.html')">Resultados Recentes </button>
+    <button onclick="abrirIframe('mac3.html')">Simuladores</button>
+    <button onclick="abrirIframe('mac4.html')">Gerador Jogos</button>
+ <button onclick="abrirIframe('mac5.html')">Desdobramentos  </button>
+    <button onclick="abrirIframe('mac6.html')">Fórum da Comunidade</button>
+     <!-- Novo Título e Submenu -->
+    <h3 class="menu-item" onclick="toggleSubmenuVip()" style="cursor: pointer;">Histórico de Resultados▼ </h3>
+    <div class="submenu-vip" id="submenuVip" style="display: none; background: white; padding: 10px; border: 2px solid black;">
+        <button onclick="abrirIframe('vip1.html')">🍀 MEGA SENA </button>
+        <button onclick="abrirIframe('vip2.html')">🍀 QUINA </button>
+        <button onclick="abrirIframe('vip3.html')">🍀 LOTOFÁCIL </button>
+     <button onclick="abrirIframe('vip4.html')"> 🍀 DUPLA SENA</button>
+    <button onclick="abrirIframe('vip5.html')">🍀 + MILIONÁRIA </button>
+      <button onclick="abrirIframe('vip6.html')">🍀 LOTOMANIA </button>
+       </div>
+      <h3>🏆 Área Vip Premium 🏆</h3>
+    <button onclick="abrirIframe('pagina1.html')"> 🥉Plano Mensal</button>
+    <button onclick="abrirIframe('pagina2.html')"> 🥈Plano  Trimensal </button>
+   <button onclick="abrirIframe('pagina3.html')"> 🥇Plano  Anual</button>
+   <!-- Novo Título e Submenu -->
+  
+    <h3>BOA SORTE</h3>
+  </div>
+  <!-- Container principal (fora do menu lateral) -->
+<div id="conteudo-principal" style="position: relative; width: 100%; text-align: center; background-color: black; color: white; min-height: 100vh;">
+  
+<!-- Foto de Capa -->
+<div id="foto-capa" style="
+    width: 100vw; 
+    height: 80vh;
+    background: url('https://i.postimg.cc/nLDN41SL/Screenshot-20250112-173043-1.jpg') no-repeat center center; 
+    background-size: cover;
+    background-color: black;
+    margin-top: 60px;                   
+"></div>
 
+<!-- Boas-Vindas com Efeito Contínuo -->
+<div id="boas-vindas-container" style="
+    width: 100%;
+    overflow: hidden;
+    background-color: #355E3B;
+    padding: 10px 0;
+    white-space: nowrap;
+    position: relative;">
+    <div id="boas-vindas-texto" style="
+        display: inline-block;
+        color: white;
+        font-size: 30px;
+        font-weight: bold;
+        padding-left: 100%;
+        border: 5px solid black  ">
+Hello ...  Bem-vindo (a) ao Portal de Loterias Mac Point! • Saudações e obrigado por estar conosco • 
+      
+    </div>
+</div>
+
+<style>
+@keyframes deslizar-continuo {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+#boas-vindas-texto {
+    animation: deslizar-continuo 10s linear infinite;
+  text-shadow: 
+  1px 1px 0px black, 
+  -1px -1px 0px black, 
+  1px -1px 0px black, 
+-1px 1px 0px black;
+          
+}
+</style>
+</div>
+<!-- Aviso -->
+<div id="aviso" style="background-color: black; color: white; padding: 10px; margin: 20px auto; width: 95%; max-width: 1200px; border-radius: 10px; border: 2px solid white; text-align: center; animation: pulsar 2s infinite ease-in-out;">
+    <p style="background-color: white; color: black; padding: 10px; border-radius: 8px;">⚠️ AVISO IMPORTANTE!</p>
+    <strong>O PORTAL DE LOTERIAS MAC POINT é uma plataforma independente, não possui vínculo com a Caixa Econômica Federal</strong>
+</div>
+
+<style>
+@keyframes pulsar {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 1; }
+}
+</style>
+
+ <!-- Rodapé (fixo na parte inferior) -->
+    <footer id="rodape" style="background:  #355E3B ; color: white; padding: 15px; width: 100%;text-shadow: 
+  1px 1px 0px black, 
+ -1px -1px 0px black, 
+  1px -1px 0px black, 
+-1px 1px 0px black;
+  position: center;border: 5px solid black ">
+        <p>&copy; copyrigth 2025 Portal de Loterias Mac Point.Todos direitos reservados.</p>
+    </footer> 
     <div class="iframe-container" id="iframeContainer">
         <iframe id="iframe" src="home.html" width="100%" height="100%"></iframe>
-    </div>
-
-    <input type="file" id="inputFoto" style="display: none;" onchange="salvarFoto(event)">
-<script src="script.js"></script>  
-    <script src="proteção.js"></script>  
-    <script type="module">
+    </div <input type="file" id="inputFoto" style="display: none;" onchange="salvarFoto(event)">
+<script src="script.js"></script>
+<script src="proteção.js"></script>
+ <script type="module">
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
 
@@ -313,8 +379,8 @@ footer {
         });
     };
 </script>
-    <script>
-        // Bloqueia F12, Ctrl+Shift+I e clique com botão direito
+<script>
+// Bloqueia F12, Ctrl+Shift+I e clique com botão direito
 document.addEventListener("keydown", function(event) {
   if (event.key === "F12" || (event.ctrlKey && event.shiftKey && event.key === "I")) {
     event.preventDefault();
@@ -332,10 +398,10 @@ setInterval(function() {
     window.location.href = "bloqueado.html";
   }
 }, 1000);
-    </script>
-      <script>
+</script>  
+ <script>
         document.addEventListener("DOMContentLoaded", () => {
-            const fotoSalva = localStorage.getItem("fotoUsuario");
+const fotoSalva = localStorage.getItem("fotoUsuario");
             if (fotoSalva) {
                 document.getElementById("fotoUsuario").src = fotoSalva;
             }
@@ -345,13 +411,12 @@ setInterval(function() {
             const submenu = document.getElementById('submenuConfig');
             submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
         }
-
-        function toggleMenu() {
+function toggleMenu() {
             const menuLateral = document.getElementById('menuLateral');
             const iframeContainer = document.getElementById('iframeContainer');
             const currentLeft = menuLateral.style.left === '0px' ? '-250px' : '0px';
             menuLateral.style.left = currentLeft;
-            iframeContainer.style.zIndex = currentLeft === '0px' ? '0' : '999';
+            iframeContainer.style.zIndex = currentLeft === '0px' ?  '0' : '999';
         }
 
         function abrirIframe(url) {
@@ -361,7 +426,15 @@ setInterval(function() {
             iframeContainer.style.display = 'block';
             document.getElementById('menuLateral').style.left = '-250px';
         }
+function toggleSubmenuVip() {
+    const submenu = document.getElementById('submenuVip');
+    const titulo = document.querySelector('.menu-item');
 
+    const isOpen = submenu.style.display === 'block';
+submenu.style.display = isOpen ? 'none' : 'block';
+
+    titulo.innerHTML = isOpen ? "Histórico de Resultados ▼" : " Histórico de Resultados ▲";
+}
         function escolherFoto() {
             document.getElementById('inputFoto').click();
         }
@@ -371,7 +444,7 @@ setInterval(function() {
             const file = event.target.files[0];
             const reader = new FileReader();
             reader.onloadend = function() {
-                const imgData = reader.result;
+      const imgData = reader.result;
                 fotoUsuario.src = imgData;
                 localStorage.setItem("fotoUsuario", imgData);
             };
@@ -382,34 +455,7 @@ setInterval(function() {
 
         function logout() {
             window.location.href = 'logout.html';
-        }
-    
-document.addEventListener("DOMContentLoaded", function() {
-    const rodape = document.getElementById("rodape");
-    const iframe = document.getElementById("frame");
-    const botoes = document.querySelectorAll(".botao-secao");
-
-    botoes.forEach(botao => {
-        botao.addEventListener("click", function() {
-            const secao = botao.getAttribute("data-secao");
-            iframe.src = secao + ".html";
-            rodape.style.display = "none";
-        });
-    });
-
-    iframe.onload = function() {
-        if (iframe.contentDocument && iframe.contentDocument.body.childElementCount > 0) {
-            rodape.style.display = "none";
-        }
-    };
-
-    document.getElementById("botao-inicio").addEventListener("click", function() {
-        iframe.src = "about:blank";
-        rodape.style.display = "block";
-    });
-});
+        }   
 </script>
-
-
 </body>
 </html>

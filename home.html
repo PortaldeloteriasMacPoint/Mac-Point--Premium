@@ -15,59 +15,61 @@
 
         .cover-photo {
             width: 100%;
-            height: 350px;
+            height: 60vh;
             background-image: url('Screenshot_20250112-173043-1.jpg');
             background-size: cover;
             background-position: center;
         }
 
-        .welcome-message {
-            margin-top: 10px;
-            font-size: 24px;
-            font-weight: bold;
-            color: #20b2aa;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 15px;
-            background-color: #2c3e50;
-            padding: 8px 15px;
-            border-radius: 8px;
-            width: fit-content;
+        .welcome-container {
+            margin-top: -30px;
+            background-color: white;
+            color: black;
+            border-radius: 15px;
+            border: 2px solid black;
+            padding: 20px;
+            width: 60%;
+            max-width: 400px;
             margin-left: auto;
             margin-right: auto;
             position: relative;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .user-name {
+            color: #20b2aa;
         }
 
         .gear-icon {
-            margin-left: 10px;
+            position: absolute;
+            top: 10px;
+            right: 15px;
             cursor: pointer;
         }
 
         .submenu {
             display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
             background-color: #2c3e50;
             padding: 10px;
             border-radius: 8px;
-            width: 200px;
-            text-align: left;
+            width: 60%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            margin-top: 10px;
         }
 
-        .submenu button {
-            display: block;
+        .submenu button, .save-name-btn {
             background: none;
             border: none;
             color: white;
-            padding: 8px;
+            padding: 10px;
             cursor: pointer;
             width: 100%;
-            text-align: left;
+            font-size: 18px;
+            font-weight: bold;
         }
 
         .submenu button:hover {
@@ -76,12 +78,20 @@
 
         .edit-name-container {
             display: none;
+            background-color: #2c3e50;
+            padding: 10px;
+            border-radius: 8px;
+            width: 60%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
             margin-top: 10px;
         }
 
         .edit-name-input {
             width: 80%;
-            padding: 5px;
+            padding: 8px;
             border: none;
             border-radius: 5px;
             background-color: white;
@@ -89,29 +99,28 @@
         }
 
         .save-name-btn {
-            margin-top: 5px;
+            margin-top: 10px;
             background-color: #d35400;
             border: none;
-            padding: 5px 10px;
+            padding: 8px 12px;
             border-radius: 5px;
             color: white;
             cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
     <div class="cover-photo"></div>
 
-    <div class="welcome-message" id="welcome-message">
-        Bem-vindo, <span id="user-name">Usuário</span>!
+    <div class="welcome-container">
+        <span>Bem-vindo, <span class="user-name" id="user-name">Usuário</span>!</span>
+        <span class="gear-icon" onclick="toggleSubMenu()">⚙️</span>
     </div>
 
-    <div class="user-info">
-        <span class="gear-icon" onclick="toggleSubMenu()">⚙️</span>
-        <div class="submenu" id="submenu">
-            <button onclick="showEditName()">Editar Nome</button>
-            <button onclick="logout()">Sair</button>
-        </div>
+    <div class="submenu" id="submenu">
+        <button onclick="showEditName()">Editar Perfil</button>
     </div>
 
     <div class="edit-name-container" id="edit-name-container">
@@ -126,8 +135,8 @@
         }
 
         function showEditName() {
-            document.getElementById("edit-name-container").style.display = "block";
             document.getElementById("submenu").style.display = "none";
+            document.getElementById("edit-name-container").style.display = "block";
         }
 
         function saveName() {
@@ -137,11 +146,6 @@
                 document.getElementById("user-name").textContent = newName;
                 document.getElementById("edit-name-container").style.display = "none";
             }
-        }
-
-        function logout() {
-            alert("Você saiu com sucesso!");
-            window.location.href = "login.html";
         }
 
         window.onload = () => {

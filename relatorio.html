@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Relatório de Tendências</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #008080;
+      font-family: Arial, sans-serif;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      background-color: #001a12;
+      padding: 20px;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 800px;
+      box-sizing: border-box;
+    }
+    h1 {
+      text-align: center;
+    }
+    select, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    .relatorio {
+      margin-top: 20px;
+      background-color: rgba(255,255,255,0.1);
+      padding: 15px;
+      border-radius: 10px;
+    }
+    ul {
+      padding-left: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Relatório - Mega-Sena</h1>
+    <label>Escolha a quantidade de concursos:</label>
+    <select id="quantidade">
+      <option value="10">Últimos 10</option>
+      <option value="20">Últimos 20</option>
+      <option value="30">Últimos 30</option>
+      <option value="50">Últimos 50</option>
+      <option value="100">Últimos 100</option>
+    </select>
+    <button onclick="gerarRelatorio()">Gerar Relatório</button>
+    <div class="relatorio" id="saida"></div>
+  </div>
+
+  <script src="tendencias.js"></script>
+  <script>
+    const primosFixos = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59];
+    const fibonacciFixos = [1, 2, 3, 5, 8, 13, 21, 34, 55];
+
+    function gerarRelatorio() {
+      const qtd = parseInt(document.getElementById('quantidade').value);
+      const ultimos = resultadosMegaSena.slice(0, qtd);
+      const dezenas = ultimos.flatMap(c => c.dezenas);
+
+      const soma = dezenas.reduce((a, b) => a + b, 0);
+      const pares = dezenas.filter(n => n % 2 === 0);
+      const impares = dezenas.filter(n => n % 2 !== 0);
+      const primos = dezenas.filter(n => primosFixos.includes(n));
+      const fibonacci = dezenas.filter(n => fibonacciFixos.includes(n));
+
+      const contagem = {};
+      dezenas.forEach(n => contagem[n] = (contagem[n] || 0) + 1);
+      const maisFrequentes = Object.entries(contagem)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 6);
+      const menosFrequentes = Object.entries(contagem)
+        .sort((a, b) => a[1] - b[1])
+        .slice(0, 6);
+
+      document.getElementById('saida').innerHTML = `
+        <h2>Relatório:</h2>
+        <ul>
+          <li><strong>Total de concursos analisados:</strong> ${qtd}</li>
+          <li><strong>Soma total das dezenas:</strong> ${soma}</li>
+          <li><strong>Números pares:</strong> ${pares.length} (${pares.join(', ')})</li>
+          <li><strong>Números ímpares:</strong> ${impares.length} (${impares.join(', ')})</li>
+          <li><strong>Primos:</strong> ${primos.length} (${primos.join(', ')})</li>
+          <li><strong>Fibonacci:</strong> ${fibonacci.length} (${fibonacci.join(', ')})</li>
+          <li><strong>Mais sorteados:</strong> ${maisFrequentes.map(e => e[0] + ' (' + e[1] + 'x)').join(', ')}</li>
+          <li><strong>Menos sorteados:</strong> ${menosFrequentes.map(e => e[0] + ' (' + e[1] + 'x)').join(', ')}</li>
+        </ul>
+      `;
+    }
+  </script>
+</body>
+</html>
+

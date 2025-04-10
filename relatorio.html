@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Relatório de Tendências</title>
+  <style>
+    body {
+      background-color: #008080;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .container {
+      margin-top: 30px;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      width: 95%;
+      max-width: 1200px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    select, button {
+      font-size: 16px;
+      padding: 10px;
+      margin: 5px;
+      border-radius: 6px;
+    }
+
+    button {
+      background-color: #cc5500;
+      color: white;
+      border: 2px solid black;
+      cursor: pointer;
+    }
+
+    #relatorio {
+      margin-top: 30px;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 10px;
+      max-height: 70vh;
+      overflow-y: auto;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 768px) {
+      #relatorio {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Relatório de Tendências - Mega-Sena</h1>
+    
+    <label for="quantidade">Quantidade de Concursos:</label>
+    <select id="quantidade">
+      <option value="10">Últimos 10</option>
+      <option value="20">Últimos 20</option>
+      <option value="30">Últimos 30</option>
+      <option value="40">Últimos 40</option>
+      <option value="50">Últimos 50</option>
+      <option value="100">Últimos 100</option>
+    </select>
+    
+    <button onclick="gerarRelatorio()">Gerar Relatório</button>
+
+    <div id="relatorio"></div>
+  </div>
+
+  <script src="tendencias.js"></script>
+  <script>
+    const primos = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59];
+    const fibonacci = [1, 2, 3, 5, 8, 13, 21, 34, 55];
+
+    function gerarRelatorio() {
+      const qtd = parseInt(document.getElementById("quantidade").value);
+      const ultimos = tendencias.slice(-qtd).reverse();
+
+      let todasDezenas = [];
+      ultimos.forEach(c => todasDezenas.push(...c.dezenas));
+
+      let pares = todasDezenas.filter(n => n % 2 === 0).length;
+      let impares = todasDezenas.length - pares;
+      let primosQtd = todasDezenas.filter(n => primos.includes(n)).length;
+      let fiboQtd = todasDezenas.filter(n => fibonacci.includes(n)).length;
+      let soma = todasDezenas.reduce((a, b) => a + b, 0);
+
+      let freq = {};
+      todasDezenas.forEach(n => freq[n] = (freq[n] || 0) + 1);
+      let maisFrequentes = Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 6);
+      let menosFrequentes = Object.entries(freq).sort((a, b) => a[1] - b[1]).slice(0, 6);
+
+      const relatorio = `
+        <strong>Total de concursos analisados:</strong> ${qtd}<br><br>
+        <strong>Total de dezenas:</strong> ${todasDezenas.length}<br>
+        <strong>Soma total das dezenas:</strong> ${soma}<br>
+        <strong>Pares:</strong> ${pares}<br>
+        <strong>Ímpares:</strong> ${impares}<br>
+        <strong>Primos:</strong> ${primosQtd}<br>
+        <strong>Fibonacci:</strong> ${fiboQtd}<br><br>
+        <strong>Dezenas mais frequentes:</strong><br>
+        ${maisFrequentes.map(x => `• ${x[0]} (${x[1]}x)`).join("<br>")}<br><br>
+        <strong>Dezenas menos frequentes:</strong><br>
+        ${menosFrequentes.map(x => `• ${x[0]} (${x[1]}x)`).join("<br>")}
+      `;
+
+      document.getElementById("relatorio").innerHTML = relatorio;
+    }
+  </script>
+</body>
+</html>
+

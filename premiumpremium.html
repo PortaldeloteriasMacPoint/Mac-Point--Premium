@@ -56,27 +56,24 @@
          
              }
 
-
 .foto-descricao-container {
   margin-top: 80px; /* altura da borda superior */
   width: 100%;
-  min-height: calc(100vh - 80px); /* ocupa o restante da tela */
+  height: calc(100vh - 80px); /* ocupa toda a altura da tela abaixo da borda */
+  background-color: #000;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  padding: 20px;
-  background: linear-gradient(to bottom, #f0f0f0, #e0e0e0);
+background-color: black;
+
 }
 
 .foto-capa {
   width: 100%;
-  max-width: 900px;
-  height: auto;
-  border-radius: 10px;
+  height: 100%;
   object-fit: cover;
-  margin-bottom: 20px;
+  display: block;
 }
 
 
@@ -282,14 +279,22 @@ border-radius: 50%;
     <div class="icone" onclick="toggleMenu()">☰</div>
   </div>
   
-<div class="foto-descricao-container">
-  <img src=" https://i.postimg.cc/tTMTLLdH/Screenshot-20250112-173043-1.jpg " alt="Foto de capa" class="foto-capa">  
-<div class="palpite-container">
-  <h2 class="titulo-palpite" onclick="gerarPalpite()">PALPITE DA SORTE</h2>
-  <div id="dezenas-container" class="dezenas-circulos">
-    <div class="circulo"><span class="trevo">🍀</span></div>
-    <div class="circulo"><span class="trevo">🍀</span></div> 
 
+<div class="foto-descricao-container">
+  <img src="Screenshot_20250112-173043-1.jpg" alt="Foto de capa" class="foto-capa">  
+
+  <div class="palpite-container">
+    <h2 class="titulo-palpite" onclick="gerarPalpite()">PALPITE DA SORTE</h2>
+    <div id="dezenas-container" class="dezenas-circulos">
+      <div class="circulo"><span class="trevo">🍀 </span></div>
+      <div class="circulo"><span class="trevo">🍀</span></div>
+      <div class="circulo"><span class="trevo">🍀</span></div>
+      <div class="circulo"><span class="trevo">🍀</span></div>
+      <div class="circulo"><span class="trevo">🍀</span></div>
+      <div class="circulo"><span class="trevo">🍀</span></div>
+    </div>
+  </div>
+</div>
   <div class="menu-lateral" id="menuLateral">
    <div class="foto-container" onclick="selecionarNovaFoto()">
   <img id="fotoUsuario" src="default.jpg" alt="Foto do Usuário">

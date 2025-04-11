@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Consulta de Concursos</title>
+  <style>
+    body {
+      background: #111;
+      color: white;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    input, button {
+      padding: 10px;
+      font-size: 1rem;
+      margin: 10px;
+    }
+
+    .resultado {
+      margin-top: 20px;
+      padding: 10px;
+      background: #222;
+      border-radius: 5px;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem;
+      }
+
+      input, button {
+        width: 100%;
+        max-width: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Buscar Concurso</h1>
+  <input type="number" id="inputBusca" placeholder="Digite o número do concurso">
+  <button id="btnBuscar">Buscar</button>
+  <div id="resultado" class="resultado"></div>
+
+  <script>
+    const inputBusca = document.getElementById("inputBusca");
+    const btnBuscar = document.getElementById("btnBuscar");
+    const resultadoDiv = document.getElementById("resultado");
+    let concursos = [];
+
+    fetch("https://premium-portaldeloteriasmacpoint.onrender.com/api.php")
+      .then(res => res.json())
+      .then(data => {
+        concursos = data;
+
+        btnBuscar.addEventListener("click", () => {
+          const val = inputBusca.value.trim();
+          if (val === "") return;
+
+          const encontrado = concursos.find(c => c.Concurso == val);
+          if (encontrado) {
+            resultadoDiv.innerHTML = `
+              <p><strong>Concurso:</strong> ${encontrado.Concurso}</p>
+              <p><strong>Dezenas:</strong> ${encontrado.Resultado.join(', ')}</p>
+            `;
+          } else {
+            resultadoDiv.innerHTML = "<p>Concurso não encontrado.</p>";
+          }
+        });
+      })
+      .catch(err => {
+        resultadoDiv.innerHTML = "<p>Erro ao carregar os dados.</p>";
+        console.error("Erro ao buscar:", err);
+      });
+  </script>
+</body>
+</html>
+
+

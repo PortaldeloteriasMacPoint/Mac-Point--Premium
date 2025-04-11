@@ -1,0 +1,209 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🍀 Mega Sena - Histórico de Resultados</title>
+  <link rel="stylesheet" href="style.css">
+  
+  <style>
+    body {
+      background: darkcyan ;
+      color: white   ;
+      font-family: sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      text-shadow: -0.1vw -0.1vw 0 black, 0.1vw -0.1vw 0 black , -0.1vw 0.1vw 0 black , 0.1vw 0.1vw 0 black ;
+    }
+
+    .container {
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+color: white   ;
+      text-shadow: -0.2vw -0.2vw 0 black, 0.2vw -0.2vw 0 black , -0.2vw 0.2vw 0 black , 0.2vw 0.2vw 0 black ;
+    
+      
+      }
+
+    input, button, label {
+      margin: 10px 8px;
+      padding: 10px;
+      font-size: 1,1em;
+      border: none;
+      border-radius: 5px;
+      border: 2px solid black ;
+    }
+
+    input[type="text"] {
+      width: 300px;
+      color:black ;
+      
+    }
+
+    button {
+      background: Orange;
+      color: black;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #00e676;
+    }
+
+    .sorteio {
+      background: #001a12;
+     margin: 20px 0;
+      padding: 15px;
+      border-radius: 10px;
+     border: 5px solid black ;
+    }
+
+   .titulo-sorteio {
+      font-size: 1.2em;
+      margin-bottom: 15px;
+     border: 2px solid White  ;
+     border-radius: 30%;
+    text-shadow: -0.2vw -0.2vw 0 White , 0.2vw -0.2vw 0 White, -0.2vw 0.2vw 0 White , 0.2vw 0.2vw 0 White; 
+    }
+
+    .numeros {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      text-shadow: -0.2vw -0.2vw 0 black, 0.2vw -0.2vw 0 black, -0.2vw 0.2vw 0 black , 0.2vw 0.2vw 0 black;
+ }
+
+    .bola {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      line-height: 40px;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      border: 2px solid black;
+    }
+
+
+
+
+
+    /* Cores das bolas */
+    .vermelha  { background: #e53935; }
+    .amarela   { background: #fdd835; color: black; }
+     .verde     { background: #43a047; }
+    .marrom    { background: #8d6e63; }
+    .azul      { background: #1e88e5; }
+    .rosa      { background: #ec407a; }
+    .preta     { background: #212121; }
+    .cinza     { background: #757575; }
+    .laranja   { background: #fb8c00; }
+    .branca    { background: #eeeeee; color: black; }
+
+    .relatorio {
+      margin-top: 10px;
+      font-size: 0.9em;
+      color: black ;
+     border: 2px solid white ;
+      border-radius: 10px;
+      color: white;
+     
+    }
+
+    @media (max-width: 600px) {
+      .numeros { gap: 6px; }
+      .bola { width: 35px; height: 35px; line-height: 35px; font-size: 14px; }
+    }
+</style>
+
+</head>
+<body>
+  <div class="container">
+    <h1>Histórico de Resultados da Mega-Sena</h1>
+    
+    <!-- Campo para pesquisa (opcional futuramente) -->
+    <div>
+      <label for="pesquisa">Pesquisar concurso:</label>
+      <input type="text" id="pesquisa" placeholder="Ex: 2650">
+      <button onclick="pesquisarConcurso()">Buscar</button>
+    </div>
+
+    <!-- Resultados carregados aqui -->
+    <div id="resultados"></div>
+
+    <!-- Rodapé simples -->
+    <footer style="margin-top: 30px; font-size: 0.8em;">
+      Fonte: <a href="https://github.com/guilhermeasn/loteria.json" target="_blank" style="color: yellow;">GitHub - loteria.json</a>
+    </footer>
+  </div>
+
+  <script src="mega.js"></script>
+  <script>
+    const url = "https://raw.githubusercontent.com/guilhermeasn/loteria.json/master/data/megasena.json";
+
+    async function carregarTodosResultados() {
+      try {
+        const resposta = await fetch(url);
+        const dadosAPI = await resposta.json();
+
+        const resultados = dadosAPI.map(item => ({
+          concurso: item.concurso,
+          data: item.data,
+          dezenas: item.dezenas.map(Number)
+        }));
+
+        resultados.sort((a, b) => b.concurso - a.concurso);
+
+        exibirResultados(resultados);
+        window.todosResultados = resultados; // Armazena globalmente para busca
+      } catch (erro) {
+        console.error("Erro ao carregar os resultados:", erro);
+      }
+    }
+
+    function exibirResultados(resultados) {
+      const container = document.getElementById("resultados");
+      container.innerHTML = "";
+
+      resultados.forEach(r => {
+        const div = document.createElement("div");
+        div.className = "sorteio";
+        div.innerHTML = `
+          <div class="titulo-sorteio">Concurso ${r.concurso} - ${r.data}</div>
+          <div class="numeros">
+            ${r.dezenas.map(n => `<div class="bola ${definirCor(n)}">${n}</div>`).join("")}
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function definirCor(numero) {
+      if (numero <= 10) return "vermelha";
+      if (numero <= 20) return "amarela";
+      if (numero <= 30) return "verde";
+      if (numero <= 40) return "azul";
+      if (numero <= 50) return "laranja";
+      return "rosa";
+    }
+
+    function pesquisarConcurso() {
+      const termo = document.getElementById("pesquisa").value.trim();
+      const resultado = window.todosResultados.find(r => r.concurso.toString() === termo);
+      if (resultado) {
+        exibirResultados([resultado]);
+      } else {
+        alert("Concurso não encontrado.");
+      }
+    }
+
+    carregarTodosResultados();
+  </script>
+</body>
+</html>
+
+

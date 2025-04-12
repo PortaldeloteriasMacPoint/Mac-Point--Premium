@@ -1,165 +1,168 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Consulta de Concursos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
-      background: darkcyan;
+      background: #111;
       color: white;
-      font-family: sans-serif;
-      text-align: center;
+      font-family: Arial, sans-serif;
       margin: 0;
-      padding: 0;
-      text-shadow: -0.1vw -0.1vw 0 black, 0.1vw -0.1vw 0 black, -0.1vw 0.1vw 0 black, 0.1vw 0.1vw 0 black;
-    }
-
-    .container {
-      padding: 20px;
-      max-width: 800px;
-      margin: auto;
-      text-shadow: -0.2vw -0.2vw 0 black, 0.2vw -0.2vw 0 black, -0.2vw 0.2vw 0 black, 0.2vw 0.2vw 0 black;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     h1 {
-      font-size: 2rem;
-      margin-bottom: 20px;
+      margin-bottom: 1rem;
     }
 
     input, button {
-      margin: 10px 8px;
       padding: 10px;
-      font-size: 1.1em;
-      border: 2px solid black;
-      border-radius: 5px;
+      font-size: 1rem;
+      margin: 5px;
     }
 
-    input[type="number"] {
-      width: 300px;
-      color: black;
-    }
-
-    button {
-      background: orange;
-      color: black;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #00e676;
-    }
-
-    .resultado {
-      background: #001a12;
-      margin: 20px auto;
-      padding: 15px;
-      border-radius: 10px;
-      border: 5px solid black;
-      max-width: 500px;
-    }
-
-    .relatorio {
-      margin-top: 15px;
-      padding: 10px;
+    .resultado, .relatorio {
       background: #222;
+      padding: 1rem;
       border-radius: 10px;
-      border: 2px solid white;
-      color: white;
-      font-size: 0.95em;
-    }
-
-    .titulo-relatorio {
-      font-size: 1.2em;
-      margin-bottom: 10px;
-      border: 2px solid white;
-      border-radius: 30%;
-      padding: 5px 10px;
-      display: inline-block;
-      text-shadow: -0.2vw -0.2vw 0 white, 0.2vw -0.2vw 0 white, -0.2vw 0.2vw 0 white, 0.2vw 0.2vw 0 white;
+      margin-top: 1rem;
+      width: 100%;
+      max-width: 700px;
     }
 
     .numeros {
       display: flex;
-      justify-content: center;
       flex-wrap: wrap;
+      justify-content: center;
       gap: 10px;
-      margin-top: 10px;
+      margin-bottom: 1rem;
     }
 
     .bola {
-      width: 40px;
-      height: 40px;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
-      line-height: 40px;
-      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #000;
       font-weight: bold;
-      font-size: 16px;
-      border: 2px solid black;
-      background: #1e88e5;
+      font-size: 1.2rem;
     }
 
-    @media (max-width: 600px) {
-      .numeros {
-        gap: 6px;
-      }
+    /* Cores por coluna (último dígito) */
+    .c1 { background: red; color: #fff; }
+    .c2 { background: yellow; }
+    .c3 { background: green; color: #fff; }
+    .c4 { background: brown; color: #fff; }
+    .c5 { background: blue; color: #fff; }
+    .c6 { background: pink; }
+    .c7 { background: black; color: #fff; }
+    .c8 { background: gray; }
+    .c9 { background: orange; }
+    .c0 { background: white; }
 
+    @media (max-width: 768px) {
       .bola {
-        width: 35px;
-        height: 35px;
-        line-height: 35px;
-        font-size: 14px;
-      }
-
-      input[type="number"] {
-        width: 90%;
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
       }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>🍀 Mega Sena</h1>
-    <input type="number" id="inputBusca" placeholder="Digite o número do concurso" />
-    <button id="btnBuscar">Buscar</button>
-    <div id="resultado" class="resultado"></div>
-  </div>
+  <h1>Consulta de Concurso</h1>
+  <input type="number" id="inputBusca" placeholder="Digite o número do concurso">
+  <button id="btnBuscar">Buscar</button>
+
+  <div id="resultado" class="resultado"></div>
+  <div id="relatorio" class="relatorio"></div>
 
   <script>
     const inputBusca = document.getElementById("inputBusca");
     const btnBuscar = document.getElementById("btnBuscar");
     const resultadoDiv = document.getElementById("resultado");
+    const relatorioDiv = document.getElementById("relatorio");
     let concursos = [];
 
     fetch("https://premium-portaldeloteriasmacpoint.onrender.com/api.php")
       .then(res => res.json())
       .then(data => {
         concursos = data;
+        mostrarUltimosConcursos();
 
         btnBuscar.addEventListener("click", () => {
           const val = inputBusca.value.trim();
           if (val === "") return;
 
-          const encontrado = concursos.find(c => c.Concurso == val);
-          if (encontrado) {
-            const bolas = encontrado.Resultado.map(num => `<div class="bola">${num}</div>`).join('');
-            resultadoDiv.innerHTML = `
-              <div class="titulo-relatorio">Resultado</div>
-              <div class="relatorio">
-                <p><strong>Concurso:</strong> ${encontrado.Concurso}</p>
-                <div class="numeros">${bolas}</div>
-              </div>
-            `;
-          } else {
-            resultadoDiv.innerHTML = "<p>Concurso não encontrado.</p>";
-          }
+          const concurso = concursos.find(c => c.Concurso == val);
+          if (concurso) mostrarResultado(concurso);
+          else resultadoDiv.innerHTML = "<p>Concurso não encontrado.</p>";
         });
       })
       .catch(err => {
         resultadoDiv.innerHTML = "<p>Erro ao carregar os dados.</p>";
-        console.error("Erro ao buscar:", err);
       });
+
+    function mostrarUltimosConcursos() {
+      const ultimos = concursos.slice(-10).reverse();
+      ultimos.forEach(c => mostrarResultado(c, true));
+    }
+
+    function mostrarResultado(c, resumo = false) {
+      const nums = c.Resultado;
+      const ordenados = [...nums].sort((a, b) => a - b);
+
+      const bolasHTML = ordenados.map(n => {
+        const col = n % 10;
+        return `<div class="bola c${col}">${n}</div>`;
+      }).join("");
+
+      const div = document.createElement("div");
+      div.className = "resultado";
+      div.innerHTML = `
+        <p><strong>Concurso:</strong> ${c.Concurso}</p>
+        <div class="numeros">${bolasHTML}</div>
+      `;
+      if (!resumo) resultadoDiv.innerHTML = div.innerHTML;
+
+      if (!resumo) gerarRelatorio(nums);
+    }
+
+    function gerarRelatorio(nums) {
+      const soma = nums.reduce((a, b) => a + b, 0);
+      const pares = nums.filter(n => n % 2 === 0).length;
+      const impares = nums.length - pares;
+      const primos = nums.filter(ehPrimo);
+      const fibonacci = nums.filter(ehFibonacci);
+
+      relatorioDiv.innerHTML = `
+        <h3>Relatório do Concurso</h3>
+        <p><strong>Total:</strong> ${soma}</p>
+        <p><strong>Pares:</strong> ${pares} | <strong>Ímpares:</strong> ${impares}</p>
+        <p><strong>Primos:</strong> ${primos.join(', ') || 'Nenhum'}</p>
+        <p><strong>Fibonacci:</strong> ${fibonacci.join(', ') || 'Nenhum'}</p>
+      `;
+    }
+
+    function ehPrimo(n) {
+      if (n < 2) return false;
+      for (let i = 2; i <= Math.sqrt(n); i++)
+        if (n % i === 0) return false;
+      return true;
+    }
+
+    function ehFibonacci(n) {
+      const isPerfectSquare = x => Number.isInteger(Math.sqrt(x));
+      return isPerfectSquare(5 * n * n + 4) || isPerfectSquare(5 * n * n - 4);
+    }
   </script>
 </body>
 </html>
-
 

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Resultado do MegaCinema</title>
+  <style>
+    body {
+      background: #2e8b57; /* Verde oceânico */
+      color: white;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      color: white;
+      text-shadow: 1px 1px 2px black;
+      margin-bottom: 1.5rem;
+      font-size: 2rem;
+    }
+
+    input, button {
+      padding: 10px;
+      font-size: 1rem;
+      margin: 10px;
+      border-radius: 8px;
+      border: 1px solid black;
+    }
+
+    button {
+      background-color: #cc6600; /* Laranja escuro */
+      color: black;
+      font-weight: bold;
+      text-shadow: 1px 1px 1px black;
+      cursor: pointer;
+    }
+
+    .resultado {
+      margin-top: 20px;
+      padding: 20px;
+      background: #1f1f1f;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 800px;
+      text-align: center;
+    }
+
+    .bola {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      border-radius: 50%;
+      margin: 5px;
+      font-weight: bold;
+      color: white;
+      text-shadow: 1px 1px 1px black;
+    }
+
+    .amarela { background-color: #FFD700; }
+    .vermelha { background-color: #FF0000; }
+    .verde { background-color: #00FF00; }
+    .marrom { background-color: #8B4513; }
+    .azul { background-color: #1E90FF; }
+    .rosa { background-color: #FF69B4; }
+    .preta { background-color: #000000; }
+    .cinza { background-color: #A9A9A9; }
+    .laranja { background-color: #FFA500; }
+    .branca { background-color: #F8F8FF; color: black; }
+
+    .relatorio {
+      margin-top: 20px;
+      padding: 15px;
+      background: #333;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 800px;
+      text-align: center;
+    }
+
+    .relatorio h2 {
+      margin-bottom: 1rem;
+      text-shadow: 1px 1px 2px black;
+    }
+
+    @media (max-width: 768px) {
+      input, button {
+        width: 100%;
+        max-width: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Resultado do MegaCinema</h1>
+  <input type="number" id="inputBusca" placeholder="Digite o número do concurso">
+  <button id="btnBuscar">Buscar</button>
+  <div id="resultado" class="resultado"></div>
+
+  <script>
+    const inputBusca = document.getElementById("inputBusca");
+    const btnBuscar = document.getElementById("btnBuscar");
+    const resultadoDiv = document.getElementById("resultado");
+    let concursos = [];
+
+    fetch("https://premium-portaldeloteriasmacpoint.onrender.com/api.php")
+      .then(res => res.json())
+      .then(data => {
+        concursos = data;
+
+        btnBuscar.addEventListener("click", () => {
+          const val = inputBusca.value.trim();
+          if (val === "") return;
+
+          const concurso = concursos.find(c => c.Concurso == val);
+          if (concurso) {
+            const dezenas = concurso.Resultado.map(n => parseInt(n));
+            const bolasHTML = dezenas.map(n => `<div class="bola ${getCorClasse(n)}">${n}</div>`).join("");
+            const soma = dezenas.reduce((a, b) => a + b, 0);
+            const pares = dezenas.filter(n => n % 2 === 0).length;
+            const impares = dezenas.length - pares;
+            const primos = dezenas.filter(n => isPrimo(n)).length;
+            const fibonacci = dezenas.filter(n => isFibonacci(n)).length;
+            const borda = dezenas.filter(n => [1,2,3,6,7,8,11,12,13,16,17,18,21,22,23,26,27,28].includes(n)).length;
+            const centro = dezenas.filter(n => [5,6,7,10,11,12,15,16,17,20,21,22,25,26,27].includes(n)).length;
+
+            resultadoDiv.innerHTML = `
+              <h2>Concurso ${concurso.Concurso}</h2>
+              <div>${bolasHTML}</div>
+              <div class="relatorio">
+                <h2>Relatório</h2>
+                <p>Soma: ${soma}</p>
+                <p>Pares: ${pares} | Ímpares: ${impares}</p>
+                <p>Primos: ${primos}</p>
+                <p>Fibonacci: ${fibonacci}</p>
+                <p>Borda do Volante: ${borda}</p>
+                <p>Volante Central: ${centro}</p>
+              </div>
+            `;
+          } else {
+            resultadoDiv.innerHTML = "<p>Concurso não encontrado.</p>";
+          }
+        });
+      })
+      .catch(err => {
+        resultadoDiv.innerHTML = "<p>Erro ao carregar os dados.</p>";
+        console.error("Erro ao buscar:", err);
+      });
+
+    function getCorClasse(num) {
+      const coluna = num % 10;
+      if (coluna === 1) return 'vermelha';
+      if (coluna === 2) return 'amarela';
+      if (coluna === 3) return 'verde';
+      if (coluna === 4) return 'marrom';
+      if (coluna === 5) return 'azul';
+      if (coluna === 6) return 'rosa';
+      if (coluna === 7) return 'preta';
+      if (coluna === 8) return 'cinza';
+      if (coluna === 9) return 'laranja';
+      return 'branca';
+    }
+
+    function isPrimo(n) {
+      if (n < 2) return false;
+      for (let i = 2; i <= Math.sqrt(n); i++) {
+        if (n % i === 0) return false;
+      }
+      return true;
+    }
+
+    function isFibonacci(n) {
+      const isPerfectSquare = x => Number.isInteger(Math.sqrt(x));
+      return isPerfectSquare(5 * n * n + 4) || isPerfectSquare(5 * n * n - 4);
+    }
+  </script>
+</body>
+</html>
+
+

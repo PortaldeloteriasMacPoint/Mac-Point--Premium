@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🍀 Mega Sena- Histórico de Resultados </title>
+  <style>
+    body {
+      background: darkcyan ;
+      color: white   ;
+      font-family: sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      text-shadow: -0.1vw -0.1vw 0 black, 0.1vw -0.1vw 0 black , -0.1vw 0.1vw 0 black , 0.1vw 0.1vw 0 black ;
+    }
+
+    .container {
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+color: white   ;
+      text-shadow: -0.2vw -0.2vw 0 black, 0.2vw -0.2vw 0 black , -0.2vw 0.2vw 0 black , 0.2vw 0.2vw 0 black ;
+    
+      
+      }
+
+    input, button, label {
+      margin: 10px 8px;
+      padding: 10px;
+      font-size: 1,1em;
+      border: none;
+      border-radius: 5px;
+      border: 2px solid black ;
+    }
+
+    input[type="text"] {
+      width: 300px;
+      color:black ;
+      
+    }
+
+    button {
+      background: Orange;
+      color: black;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #00e676;
+    }
+
+    .sorteio {
+      background: #001a12;
+     margin: 20px 0;
+      padding: 15px;
+      border-radius: 10px;
+     border: 5px solid black ;
+    }
+
+   .titulo-sorteio {
+      font-size: 1.2em;
+      margin-bottom: 15px;
+     border: 2px solid White  ;
+     border-radius: 30%;
+    text-shadow: -0.2vw -0.2vw 0 White , 0.2vw -0.2vw 0 White, -0.2vw 0.2vw 0 White , 0.2vw 0.2vw 0 White; 
+    }
+
+    .numeros {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      text-shadow: -0.2vw -0.2vw 0 black, 0.2vw -0.2vw 0 black, -0.2vw 0.2vw 0 black , 0.2vw 0.2vw 0 black;
+ }
+
+    .bola {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      line-height: 40px;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      border: 2px solid black;
+    }
+
+
+
+
+
+    /* Cores das bolas */
+    .vermelha  { background: #e53935; }
+    .amarela   { background: #fdd835; color: black; }
+     .verde     { background: #43a047; }
+    .marrom    { background: #8d6e63; }
+    .azul      { background: #1e88e5; }
+    .rosa      { background: #ec407a; }
+    .preta     { background: #212121; }
+    .cinza     { background: #757575; }
+    .laranja   { background: #fb8c00; }
+    .branca    { background: #eeeeee; color: black; }
+
+    .relatorio {
+      margin-top: 10px;
+      font-size: 0.9em;
+      color: black ;
+     border: 2px solid white ;
+      border-radius: 10px;
+      color: white;
+     
+    }
+
+    @media (max-width: 600px) {
+      .numeros { gap: 6px; }
+      .bola { width: 35px; height: 35px; line-height: 35px; font-size: 14px; }
+    }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>🍀 Mega Sena</h1>
+
+    <input id="inputBusca" type="text" placeholder="🔎 Digite o número do concurso aqui" />
+<button id="btnBuscar">Buscar</button>
+<div id="resultado"></div>
+  <script>
+    const inputBusca = document.getElementById("inputBusca");
+    const btnBuscar = document.getElementById("btnBuscar");
+    const resultadoDiv = document.getElementById("resultado");
+    let concursos = [];
+
+    fetch("https://premium-portaldeloteriasmacpoint.onrender.com/api.php")
+      .then(res => res.json())
+      .then(data => {
+        concursos = data;
+
+        btnBuscar.addEventListener("click", () => {
+          const val = inputBusca.value.trim();
+          if (val === "") return;
+
+          const encontrado = concursos.find(c => c.Concurso == val);
+          if (encontrado) {
+            resultadoDiv.innerHTML = `
+              <p><strong>Concurso:</strong> ${encontrado.Concurso}</p>
+              <p><strong>Dezenas:</strong> ${encontrado.Resultado.join(', ')}</p>
+            `;
+          } else {
+            resultadoDiv.innerHTML = "<p>Concurso não encontrado.</p>";
+          }
+        });
+      })
+      .catch(err => {
+        resultadoDiv.innerHTML = "<p>Erro ao carregar os dados.</p>";
+        console.error("Erro ao buscar:", err);
+      });
+  </script></body>
+</html>

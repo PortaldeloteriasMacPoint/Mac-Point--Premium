@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🍀 Mega Sena - Histórico de Resultados</title>
+  <style>
+    body {
+      background: darkcyan;
+      color: white;
+      font-family: sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      text-shadow: -0.1vw -0.1vw 0 black, 0.1vw -0.1vw 0 black, -0.1vw 0.1vw 0 black, 0.1vw 0.1vw 0 black;
+    }
+    .container {
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+    .busca-container {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .busca-container input, .busca-container button {
+      padding: 12px;
+      font-size: 1em;
+      border: 2px solid black;
+      border-radius: 8px;
+    }
+    .busca-container input {
+      width: 250px;
+      color: black;
+      background: white;
+    }
+    .busca-container button {
+      background-color: orange;
+      color: black;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .busca-container button:hover {
+      background-color: #00e676;
+    }
+    .sorteio {
+      background: #001a12;
+      margin: 20px auto;
+      padding: 20px;
+      border-radius: 10px;
+      border: 5px solid black;
+      max-width: 600px;
+    }
+    .titulo-sorteio {
+      font-size: 1.2em;
+      margin-bottom: 15px;
+      border: 2px solid white;
+      border-radius: 30%;
+      padding: 10px;
+    }
+    .numeros {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .bola {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      line-height: 45px;
+      font-weight: bold;
+      font-size: 16px;
+      border: 2px solid black;
+      color: white;
+    }
+    .vermelha { background: #e53935; }
+    .amarela { background: #fdd835; color: black; }
+    .verde { background: #43a047; }
+    .marrom { background: #8d6e63; }
+    .azul { background: #1e88e5; }
+    .rosa { background: #ec407a; }
+    .preta { background: #212121; }
+    .cinza { background: #757575; }
+    .laranja { background: #fb8c00; color: black; }
+    .branca { background: #eeeeee; color: black; }
+    .relatorio {
+      margin-top: 30px;
+      padding: 20px;
+      background: #001a12;
+      border-radius: 15px;
+      border: 2px solid white;
+      font-size: 1em;
+      text-align: left;
+      color: white;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .relatorio h2 {
+      text-align: center;
+      margin-top: 0;
+    }
+    @media (max-width: 600px) {
+      .numeros { gap: 6px; }
+      .bola { width: 35px; height: 35px; line-height: 35px; font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🍀 Mega Sena</h1>
+    <div class="busca-container">
+      <input id="inputBusca" type="text" placeholder="🔎 Digite o número do concurso" />
+      <button id="btnBuscar">Buscar</button>
+    </div>
+    <div id="resultado"></div>
+    <div id="relatorio"></div>  
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const btnBuscar = document.getElementById('btnBuscar');
+      const inputBusca = document.getElementById('inputBusca');
+      const resultadoDiv = document.getElementById('resultado');
+      const relatorioDiv = document.getElementById('relatorio');
+
+      btnBuscar.addEventListener('click', () => {
+        const concurso = inputBusca.value.trim();
+        if (!concurso || isNaN(concurso)) {
+          alert("Por favor, digite um número de concurso válido.");
+          return;
+        }
+        buscarConcurso(concurso);
+      });
+
+      function buscarConcurso(concurso) {
+        const url = `https://premium-portaldeloteriasmacpoint.onrender.com/api.php?concurso=${concurso}`;
+
+        fetch(url)
+          .then(response => {
+            if (!response.ok) throw new Error('Concurso não encontrado!');
+            return response.json();
+          })
+          .then(data => {
+            if (!data.dezenas || !Array.isArray(data.dezenas)) {
+              throw new Error('Dados inválidos recebidos da API.');
+            }
+
+            const dezenas = data.dezenas.map(num => parseInt(num));
+            exibirNumeros(data.numero, data.dataApuracao, dezenas);
+            gerarRelatorio(dezenas);
+          })
+          .catch(error => {
+            resultadoDiv.innerHTML = `<p>${error.message}</p>`;
+            relatorioDiv.innerHTML = '';
+          });
+      }
+
+      function exibirNumeros(numero, data, dezenas) {
+        resultadoDiv.innerHTML = `
+          <div class="sorteio">
+            <div class="titulo-sorteio">Concurso ${numero} - ${data}</div>
+            <div class="numeros">
+              ${dezenas.map(n => `<div class="bola ${definirCor(n)}">${n.toString().padStart(2, '0')}</div>`).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      function definirCor(numero) {
+        if (numero <= 10) return 'vermelha';
+        if (numero <= 20) return 'amarela';
+        if (numero <= 30) return 'verde';
+        if (numero <= 40) return 'marrom';
+        if (numero <= 50) return 'azul';
+        return 'rosa';
+      }
+
+      function gerarRelatorio(dezenas) {
+        const pares = dezenas.filter(n => n % 2 === 0).length;
+        const impares = dezenas.length - pares;
+        const soma = dezenas.reduce((a, b) => a + b, 0);
+
+        const intervalos = {
+          '01-10': 0,
+          '11-20': 0,
+          '21-30': 0,
+          '31-40': 0,
+          '41-50': 0,
+          '51-60': 0,
+        };
+
+        dezenas.forEach(num => {
+          if (num <= 10) intervalos['01-10']++;
+          else if (num <= 20) intervalos['11-20']++;
+          else if (num <= 30) intervalos['21-30']++;
+          else if (num <= 40) intervalos['31-40']++;
+          else if (num <= 50) intervalos['41-50']++;
+          else intervalos['51-60']++;
+        });
+
+        relatorioDiv.innerHTML = `
+          <div class="relatorio">
+            <h2>Relatório Estatístico</h2>
+            <p><strong>Pares:</strong> ${pares}</p>
+            <p><strong>Ímpares:</strong> ${impares}</p>
+            <p><strong>Soma total:</strong> ${soma}</p>
+            <p><strong>Intervalos:</strong></p>
+            <ul>
+              ${Object.entries(intervalos).map(([intervalo, count]) => `<li>${intervalo}: ${count}</li>`).join('')}
+            </ul>
+          </div>
+        `;
+      }
+    });
+  </script>
+</body>
+</html>
+

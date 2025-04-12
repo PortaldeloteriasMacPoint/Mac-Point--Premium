@@ -1,221 +1,198 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>🍀 Mega Sena - Histórico de Resultados</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Relatório do Concurso</title>
   <style>
     body {
-      background: darkcyan;
-      color: white;
-      font-family: sans-serif;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    h2 {
       text-align: center;
-      margin: 0;
-      padding: 0;
-      text-shadow: -0.1vw -0.1vw 0 black, 0.1vw -0.1vw 0 black, -0.1vw 0.1vw 0 black, 0.1vw 0.1vw 0 black;
     }
-    .container {
-      padding: 20px;
-      max-width: 900px;
-      margin: auto;
-    }
-    .busca-container {
+    .resultados, .relatorio {
       margin-top: 20px;
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .busca-container input, .busca-container button {
-      padding: 12px;
-      font-size: 1em;
-      border: 2px solid black;
-      border-radius: 8px;
-    }
-    .busca-container input {
-      width: 250px;
-      color: black;
-      background: white;
-    }
-    .busca-container button {
-      background-color: orange;
-      color: black;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-    .busca-container button:hover {
-      background-color: #00e676;
-    }
-    .sorteio {
-      background: #001a12;
-      margin: 20px auto;
       padding: 20px;
-      border-radius: 10px;
-      border: 5px solid black;
-      max-width: 600px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
-    .titulo-sorteio {
-      font-size: 1.2em;
-      margin-bottom: 15px;
-      border: 2px solid white;
-      border-radius: 30%;
-      padding: 10px;
-    }
-    .numeros {
+    .bolas {
       display: flex;
-      justify-content: center;
       flex-wrap: wrap;
       gap: 10px;
+      justify-content: center;
     }
     .bola {
-      width: 45px;
-      height: 45px;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
-      line-height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-weight: bold;
-      font-size: 16px;
-      border: 2px solid black;
       color: white;
     }
-    .vermelha { background: #e53935; }
-    .amarela { background: #fdd835; color: black; }
-    .verde { background: #43a047; }
-    .marrom { background: #8d6e63; }
-    .azul { background: #1e88e5; }
-    .rosa { background: #ec407a; }
-    .preta { background: #212121; }
-    .cinza { background: #757575; }
-    .laranja { background: #fb8c00; color: black; }
-    .branca { background: #eeeeee; color: black; }
-    .relatorio {
-      margin-top: 30px;
-      padding: 20px;
-      background: #001a12;
-      border-radius: 15px;
-      border: 2px solid white;
-      font-size: 1em;
-      text-align: left;
-      color: white;
-      max-width: 800px;
-      margin-left: auto;
-      margin-right: auto;
+    .relatorio ul {
+      list-style-type: none;
+      padding: 0;
     }
-    .relatorio h2 {
-      text-align: center;
-      margin-top: 0;
+    .relatorio li {
+      margin-bottom: 10px;
     }
-    @media (max-width: 600px) {
-      .numeros { gap: 6px; }
-      .bola { width: 35px; height: 35px; line-height: 35px; font-size: 14px; }
+    .volante {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .coluna {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>🍀 Mega Sena</h1>
-    <div class="busca-container">
-      <input id="inputBusca" type="text" placeholder="🔎 Digite o número do concurso" />
-      <button id="btnBuscar">Buscar</button>
-    </div>
-    <div id="resultado"></div>
-    <div id="relatorio"></div>  
+  <h2>Relatório do Sorteio</h2>
+  <div class="resultados">
+    <label for="concurso">Número do Concurso:</label>
+    <input type="number" id="concurso" placeholder="Exemplo: 34" />
+    <button id="buscar">Buscar</button>
+    <div class="bolas" id="bolas"></div>
   </div>
 
+  <div class="relatorio" id="relatorio"></div>
+
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const btnBuscar = document.getElementById('btnBuscar');
-      const inputBusca = document.getElementById('inputBusca');
-      const resultadoDiv = document.getElementById('resultado');
-      const relatorioDiv = document.getElementById('relatorio');
+    document.getElementById('buscar').addEventListener('click', function() {
+      let concurso = document.getElementById('concurso').value;
+      fetch(`https://premium-portaldeloteriasmacpoint.onrender.com/api.php?concurso=${concurso}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data && data.numeros) {
+            // Exibindo os números sorteados nas bolas coloridas
+            const bolasContainer = document.getElementById('bolas');
+            bolasContainer.innerHTML = ''; // Limpa o conteúdo anterior
+            data.numeros.forEach(numero => {
+              const bola = document.createElement('div');
+              bola.className = 'bola';
+              bola.style.backgroundColor = `hsl(${numero * 10}, 100%, 50%)`; // Cor personalizada
+              bola.textContent = numero;
+              bolasContainer.appendChild(bola);
+            });
 
-      btnBuscar.addEventListener('click', () => {
-        const concurso = inputBusca.value.trim();
-        if (!concurso || isNaN(concurso)) {
-          alert("Por favor, digite um número de concurso válido.");
-          return;
-        }
-        buscarConcurso(concurso);
-      });
+            // Criando o relatório detalhado
+            const relatorioContainer = document.getElementById('relatorio');
+            const repeticoes = {};
+            const intervalos = [0, 0, 0, 0, 0, 0];
+            const saidaPorColuna = [0, 0, 0, 0, 0];
 
-      function buscarConcurso(concurso) {
-        const url = `https://premium-portaldeloteriasmacpoint.onrender.com/api.php?concurso=${concurso}`;
+            // Analisando os números sorteados
+            data.numeros.forEach(numero => {
+              // Contagem de repetição
+              repeticoes[numero] = (repeticoes[numero] || 0) + 1;
 
-        fetch(url)
-          .then(response => {
-            if (!response.ok) throw new Error('Concurso não encontrado!');
-            return response.json();
-          })
-          .then(data => {
-            if (!data.dezenas || !Array.isArray(data.dezenas)) {
-              throw new Error('Dados inválidos recebidos da API.');
-            }
+              // Intervalos (1-10, 11-20, etc.)
+              if (numero >= 1 && numero <= 10) intervalos[0]++;
+              else if (numero >= 11 && numero <= 20) intervalos[1]++;
+              else if (numero >= 21 && numero <= 30) intervalos[2]++;
+              else if (numero >= 31 && numero <= 40) intervalos[3]++;
+              else if (numero >= 41 && numero <= 50) intervalos[4]++;
+              else if (numero >= 51 && numero <= 60) intervalos[5]++;
 
-            const dezenas = data.dezenas.map(num => parseInt(num));
-            exibirNumeros(data.numero, data.dataApuracao, dezenas);
-            gerarRelatorio(dezenas);
-          })
-          .catch(error => {
-            resultadoDiv.innerHTML = `<p>${error.message}</p>`;
-            relatorioDiv.innerHTML = '';
-          });
-      }
+              // Distribuição por coluna (exemplo fictício)
+              if (numero % 5 === 1) saidaPorColuna[0]++;
+              else if (numero % 5 === 2) saidaPorColuna[1]++;
+              else if (numero % 5 === 3) saidaPorColuna[2]++;
+              else if (numero % 5 === 4) saidaPorColuna[3]++;
+              else if (numero % 5 === 5) saidaPorColuna[4]++;
+            });
 
-      function exibirNumeros(numero, data, dezenas) {
-        resultadoDiv.innerHTML = `
-          <div class="sorteio">
-            <div class="titulo-sorteio">Concurso ${numero} - ${data}</div>
-            <div class="numeros">
-              ${dezenas.map(n => `<div class="bola ${definirCor(n)}">${n.toString().padStart(2, '0')}</div>`).join('')}
-            </div>
-          </div>
-        `;
-      }
+            const soma = data.numeros.reduce((acc, num) => acc + num, 0);
+            const media = soma / data.numeros.length;
+            const menor = Math.min(...data.numeros);
+            const maior = Math.max(...data.numeros);
+            const pares = data.numeros.filter(num => num % 2 === 0).length;
+            const impares = data.numeros.filter(num => num % 2 !== 0).length;
 
-      function definirCor(numero) {
-        if (numero <= 10) return 'vermelha';
-        if (numero <= 20) return 'amarela';
-        if (numero <= 30) return 'verde';
-        if (numero <= 40) return 'marrom';
-        if (numero <= 50) return 'azul';
-        return 'rosa';
-      }
+            relatorioContainer.innerHTML = `
+              <h3>📊 Relatório Completo:</h3>
+              <ul>
+                <li>Total de Dezenas: ${data.numeros.length}</li>
+                <li>Pares: ${pares}</li>
+                <li>Ímpares: ${impares}</li>
+                <li>Soma Total: ${soma}</li>
+                <li>Média: ${media.toFixed(2)}</li>
+                <li>Menor Dezena: ${menor}</li>
+                <li>Maior Dezena: ${maior}</li>
+              </ul>
 
-      function gerarRelatorio(dezenas) {
-        const pares = dezenas.filter(n => n % 2 === 0).length;
-        const impares = dezenas.length - pares;
-        const soma = dezenas.reduce((a, b) => a + b, 0);
+              <h3>📊 Repetição das Dezenas:</h3>
+              <ul>
+                ${Object.entries(repeticoes).map(([num, count]) => `<li>Dezena ${num}: Repetida ${count} vez(es)</li>`).join('')}
+              </ul>
 
-        const intervalos = {
-          '01-10': 0,
-          '11-20': 0,
-          '21-30': 0,
-          '31-40': 0,
-          '41-50': 0,
-          '51-60': 0,
-        };
+              <h3>📊 Intervalos:</h3>
+              <ul>
+                <li>1 a 10: ${intervalos[0]} números</li>
+                <li>11 a 20: ${intervalos[1]} números</li>
+                <li>21 a 30: ${intervalos[2]} números</li>
+                <li>31 a 40: ${intervalos[3]} números</li>
+                <li>41 a 50: ${intervalos[4]} números</li>
+                <li>51 a 60: ${intervalos[5]} números</li>
+              </ul>
 
-        dezenas.forEach(num => {
-          if (num <= 10) intervalos['01-10']++;
-          else if (num <= 20) intervalos['11-20']++;
-          else if (num <= 30) intervalos['21-30']++;
-          else if (num <= 40) intervalos['31-40']++;
-          else if (num <= 50) intervalos['41-50']++;
-          else intervalos['51-60']++;
+              <h3>📏 Distribuição nas Colunas:</h3>
+              <ul>
+                <li>Coluna 1: ${saidaPorColuna[0]} números</li>
+                <li>Coluna 2: ${saidaPorColuna[1]} números</li>
+                <li>Coluna 3: ${saidaPorColuna[2]} números</li>
+                <li>Coluna 4: ${saidaPorColuna[3]} números</li>
+                <li>Coluna 5: ${saidaPorColuna[4]} números</li>
+              </ul>
+
+              <h3>🎲 Borda do Volante:</h3>
+              <div class="volante">
+                <div class="coluna">
+                  <h4>Coluna 1</h4>
+                  ${data.numeros.slice(0, 5).map(num => `<div>${num}</div>`).join('')}
+                </div>
+                <div class="coluna">
+                  <h4>Coluna 2</h4>
+                  ${data.numeros.slice(5, 10).map(num => `<div>${num}</div>`).join('')}
+                </div>
+                <div class="coluna">
+                  <h4>Coluna 3</h4>
+                  ${data.numeros.slice(10, 15).map(num => `<div>${num}</div>`).join('')}
+                </div>
+                <div class="coluna">
+                  <h4>Coluna 4</h4>
+                  ${data.numeros.slice(15, 20).map(num => `<div>${num}</div>`).join('')}
+                </div>
+                <div class="coluna">
+                  <h4>Coluna 5</h4>
+                  ${data.numeros.slice(20, 25).map(num => `<div>${num}</div>`).join('')}
+                </div>
+              </div>
+
+              <h3>🎯 Volante Central:</h3>
+              <div class="volante">
+                <div class="coluna">
+                  ${data.numeros.slice(25, 30).map(num => `<div>${num}</div>`).join('')}
+                </div>
+                <div class="coluna">
+                  ${data.numeros.slice(30, 35).map(num => `<div>${num}</div>`).join('')}
+                </div>
+              </div>
+            `;
+          } else {
+            alert("Dados inválidos recebidos da API.");
+          }
         });
-
-        relatorioDiv.innerHTML = `
-          <div class="relatorio">
-            <h2>Relatório Estatístico</h2>
-            <p><strong>Pares:</strong> ${pares}</p>
-            <p><strong>Ímpares:</strong> ${impares}</p>
-            <p><strong>Soma total:</strong> ${soma}</p>
-            <p><strong>Intervalos:</strong></p>
-            <ul>
-              ${Object.entries(intervalos).map(([intervalo, count]) => `<li>${intervalo}: ${count}</li>`).join('')}
-            </ul>
-          </div>
-        `;
-      }
     });
   </script>
 </body>

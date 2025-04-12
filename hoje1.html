@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>Resultado MegaCinema</title>
   <style>
+    /* ESTILO GLOBAL */
     body {
       margin: 0;
       padding: 1rem;
@@ -23,6 +24,7 @@
       text-align: center;
     }
 
+    /* CAMPOS DE ENTRADA E BOTÕES */
     #inputBusca, #btnBuscar {
       padding: 10px;
       font-size: 1rem;
@@ -48,6 +50,7 @@
       cursor: pointer;
     }
 
+    /* BOLINHAS DO RESULTADO */
     .bola {
       display: inline-block;
       width: 40px;
@@ -61,6 +64,7 @@
       font-size: 1rem;
     }
 
+    /* SEÇÕES DO RESULTADO E RELATÓRIO */
     .resultado, .relatorio {
       background: #222;
       padding: 15px;
@@ -75,6 +79,7 @@
       margin: 5px 0;
     }
 
+    /* RESPONSIVIDADE */
     @media (max-width: 768px) {
       .bola {
         width: 30px;
@@ -90,15 +95,20 @@
   </style>
 </head>
 <body>
-  <h1>Resultado do MegaCinema</h1>
+  <h1>🍀Mega Sena - Resultados</h1>
+
+  <!-- INPUT E BOTÕES -->
   <input type="number" id="inputBusca" placeholder="Digite o número do concurso" />
   <button id="btnBuscar">Buscar</button>
   <button id="alternarOrdem">Ordem: Sorteio</button>
+
+  <!-- ÁREAS DE RESULTADO E RELATÓRIO -->
   <div id="resultado" class="resultado"></div>
   <div id="relatorio" class="relatorio"></div>
 
   <script>
     const API_URL = "https://premium-portaldeloteriasmacpoint.onrender.com/api.php";
+
     const resultadoDiv = document.getElementById("resultado");
     const relatorioDiv = document.getElementById("relatorio");
     const inputBusca = document.getElementById("inputBusca");
@@ -113,6 +123,7 @@
       "#e91e63", "#212121", "#95a5a6", "#e67e22", "#ffffff"
     ];
 
+    // Gerar sequência de Fibonacci
     const fibonacci = [0, 1];
     for (let i = 2; i <= 60; i++) {
       fibonacci[i] = fibonacci[i - 1] + fibonacci[i - 2];
@@ -130,7 +141,7 @@
       const primos = dezenas.filter(n => [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59].includes(n)).length;
       const fibo = dezenas.filter(n => fibonacci.includes(n)).length;
       const borda = dezenas.filter(n => [1,2,3,4,5,6,10,11,15,16,20,21,25,26,30,31,35,36,40,41,45,46,50,51,55,56,60].includes(n)).length;
-      const centro = dezenas.filter(n => [7,8,9,12,13,14,17,18,19,22,23,24,27,28,29,32,33,34,37,38,39,42,43,44,47,48,49,52,53,54,57,58,59].includes(n)).length;
+      const centro = dezenas.length - borda;
 
       relatorioDiv.innerHTML = `
         <h3 style="text-align:center;">Relatório</h3>
@@ -146,6 +157,7 @@
     function exibirConcurso(concurso) {
       let dezenas = [...concurso.Resultado];
       if (ordemCrescente) dezenas.sort((a, b) => a - b);
+
       resultadoDiv.innerHTML = `
         <p><strong>Concurso:</strong> ${concurso.Concurso}</p>
         <div>${dezenas.map(n => colorirBola(n)).join('')}</div>
@@ -156,6 +168,7 @@
     btnBuscar.addEventListener("click", () => {
       const val = inputBusca.value.trim();
       if (val === "") return;
+
       const encontrado = concursos.find(c => c.Concurso == val);
       if (encontrado) {
         exibirConcurso(encontrado);
@@ -170,6 +183,7 @@
       btnOrdem.textContent = ordemCrescente ? "Ordem: Crescente" : "Ordem: Sorteio";
     });
 
+    // Carregar dados da API
     fetch(API_URL)
       .then(res => res.json())
       .then(data => {

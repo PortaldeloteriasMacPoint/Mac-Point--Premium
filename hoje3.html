@@ -1,139 +1,249 @@
+
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Painel de Frequência - Mac Point</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Análise de Loterias</title>
   <style>
     body {
       margin: 0;
-      padding: 0;
+      background-color: white;
       font-family: Arial, sans-serif;
-      background-color: #000;
-      color: #fff;
+      color: #001a12;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
-    h1, h2 {
+
+    h1 {
+      color: #008c72;
+      text-shadow: 2px 2px 2px black;
+      margin: 20px 0;
+      font-size: 2em;
+      text-align: center;
+      font-family: Impact, sans-serif;
+      font-weight: bold;
+    }
+
+    .painel {
+      background-color: #001a12;
+      color: white;
+      padding: 20px;
+      border-radius: 12px;
+      text-shadow: 1px 1px 1px black;
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+      width: 90%;
+      max-width: 800px;
       text-align: center;
     }
+
     select, button {
       padding: 10px;
-      margin: 10px;
-      font-size: 16px;
+      margin: 10px 5px;
+      font-size: 1em;
+      border-radius: 8px;
+      border: 2px solid black;
+      background-color: #004d3c;
+      color: white;
+      text-shadow: 1px 1px 1px black;
     }
-    .painel {
-      display: grid;
-      grid-template-columns: repeat(10, 1fr);
-      gap: 10px;
-      max-width: 800px;
-      margin-top: 20px;
-    }
-    .dezena {
-      width: 100%;
-      aspect-ratio: 1;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+
+    button {
+      background-color: #cc5500;
+      color: white;
       font-weight: bold;
-      font-size: 18px;
-      position: relative;
+      text-shadow: 1px 1px black;
     }
-    .frequencia {
-      position: absolute;
-      bottom: -20px;
-      font-size: 12px;
-      color: #ccc;
+
+    button:hover {
+      background-color: #ff6600;
+      cursor: pointer;
     }
-    .atrasadas {
-      margin-top: 30px;
+
+    .quadro {
+      background-color: #008c72;
+      border: 2px solid black;
+      border-radius: 12px;
+      margin-top: 20px;
+      padding: 20px;
+      width: 90%;
+      max-width: 800px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+      text-align: center;
+      color: white;
+      font-weight: bold;
+      text-shadow: 1px 1px black;
+      font-family: Impact, sans-serif;
+    }
+
+    .dezena {
+      display: inline-block;
+      width: 45px;
+      height: 45px;
+      line-height: 45px;
+      margin: 4px;
+      border-radius: 50%;
+      text-align: center;
+      font-weight: bold;
+      border: 2px solid black;
+      font-family: Arial, sans-serif;
+    }
+
+    .loading {
+      display: none;
+      margin-top: 20px;
       text-align: center;
     }
-    .grupo-atrasadas {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
-      margin-top: 10px;
+
+    .loading.active {
+      display: block;
     }
-    /* Cores das bolas por coluna */
-    .col1 { background-color: red; color: white; border: 2px solid black; }
-    .col2 { background-color: yellow; color: black; border: 2px solid black; }
-    .col3 { background-color: green; color: white; border: 2px solid black; }
-    .col4 { background-color: brown; color: white; border: 2px solid black; }
-    .col5 { background-color: blue; color: white; border: 2px solid black; }
-    .col6 { background-color: pink; color: white; border: 2px solid black; }
-    .col7 { background-color: black; color: white; border: 2px solid black; }
-    .col8 { background-color: gray; color: white; border: 2px solid black; }
-    .col9 { background-color: orange; color: black; border: 2px solid black; }
-    .col10 { background-color: white; color: black; border: 2px solid black; }
+
+    .loader {
+      border: 8px solid #f3f3f3;
+      border-top: 8px solid #3498db;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin: auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 1.5em;
+      }
+
+      .painel, .quadro {
+        width: 95%;
+      }
+
+      .dezena {
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 0.9em;
+      }
+    }
   </style>
 </head>
 <body>
-  <h1>Painel de Frequência</h1>
-  <label for="qtd">Escolha a quantidade de concursos:</label>
-  <select id="qtd">
-    <option value="10">10 últimos</option>
-    <option value="20">20 últimos</option>
-    <option value="30">30 últimos</option>
-    <option value="50">50 últimos</option>
-  </select>
-  <button onclick="carregarDados()">Buscar</button>
 
-  <div class="painel" id="painel"></div>
-  <div class="atrasadas">
-    <h2>Dezenas Atrasadas</h2>
-    <div class="grupo-atrasadas" id="atrasadas"></div>
+  <h1>Análise de Loterias</h1>
+
+  <div class="painel">
+    <label>Escolher quantidade de concursos:</label>
+    <select id="qtdConcursos">
+      <option value="10">10 últimos</option>
+      <option value="20">20 últimos</option>
+      <option value="30">30 últimos</option>
+      <option value="50">50 últimos</option>
+    </select>
+
+    <label>Escolher tipo de análise:</label>
+    <select id="tipoAnalise">
+      <option value="paresImpares">Pares e Ímpares</option>
+      <option value="frequencia">Frequência</option>
+    </select>
+
+    <button onclick="buscarDados()">Buscar</button>
+  </div>
+
+  <div class="loading" id="loading">
+    <div class="loader"></div>
+    <p style="color: #001a12; font-weight: bold;">Buscando informações, aguarde só um instante...</p>
+  </div>
+
+  <div class="quadro" id="resultado">
+    <strong>Escolha os filtros acima e clique em Buscar para ver o relatório.</strong>
   </div>
 
   <script>
-    const urlAPI = 'https://premium-portaldeloteriasmacpoint.onrender.com/api.php';
-
-    function getColunaClasse(dezena) {
-      const col = ((dezena - 1) % 10) + 1;
-      return `col${col}`;
+    function getCorDaColuna(numero) {
+      const cores = [
+        ['#e74c3c', 'white'], // Vermelho
+        ['#f1c40f', 'black'], // Amarelo
+        ['#2ecc71', 'white'], // Verde
+        ['#8e44ad', 'white'], // Roxo
+        ['#3498db', 'white'], // Azul
+        ['#ff69b4', 'black'], // Rosa
+        ['#000000', 'white'], // Preto
+        ['#95a5a6', 'black'], // Cinza
+        ['#e67e22', 'white'], // Laranja
+        ['#ffffff', 'black']  // Branco
+      ];
+      return cores[(numero - 1) % 10] || ['#ccc', 'black'];
     }
 
-    async function carregarDados() {
-      const qtd = parseInt(document.getElementById('qtd').value);
-      const painel = document.getElementById('painel');
-      const atrasadas = document.getElementById('atrasadas');
-      painel.innerHTML = '';
-      atrasadas.innerHTML = '';
+    function criarBolas(dezenas) {
+      return dezenas.map(n => {
+        const [bg, corTexto] = getCorDaColuna(n);
+        return `<div class="dezena" style="background-color: ${bg}; color: ${corTexto}; text-shadow: 1px 1px black;">${String(n).padStart(2, '0')}</div>`;
+      }).join('');
+    }
+
+    async function buscarDados() {
+      const qtd = parseInt(document.getElementById('qtdConcursos').value);
+      const tipo = document.getElementById('tipoAnalise').value;
+      const resultadoDiv = document.getElementById('resultado');
+      const loadingDiv = document.getElementById('loading');
+
+      resultadoDiv.innerHTML = '';
+      loadingDiv.classList.add('active');
 
       try {
-        const res = await fetch(urlAPI);
+        const res = await fetch('https://premium-portaldeloteriasmacpoint.onrender.com/api.php');
         const data = await res.json();
+        const concursos = data.slice(-qtd).reverse();
+        let html = `<h2 style="text-shadow: 1px 1px black;">Relatório dos ${qtd} Últimos Concursos</h2>`;
 
-        const concursos = data.slice(-qtd);
-        const freq = Array(61).fill(0);
+        if (tipo === 'paresImpares') {
+          let totalPares = 0;
+          let totalImpares = 0;
 
-        concursos.forEach(c => {
-          c.dezenas.forEach(d => freq[d]++);
-        });
+          concursos.forEach((c) => {
+            const pares = c.Resultado.filter(n => n % 2 === 0).length;
+            const impares = c.Resultado.length - pares;
+            totalPares += pares;
+            totalImpares += impares;
+            html += `<p>Concurso ${c.Concurso}:<br>${criarBolas(c.Resultado)}<br>${pares} pares, ${impares} ímpares</p>`;
+          });
 
-        for (let i = 1; i <= 60; i++) {
-          const div = document.createElement('div');
-          div.className = `dezena ${getColunaClasse(i)}`;
-          div.innerHTML = `${i < 10 ? '0' + i : i}<div class="frequencia">${freq[i]}</div>`;
-          painel.appendChild(div);
+          html += `<hr><p><strong>Total:</strong> ${totalPares} pares, ${totalImpares} ímpares</p>`;
 
-          if (freq[i] === 0) {
-            const atraso = document.createElement('div');
-            atraso.className = `dezena ${getColunaClasse(i)}`;
-            atraso.textContent = i < 10 ? '0' + i : i;
-            atrasadas.appendChild(atraso);
-          }
+        } else if (tipo === 'frequencia') {
+          const freq = {};
+          concursos.forEach(c => {
+            c.Resultado.forEach(n => {
+              freq[n] = (freq[n] || 0) + 1;
+            });
+          });
+
+          const freqOrdenada = Object.entries(freq).sort((a, b) => b[1] - a[1]);
+          html += `<div style="display: flex; flex-wrap: wrap; justify-content: center;">`;
+          freqOrdenada.forEach(([num, count]) => {
+            const [bg, corTexto] = getCorDaColuna(num);
+            html += `<div class="dezena" style="background-color: ${bg}; color: ${corTexto}; text-shadow: 1px 1px black;">${String(num).padStart(2, '0')}<br><small>${count}</small></div>`;
+          });
+          html += `</div>`;
         }
 
-      } catch (e) {
-        alert('Erro ao buscar dados da API.');
-        console.error(e);
+        resultadoDiv.innerHTML = html;
+      } catch (error) {
+        resultadoDiv.innerHTML = '<p>Erro ao buscar dados da API.</p>';
+        console.error(error);
+      } finally {
+        loadingDiv.classList.remove('active');
       }
     }
   </script>
+
 </body>
-</html>
+</html
 

@@ -1,183 +1,158 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Relatório de Concursos</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Análise de Loterias</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
     body {
       margin: 0;
+      background-color: white;
       font-family: Arial, sans-serif;
-      background: #fff;
-      color: #fff;
-    }
-    header {
-      background: #001a12;
-      padding: 1rem;
-      text-align: center;
-    }
-    header h1 {
-      color: #1abc9c;
-      font-size: 2rem;
-      text-shadow: 1px 1px 0 #000;
-    }
-    .container {
-      max-width: 1000px;
-      margin: auto;
-      padding: 1rem;
-    }
-    .filtros {
-      background: #001a12;
-      padding: 1rem;
-      border-radius: 10px;
+      color: #001a12;
       display: flex;
       flex-direction: column;
-      gap: 1rem;
+      align-items: center;
     }
-    label, select, button {
-      color: #fff;
-      text-shadow: 1px 1px 0 #000;
-      font-size: 1rem;
+
+    h1 {
+      color: #008c72;
+      text-shadow: 1px 1px 1px black;
+      margin: 20px 0;
+      font-size: 2em;
+      text-align: center;
     }
+
+    .painel {
+      background-color: #001a12;
+      color: white;
+      padding: 20px;
+      border-radius: 12px;
+      text-shadow: 1px 1px 1px black;
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+      width: 90%;
+      max-width: 800px;
+      text-align: center;
+    }
+
     select, button {
-      background: transparent;
-      border: 2px solid #fff;
-      border-radius: 5px;
-      padding: 0.5rem;
-      color: #fff;
+      padding: 10px;
+      margin: 10px 5px;
+      font-size: 1em;
+      border-radius: 8px;
+      border: none;
+      background-color: #004d3c;
+      color: white;
+      text-shadow: 1px 1px 1px black;
     }
-    button {
+
+    button:hover {
+      background-color: #006b53;
       cursor: pointer;
     }
-    .relatorio {
-      margin-top: 2rem;
-      color: #000;
+
+    .quadro {
+      background-color: #f0f0f0;
+      border: 2px solid #001a12;
+      border-radius: 12px;
+      margin-top: 20px;
+      padding: 20px;
+      width: 90%;
+      max-width: 800px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      text-align: left;
     }
-    canvas {
-      margin-top: 2rem;
-    }
+
     @media (max-width: 768px) {
-      .container {
-        padding: 0.5rem;
+      h1 {
+        font-size: 1.5em;
+      }
+
+      .painel, .quadro {
+        width: 95%;
       }
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Relatório de Concursos</h1>
-  </header>
-  <div class="container">
-    <div class="filtros">
-      <label for="qtdConcursos">Quantidade de concursos:</label>
-      <select id="qtdConcursos">
-        <option value="10">10 últimos</option>
-        <option value="20">20 últimos</option>
-        <option value="50">50 últimos</option>
-      </select>
 
-      <label for="tipoRelatorio">Tipo de análise:</label>
-      <select id="tipoRelatorio">
-        <option value="">Selecione...</option>
-        <option value="frequencia">Frequência</option>
-        <option value="paresImpares">Pares e Ímpares</option>
-      </select>
+  <h1>Análise de Loterias</h1>
 
-      <button onclick="gerarRelatorio()">Buscar</button>
-    </div>
+  <div class="painel">
+    <label>Escolher quantidade de concursos:</label>
+    <select id="qtdConcursos">
+      <option value="10">10 últimos</option>
+      <option value="20">20 últimos</option>
+      <option value="30">30 últimos</option>
+      <option value="50">50 últimos</option>
+    </select>
 
-    <div id="resultado" class="relatorio"></div>
-    <canvas id="grafico" width="400" height="200"></canvas>
+    <label>Escolher tipo de análise:</label>
+    <select id="tipoAnalise">
+      <option value="paresImpares">Pares e Ímpares</option>
+      <option value="frequencia">Frequência</option>
+    </select>
+
+    <button onclick="buscarDados()">Buscar</button>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <div class="quadro" id="resultado">
+    <strong>Escolha os filtros acima e clique em Buscar para ver o relatório.</strong>
+  </div>
+
   <script>
-    async function obterConcursos(qtd) {
-      const response = await fetch('https://loteriascaixa-api.herokuapp.com/api/lotofacil');
-      const data = await response.json();
-      const concursos = [];
-      for (let i = data.numero - qtd + 1; i <= data.numero; i++) {
-        const res = await fetch(`https://loteriascaixa-api.herokuapp.com/api/lotofacil/${i}`);
-        const item = await res.json();
-        concursos.push(item);
-      }
-      return concursos;
-    }
-
-    function analisarFrequencia(concursos) {
-      const freq = Array(25).fill(0);
-      concursos.forEach(c => {
-        c.dezenas.forEach(d => freq[parseInt(d)-1]++);
-      });
-      return freq;
-    }
-
-    function analisarParesImpares(concursos) {
-      let pares = 0, impares = 0;
-      concursos.forEach(c => {
-        c.dezenas.forEach(d => {
-          if (parseInt(d) % 2 === 0) pares++;
-          else impares++;
-        });
-      });
-      return { pares, impares };
-    }
-
-    async function gerarRelatorio() {
+    async function buscarDados() {
       const qtd = parseInt(document.getElementById('qtdConcursos').value);
-      const tipo = document.getElementById('tipoRelatorio').value;
-      const concursos = await obterConcursos(qtd);
+      const tipo = document.getElementById('tipoAnalise').value;
+      const resultadoDiv = document.getElementById('resultado');
 
-      const resultado = document.getElementById('resultado');
-      const grafico = document.getElementById('grafico');
-      let chartData;
-      let chart;
+      try {
+        const res = await fetch('https://premium-portaldeloteriasmacpoint.onrender.com/api.php');
+        const data = await res.json();
 
-      if (tipo === 'frequencia') {
-        const frequencias = analisarFrequencia(concursos);
-        resultado.innerHTML = '<h3>Frequência das dezenas</h3>' + frequencias.map((f, i) => `Dezena ${i+1}: ${f}x`).join('<br>');
+        const concursos = data.slice(-qtd).reverse();
+        let html = `<h3>Análise dos ${qtd} últimos concursos</h3>`;
 
-        chartData = {
-          labels: Array.from({ length: 25 }, (_, i) => `D${i+1}`),
-          datasets: [{
-            label: 'Frequência',
-            backgroundColor: '#1abc9c',
-            borderColor: '#001a12',
-            data: frequencias
-          }]
-        };
-      }
+        if (tipo === 'paresImpares') {
+          let totalPares = 0;
+          let totalImpares = 0;
 
-      if (tipo === 'paresImpares') {
-        const { pares, impares } = analisarParesImpares(concursos);
-        resultado.innerHTML = `<h3>Pares e Ímpares</h3><p>Pares: ${pares}</p><p>Ímpares: ${impares}</p>`;
-
-        chartData = {
-          labels: ['Pares', 'Ímpares'],
-          datasets: [{
-            label: 'Quantidade',
-            backgroundColor: ['#1abc9c', '#34495e'],
-            data: [pares, impares]
-          }]
-        };
-      }
-
-      if (chart) chart.destroy();
-      new Chart(grafico, {
-        type: 'bar',
-        data: chartData,
-        options: {
-          responsive: true,
-          plugins: {
-            legend: { display: false }
-          }
+          html += `<ul>`;
+          concursos.forEach((c) => {
+            const pares = c.Resultado.filter(n => n % 2 === 0).length;
+            const impares = c.Resultado.length - pares;
+            totalPares += pares;
+            totalImpares += impares;
+            html += `<li>Concurso ${c.Concurso}: ${pares} pares, ${impares} ímpares</li>`;
+          });
+          html += `</ul><p><strong>Total:</strong> ${totalPares} pares, ${totalImpares} ímpares</p>`;
         }
-      });
+
+        else if (tipo === 'frequencia') {
+          const freq = {};
+          concursos.forEach(c => {
+            c.Resultado.forEach(n => {
+              freq[n] = (freq[n] || 0) + 1;
+            });
+          });
+
+          const freqOrdenada = Object.entries(freq).sort((a, b) => b[1] - a[1]);
+
+          html += `<ul>`;
+          freqOrdenada.forEach(([num, count]) => {
+            html += `<li>Dezena ${String(num).padStart(2, '0')}: ${count} vezes</li>`;
+          });
+          html += `</ul>`;
+        }
+
+        resultadoDiv.innerHTML = html;
+      } catch (error) {
+        resultadoDiv.innerHTML = '<p>Erro ao buscar dados da API.</p>';
+        console.error(error);
+      }
     }
   </script>
+
 </body>
 </html>
 

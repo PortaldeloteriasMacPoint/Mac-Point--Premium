@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Relatório Loteria</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #001a12;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .container {
+      width: 100%;
+      max-width: 900px;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .filtro-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    select, button {
+      padding: 8px;
+      font-size: 16px;
+    }
+    .resultado, .relatorio {
+      background: #003326;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    .top-icones {
+      position: fixed;
+      top: 10px;
+      right: 20px;
+    }
+    .top-icones button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 22px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-icones">
+    <button onclick="copiarPagina()">📑</button>
+    <button onclick="window.print()">🖨️</button>
+    <button onclick="compartilharPagina()">📤</button>
+  </div>
+
+  <div class="container">
+    <h1>Relatório Loteria</h1>
+
+    <div class="filtro-container">
+      <select id="filtroQtd">
+        <option value="10">10 últimos</option>
+        <option value="20">20 últimos</option>
+        <option value="50">50 últimos</option>
+        <option value="100">100 últimos</option>
+      </select>
+      <select id="tipoAnalise">
+        <option value="paresImpares">Pares e Ímpares</option>
+        <option value="frequencia">Frequência</option>
+        <option value="atraso">Atraso</option>
+        <option value="distancia">Distância</option>
+      </select>
+      <button onclick="buscarConcursos()">Buscar</button>
+    </div>
+
+    <div id="listaResultados"></div>
+    <div id="relatorioFinal"></div>
+  </div>
+
+  <script>
+    let dadosAPI = [];
+
+    async function buscarAPI() {
+      const res = await fetch('https://premium-portaldeloteriasmacpoint.onrender.com/api.php');
+      const json = await res.json();
+      dadosAPI = Array.isArray(json) ? json : [json];
+    }
+
+    async function buscarConcursos() {
+      if (dadosAPI.length === 0) await buscarAPI();
+      const qtd = parseInt(document.getElementById("filtroQtd").value);
+      const tipo = document.getElementById("tipoAnalise").value;
+      const ultimos = dadosAPI.slice(-qtd).reverse();
+
+      document.getElementById("listaResultados").innerHTML = "";
+      document.getElementById("relatorioFinal").innerHTML = "";
+
+      ultimos.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "resultado";
+        div.innerHTML = `<strong>Concurso:</strong> ${item.Concurso} <br><strong>Resultado:</strong> ${item.Resultado.join(', ')}`;
+        document.getElementById("listaResultados").appendChild(div);
+      });
+
+      if (tipo === "paresImpares") gerarRelatorioParesImpares(ultimos);
+      else if (tipo === "frequencia") gerarRelatorioFrequencia(ultimos);
+    }
+
+    function gerarRelatorioParesImpares(lista) {
+      let pares = 0;
+      let impares = 0;
+      lista.forEach(item => {
+        item.Resultado.forEach(num => {
+          if (num % 2 === 0) pares++;
+          else impares++;
+        });
+      });
+      document.getElementById("relatorioFinal").innerHTML = `<div class='relatorio'><strong>Total Pares:</strong> ${pares} <br><strong>Total Ímpares:</strong> ${impares}</div>`;
+    }
+
+    function gerarRelatorioFrequencia(lista) {
+      let freq = {};
+      lista.forEach(item => {
+        item.Resultado.forEach(num => {
+          freq[num] = (freq[num] || 0) + 1;
+        });
+      });
+      const ordem = Object.entries(freq).sort((a,b) => b[1]-a[1]);
+      let html = `<div class='relatorio'><strong>Frequência:</strong><br>`;
+      ordem.forEach(([num, qt]) => {
+        html += `Dezena ${num}: ${qt}x<br>`;
+      });
+      html += `</div>`;
+      document.getElementById("relatorioFinal").innerHTML = html;
+    }
+
+    function copiarPagina() {
+      navigator.clipboard.writeText(document.body.innerText);
+    }
+
+    function compartilharPagina() {
+      if (navigator.share) {
+        navigator.share({
+          title: document.title,
+          text: "Veja este relatório da loteria:",
+          url: window.location.href
+        });
+      } else {
+        alert("Compartilhamento não suportado neste navegador.");
+      }
+    }
+  </script>
+</body>
+</html>
+
+

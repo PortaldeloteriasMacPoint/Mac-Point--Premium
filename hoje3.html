@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel de Frequência - Mac Point</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #000;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    select, button {
+      padding: 10px;
+      margin: 10px;
+      font-size: 16px;
+    }
+    .painel {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 10px;
+      max-width: 800px;
+      margin-top: 20px;
+    }
+    .dezena {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      font-size: 18px;
+      position: relative;
+    }
+    .frequencia {
+      position: absolute;
+      bottom: -20px;
+      font-size: 12px;
+      color: #ccc;
+    }
+    .atrasadas {
+      margin-top: 30px;
+      text-align: center;
+    }
+    .grupo-atrasadas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 10px;
+    }
+    /* Cores das bolas por coluna */
+    .col1 { background-color: red; color: white; border: 2px solid black; }
+    .col2 { background-color: yellow; color: black; border: 2px solid black; }
+    .col3 { background-color: green; color: white; border: 2px solid black; }
+    .col4 { background-color: brown; color: white; border: 2px solid black; }
+    .col5 { background-color: blue; color: white; border: 2px solid black; }
+    .col6 { background-color: pink; color: white; border: 2px solid black; }
+    .col7 { background-color: black; color: white; border: 2px solid black; }
+    .col8 { background-color: gray; color: white; border: 2px solid black; }
+    .col9 { background-color: orange; color: black; border: 2px solid black; }
+    .col10 { background-color: white; color: black; border: 2px solid black; }
+  </style>
+</head>
+<body>
+  <h1>Painel de Frequência</h1>
+  <label for="qtd">Escolha a quantidade de concursos:</label>
+  <select id="qtd">
+    <option value="10">10 últimos</option>
+    <option value="20">20 últimos</option>
+    <option value="30">30 últimos</option>
+    <option value="50">50 últimos</option>
+  </select>
+  <button onclick="carregarDados()">Buscar</button>
+
+  <div class="painel" id="painel"></div>
+  <div class="atrasadas">
+    <h2>Dezenas Atrasadas</h2>
+    <div class="grupo-atrasadas" id="atrasadas"></div>
+  </div>
+
+  <script>
+    const urlAPI = 'https://premium-portaldeloteriasmacpoint.onrender.com/api.php';
+
+    function getColunaClasse(dezena) {
+      const col = ((dezena - 1) % 10) + 1;
+      return `col${col}`;
+    }
+
+    async function carregarDados() {
+      const qtd = parseInt(document.getElementById('qtd').value);
+      const painel = document.getElementById('painel');
+      const atrasadas = document.getElementById('atrasadas');
+      painel.innerHTML = '';
+      atrasadas.innerHTML = '';
+
+      try {
+        const res = await fetch(urlAPI);
+        const data = await res.json();
+
+        const concursos = data.slice(-qtd);
+        const freq = Array(61).fill(0);
+
+        concursos.forEach(c => {
+          c.dezenas.forEach(d => freq[d]++);
+        });
+
+        for (let i = 1; i <= 60; i++) {
+          const div = document.createElement('div');
+          div.className = `dezena ${getColunaClasse(i)}`;
+          div.innerHTML = `${i < 10 ? '0' + i : i}<div class="frequencia">${freq[i]}</div>`;
+          painel.appendChild(div);
+
+          if (freq[i] === 0) {
+            const atraso = document.createElement('div');
+            atraso.className = `dezena ${getColunaClasse(i)}`;
+            atraso.textContent = i < 10 ? '0' + i : i;
+            atrasadas.appendChild(atraso);
+          }
+        }
+
+      } catch (e) {
+        alert('Erro ao buscar dados da API.');
+        console.error(e);
+      }
+    }
+  </script>
+</body>
+</html>
+

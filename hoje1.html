@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Relatórios e Análises da Loteria</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #001a12;
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #005f47;
+      padding: 15px;
+      text-align: center;
+      font-size: 1.5em;
+      color: white;
+    }
+    .content {
+      margin: 20px;
+    }
+    .button, select {
+      background-color: #007b5e;
+      color: white;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      font-size: 1em;
+    }
+    .button:hover, select:hover {
+      background-color: #005f47;
+    }
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    .table th, .table td {
+      border: 1px solid #333;
+      padding: 10px;
+      text-align: center;
+    }
+    .table th {
+      background-color: #003d2d;
+    }
+    .footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background-color: #005f47;
+      color: white;
+      text-align: center;
+      padding: 10px;
+    }
+    .filter-container {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+    .submenu {
+      display: none;
+      position: absolute;
+      top: 30px;
+      left: 0;
+      background-color: #003d2d;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+    .filter-container:hover .submenu {
+      display: block;
+    }
+    select {
+      width: 200px;
+    }
+    #chart {
+      width: 100%;
+      height: 300px;
+      margin-top: 20px;
+      background-color: #003d2d;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    Relatórios e Análises da Loteria
+  </header>
+
+  <div class="content">
+    <h2>Filtros de Concursos</h2>
+
+    <div class="filter-container">
+      <button class="button">Selecione a Quantidade de Concursos</button>
+      <div class="submenu">
+        <label for="numConcursos">Quantidade de Concursos:</label>
+        <select id="numConcursos">
+          <option value="10">Últimos 10 Concursos</option>
+          <option value="50">Últimos 50 Concursos</option>
+          <option value="100">Últimos 100 Concursos</option>
+          <option value="200">Últimos 200 Concursos</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="button" onclick="loadData()">Buscar Concursos</button>
+
+    <h2>Filtros de Análises</h2>
+    <div class="filter-container">
+      <button class="button">Selecione a Análise</button>
+      <div class="submenu">
+        <label for="analysisType">Tipo de Análise:</label>
+        <select id="analysisType">
+          <option value="paresImpares">Pares e Ímpares</option>
+          <option value="frequencia">Frequência</option>
+          <option value="distanciamento">Distanciamento</option>
+          <option value="grafico">Gráfico</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="button" onclick="generateAnalysis()">Gerar Análise</button>
+
+    <h3>Resultado da Análise</h3>
+    <table class="table" id="resultadoTable">
+      <thead>
+        <tr>
+          <th>Dezena</th>
+          <th>Frequência</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+
+    <h3>Gráfico de Frequência</h3>
+    <div id="chart"></div>
+
+  </div>
+
+  <footer class="footer">
+    Loterias 2025 - Todos os direitos reservados.
+  </footer>
+
+  <script>
+    const apiUrl = 'https://premium-portaldeloteriasmacpoint.onrender.com/api.php';
+    let concursosData = [];
+
+    function loadData() {
+      const numConcursos = document.getElementById('numConcursos').value;
+      fetch(apiUrl + `?limit=${numConcursos}`)
+        .then(response => response.json())
+        .then(data => {
+          concursosData = data; // Guarda os dados dos concursos
+          console.log(data); // Verifica os dados carregados
+        });
+    }
+
+    function generateAnalysis() {
+      const analysisType = document.getElementById('analysisType').value;
+
+      if (concursosData.length === 0) {
+        alert("Por favor, busque os concursos antes de gerar a análise.");
+        return;
+      }
+
+      switch (analysisType) {
+        case 'paresImpares':
+          showParesImpares();
+          break;
+        case 'frequencia':
+          showFrequencia();
+          break;
+        case 'distanciamento':
+          showDistanciamento();
+          break;
+        case 'grafico':
+          showGrafico();
+          break;
+        default:
+          alert("Tipo de análise não reconhecido.");
+      }
+    }
+
+    function showParesImpares() {
+      const tableBody = document.getElementById('resultadoTable').getElementsByTagName('tbody')[0];
+      tableBody.innerHTML = '';
+      
+      const pares = [];
+      const impares = [];
+
+      concursosData.forEach(concurso => {
+        concurso.resultado.split(',').forEach(dezena => {
+          if (dezena % 2 === 0) {
+            pares.push(dezena);
+          } else {
+            impares.push(dezena);
+          }
+        });
+      });
+
+      const paresRow = tableBody.insertRow();
+      paresRow.insertCell(0).innerText = 'Pares';
+      paresRow.insertCell(1).innerText = pares.length;
+
+      const imparesRow = tableBody.insertRow();
+      imparesRow.insertCell(0).innerText = 'Ímpares';
+      imparesRow.insertCell(1).innerText = impares.length;
+    }
+
+    function showFrequencia() {
+      const tableBody = document.getElementById('resultadoTable').getElementsByTagName('tbody')[0];
+      tableBody.innerHTML = '';
+      
+      const frequencies = {};
+
+      concursosData.forEach(concurso => {
+        concurso.resultado.split(',').forEach(dezena => {
+          frequencies[dezena] = (frequencies[dezena] || 0) + 1;
+        });
+      });
+
+      for (const dezena in frequencies) {
+        const row = tableBody.insertRow();
+        row.insertCell(0).innerText = dezena;
+        row.insertCell(1).innerText = frequencies[dezena];
+      }
+    }
+
+    function showDistanciamento() {
+      // Aqui, você pode implementar a lógica para calcular e exibir o distanciamento entre as dezenas nos concursos
+      alert('Distanciamento não implementado.');
+    }
+
+    function showGrafico() {
+      const chartContainer = document.getElementById('chart');
+      chartContainer.innerHTML = ''; // Limpa o gráfico anterior
+
+      // Criar gráfico simples com os dados de frequência
+      const canvas = document.createElement('canvas');
+      chartContainer.appendChild(canvas);
+
+      const ctx = canvas.getContext('2d');
+      const labels = [];
+      const values = [];
+
+      concursosData.forEach(concurso => {
+        concurso.resultado.split(',').forEach(dezena => {
+          if (!labels.includes(dezena)) {
+            labels.push(dezena);
+            values.push(1);
+          } else {
+            values[labels.indexOf(dezena)]++;
+          }
+        });
+      });
+
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+
+
+data: {
+          labels: labels,
+          datasets: [{
+            label: 'Frequência de Dezenas',
+            data: values,
+            backgroundColor: 'rgba(0, 123, 94, 0.5)',
+            borderColor: 'rgba(0, 123, 94, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'Dezenas'
+              }
+            },
+            y: {
+              title: {
+                display: true,
+                text: 'Frequência'
+              },
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
+
+  </script>
+  
+  <!-- Include Chart.js for the graphical representation -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+</html>
+
+
+
+
+

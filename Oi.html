@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mega-Sena - Análise de Concursos</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #001a12;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      width: 100%;
+      background: linear-gradient(to right, #001a12, #355E3B);
+      padding: 20px;
+      text-align: center;
+      font-size: 2em;
+      font-weight: bold;
+    }
+
+    .painel-filtros {
+      margin: 20px auto;
+      background-color: #355E3B;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 800px;
+      width: 90%;
+    }
+
+    .painel-filtros label, select {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    select, button {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+      font-size: 1em;
+    }
+
+    button {
+      margin-top: 10px;
+      background-color: #ff8c00;
+      color: black;
+      font-weight: bold;
+      text-shadow: 1px 1px 0px #000;
+      cursor: pointer;
+    }
+
+    .resultado {
+      margin: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .bola {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: white;
+      text-shadow: 1px 1px 2px black;
+    }
+
+    .ranking {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Cores das colunas */
+    .coluna-1  { background-color: red; }
+    .coluna-2  { background-color: yellow; color: black; }
+    .coluna-3  { background-color: green; }
+    .coluna-4  { background-color: brown; }
+    .coluna-5  { background-color: blue; }
+    .coluna-6  { background-color: pink; color: black; }
+    .coluna-7  { background-color: black; }
+    .coluna-8  { background-color: gray; }
+    .coluna-9  { background-color: orange; }
+    .coluna-10 { background-color: white; color: black; text-shadow: none; }
+
+    @media (max-width: 768px) {
+      .bola {
+        width: 40px;
+        height: 40px;
+        font-size: 0.9em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>Mega-Sena</header>
+
+  <div class="painel-filtros">
+    <label for="quantidade">Quantidade de concursos:</label>
+    <select id="quantidade">
+      <option value="10">10 últimos</option>
+      <option value="20">20 últimos</option>
+      <option value="30">30 últimos</option>
+      <option value="50">50 últimos</option>
+      <option value="100">100 últimos</option>
+    </select>
+
+    <label for="filtro">Filtro de análise:</label>
+    <select id="filtro">
+      <option value="frequencia">Frequência</option>
+      <option value="pares">Pares Ímpares</option>
+      <option value="cores">Cores Simples</option>
+      <option value="ciclos">Ciclos</option>
+      <option value="fortes">Mais Fortes</option>
+      <option value="fracas">Mais Fracas</option>
+    </select>
+
+    <button onclick="gerarAnalise()">Gerar Análise</button>
+  </div>
+
+  <div id="resultado" class="resultado"></div>
+
+  <script>
+    function colunaPorDezena(dezena) {
+      const dez = parseInt(dezena, 10);
+      return 'coluna-' + ((dez % 10 === 0) ? 10 : dez % 10);
+    }
+
+    async function gerarAnalise() {
+      const quantidade = document.getElementById('quantidade').value;
+      const filtro = document.getElementById('filtro').value;
+      const resultado = document.getElementById('resultado');
+
+      resultado.innerHTML = '<p>Carregando...</p>';
+
+      try {
+        const response = await fetch('https://premium-portaldeloteriasmacpoint.onrender.com/api.php');
+        const data = await response.json();
+
+        const concursos = data.slice(-quantidade).reverse();
+        let contagem = {};
+
+        concursos.forEach(c => {
+          c.dezenas.forEach(d => {
+            contagem[d] = (contagem[d] || 0) + 1;
+          });
+        });
+
+        let ranking = Object.entries(contagem)
+          .sort((a, b) => b[1] - a[1])
+          .map(([dezena, qtd]) => {
+            const coluna = colunaPorDezena(dezena);
+            return `<div class="ranking-item"><div class="bola ${coluna}">${dezena}</div><div>${qtd}x</div></div>`;
+          });
+
+        resultado.innerHTML = '<div class="ranking">' + ranking.join('') + '</div>';
+      } catch (err) {
+        resultado.innerHTML = '<p>Erro ao carregar dados</p>';
+      }
+    }
+  </script>
+</body>
+</html>
+
+

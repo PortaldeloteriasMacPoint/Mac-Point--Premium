@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -147,78 +148,44 @@
       container.innerHTML = "Carregando...";
 
       try {
-        // Fazendo a requisição à API para buscar os concursos
         const response = await fetch("https://premium-portaldeloteriasmacpoint.onrender.com/api.php");
         const data = await response.json();
 
-        // Pegando os últimos "qtd" concursos
         const ultimos = data.slice(-qtd).reverse();
         container.innerHTML = "";
 
         let filtroResultado = [];
 
-        if (filtro === "frequencia") {
+        if (filtro === "frequencia" || filtro === "fortes" || filtro === "ciclos") {
           let freq = {};
           ultimos.forEach(c => {
             c.dezenas.forEach(d => {
               freq[d] = (freq[d] || 0) + 1;
             });
           });
-
           filtroResultado = Object.entries(freq).sort((a, b) => b[1] - a[1]);
         }
 
         if (filtro === "atrasadas") {
-          let atrasadas = {};
-          ultimos.forEach(c => {
+          let ultimasOcorrencias = {};
+          data.slice().reverse().forEach((c, index) => {
             c.dezenas.forEach(d => {
-              if (!atrasadas[d]) {
-                atrasadas[d] = 0;
+              if (!(d in ultimasOcorrencias)) {
+                ultimasOcorrencias[d] = index;
               }
-              atrasadas[d] += 1;
             });
           });
-
-          filtroResultado = Object.entries(atrasadas).sort((a, b) => a[1] - b[1]);
-        }
-
-        if (filtro === "fortes") {
-          let fortes = {};
-          ultimos.forEach(c => {
-            c.dezenas.forEach(d => {
-              fortes[d] = (fortes[d] || 0) + 1;
-            });
-          });
-
-          filtroResultado = Object.entries(fortes).sort((a, b) => b[1] - a[1]);
-        }
-
-        if (filtro === "ciclos") {
-          let ciclos = {};
-          ultimos.forEach(c => {
-            c.dezenas.forEach(d => {
-              if (!ciclos[d]) {
-                ciclos[d] = 0;
-              }
-              ciclos[d] += 1;
-            });
-          });
-
-          filtroResultado = Object.entries(ciclos).sort((a, b) => b[1] - a[1]);
+          filtroResultado = Object.entries(ultimasOcorrencias).sort((a, b) => b[1] - a[1]);
         }
 
         if (filtro === "paresimpares") {
           let pares = 0, impares = 0;
           ultimos.forEach(c => {
             c.dezenas.forEach(d => {
-              if (d % 2 === 0) {
-                pares++;
-              } else {
-                impares++;
-              }
+              if (parseInt(d) % 2 === 0) pares++;
+              else impares++;
             });
           });
-
           filtroResultado = [["Pares", pares], ["Ímpares", impares]];
         }
 
@@ -226,11 +193,11 @@
           let colunas = [0, 0, 0, 0, 0, 0];
           ultimos.forEach(c => {
             c.dezenas.forEach(d => {
-              colunas[Math.floor((d - 1) / 6)]++;
+              const colIndex = Math.floor((parseInt(d) - 1) / 10);
+              colunas[colIndex]++;
             });
           });
-
-          filtroResultado = colunas.map((count, index) => [`Coluna ${index + 1}`, count]);
+          filtroResultado = colunas.map((qtd, i) => [`Coluna ${i + 1}`, qtd]);
         }
 
         const bloco = document.createElement("div");
@@ -260,4 +227,5 @@
   </script>
 </body>
 </html>
+
 

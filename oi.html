@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Filtros API</title>
+  <style>
+    body {
+      background: #111;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    select, table {
+      margin: 10px 5px;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 8px;
+      border: 1px solid #555;
+    }
+    th {
+      background-color: #333;
+    }
+    #resultado {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Filtros da API</h2>
+
+  <div>
+    <select id="concurso"><option value="">Concurso</option></select>
+    <select id="tipo"><option value="">Tipo</option></select>
+    <select id="modo"><option value="">Modo</option></select>
+    <select id="faixa"><option value="">Faixa</option></select>
+    <select id="tipoResultado"><option value="">Tipo de Resultado</option></select>
+    <select id="quantidade"><option value="">Quantidade</option></select>
+  </div>
+
+  <div id="resultado"></div>
+
+  <script>
+    const apiUrl = "https://premium-portaldeloteriasmacpoint.onrender.com/api.php";
+
+    const filtros = {
+      concurso: document.getElementById("concurso"),
+      tipo: document.getElementById("tipo"),
+      modo: document.getElementById("modo"),
+      faixa: document.getElementById("faixa"),
+      tipoResultado: document.getElementById("tipoResultado"),
+      quantidade: document.getElementById("quantidade")
+    };
+
+    function carregarFiltros(dados) {
+      const campos = ["concurso", "tipo", "modo", "faixa", "tipo_resultado", "quantidade"];
+      campos.forEach((campo, i) => {
+        const opcoes = [...new Set(dados.map(item => item[campo]))];
+        filtros[Object.keys(filtros)[i]].innerHTML += opcoes.map(op => `<option value="${op}">${op}</option>`).join("");
+      });
+    }
+
+    function aplicarFiltros(dados) {
+      let filtrado = dados;
+      if (filtros.concurso.value) filtrado = filtrado.filter(d => d.concurso === filtros.concurso.value);
+      if (filtros.tipo.value) filtrado = filtrado.filter(d => d.tipo === filtros.tipo.value);
+      if (filtros.modo.value) filtrado = filtrado.filter(d => d.modo === filtros.modo.value);
+      if (filtros.faixa.value) filtrado = filtrado.filter(d => d.faixa === filtros.faixa.value);
+      if (filtros.tipoResultado.value) filtrado = filtrado.filter(d => d.tipo_resultado === filtros.tipoResultado.value);
+      if (filtros.quantidade.value) filtrado = filtrado.filter(d => d.quantidade === filtros.quantidade.value);
+      return filtrado;
+    }
+
+    function exibirResultados(dados) {
+      if (dados.length === 0) {
+        document.getElementById("resultado").innerHTML = "<p>Nenhum resultado encontrado.</p>";
+        return;
+      }
+
+      const tabela = `
+        <table>
+          <thead>
+            <tr>
+              <th>Concurso</th>
+              <th>Tipo</th>
+              <th>Modo</th>
+              <th>Faixa</th>
+              <th>Tipo Resultado</th>
+              <th>Quantidade</th>
+              <th>Resultado</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${dados.map(d => `
+              <tr>
+                <td>${d.concurso}</td>
+                <td>${d.tipo}</td>
+                <td>${d.modo}</td>
+                <td>${d.faixa}</td>
+                <td>${d.tipo_resultado}</td>
+                <td>${d.quantidade}</td>
+                <td>${d.resultado}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
+
+      document.getElementById("resultado").innerHTML = tabela;
+    }
+
+    async function iniciar() {
+      const res = await fetch(apiUrl);
+      const dados = await res.json();
+
+      carregarFiltros(dados);
+      exibirResultados(dados);
+
+      Object.values(filtros).forEach(select => {
+        select.addEventListener("change", () => {
+          const filtrado = aplicarFiltros(dados);
+          exibirResultados(filtrado);
+        });
+      });
+    }
+
+    iniciar();
+  </script>
+
+</body>
+</html>
+

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Análise de Ciclos</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: white;
+      font-family: Arial, sans-serif;
+      color: #001a12;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    h1 {
+      color: #008c72;
+      text-shadow: 2px 2px 2px black;
+      margin: 20px 0;
+      font-size: 2.5vw;
+      text-align: center;
+      font-family: Impact, sans-serif;
+      font-weight: bold;
+    }
+
+    .quadro {
+      background-color: #008c72;
+      border: 2px solid black;
+      border-radius: 12px;
+      margin-top: 20px;
+      padding: 20px;
+      width: 90%;
+      max-width: 900px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+      text-align: center;
+      color: white;
+      font-weight: bold;
+      text-shadow: 1px 1px black;
+      font-family: Impact, sans-serif;
+    }
+
+    .dezena {
+      display: inline-block;
+      width: 45px;
+      height: 45px;
+      line-height: 45px;
+      margin: 4px;
+      border-radius: 50%;
+      text-align: center;
+      font-weight: bold;
+      border: 2px solid black;
+      font-family: Arial, sans-serif;
+    }
+
+    .ranking {
+      margin-top: 30px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .ranking div {
+      margin: 5px auto;
+      padding: 8px;
+      border-radius: 6px;
+      width: 80%;
+      background-color: #001a12;
+      color: white;
+      font-weight: bold;
+      text-shadow: 1px 1px black;
+    }
+
+    .loading {
+      display: none;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .loading.active {
+      display: block;
+    }
+
+    .loader {
+      border: 8px solid #f3f3f3;
+      border-top: 8px solid #3498db;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin: auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 5vw;
+      }
+
+      .quadro {
+        width: 95%;
+        padding: 15px;
+      }
+
+      .dezena {
+        width: 38px;
+        height: 38px;
+        line-height: 38px;
+        font-size: 0.9em;
+      }
+
+      .ranking div {
+        width: 95%;
+        font-size: 0.9em;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      h1 {
+        font-size: 2em;
+      }
+
+      .dezena {
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Análise de Ciclos</h1>
+
+  <div class="loading" id="loading">
+    <div class="loader"></div>
+    <p style="color: #001a12; font-weight: bold;">Analisando os ciclos, aguarde...</p>
+  </div>
+
+  <div class="quadro" id="resultado">
+    <strong>Carregando análise...</strong>
+  </div>
+
+  <script>
+    function getCorDaColuna(numero) {
+      const cores = [
+        ['#e74c3c', 'white'], ['#f1c40f', 'black'], ['#2ecc71', 'white'],
+        ['#8e44ad', 'white'], ['#3498db', 'white'], ['#ff69b4', 'black'],
+        ['#000000', 'white'], ['#95a5a6', 'black'], ['#e67e22', 'white'],
+        ['#ffffff', 'black']
+      ];
+      return cores[(numero - 1) % 10] || ['#ccc', 'black'];
+    }
+
+    function criarBolas(dezenas, destaque = []) {
+      return dezenas.map(n => {
+        const [bg, corTexto] = getCorDaColuna(n);
+        const estiloExtra = destaque.includes(n) ? 'border: 4px solid yellow;' : '';
+        return `<div class="dezena" style="background-color: ${bg}; color: ${corTexto}; text-shadow: 1px 1px black; ${estiloExtra}">${String(n).padStart(2, '0')}</div>`;
+      }).join('');
+    }
+
+    async function buscarCiclo() {
+      const resultadoDiv = document.getElementById('resultado');
+      const loadingDiv = document.getElementById('loading');
+
+      resultadoDiv.innerHTML = '';
+      loadingDiv.classList.add('active');
+
+      try {
+        const res = await fetch('https://premium-portaldeloteriasmacpoint.onrender.com/api.php');
+        const dados = await res.json();
+        const todosResultados = dados.reverse().map(c => c.Resultado);
+
+        let ciclo = new Set();
+        let dezenasCiclo = new Set();
+        for (let i = 0; i < todosResultados.length; i++) {
+          todosResultados[i].forEach(n => dezenasCiclo.add(n));
+          if (dezenasCiclo.size >= 60) {
+            ciclo = new Set(todosResultados[i]);
+            break;
+          }
+        }
+
+        const todasDezenas = Array.from({ length: 60 }, (_, i) => i + 1);
+        const dezenasUltimo = new Set(todosResultados[0]);
+        const atrasadas = todasDezenas.filter(n => !dezenasUltimo.has(n) && !ciclo.has(n));
+
+        const ranking = atrasadas.map(n => {
+          let atraso = 0;
+          for (let j = 0; j < todosResultados.length; j++) {
+            if (!todosResultados[j].includes(n)) atraso++;
+            else break;
+          }
+          return { dezena: n, atraso };
+        }).sort((a, b) => b.atraso - a.atraso);
+
+        let html = `<h2 style="text-shadow: 1px 1px black;">Volante - Ciclo Atual</h2>`;
+        html += criarBolas(todasDezenas, [...ciclo, ...atrasadas]);
+
+        html += `<div class="ranking"><h2 style="text-shadow: 1px 1px black;">Ranking de Dezenas Atrasadas</h2>`;
+        ranking.forEach(r => {
+          html += `<div>Dezena ${String(r.dezena).padStart(2, '0')} - ${r.atraso} concursos sem sair</div>`;
+        });
+        html += `</div>`;
+
+        resultadoDiv.innerHTML = html;
+
+      } catch (e) {
+        resultadoDiv.innerHTML = `<p style="color: red;">Erro ao buscar dados</p>`;
+      } finally {
+        loadingDiv.classList.remove('active');
+      }
+    }
+
+    buscarCiclo();
+  </script>
+</body>
+</html>
+

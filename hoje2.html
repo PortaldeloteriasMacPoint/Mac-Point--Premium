@@ -1,76 +1,156 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Análise de Loterias</title>
+  <title>Análise de Ciclos</title>
   <style>
-    /* Seu CSS permanece inalterado */
-    /* ... (mantenha o estilo existente) ... */
+    body {
+      margin: 0;
+      background-color: white;
+      font-family: Arial, sans-serif;
+      color: #001a12;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      color: #008c72;
+      text-shadow: 2px 2px 2px black;
+      margin: 20px 0;
+      font-size: 2em;
+      text-align: center;
+      font-family: Impact, sans-serif;
+      font-weight: bold;
+    }
+
+    .quadro {
+      background-color: #008c72;
+      border: 2px solid black;
+      border-radius: 12px;
+      margin-top: 20px;
+      padding: 20px;
+      width: 90%;
+      max-width: 900px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+      text-align: center;
+      color: white;
+      font-weight: bold;
+      text-shadow: 1px 1px black;
+      font-family: Impact, sans-serif;
+    }
+
+    .dezena {
+      display: inline-block;
+      width: 45px;
+      height: 45px;
+      line-height: 45px;
+      margin: 4px;
+      border-radius: 50%;
+      text-align: center;
+      font-weight: bold;
+      border: 2px solid black;
+      font-family: Arial, sans-serif;
+    }
+
+    .ranking {
+      margin-top: 30px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .ranking div {
+      margin: 5px auto;
+      padding: 8px;
+      border-radius: 6px;
+      width: 80%;
+      background-color: #001a12;
+      color: white;
+      font-weight: bold;
+      text-shadow: 1px 1px black;
+    }
+
+    .loading {
+      display: none;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .loading.active {
+      display: block;
+    }
+
+    .loader {
+      border: 8px solid #f3f3f3;
+      border-top: 8px solid #3498db;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin: auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 1.5em;
+      }
+
+      .quadro {
+        width: 95%;
+      }
+
+      .dezena {
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 0.9em;
+      }
+
+      .ranking div {
+        width: 95%;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <h1>Análise Mega Sena </h1>
-
-  <div class="painel">
-    <label>Escolher quantidade de concursos:</label>
-    <select id="qtdConcursos">
-      <option value="10">10 últimos</option>
-      <option value="20">20 últimos</option>
-      <option value="30">30 últimos</option>
-      <option value="50">50 últimos</option>
-    </select>
-
-    <label>Escolher tipo de análise:</label>
-    <select id="tipoAnalise">
-      <option value="paresImpares">Pares e Ímpares</option>
-      <option value="frequencia">Frequência</option>
-      <option value="atrasadas">Dezenas Atrasadas</option>
-      <option value="ciclos">Ciclos</option>
-      <option value="distanciamento">Distanciamento entre Dezenas</option>
-    </select>
-
-    <button onclick="buscarDados()">Buscar</button>
-  </div>
+  <h1>Análise de Ciclos</h1>
 
   <div class="loading" id="loading">
     <div class="loader"></div>
-    <p style="color: #001a12; font-weight: bold;">Buscando informações, aguarde só um instante...</p>
+    <p style="color: #001a12; font-weight: bold;">Analisando os ciclos, aguarde...</p>
   </div>
 
   <div class="quadro" id="resultado">
-    <strong>Escolha os filtros acima e clique em Buscar para ver o relatório.</strong>
+    <strong>Carregando análise...</strong>
   </div>
 
   <script>
     function getCorDaColuna(numero) {
       const cores = [
-        ['#e74c3c', 'white'], // Vermelho
-        ['#f1c40f', 'black'], // Amarelo
-        ['#2ecc71', 'white'], // Verde
-        ['#8e44ad', 'white'], // Roxo
-        ['#3498db', 'white'], // Azul
-        ['#ff69b4', 'black'], // Rosa
-        ['#000000', 'white'], // Preto
-        ['#95a5a6', 'black'], // Cinza
-        ['#e67e22', 'white'], // Laranja
-        ['#ffffff', 'black']  // Branco
+        ['#e74c3c', 'white'], ['#f1c40f', 'black'], ['#2ecc71', 'white'],
+        ['#8e44ad', 'white'], ['#3498db', 'white'], ['#ff69b4', 'black'],
+        ['#000000', 'white'], ['#95a5a6', 'black'], ['#e67e22', 'white'],
+        ['#ffffff', 'black']
       ];
       return cores[(numero - 1) % 10] || ['#ccc', 'black'];
     }
 
-    function criarBolas(dezenas) {
+    function criarBolas(dezenas, destaque = []) {
       return dezenas.map(n => {
         const [bg, corTexto] = getCorDaColuna(n);
-        return `<div class="dezena" style="background-color: ${bg}; color: ${corTexto}; text-shadow: 1px 1px black;">${String(n).padStart(2, '0')}</div>`;
+        const estiloExtra = destaque.includes(n) ? 'border: 4px solid yellow;' : '';
+        return `<div class="dezena" style="background-color: ${bg}; color: ${corTexto}; text-shadow: 1px 1px black; ${estiloExtra}">${String(n).padStart(2, '0')}</div>`;
       }).join('');
     }
 
-    async function buscarDados() {
-      const qtd = parseInt(document.getElementById('qtdConcursos').value);
-      const tipo = document.getElementById('tipoAnalise').value;
+    async function buscarCiclo() {
       const resultadoDiv = document.getElementById('resultado');
       const loadingDiv = document.getElementById('loading');
 
@@ -79,142 +159,52 @@
 
       try {
         const res = await fetch('https://premium-portaldeloteriasmacpoint.onrender.com/api.php');
-        const data = await res.json();
-        const concursos = data.slice(-qtd).reverse();
-        let html = `<h2 style="text-shadow: 1px 1px black;">Relatório dos ${qtd} Últimos Concursos</h2>`;
+        const dados = await res.json();
+        const todosResultados = dados.reverse().map(c => c.Resultado);
 
-        if (tipo === 'paresImpares') {
-          let totalPares = 0;
-          let totalImpares = 0;
-
-          concursos.forEach((c) => {
-            const pares = c.Resultado.filter(n => n % 2 === 0).length;
-            const impares = c.Resultado.length - pares;
-            totalPares += pares;
-            totalImpares += impares;
-            html += `<p>Concurso ${c.Concurso}:<br>${criarBolas(c.Resultado)}<br>${pares} pares, ${impares} ímpares</p>`;
-          });
-
-          html += `<hr><p><strong>Total:</strong> ${totalPares} pares, ${totalImpares} ímpares</p>`;
-
-        } else if (tipo === 'frequencia') {
-          const freq = {};
-          concursos.forEach(c => {
-            c.Resultado.forEach(n => {
-              freq[n] = (freq[n] || 0) + 1;
-            });
-          });
-
-          const freqOrdenada = Object.entries(freq).sort((a, b) => b[1] - a[1]);
-
-          html += `<table style="width: 100%; border-collapse: collapse; text-align: left; margin-top: 20px;">`;
-          html += `<tr><th style="border-bottom: 2px solid white; padding: 8px; color: white;">Dezena</th><th style="border-bottom: 2px solid white; padding: 8px; color: white;">Ocorrências</th></tr>`;
-
-          freqOrdenada.forEach(([num, count]) => {
-            const [bg, corTexto] = getCorDaColuna(num);
-            html += `
-              <tr>
-                <td style="padding: 8px;">
-                  <div class="dezena" style="
-                    display: inline-block;
-                    width: 45px;
-                    height: 45px;
-                    border-radius: 50%;
-                    background-color: ${bg};
-                    color: ${corTexto};
-                    font-weight: bold;
-                    text-align: center;
-                    line-height: 45px;
-                    text-shadow: 1px 1px black;
-                  ">
-                    ${String(num).padStart(2, '0')}
-                  </div>
-                </td>
-                <td style="padding: 8px; font-weight: bold; color: white; text-shadow: 1px 1px black;">
-                  ${count}
-                </td>
-              </tr>
-            `;
-          });
-          html += `</table>`;
-
-        } else if (tipo === 'atrasadas') {
-          const freq = {};
-          concursos.forEach(c => {
-            c.Resultado.forEach(n => {
-              freq[n] = (freq[n] || 0) + 1;
-            });
-          });
-
-          const atrasadas = [];
-          for (let i = 1; i <= 60; i++) {
-           if (!freq[i]) {
-  freq[i] = 1;
-} else {
-  freq[i]++;
-}
-atrasadas.push(i);
-            }
+        let ciclo = new Set();
+        let dezenasCiclo = new Set();
+        for (let i = 0; i < todosResultados.length; i++) {
+          todosResultados[i].forEach(n => dezenasCiclo.add(n));
+          if (dezenasCiclo.size >= 60) {
+            ciclo = new Set(todosResultados[i]);
+            break;
           }
-
-          if (atrasadas.length === 0) {
-            html += `<p>Todas as dezenas foram sorteadas pelo menos uma vez nos últimos ${qtd} concursos.</p>`;
-          } else {
-            html += `<p>Dezenas que não saíram nos últimos ${qtd} concursos:</p>`;
-            html += `<div style="display: flex; flex-wrap: wrap; gap: 8px;">${criarBolas(atrasadas)}</div>`;
-          }
-
-        } else if (tipo === 'ciclos') {
-          const ciclos = [];
-          let ciclo = [];
-          let todasAsDezenas = new Set();
-
-          concursos.forEach((c, index) => {
-            c.Resultado.forEach(d => todasAsDezenas.add(d));
-            ciclo.push(c);
-
-            if (todasAsDezenas.size === 60) {
-              ciclos.push([...ciclo]);
-              ciclo = [];
-              todasAsDezenas.clear();
-            }
-          });
-
-          if (ciclos.length === 0) {
-            html += `<p>Nenhum ciclo completo foi detectado nos últimos ${qtd} concursos.</p>`;
-          } else {
-            ciclos.forEach((c, i) => {
-              html += `<p><strong>Ciclo ${i + 1} (${c.length} concursos):</strong></p>`;
-              c.forEach(concurso => {
-                html += `<p>Concurso ${concurso.Concurso}: ${criarBolas(concurso.Resultado)}</p>`;
-              });
-              html += `<hr>`;
-            });
-          }
-
-        } else if (tipo === 'distanciamento') {
-          concursos.forEach((c) => {
-            const distancias = [];
-            for (let i = 1; i < c.Resultado.length; i++) {
-              distancias.push(c.Resultado[i] - c.Resultado[i - 1]);
-            }
-            html += `<p>Concurso ${c.Concurso}:<br>${criarBolas(c.Resultado)}<br>Distâncias: ${distancias.join(', ')}</p>`;
-          });
-
-        } else {
-          html += `<p style="color: red;">Tipo de análise inválido.</p>`;
         }
+
+        const todasDezenas = Array.from({ length: 60 }, (_, i) => i + 1);
+        const dezenasUltimo = new Set(todosResultados[0]);
+        const atrasadas = todasDezenas.filter(n => !dezenasUltimo.has(n) && !ciclo.has(n));
+
+        const ranking = atrasadas.map(n => {
+          let atraso = 0;
+          for (let j = 0; j < todosResultados.length; j++) {
+            if (!todosResultados[j].includes(n)) atraso++;
+            else break;
+          }
+          return { dezena: n, atraso };
+        }).sort((a, b) => b.atraso - a.atraso);
+
+        let html = `<h2 style="text-shadow: 1px 1px black;">Volante - Ciclo Atual</h2>`;
+        html += criarBolas(todasDezenas, [...ciclo, ...atrasadas]);
+
+        html += `<div class="ranking"><h2 style="text-shadow: 1px 1px black;">Ranking de Dezenas Atrasadas</h2>`;
+        ranking.forEach(r => {
+          html += `<div>Dezena ${String(r.dezena).padStart(2, '0')} - ${r.atraso} concursos sem sair</div>`;
+        });
+        html += `</div>`;
 
         resultadoDiv.innerHTML = html;
 
       } catch (e) {
-        resultadoDiv.innerHTML = `<p style="color: red;">Erro ao buscar dados: ${e.message}</p>`;
+        resultadoDiv.innerHTML = `<p style="color: red;">Erro ao buscar dados</p>`;
       } finally {
         loadingDiv.classList.remove('active');
       }
     }
-  </script>
 
+    buscarCiclo();
+  </script>
 </body>
 </html>
 

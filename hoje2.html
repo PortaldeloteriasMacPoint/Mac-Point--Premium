@@ -52,6 +52,28 @@
       font-weight: bold;
       border: 2px solid black;
       font-family: Arial, sans-serif;
+      transition: transform 0.3s;
+    }
+
+    .destaque {
+      background-color: red !important;
+      color: white !important;
+      animation: pulse 1s infinite;
+      position: relative;
+    }
+
+    .destaque::after {
+      content: "🚨";
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      font-size: 18px;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
     }
 
     .ranking {
@@ -145,8 +167,8 @@
     function criarBolas(dezenas, destaque = []) {
       return dezenas.map(n => {
         const [bg, corTexto] = getCorDaColuna(n);
-        const estiloExtra = destaque.includes(n) ? 'border: 4px solid yellow;' : '';
-        return `<div class="dezena" style="background-color: ${bg}; color: ${corTexto}; text-shadow: 1px 1px black; ${estiloExtra}">${String(n).padStart(2, '0')}</div>`;
+        const isDestaque = destaque.includes(n);
+        return `<div class="dezena ${isDestaque ? 'destaque' : ''}" style="background-color: ${bg}; color: ${corTexto};">${String(n).padStart(2, '0')}</div>`;
       }).join('');
     }
 
@@ -162,31 +184,35 @@
         const dados = await res.json();
         const todosResultados = dados.reverse().map(c => c.Resultado);
 
-        let ciclo = new Set();
-        let dezenasCiclo = new Set();
+        let dezenasAcumuladas = new Set();
+        let cicloAtual = [];
         for (let i = 0; i < todosResultados.length; i++) {
-          todosResultados[i].forEach(n => dezenasCiclo.add(n));
-          if (dezenasCiclo.size >= 60) {
-            ciclo = new Set(todosResultados[i]);
+          for (const dezena of todosResultados[i]) {
+            dezenasAcumuladas.add(dezena);
+          }
+          if (dezenasAcumuladas.size >= 60) {
+            cicloAtual = todosResultados[i];
             break;
           }
         }
 
         const todasDezenas = Array.from({ length: 60 }, (_, i) => i + 1);
         const dezenasUltimo = new Set(todosResultados[0]);
-        const atrasadas = todasDezenas.filter(n => !dezenasUltimo.has(n) && !ciclo.has(n));
+        const atrasadas = todasDezenas.filter(n => !dezenasUltimo.has(n) && !cicloAtual.includes(n));
 
         const ranking = atrasadas.map(n => {
           let atraso = 0;
-          for (let j = 0; j < todosResultados.length; j++) {
-            if (!todosResultados[j].includes(n)) atraso++;
+          for (const resultado of todosResultados) {
+            if (!resultado.includes(n)) atraso++;
             else break;
           }
           return { dezena: n, atraso };
         }).sort((a, b) => b.atraso - a.atraso);
 
+        const top10Atrasadas = ranking.slice(0, 10).map(r => r.dezena);
+
         let html = `<h2 style="text-shadow: 1px 1px black;">Volante - Ciclo Atual</h2>`;
-        html += criarBolas(todasDezenas, [...ciclo, ...atrasadas]);
+        html += criarBolas(cicloAtual, top10Atrasadas);
 
         html += `<div class="ranking"><h2 style="text-shadow: 1px 1px black;">Ranking de Dezenas Atrasadas</h2>`;
         ranking.forEach(r => {

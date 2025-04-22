@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <title>MacPoint</title>
+    <title>Mac Point</title>
     <style>
         * {
             margin: 0;
@@ -242,31 +242,27 @@ margin-bottom: 10px;
         <button onclick="logout()">Sair</button>
     </div>
 <div class="menu-lateral" id="menuLateral">
-    <h3>✨ Menu Free ✨</h3>
+    <h3>Menu Principal</h3>
     <button onclick="abrirIframe('home.html')">Início </button>
     <button onclick="abrirIframe('mac1.html')">Modalidades</button>
-    <button onclick="abrirIframe('mac2.html')">Resultados Recentes </button>
+    <button onclick="abrirIframe('hoje.html')">Resultados Recentes </button>
     <button onclick="abrirIframe('simulador.html')">Simuladores</button>
-    <button onclick="abrirIframe('gerador.html')">Gerador Jogos</button>
+    <button onclick="abrirIframe('gerador.html')">Gerador de Jogos</button>
  <button onclick="abrirIframe('desdobramento.html')">Desdobramentos</button>
-    <button onclick="abrirIframe('comunidade.html')">Fórum da Comunidade</button>
+    
      <!-- Novo Título e Submenu -->
-    <h3 class="menu-item" onclick="toggleSubmenuVip()" style="cursor: pointer;">Histórico de Resultados▼ </h3>
+    <h3 class="menu-item" onclick="toggleSubmenuVip()" style="cursor: pointer;">Análise/ Estatísticas ▼ </h3>
     <div class="submenu-vip" id="submenuVip" style="display: none; background: white; padding: 10px; border: 2px solid black;">
-        <button onclick="abrirIframe('vip1.html')">🍀 MEGA SENA </button>
-        <button onclick="abrirIframe('vip2.html')">🍀 QUINA </button>
-        <button onclick="abrirIframe('vip3.html')">🍀 LOTOFÁCIL </button>
-     <button onclick="abrirIframe('vip4.html')"> 🍀 DUPLA SENA</button>
-    <button onclick="abrirIframe('vip5.html')">🍀 + MILIONÁRIA </button>
-      <button onclick="abrirIframe('vip6.html')">🍀 LOTOMANIA </button>
-       </div>
+        <button onclick="abrirIframe('vip1.html')">🍀 Ciclo </button>
+        <button onclick="abrirIframe('vip2.html')">🍀 Frequência </button>
+        <button onclick="abrirIframe('vip3.html')">🍀 Pares e Ímpares  </button>
+  </div>
       <h3>🏆 Área Vip Premium 🏆</h3>
     <button onclick="abrirIframe('pagina1.html')"> 🥉Plano Mensal</button>
     <button onclick="abrirIframe('pagina2.html')"> 🥈Plano  Trimensal </button>
    <button onclick="abrirIframe('pagina3.html')"> 🥇Plano  Anual</button>
    <!-- Novo Título e Submenu -->
-  
-    <h3>BOA SORTE</h3>
+   <h3>BOA SORTE</h3>
   </div>
   <!-- Container principal (fora do menu lateral) -->
 <div id="conteudo-principal" style="position: relative; width: 100%; text-align: center; background-color: black; color: white; min-height: 100vh;">

@@ -1,0 +1,239 @@
+ <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🍀 Mega Sena - Histórico de Resultados</title>
+  <style>
+    body {
+      background: white;
+      color: white;
+      font-family: sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      text-shadow: -0.1vw -0.1vw 0 black, 0.1vw -0.1vw 0 black , -0.1vw 0.1vw 0 black , 0.1vw 0.1vw 0 black;
+    }
+
+    .container {
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+      color: white;
+      text-shadow: -0.2vw -0.2vw 0 black, 0.2vw -0.2vw 0 black , -0.2vw 0.2vw 0 black , 0.2vw 0.2vw 0 black;
+    }
+
+    h1 {
+      color: black; /* COR DO TÍTULO ALTERADA AQUI */
+    }
+
+    input, button, label {
+      margin: 10px 8px;
+      padding: 10px;
+      font-size: 1.1em;
+      border: none;
+      border-radius: 5px;
+      border: 2px solid black;
+    }
+
+    input[type="text"] {
+      width: 300px;
+      color: black;
+    }
+
+    button {
+      background: Orange;
+      color: black;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #00e676;
+    }
+
+    .sorteio {
+      background: #001a12;
+      margin: 20px 0;
+      padding: 15px;
+      border-radius: 10px;
+      border: 5px solid black;
+    }
+
+    .titulo-sorteio {
+      font-size: 1.2em;
+      margin-bottom: 15px;
+      border: 2px solid white;
+      border-radius: 30%;
+      text-shadow: -0.2vw -0.2vw 0 white , 0.2vw -0.2vw 0 white, -0.2vw 0.2vw 0 white , 0.2vw 0.2vw 0 white;
+    }
+
+    .numeros {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      text-shadow: -0.2vw -0.2vw 0 black, 0.2vw -0.2vw 0 black, -0.2vw 0.2vw 0 black , 0.2vw 0.2vw 0 black;
+    }
+
+    .bola {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      line-height: 40px;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      border: 2px solid black;
+    }
+
+    .vermelha  { background: #e53935; }
+    .amarela   { background: #fdd835; color: black; }
+    .verde     { background: #43a047; }
+    .marrom    { background: #8d6e63; }
+    .azul      { background: #1e88e5; }
+    .rosa      { background: #ec407a; }
+    .preta     { background: #212121; }
+    .cinza     { background: #757575; }
+    .laranja   { background: #fb8c00; }
+    .branca    { background: #eeeeee; color: black; }
+
+    .relatorio {
+      margin-top: 10px;
+      font-size: 0.9em;
+      border: 2px solid white;
+      border-radius: 10px;
+      color: white;
+    }
+
+    @media (max-width: 600px) {
+      .numeros { gap: 6px; }
+      .bola { width: 35px; height: 35px; line-height: 35px; font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🍀 Mega Sena</h1>
+
+    <input id="busca" type="text" placeholder="🔎  Digite o número do concurso aqui" />
+    <button id="voltar" style="display:none">Voltar</button>
+    <br />
+    <label><input type="checkbox" id="ordenarDezenas"> Ordenar dezenas</label>
+    <button id="alternarOrdem">Mais antigo ao mais recente</button>
+
+    <div id="resultados"></div>
+  </div>
+
+  <script>
+    const resultadosDiv = document.getElementById("resultados");
+    const inputBusca = document.getElementById("busca");
+    const btnVoltar = document.getElementById("voltar");
+    const btnAlternarOrdem = document.getElementById("alternarOrdem");
+    const chkOrdenarDezenas = document.getElementById("ordenarDezenas");
+
+    let ordemCrescenteConcurso = false;
+    let concursos = [];
+
+    const primos = [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59];
+    const fibonacci = [1,2,3,5,8,13,21,34,55];
+    const borda = [1,2,3,4,5,6,10,11,15,16,20,21,25,26,30,31,35,36,40,41,45,46,50,51,55,56,60];
+    const centro = [7,8,9,12,13,14,17,18,19,22,23,24,27,28,29,32,33,34,37,38,39,42,43,44,47,48,49,52,53,54,57,58,59];
+
+    function corDaDezena(dezena) {
+      const num = parseInt(dezena, 10);
+      const col = num % 10 || 10;
+      const cores = ["", "vermelha", "amarela", "verde", "marrom", "azul", "rosa", "preta", "cinza", "laranja", "branca"];
+      return cores[col];
+    }
+
+    function gerarRelatorio(dezenas) {
+      const nums = dezenas.map(Number);
+      const pares = nums.filter(n => n % 2 === 0).length;
+      const impares = nums.length - pares;
+      const soma = nums.reduce((acc, n) => acc + n, 0);
+      const qtdPrimos = nums.filter(n => primos.includes(n)).length;
+      const qtdFib = nums.filter(n => fibonacci.includes(n)).length;
+      const qtdBorda = nums.filter(n => borda.includes(n)).length;
+      const qtdCentro = nums.filter(n => centro.includes(n)).length;
+
+      return `
+        <div class="relatorio">
+          <strong>Relatório:</strong><br>
+          Pares: ${pares}, Ímpares: ${impares}<br>
+          Números Primos: ${qtdPrimos}, Fibonacci: ${qtdFib}<br>
+          Soma Total: ${soma}<br>
+          Borda do Volante: ${qtdBorda}, Volante Central: ${qtdCentro}
+        </div>
+      `;
+    }
+
+    function criarSorteio(num, dezenas) {
+      const dezenasOrdenadas = chkOrdenarDezenas.checked
+        ? [...dezenas].sort((a, b) => a - b)
+        : dezenas;
+
+      const div = document.createElement("div");
+      div.className = "sorteio";
+      div.innerHTML = `
+        <div class="titulo-sorteio">Concurso ${num}</div>
+        <div class="numeros">
+          ${dezenasOrdenadas.map(d => `<div class="bola ${corDaDezena(d)}">${d}</div>`).join("")}
+        </div>
+        ${gerarRelatorio(dezenas)}
+      `;
+      return div;
+    }
+
+    function mostrarUltimos10() {
+      resultadosDiv.innerHTML = "";
+      const lista = ordemCrescenteConcurso
+        ? concursos.slice(-10).reverse()
+        : concursos.slice(0, 10);
+      lista.forEach(([num, dezenas]) => resultadosDiv.appendChild(criarSorteio(num, dezenas)));
+      btnVoltar.style.display = "none";
+    }
+
+    fetch("https://premium-portaldeloteriasmacpoint.onrender.com/api.php")
+      .then(res => res.json())
+      .then(data => {
+        concursos = Object.entries(data)
+          .filter(([k]) => !isNaN(k))
+          .map(([k, v]) => [parseInt(k), v]);
+
+        concursos.sort((a, b) => b[0] - a[0]); // ordem decrescente
+        mostrarUltimos10();
+
+        inputBusca.addEventListener("input", () => {
+          const val = inputBusca.value.trim();
+          if (data[val]) {
+            resultadosDiv.innerHTML = "";
+            resultadosDiv.appendChild(criarSorteio(val, data[val]));
+            btnVoltar.style.display = "inline-block";
+          } else if (val === "") {
+            mostrarUltimos10();
+          }
+        });
+
+        btnVoltar.addEventListener("click", () => {
+          inputBusca.value = "";
+          mostrarUltimos10();
+        });
+
+        btnAlternarOrdem.addEventListener("click", () => {
+          ordemCrescenteConcurso = !ordemCrescenteConcurso;
+          mostrarUltimos10();
+        });
+
+        chkOrdenarDezenas.addEventListener("change", () => {
+          mostrarUltimos10();
+        });
+      })
+      .catch(err => {
+        resultadosDiv.innerHTML = "Erro ao carregar dados da API.";
+        console.error(err);
+      });
+  </script>
+</body>
+</html>
+
+

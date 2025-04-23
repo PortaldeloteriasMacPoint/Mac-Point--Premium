@@ -249,6 +249,7 @@ margin-bottom: 10px;
     <button onclick="abrirIframe('simulador.html')">Simuladores</button>
     <button onclick="abrirIframe('gerador.html')">Gerador de Jogos</button>
  <button onclick="abrirIframe('desdobramento.html')">Desdobramentos</button>
+    <button onclick="abrirIframe('chatbot.html')">Chat Bot </button>
     
      <!-- Novo Título e Submenu -->
     <h3 class="menu-item" onclick="toggleSubmenuVip()" style="cursor: pointer;">Análise/ Estatísticas ▼ </h3>
@@ -446,7 +447,7 @@ function toggleSubmenuVip() {
     const isOpen = submenu.style.display === 'block';
 submenu.style.display = isOpen ? 'none' : 'block';
 
-    titulo.innerHTML = isOpen ? "Histórico de Resultados ▼" : " Histórico de Resultados ▲";
+    titulo.innerHTML = isOpen ? "Análise/Estatísticas ▼" : " Análise/Estatísticas  ▲";
 }
         function escolherFoto() {
             document.getElementById('inputFoto').click();

@@ -1,34 +1,30 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Simulador Mega-Sena</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
     body {
       margin: 0;
-      padding: 0;
-      background: #121212;
+      background-color: #121212;
+      color: white;
       font-family: Arial, sans-serif;
-      color: #fff;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
     }
     .container {
-      max-width: 500px;
-      width: 100%;
-      padding: 20px;
       background: #1e1e1e;
-      border-radius: 12px;
+      padding: 20px;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 500px;
       text-align: center;
     }
     h1 {
-      font-size: 1.6rem;
       margin-bottom: 20px;
     }
     input {
@@ -39,20 +35,16 @@
       text-align: center;
       border-radius: 5px;
       border: none;
-      outline: none;
     }
     button {
+      margin-top: 15px;
+      padding: 10px 20px;
       background: orange;
       border: 2px solid black;
-      color: #000;
+      color: black;
       font-weight: bold;
-      padding: 10px 20px;
-      margin-top: 15px;
       border-radius: 5px;
       cursor: pointer;
-    }
-    .resultado {
-      margin-top: 20px;
     }
     .loading {
       border: 6px solid #f3f3f3;
@@ -68,18 +60,22 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
+    .resultado {
+      margin-top: 20px;
+      text-align: left;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Simulador Mega-Sena</h1>
     <div id="inputs">
-      <input type="number" min="1" max="60">
-      <input type="number" min="1" max="60">
-      <input type="number" min="1" max="60">
-      <input type="number" min="1" max="60">
-      <input type="number" min="1" max="60">
-      <input type="number" min="1" max="60">
+      <input type="number" min="1" max="60" />
+      <input type="number" min="1" max="60" />
+      <input type="number" min="1" max="60" />
+      <input type="number" min="1" max="60" />
+      <input type="number" min="1" max="60" />
+      <input type="number" min="1" max="60" />
     </div>
     <button onclick="buscarResultados()">Buscar</button>
     <div class="loading" id="loading"></div>
@@ -87,44 +83,42 @@
   </div>
 
   <script>
-    function compararJogos(jogoUsuario, jogoConcurso) {
-      return jogoUsuario.filter(num => jogoConcurso.includes(num)).length;
-    }
-
     async function buscarResultados() {
-      const inputs = document.querySelectorAll('input');
-      const numeros = Array.from(inputs).map(input => {
-        const val = parseInt(input.value);
-        return val >= 1 && val <= 60 ? val.toString().padStart(2, '0') : null;
-      }).filter(n => n);
+      const inputs = document.querySelectorAll("#inputs input");
+      const numeros = Array.from(inputs)
+        .map(input => {
+          const val = parseInt(input.value);
+          return (val >= 1 && val <= 60) ? val.toString().padStart(2, '0') : null;
+        })
+        .filter(n => n !== null);
 
       if (numeros.length !== 6) {
-        alert("Preencha 6 números válidos entre 01 e 60.");
+        alert("Informe 6 números válidos entre 1 e 60.");
         return;
       }
 
-      const loading = document.getElementById('loading');
-      const resultado = document.getElementById('resultado');
+      const loading = document.getElementById("loading");
+      const resultado = document.getElementById("resultado");
       resultado.innerHTML = "";
       loading.style.display = "block";
 
       try {
-        const response = await fetch('https://premium-portaldeloteriasmacpoint.onrender.com/api.php');
-        const dados = await response.json();
+        const response = await fetch("https://premium-portaldeloteriasmacpoint.onrender.com/api.php");
+        const concursos = await response.json();
 
         let terno = 0, quadra = 0, quina = 0, sena = 0;
 
-        dados.forEach(concurso => {
-          if (!concurso.dezenas || !Array.isArray(concurso.dezenas)) return;
+        for (let c of concursos) {
+          const dezenas = c.dezenas;
+          if (!Array.isArray(dezenas)) continue;
 
-          const acertos = compararJogos(numeros, concurso.dezenas);
-          switch (acertos) {
-            case 3: terno++; break;
-            case 4: quadra++; break;
-            case 5: quina++; break;
-            case 6: sena++; break;
-          }
-        });
+          const acertos = dezenas.filter(num => numeros.includes(num)).length;
+
+          if (acertos === 3) terno++;
+          else if (acertos === 4) quadra++;
+          else if (acertos === 5) quina++;
+          else if (acertos === 6) sena++;
+        }
 
         resultado.innerHTML = `
           <p>Ternos: ${terno}</p>
@@ -132,8 +126,9 @@
           <p>Quinas: ${quina}</p>
           <p>Senas: ${sena}</p>
         `;
-      } catch (error) {
-        resultado.innerHTML = "Erro ao buscar resultados.";
+      } catch (err) {
+        resultado.innerHTML = "Erro ao buscar dados.";
+        console.error(err);
       } finally {
         loading.style.display = "none";
       }

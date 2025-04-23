@@ -6,7 +6,7 @@
   <title>🍀 Mega Sena- Histórico de Resultados </title>
   <style>
     body {
-      background: darkcyan ;
+      background: white  ;
       color: white   ;
       font-family: sans-serif;
       text-align: center;
@@ -172,11 +172,7 @@ function gerarRelatorio(dezenas) {
 `;
     }
 
-    function criarSorteio(num, dezenas) {
-      const dezenasOrdenadas = chkOrdenarDezenas.checked
-        ? [...dezenas].sort((a, b) => parseInt(a) - parseInt(b))
-        : dezenas;
-
+    
       const div = document.createElement("div");
       div.className = "sorteio";
       div.innerHTML = `
@@ -197,7 +193,7 @@ function mostrarUltimos10() {
       btnVoltar.style.display = "none";
     }
 
-    fetch("https://raw.githubusercontent.com/guilhermeasn/loteria.json/master/data/megasena.json")
+    fetch("https://premium-portaldeloteriasmacpoint.onrender.com/api.php")
       .then(res => res.json())
       .then(data => {
         concursos = Object.entries(data)

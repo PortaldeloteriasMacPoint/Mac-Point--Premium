@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -36,6 +37,7 @@
       padding: 20px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.3);
       text-align: center;
+      border: 2px solid #000;
     }
 
     .icone {
@@ -59,6 +61,10 @@
       font-weight: bold;
       margin-bottom: 15px;
       color: #222;
+      border: 2px solid black;
+      padding: 5px;
+      border-radius: 10px;
+      background-color: #f0f0f0;
     }
 
     .dezenas {
@@ -85,6 +91,23 @@
       font-size: 14px;
       color: #333;
       margin-top: 5px;
+    }
+
+    .info.pulsante {
+      color: yellow;
+      font-weight: bold;
+      animation: pulse 1s infinite;
+      border: 2px solid black;
+      display: inline-block;
+      padding: 5px;
+      border-radius: 10px;
+      background-color: #222;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
     }
 
     #status {
@@ -115,6 +138,9 @@
   function criarBox(loteria) {
     const box = document.createElement("div");
     box.className = "loteria-box";
+
+    const statusClass = /acumulad/i.test(loteria.status) ? "info pulsante" : "info";
+
     box.innerHTML = `
       <div class="icone"><img src="${loteria.icone}" alt="${loteria.nome}"></div>
       <div class="titulo">${loteria.nome}</div>
@@ -122,7 +148,7 @@
         ${loteria.dezenas.map(d => `<div class="dezena">${d}</div>`).join('')}
       </div>
       <div class="info">Próximo sorteio: ${loteria.proximo}</div>
-      <div class="info">${loteria.status}</div>
+      <div class="${statusClass}">${loteria.status}</div>
     `;
     return box;
   }

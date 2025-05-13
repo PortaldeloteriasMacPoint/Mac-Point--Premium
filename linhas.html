@@ -135,7 +135,7 @@
   </div>
 
   <script>
-    function gerarRelatorio() {
+    async function gerarRelatorio() {
       const limite = document.getElementById('limite').value;
       const filtro = document.getElementById('filtro').value;
       const resultado = document.getElementById('resultado');
@@ -144,44 +144,45 @@
       resultado.innerHTML = '';
       loading.style.display = 'block';
 
-      fetch(`https://premium-portaldeloteriasmacpoint.onrender.com/api.php?limite=${limite}`)
-        .then(response => response.json())
-        .then(data => {
-          setTimeout(() => {
-            loading.style.display = 'none';
+      try {
+        const response = await fetch(`https://premium-portaldeloteriasmacpoint.onrender.com/api.php?limite=${limite}`);
+        const data = await response.json();
 
-            let relatorioHTML = `<div class="titulo-relatorio">Relatório de Análise</div>`;
-            relatorioHTML += `<div class="relatorio">`;
-            relatorioHTML += `<strong>Filtro aplicado:</strong> ${filtro}<br><br>`;
-            relatorioHTML += `<strong>Concursos analisados:</strong> ${limite}<br><br>`;
-            relatorioHTML += `<ul>`;
-
-            const frequencias = {};
-            data.forEach(concurso => {
-              concurso.dezenas.forEach(dezena => {
-                frequencias[dezena] = (frequencias[dezena] || 0) + 1;
-              });
+        const frequencias = {};
+        data.forEach(concurso => {
+          if (Array.isArray(concurso.dezenas)) {
+            concurso.dezenas.forEach(dezena => {
+              frequencias[dezena] = (frequencias[dezena] || 0) + 1;
             });
-
-            const ordenado = Object.entries(frequencias).sort((a, b) => {
-              if (filtro === 'frequencia') return b[1] - a[1];
-              if (filtro === 'mais-atrasadas') return a[1] - b[1];
-              if (filtro === 'menos-frequentes') return a[1] - b[1];
-              return 0;
-            });
-
-            ordenado.forEach(([dezena, freq]) => {
-              relatorioHTML += `<li>Dezena ${dezena}: ${freq} vezes</li>`;
-            });
-
-            relatorioHTML += `</ul></div>`;
-            resultado.innerHTML = relatorioHTML;
-          }, 1500);
-        })
-        .catch(() => {
-          loading.style.display = 'none';
-          resultado.innerHTML = `<div class="relatorio">Erro ao carregar os dados.</div>`;
+          }
         });
+
+        const ordenado = Object.entries(frequencias).sort((a, b) => {
+          if (filtro === 'frequencia') return b[1] - a[1];
+          if (filtro === 'mais-atrasadas') return a[1] - b[1];
+          if (filtro === 'menos-frequentes') return a[1] - b[1];
+          return 0;
+        });
+
+        setTimeout(() => {
+          loading.style.display = 'none';
+
+          let relatorioHTML = `<div class="titulo-relatorio">Relatório</div>`;
+          relatorioHTML += `<div class="relatorio">`;
+          relatorioHTML += `<strong>Filtro aplicado:</strong> ${filtro}<br><br>`;
+          relatorioHTML += `<strong>Concursos analisados:</strong> ${limite}<br><br>`;
+          relatorioHTML += `<ul>`;
+          ordenado.forEach(([dezena, freq]) => {
+            relatorioHTML += `<li>Dezena ${dezena}: ${freq} vezes</li>`;
+          });
+          relatorioHTML += `</ul></div>`;
+          resultado.innerHTML = relatorioHTML;
+        }, 1500);
+
+      } catch (error) {
+        loading.style.display = 'none';
+        resultado.innerHTML = `<div class="relatorio">Erro ao carregar os dados.</div>`;
+      }
     }
   </script>
 </body>

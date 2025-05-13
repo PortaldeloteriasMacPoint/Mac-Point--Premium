@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Relatório de Atrasos</title>
+  <style>
+    body {
+      background-color: #001a12;
+      color: white;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: white;
+      text-shadow: 1px 1px 2px black;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px auto;
+      background-color: #002e22;
+      color: white;
+      box-shadow: 0 0 10px black;
+    }
+
+    th, td {
+      border: 1px solid white;
+      padding: 10px;
+      text-align: center;
+    }
+
+    th {
+      background-color: black;
+    }
+
+    @media (max-width: 768px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+
+      td {
+        text-align: right;
+        position: relative;
+        padding-left: 50%;
+      }
+
+      td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        width: 45%;
+        white-space: nowrap;
+        text-align: left;
+        font-weight: bold;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Relatório de Atrasos</h1>
+
+  <div id="relatorio"></div>
+
+  <script src="base.js"></script>
+  <script>
+    function gerarRelatorioAtraso(tipo) {
+      const mapa = padroes[tipo];
+      const atrasos = {};
+      const ultimos = dados.slice().reverse();
+
+      // Inicializar atrasos com 0
+      for (let chave in mapa) {
+        atrasos[chave] = 0;
+      }
+
+      for (let chave in mapa) {
+        let grupo = mapa[chave];
+        for (let i = 0; i < ultimos.length; i++) {
+          let concurso = ultimos[i];
+          if (concurso.some(n => grupo.includes(n))) break;
+          atrasos[chave]++;
+        }
+      }
+
+      let html = `<h2>Atrasos por ${tipo}</h2>`;
+      html += `<table><tr><th>${tipo}</th><th>Atraso (Concursos)</th></tr>`;
+
+      for (let chave in atrasos) {
+        html += `<tr><td>${chave}</td><td>${atrasos[chave]}</td></tr>`;
+      }
+
+      html += `</table>`;
+      return html;
+    }
+
+    const relatorioDiv = document.getElementById("relatorio");
+    relatorioDiv.innerHTML += gerarRelatorioAtraso("semicolunas");
+    relatorioDiv.innerHTML += gerarRelatorioAtraso("semilinhas");
+    relatorioDiv.innerHTML += gerarRelatorioAtraso("linhas");
+    relatorioDiv.innerHTML += gerarRelatorioAtraso("colunas");
+  </script>
+
+</body>
+</html>
+
+

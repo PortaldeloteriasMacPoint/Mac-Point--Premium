@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Análise linhas e colunas</title>
+  <style>
+    body {
+      background-color: #001a12;
+      color: white;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      color: #00b894;
+      -webkit-text-stroke: 1px black;
+    }
+    select, button {
+      padding: 10px;
+      margin: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    select {
+      background-color: white;
+      color: black;
+    }
+    button {
+      background-color: black;
+      color: white;
+      cursor: pointer;
+    }
+    .loader {
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid blue;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+      display: none;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    #relatorio {
+      background-color: white;
+      color: black;
+      padding: 20px;
+      margin-top: 20px;
+      border-radius: 10px;
+      display: none;
+    }
+    .erro-img {
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Relatório de Filtros</h1>
+
+  <div>
+    <select id="filtroTipo">
+      <option value="linhas">Linhas</option>
+      <option value="colunas">Colunas</option>
+      <option value="semilinhas">Semilinhas</option>
+      <option value="semicolunas">Semicolunas</option>
+    </select>
+
+    <select id="quantidadeConcursos">
+      <option value="10">Últimos 10 Concursos</option>
+    </select>
+
+    <button onclick="gerar()">Gerar Relatório</button>
+  </div>
+
+  <div id="loader" class="loader"></div>
+  <div id="relatorio"></div>
+  <img id="erro" class="erro-img" src="erro.jpg" alt="Erro" />
+
+  <script>
+    function gerar() {
+      const tipo = document.getElementById('filtroTipo').value;
+      const quantidade = parseInt(document.getElementById('quantidadeConcursos').value);
+
+      document.getElementById('relatorio').style.display = 'none';
+      document.getElementById('erro').style.display = 'none';
+      document.getElementById('loader').style.display = 'block';
+
+      let script = document.createElement('script');
+      script.src = 'base.js';
+
+      script.onload = () => {
+        document.getElementById('loader').style.display = 'none';
+        const resultado = gerarRelatorio(tipo, quantidade);
+        document.getElementById('relatorio').innerHTML = resultado;
+        document.getElementById('relatorio').style.display = 'block';
+      };
+
+      script.onerror = () => {
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('erro').style.display = 'block';
+      };
+
+      document.body.appendChild(script);
+    }
+  </script>
+</body>
+</html>
+

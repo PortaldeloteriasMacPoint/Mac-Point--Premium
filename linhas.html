@@ -1,112 +1,120 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Relatório de Atrasos</title>
-  <style>
-    body {
-      background-color: #001a12;
-      color: white;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 20px;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório de Atraso</title>
+    <style>
+        body {
+            background-color: #001a12;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    h1, h2 {
-      text-align: center;
-      color: white;
-      text-shadow: 1px 1px 2px black;
-    }
+        h1, h2 {
+            text-align: center;
+            border: 2px solid black;
+            padding: 10px;
+            margin-top: 20px;
+        }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 20px auto;
-      background-color: #002e22;
-      color: white;
-      box-shadow: 0 0 10px black;
-    }
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
 
-    th, td {
-      border: 1px solid white;
-      padding: 10px;
-      text-align: center;
-    }
+        th, td {
+            border: 1px solid #fff;
+            padding: 8px;
+            text-align: center;
+        }
 
-    th {
-      background-color: black;
-    }
+        th {
+            background-color: #333;
+        }
 
-    @media (max-width: 768px) {
-      table, thead, tbody, th, td, tr {
-        display: block;
-      }
+        tr:nth-child(even) {
+            background-color: #444;
+        }
 
-      td {
-        text-align: right;
-        position: relative;
-        padding-left: 50%;
-      }
+        tr:nth-child(odd) {
+            background-color: #555;
+        }
 
-      td::before {
-        content: attr(data-label);
-        position: absolute;
-        left: 10px;
-        width: 45%;
-        white-space: nowrap;
-        text-align: left;
-        font-weight: bold;
-      }
-    }
-  </style>
+        @media (max-width: 768px) {
+            table {
+                width: 100%;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1, h2 {
+                font-size: 18px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-  <h1>Relatório de Atrasos</h1>
+    <h1>Relatório de Atrasos</h1>
+    <h2>Atrasos de Semilinhas, Semicolunas, Linhas e Colunas</h2>
 
-  <div id="relatorio"></div>
+    <div id="relatorio"></div>
 
-  <script src="base.js"></script>
-  <script>
-    function gerarRelatorioAtraso(tipo) {
-      const mapa = padroes[tipo];
-      const atrasos = {};
-      const ultimos = dados.slice().reverse();
+    <script src="base.js"></script>
+    <script>
+        function gerarRelatorio(tipo, quantidade) {
+            const mapa = padroes[tipo];
+            let contagem = {};
+            for (let chave in mapa) contagem[chave] = 0;
 
-      // Inicializar atrasos com 0
-      for (let chave in mapa) {
-        atrasos[chave] = 0;
-      }
+            for (let i = 0; i < quantidade; i++) {
+                let concurso = dados[i];
+                for (let chave in mapa) {
+                    let grupo = mapa[chave];
+                    concurso.forEach(num => {
+                        if (grupo.includes(num)) contagem[chave]++;
+                    });
+                }
+            }
 
-      for (let chave in mapa) {
-        let grupo = mapa[chave];
-        for (let i = 0; i < ultimos.length; i++) {
-          let concurso = ultimos[i];
-          if (concurso.some(n => grupo.includes(n))) break;
-          atrasos[chave]++;
+            let total = quantidade * 6;
+            let html = `<h2>Análise de ${tipo} (Últimos ${quantidade} concursos)</h2>`;
+            html += `<table><tr><th>${tipo}</th><th>Quantidade</th><th>Percentual</th></tr>`;
+
+            for (let chave in contagem) {
+                let qtd = contagem[chave];
+                let perc = ((qtd / total) * 100).toFixed(2);
+                html += `<tr><td>${chave}</td><td>${qtd}</td><td>${perc}%</td></tr>`;
+            }
+
+            html += `</table>`;
+            return html;
         }
-      }
 
-      let html = `<h2>Atrasos por ${tipo}</h2>`;
-      html += `<table><tr><th>${tipo}</th><th>Atraso (Concursos)</th></tr>`;
+        const quantidadeConcursos = 10;
 
-      for (let chave in atrasos) {
-        html += `<tr><td>${chave}</td><td>${atrasos[chave]}</td></tr>`;
-      }
+        const semilinhasRelatorio = gerarRelatorio('semilinhas', quantidadeConcursos);
+        const semicolunasRelatorio = gerarRelatorio('semicolunas', quantidadeConcursos);
+        const linhasRelatorio = gerarRelatorio('linhas', quantidadeConcursos);
+        const colunasRelatorio = gerarRelatorio('colunas', quantidadeConcursos);
 
-      html += `</table>`;
-      return html;
-    }
-
-    const relatorioDiv = document.getElementById("relatorio");
-    relatorioDiv.innerHTML += gerarRelatorioAtraso("semicolunas");
-    relatorioDiv.innerHTML += gerarRelatorioAtraso("semilinhas");
-    relatorioDiv.innerHTML += gerarRelatorioAtraso("linhas");
-    relatorioDiv.innerHTML += gerarRelatorioAtraso("colunas");
-  </script>
-
+        document.getElementById('relatorio').innerHTML = `
+            ${semilinhasRelatorio}
+            ${semicolunasRelatorio}
+            ${linhasRelatorio}
+            ${colunasRelatorio}
+        `;
+    </script>
 </body>
 </html>
-
 

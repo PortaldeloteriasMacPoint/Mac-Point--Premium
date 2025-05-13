@@ -1,107 +1,72 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Relatório de Análise</title>
+  <meta charset="UTF-8">
+  <title>Relatório de Padrões</title>
   <style>
     body {
-      background-color: #001a12;
-      color: white;
       font-family: Arial, sans-serif;
-      margin: 0;
       padding: 20px;
+      background: #f8f9fa;
       text-align: center;
     }
-    h1 {
-      color: #00b894;
-      -webkit-text-stroke: 1px black;
+    h1, h2 {
+      text-align: center;
+      margin-bottom: 20px;
     }
-    .input-section input {
-      background-color: white;
-      color: black;
+    select, input, button {
       padding: 10px;
       margin: 10px;
-      border: none;
-      border-radius: 5px;
+      font-size: 16px;
     }
-    .input-section button {
-      padding: 10px 20px;
-      background-color: black;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .loader {
-      border: 6px solid #f3f3f3;
-      border-top: 6px solid blue;
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      animation: spin 1s linear infinite;
-      margin: 20px auto;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    #relatorio {
-      background-color: white;
-      color: black;
-      padding: 20px;
+    table {
+      width: 100%;
+      max-width: 700px;
+      margin: 0 auto;
+      border-collapse: collapse;
+      background: white;
       margin-top: 20px;
-      border-radius: 10px;
-      display: none;
     }
-    .erro-img {
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-      display: none;
+    th, td {
+      padding: 10px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+    @media (max-width: 600px) {
+      table, th, td {
+        font-size: 14px;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>Relatório de Análise</h1>
-  <div class="input-section">
-    <input type="number" id="concurso" placeholder="Número do Concurso" />
-    <button onclick="analisar()">Analisar</button>
-  </div>
 
-  <div id="loader" class="loader" style="display: none;"></div>
-  <div id="mensagem" style="display: none;">Aguarde só um instante, por favor. Sua análise está sendo feita.</div>
+  <h1>Relatório de Análise de Padrões</h1>
 
-  <div id="relatorio"></div>
-  <img id="erro" class="erro-img" src="erro.jpg" alt="Erro" />
+  <label for="tipo">Tipo:</label>
+  <select id="tipo">
+    <option value="linhas">Linhas</option>
+    <option value="colunas">Colunas</option>
+    <option value="semilinhas">Semilinhas</option>
+    <option value="semicolunas">Semicolunas</option>
+  </select>
 
+  <label for="quantidade">Qtd Concursos:</label>
+  <input type="number" id="quantidade" min="1" max="10" value="10">
+
+  <button onclick="gerar()">Gerar Relatório</button>
+
+  <div id="resultado"></div>
+
+  <script src="base.js"></script>
   <script>
-    function analisar() {
-      document.getElementById('relatorio').style.display = 'none';
-      document.getElementById('erro').style.display = 'none';
-      document.getElementById('loader').style.display = 'block';
-      document.getElementById('mensagem').style.display = 'block';
-
-      let script = document.createElement('script');
-      script.src = 'base.js';
-
-      script.onload = () => {
-        document.getElementById('loader').style.display = 'none';
-        document.getElementById('mensagem').style.display = 'none';
-        document.getElementById('relatorio').style.display = 'block';
-        document.getElementById('relatorio').innerHTML = gerarRelatorio();
-      };
-
-      script.onerror = () => {
-        document.getElementById('loader').style.display = 'none';
-        document.getElementById('mensagem').style.display = 'none';
-        document.getElementById('erro').style.display = 'block';
-      };
-
-      document.body.appendChild(script);
+    function gerar() {
+      const tipo = document.getElementById('tipo').value;
+      const quantidade = parseInt(document.getElementById('quantidade').value);
+      const resultado = gerarRelatorio(tipo, quantidade);
+      document.getElementById('resultado').innerHTML = resultado;
     }
   </script>
+
 </body>
 </html>
-
-

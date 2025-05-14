@@ -1,147 +1,73 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Relatório de Atrasos</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Análise por Linha</title>
   <style>
     body {
+      margin: 0;
+      font-family: Arial, sans-serif;
       background-color: #001a12;
       color: white;
-      font-family: Arial, sans-serif;
-      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       padding: 20px;
     }
-
     h1 {
+      color: #00b894;
+      text-shadow: 1px 1px 2px black;
       text-align: center;
-      color: white;
-      text-shadow: 2px 2px 0 black;
     }
-
-    .filtros {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 20px 0;
-    }
-
     select, button {
       padding: 10px;
+      margin: 10px;
       font-size: 16px;
       border-radius: 5px;
-      border: none;
     }
-
-    button {
-      background-color: #00cc66;
-      color: white;
-      cursor: pointer;
+    #loading {
+      display: none;
+      margin-top: 15px;
+      font-style: italic;
     }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
+    .relatorio {
+      background: white;
+      color: black;
+      padding: 20px;
       margin-top: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 700px;
+      box-shadow: 0 0 10px #00000080;
     }
-
-    th, td {
-      border: 1px solid white;
-      padding: 10px;
+    .relatorio h2 {
       text-align: center;
-    }
-
-    th {
-      background-color: #003322;
-    }
-
-    tr:nth-child(even) {
-      background-color: #004d33;
-    }
-
-    tr:nth-child(odd) {
-      background-color: #003d2b;
-    }
-
-    @media (max-width: 600px) {
-      table, th, td {
-        font-size: 12px;
-      }
-
-      .filtros {
-        flex-direction: column;
-        align-items: center;
-      }
+      color: #00b894;
+      text-shadow: 1px 1px 1px black;
     }
   </style>
 </head>
 <body>
+  <h1>Análise de Resultados</h1>
+  <label for="quantidade">Filtrar últimos:</label>
+  <select id="quantidade">
+    <option value="5">5 concursos</option>
+    <option value="10" selected>10 concursos</option>
+    <option value="20">20 concursos</option>
+  </select>
 
-  <h1>Relatório de Atrasos</h1>
+  <label for="tipo">Tipo de Análise:</label>
+  <select id="tipo">
+    <option value="linhas">Linhas</option>
+    <option value="semilinhas">Semilinhas</option>
+  </select>
 
-  <div class="filtros">
-    <label>
-      Tipo:
-      <select id="tipoFiltro">
-        <option value="semilinhas">Semilinhas</option>
-        <option value="semicolunas">Semicolunas</option>
-        <option value="linhas">Linhas</option>
-        <option value="colunas">Colunas</option>
-      </select>
-    </label>
+  <button onclick="analisar()">Analisar</button>
 
-    <label>
-      Concursos:
-      <select id="concursosFiltro">
-        <option value="10">Últimos 10</option>
-        <option value="20">Últimos 20</option>
-        <option value="50">Últimos 50</option>
-        <option value="100">Últimos 100</option>
-      </select>
-    </label>
+  <div id="loading">Analisando... Aguarde.</div>
+  <div id="resultado" class="relatorio" style="display: none;"></div>
 
-    <button onclick="gerarRelatorio()">Gerar Relatório</button>
-  </div>
-
-  <div id="resultado"></div>
-
-  <script src="base.js"></script>
-  <script>
-    function gerarRelatorio() {
-      const tipo = document.getElementById("tipoFiltro").value;
-      const qtd = parseInt(document.getElementById("concursosFiltro").value);
-      const mapa = padroes[tipo];
-      let contagem = {};
-
-      for (let grupo in mapa) contagem[grupo] = 0;
-
-      for (let i = 0; i < Math.min(qtd, dados.length); i++) {
-        let concurso = dados[i];
-        for (let grupo in mapa) {
-          let lista = mapa[grupo];
-          concurso.forEach(n => {
-            if (lista.includes(n)) contagem[grupo]++;
-          });
-        }
-      }
-
-      let total = qtd * 6;
-      let html = `<h2 style="text-align:center">${tipo.toUpperCase()} - Últimos ${qtd} Concursos</h2>`;
-      html += `<table><tr><th>Grupo</th><th>Ocorrências</th><th>%</th></tr>`;
-
-      for (let grupo in contagem) {
-        let valor = contagem[grupo];
-        let perc = ((valor / total) * 100).toFixed(2);
-        html += `<tr><td>${grupo}</td><td>${valor}</td><td>${perc}%</td></tr>`;
-      }
-
-      html += `</table>`;
-      document.getElementById("resultado").innerHTML = html;
-    }
-
-    window.onload = gerarRelatorio;
-  </script>
+  <script src="linha.js"></script>
 </body>
 </html>
-

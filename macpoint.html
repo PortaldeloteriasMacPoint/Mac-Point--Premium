@@ -115,9 +115,7 @@ height: calc(100vh - 70px);
       1px -1px 0 white,
       -1px 1px 0 white;
   }
-.menu-lateral, .menu-lateral button, .menu-lateral h3 {
-  font-family: "Courier New", monospace !important;
-}
+
 .menu-btn {
   position: relative;
   display: flex;
@@ -132,10 +130,7 @@ height: calc(100vh - 70px);
   top: 50%;
   transform: translateY(-50%);
 }
-
-
-
-  .menu-lateral.active {
+ .menu-lateral.active {
     left: 0;
   }
   .menu-lateral h3 {
@@ -176,9 +171,15 @@ cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
   }
   .menu-lateral button:hover, .menu-lateral button.active {
-    background-color: #1e6035;
+    background-color: red;
     color: white;
-    border-color: #0b3d0b;
+    border-color: black;
+   text-shadow:
+      1px 1px 0 white,
+      -1px -1px 0 white,
+      1px -1px 0 white,
+      -1px 1px 0 white;
+
   }
   /* Container do iframe */
   .iframe-container {
@@ -211,17 +212,21 @@ cursor: pointer;
       <div class="foto-icone" id="btnConfig" title="Configurações">⚙️</div>
       <div class="icone" id="btnMenu" title="Abrir menu">☰</div>
     </div>
-  </div>  <!-- Submenu Configurações -->  <div class="submenu" id="submenuConfig">
-    <h3>Configurações</h3>
-    <button onclick="logout()">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M16 13v-2H7V8l-5 4 5 4v-3zM20 19v-14H10v4h2V7h6v10h-6v-1h-2v4h10z"/></svg>
-      Sair
-    </button>
+  </div>  <!-- Submenu Configurações -->  
+ <div class="submenu" id="submenuConfig">
+  <h3>Configurações</h3>
+  <button onclick="logout()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="white" viewBox="0 0 24 24">
+      <path d="M16 13v-2H7V8l-5 4 5 4v-3zM20 19v-14H10v4h2V7h6v10h-6v-1h-2v4h10z"/>
+    </svg>
+    Sair
+  </button>
+</div>
   </div>
   <!-- Menu lateral -->
 <div class="menu-lateral" id="menuLateral" style="font-family: Impact, sans-serif; text-align: center;">
- <h3 style="background: black; color: #ccc; font-size: 24px; margin: 0; padding: 10px; border: 2px solid black ; font-family: Impact;">
-  Menu Principal
+ <h3 style="background: black; color: black; font-size: 24px; margin: 0; padding: 10px; border: 2px solid black ;border-radius:10px; font-family: Impact;">
+🗃️ Menu 
 </h3>
 
  
@@ -421,10 +426,9 @@ const menuLateral = document.getElementById('menuLateral');
       reader.readAsDataURL(file);
     }
   });
-// Logout — Exemplo simples (apenas alerta)
+// Logout 
   function logout() {
-    alert('Você saiu do sistema!');
-    // Aqui pode colocar lógica real de logout se tiver
+    window.location.href = 'logout.html';
   }
 </script></body>
 </html>

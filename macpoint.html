@@ -175,10 +175,10 @@ cursor: pointer;
     color: white;
     border-color: black;
    text-shadow:
-      1px 1px 0 white,
-      -1px -1px 0 white,
-      1px -1px 0 white,
-      -1px 1px 0 white;
+      1px 1px 0 black ,
+      -1px -1px 0 black ,
+      1px -1px 0 black ,
+      -1px 1px 0 black;
 
   }
   /* Container do iframe */
@@ -415,17 +415,29 @@ const menuLateral = document.getElementById('menuLateral');
     });
   });
 
-  // Trocar foto do usuário
-  inputFoto.addEventListener('change', (event) => {
-    const file = event.target.files[0];
-    if(file && file.type.startsWith('image/')) {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        fotoUsuario.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
-  });
+ // Recupera e exibe a foto salva ao carregar a página
+window.addEventListener('DOMContentLoaded', () => {
+  const fotoSalva = localStorage.getItem('fotoUsuario');
+  if (fotoSalva) {
+    fotoUsuario.src = fotoSalva;
+  }
+});
+
+// Trocar foto do usuário e salvar na seção
+inputFoto.addEventListener('change', (event) => {
+  const file = event.target.files[0];
+  if (file && file.type.startsWith('image/')) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const imagemBase64 = e.target.result;
+      fotoUsuario.src = imagemBase64;
+      localStorage.setItem('fotoUsuario', imagemBase64);
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+ 
 // Logout 
   function logout() {
     window.location.href = 'logout.html';

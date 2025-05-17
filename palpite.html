@@ -1,137 +1,155 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Palpite da Sorte</title>
   <style>
-    * {
+    body {
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
       background-color: #355E3B;
       color: white;
       font-family: Arial, sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
+      text-align: center;
       min-height: 100vh;
-      padding: 20px;
+      position: relative;
     }
-
     h1 {
+      margin-top: 80px;
+    }
+    #mensagem {
+      background-color: #000;
+      padding: 10px 20px;
+      border-radius: 10px;
+      border: 2px solid white;
+      font-size: 1rem;
       margin-bottom: 20px;
-      text-shadow: 1px 1px 2px black;
+      max-width: 90vw;
     }
-
-    #copyIcon {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      cursor: pointer;
-      width: 28px;
-      height: 28px;
-      fill: white;
+    select, button {
+      padding: 10px 15px;
+      font-size: 1rem;
+      margin: 10px;
+      border-radius: 8px;
+      border: 2px solid black;
     }
-
     select {
-      padding: 10px;
-      margin-bottom: 20px;
-      border-radius: 5px;
-      border: none;
-      font-weight: bold;
+      background-color: #fff;
+      color: #000;
     }
-
-    #circles {
+    button {
+      background-color: #CC5500;
+      color: #fff;
+      cursor: pointer;
+      text-shadow: 1px 1px 0 black;
+      border: 2px solid black;
+      border-radius: 8px;
+    }
+    .circle-container {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       gap: 10px;
-      margin-bottom: 20px;
+      margin-top: 20px;
+      max-width: 90%;
     }
-
     .circle {
       width: 60px;
       height: 60px;
-      background-color: white;
-      color: white;
+      background-color: #fff;
       border-radius: 50%;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 1.4rem;
+      font-size: 1.5rem;
+      font-weight: bold;
       cursor: pointer;
+      border: 3px solid black;
+      transition: background-color 0.3s;
+      user-select: none;
       position: relative;
+      color: transparent;
     }
-
     .circle::before {
       content: "🍀";
       font-size: 1.4rem;
-      color: white;
-      text-shadow:
-        -1px -1px 0 black,
-         1px -1px 0 black,
-        -1px  1px 0 black,
-         1px  1px 0 black;
+      color: black;
+      text-shadow: 1px 1px 0 white, -1px -1px 0 white;
     }
-
-    .reveal {
+    .circle.revelado {
       background-color: #001a12;
+      color: white;
+      text-shadow: 1px 1px 0 black;
+    }
+    .circle.revelado::before {
+      content: '';
     }
 
-    .reveal::before {
-      content: attr(data-number);
-      font-size: 1.2rem;
-      color: white;
-      text-shadow:
-        -1px -1px 0 black,
-         1px -1px 0 black,
-        -1px  1px 0 black,
-         1px  1px 0 black;
-    }
-
-    button {
-      padding: 10px 20px;
-      background-color: #FF8C00;
-      color: white;
-      border: 2px solid black;
-      border-radius: 8px;
-      font-weight: bold;
+    .copy-icon {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 1000;
       cursor: pointer;
     }
 
-    #notification {
-      margin-top: 10px;
-      background: black;
-      color: #00ff88;
-      padding: 10px;
-      border-radius: 5px;
+    .copy-icon svg {
+      width: 36px;
+      height: 36px;
+      fill: white;
+      stroke: black;
+      stroke-width: 1.5px;
+    }
+
+    #notificacao {
+      position: fixed;
+      bottom: 20px;
+      background-color: black;
+      color: white;
+      border: 2px solid white;
+      padding: 10px 20px;
+      border-radius: 10px;
       display: none;
-      font-weight: bold;
+      font-size: 1rem;
+      box-shadow: 0 0 10px #000;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1001;
+    }
+
+    @media (max-width: 768px) {
+      .circle { width: 50px; height: 50px; font-size: 1.2rem; }
+    }
+    @media (max-width: 480px) {
+      .circle { width: 40px; height: 40px; font-size: 1rem; }
     }
   </style>
 </head>
 <body>
+
+  <div class="copy-icon" onclick="copiarPalpites()" title="Copiar palpites">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v16h14c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 18H8V7h11v16z"/>
+    </svg>
+  </div>
+
   <h1>Palpite da Sorte</h1>
-  <svg id="copyIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v16h14c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 18H8V7h11v16z"/>
-  </svg>
+  <div id="mensagem">Toque nos círculos para revelar seu palpite da sorte!</div>
 
   <select id="filtro">
-    <option value="mega">Mega Sena</option>
+    <option value="mega">Mega-Sena</option>
     <option value="quina">Quina</option>
     <option value="lotofacil">Lotofácil</option>
     <option value="lotomania">Lotomania</option>
   </select>
 
-  <div id="circles"></div>
-
-  <button id="palpiteBtn">Palpite</button>
-
-  <div id="notification">Palpite copiado com sucesso!</div>
+  <button onclick="gerarCirculos()">Palpite</button>
+  <div class="circle-container" id="container"></div>
+  <div id="notificacao">Palpite copiado com sucesso!</div>
 <script src="script.js"></script>
 <script src="proteção.js"></script>
  <script type="module">
@@ -201,71 +219,58 @@ window.addEventListener("contextmenu", (e) => {
 });
 </script>
   <script>
-    const filtro = document.getElementById('filtro');
-    const circlesContainer = document.getElementById('circles');
-    const palpiteBtn = document.getElementById('palpiteBtn');
-    const copyIcon = document.getElementById('copyIcon');
-    const notification = document.getElementById('notification');
-
-    const dezenasPorFiltro = {
-      mega: 6,
-      quina: 5,
-      lotofacil: 15,
-      lotomania: 50
-    };
-
-    function criarCirculos(qtd) {
-      circlesContainer.innerHTML = '';
-      for (let i = 0; i < qtd; i++) {
-        const div = document.createElement('div');
-        div.classList.add('circle');
-        div.addEventListener('click', () => {
-          if (!div.classList.contains('reveal')) {
-            div.classList.add('reveal');
-            div.setAttribute('data-number', gerarDezena());
-          }
-        });
-        circlesContainer.appendChild(div);
+    function gerarAleatorios(qtd, max) {
+      let nums = new Set();
+      while (nums.size < qtd) {
+        let n = Math.floor(Math.random() * max) + 1;
+        nums.add(n);
       }
+      return Array.from(nums).sort((a, b) => a - b);
     }
 
-    function gerarDezena() {
-      return String(Math.floor(Math.random() * 100)).padStart(2, '0');
-    }
+    function gerarCirculos() {
+      const container = document.getElementById("container");
+      container.innerHTML = "";
+      let filtro = document.getElementById("filtro").value;
+      let qtd, max;
 
-    function gerarPalpite() {
-      const circulos = document.querySelectorAll('.circle');
-      circulos.forEach(c => {
-        const dezena = gerarDezena();
-        c.classList.add('reveal');
-        c.setAttribute('data-number', dezena);
+      if (filtro === "mega") {
+        qtd = 6; max = 60;
+      } else if (filtro === "quina") {
+        qtd = 5; max = 80;
+      } else if (filtro === "lotofacil") {
+        qtd = 15; max = 25;
+      } else if (filtro === "lotomania") {
+        qtd = 50; max = 100;
+      }
+
+      let numeros = gerarAleatorios(qtd, max);
+      numeros.forEach(num => {
+        const div = document.createElement("div");
+        div.className = "circle";
+        div.setAttribute("data-num", num);
+        div.onclick = function () {
+          this.classList.add("revelado");
+          this.textContent = num < 10 ? "0" + num : num;
+        };
+        container.appendChild(div);
       });
     }
 
-    filtro.addEventListener('change', () => {
-      const tipo = filtro.value;
-      criarCirculos(dezenasPorFiltro[tipo]);
-    });
-
-    palpiteBtn.addEventListener('click', gerarPalpite);
-
-    copyIcon.addEventListener('click', () => {
-      const dezenas = Array.from(document.querySelectorAll('.circle.reveal'))
-        .map(c => c.getAttribute('data-number'))
-        .filter(Boolean)
-        .sort((a, b) => a - b)
-        .join(', ');
-      if (dezenas) {
-        navigator.clipboard.writeText(dezenas);
-        notification.style.display = 'block';
-        setTimeout(() => {
-          notification.style.display = 'none';
-        }, 2000);
+    function copiarPalpites() {
+      let nums = [];
+      document.querySelectorAll(".circle.revelado").forEach(el => nums.push(el.textContent));
+      if (nums.length > 0) {
+        let texto = nums.map(n => parseInt(n)).sort((a, b) => a - b).map(n => (n < 10 ? "0" + n : n)).join(", ");
+        navigator.clipboard.writeText(texto).then(() => {
+          let notif = document.getElementById("notificacao");
+          notif.style.display = "block";
+          setTimeout(() => { notif.style.display = "none"; }, 2500);
+        });
       }
-    });
-
-    criarCirculos(dezenasPorFiltro[filtro.value]);
+    }
   </script>
+
 </body>
 </html>
 

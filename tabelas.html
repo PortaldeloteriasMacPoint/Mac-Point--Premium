@@ -1,244 +1,283 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plataforma de Loterias Avançada</title>
-    <style>
-        /* Reset CSS */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #000;
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        /* Menu */
-        .menu {
-            position: fixed;
-            width: 120px;
-            height: 100%;
-            background: linear-gradient(to bottom, #004d00, #00ff00); /* Verde escuro a verde claro */
-            padding: 30px 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            overflow-y: auto;
-            border-right: 5px solid #00ff00;
-        }
-
-        .menu .logo {
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #fff;
-            margin-bottom: 40px;
-        }
-
-        .menu ul {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .menu ul li {
-            margin: 20px 0;
-        }
-
-        .menu ul li a {
-            width: 70px;
-            height: 70px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #000;
-            border: 2px solid #00ff00;
-            border-radius: 12px;
-            color: #fff;
-            font-size: 2.5em;
-            text-decoration: none;
-            transition: transform 0.3s, background-color 0.3s;
-        }
-
-        .menu ul li a:hover {
-            background-color: #00ff00;
-            color: #000;
-            transform: scale(1.2);
-        }
-
-        .content {
-            margin-left: 140px;
-            padding: 20px;
-            flex: 1;
-            overflow-y: auto;
-            padding-bottom: 60px;
-        }
-
-        .section {
-            display: none;
-            margin-bottom: 50px;
-            animation: fadeIn 1s ease-in;
-            padding: 20px;
-        }
-
-        .section.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .imagem-capa {
-            width: 100%;
-            max-height: 400px;
-            object-fit: cover;
-            margin-bottom: 20px;
-            border: 5px solid #00ff00;
-            border-radius: 10px;
-        }
-
-        footer {
-            display: none;
-        }
-
-        .links-container {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .btn {
-            background-color: orange;
-            color: white;
-            text-decoration: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            border-radius: 10px;
-            display: inline-block;
-            transition: background-color 0.3s;
-        }
-
-        .btn:hover {
-            background-color: darkorange;
-        }
-
-        /* Media Queries */
-        @media (max-width: 480px) {
-            .menu {
-                width: 80px;
-            }
-
-            .menu ul li a {
-                font-size: 1.8em;
-                width: 50px;
-                height: 50px;
-            }
-
-            .content {
-                margin-left: 100px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tabela - Combinações de Dezenas</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background-color: #000;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 10px;
+    }
+    .container {
+      max-width: 600px;
+      width: 100%;
+      background-color: #2f4f2f;
+      padding: 20px;
+      border-radius: 10px;
+      color: white;
+      text-align: center;
+      position: relative;
+    }
+    .titulo {
+      font-size: 24px;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      color: #fff;
+    }
+    .configuracao {
+      margin-bottom: 15px;
+    }
+    .configuracao label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    .configuracao select {
+      padding: 8px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: none;
+      background-color: #fff;
+      color: #000;
+    }
+    .quadro-container {
+      display: grid;
+      gap: 5px;
+      margin-bottom: 15px;
+      justify-content: center;
+    }
+    .quadro-container input {
+      width: 50px;
+      height: 50px;
+      font-size: 18px;
+      text-align: center;
+      background-color: #fff;
+      color: #000;
+      border: none;
+      border-radius: 5px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s, border 0.3s, color 0.3s, text-shadow 0.3s;
+      user-select: none;
+      margin: 0 5px;
+    }
+    .btn-gerar {
+      background-color: darkorange;
+      color: white;
+      border: 2px solid black;
+      text-shadow:
+        -1px -1px 0 #000,
+        1px -1px 0 #000,
+        -1px 1px 0 #000,
+        1px 1px 0 #000;
+    }
+    .btn-gerar:hover {
+      background-color: #0f0;
+      color: #000;
+      border: 2px solid black;
+      text-shadow: none;
+    }
+    .btn-girar {
+      background-color: darkorange;
+      color: white;
+      border: 2px solid black;
+      text-shadow:
+        -1px -1px 0 #000,
+        1px -1px 0 #000,
+        -1px 1px 0 #000,
+        1px 1px 0 #000;
+    }
+    .btn-girar:hover {
+      background-color: #0f0;
+      color: #000;
+      border: 2px solid black;
+      text-shadow: none;
+    }
+    .resultado {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+    }
+    .comb {
+      background-color: #000;
+      color: #fff;
+      padding: 10px;
+      border-radius: 5px;
+      border: 2px solid #000;
+      min-width: 50px;
+      text-align: center;
+      font-weight: bold;
+      user-select: none;
+    }
+    .notificacao {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #e74c3c;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      box-shadow: 0 0 10px #e74c3c;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease-in-out;
+      z-index: 9999;
+      max-width: 300px;
+      text-align: center;
+      text-shadow:
+        -1px -1px 0 #000,
+        1px -1px 0 #000,
+        -1px 1px 0 #000,
+        1px 1px 0 #000;
+    }
+    .notificacao.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    @media (max-width: 600px) {
+      .quadro-container input {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+      }
+      .comb {
+        min-width: 40px;
+        padding: 8px;
+        font-size: 14px;
+      }
+      .notificacao {
+        max-width: 90vw;
+        right: 5vw;
+        top: 10px;
+        font-size: 14px;
+      }
+      button {
+        margin: 5px 0;
+        width: 100%;
+      }
+    }
+  </style>
 </head>
-
 <body>
-    <div class="menu">
-        <div class="logo">MENU</div>
-        <ul>
-            <li><a href="#home" aria-label="Início">🏠</a></li>
-            <li><a href="#modalidades" aria-label="Modalidades">🪩</a></li>
-            <li><a href="#estatisticas" aria-label="Estatísticas">📊</a></li>
-            <li><a href="#resultados" aria-label="Resultados">🎯</a></li>
-            <li><a href="#alertas" aria-label="Alertas">🚦</a></li>
-            <li><a href="#ferramentas" aria-label="Ferramentas">🛠️</a></li>
-            <li><a href="#grupos" aria-label="Grupos">🔠</a></li>
-            <li><a href="#batepapo" aria-label="Bate-papo">💬</a></li>
-            <li><a href="#premium" aria-label="Premium">🌟</a></li>
-        </ul>
+  <div class="container">
+    <h2 class="titulo">TABELA - COMBINAÇÕES DE DEZENAS</h2>
+    <div class="configuracao">
+      <label for="tamanho-quadro">Escolha o tamanho do quadro:</label>
+      <select id="tamanho-quadro" onchange="gerarQuadro()">
+        <option value="3">3x3 (9 dígitos)</option>
+        <option value="4">4x4 (16 dígitos)</option>
+        <option value="5">5x5 (25 dígitos)</option>
+      </select>
     </div>
-
-    <div class="content">
-        <section id="home" class="section active">
-            <img src="https://i.postimg.cc/RhR6GJdg/Screenshot-20250112-173043-1.jpg" alt="Imagem de Capa" class="imagem-capa">
-            <h1>Bem-vindo à Plataforma</h1>
-            <p>Este é um exemplo de conteúdo da seção Home. Acesse as outras seções para mais informações.</p>
-        </section>
-
-        <section id="modalidades" class="section">
-            <h2>🪩 Modalidades</h2>
-            <p>Conteúdo sobre as modalidades de loterias.</p>
-        </section>
-
-        <section id="estatisticas" class="section">
-            <h2>📊 Análises/Estatísticas</h2>
-            <p>Conteúdo detalhado sobre estatísticas de loterias.</p>
-        </section>
-
-        <section id="alertas" class="section">
-            <h2>🚦 Alertas</h2>
-            <p>Alertas importantes sobre as loterias.</p>
-        </section>
-
-        <section id="ferramentas" class="section">
-            <h2>🛠️ Ferramentas Exclusivas</h2>
-            <p>Ferramentas para análise avançada das loterias.</p>
-            <div class="links-container">
-                <a href="https://www.exemplo.com" target="_blank" class="btn">Mini Quadrantes</a>
-                <a href="https://www.exemplo.com" target="_blank" class="btn">Grupo de Soma</a>
-                <a href="https://www.exemplo.com" target="_blank" class="btn">Grupo Bichos</a>
-                <a href="https://www.exemplo.com" target="_blank" class="btn">Grupos em Espelho</a>
-                <a href="https://www.exemplo.com" target="_blank" class="btn">Grupo das Médias</a>
-                <a href="https://www.exemplo.com" target="_blank" class="btn">GMPT-MQ</a>
-            </div>
-        </section>
-
-        <section id="grupos" class="section">
-            <h2>🔠 GRUPOS</h2>
-            <h3>Divisão e Análise de Grupos nas Modalidades de Loterias</h3>
-            <p>Cada modalidade de loteria possui uma quantidade padronizada de números...</p>
-        </section>
+    <div class="quadro-container" id="quadro-container"></div>
+    <div>
+      <button class="btn-gerar" onclick="gerarCombinacoes()">Gerar Combinações</button>
+      <button class="btn-girar" onclick="girarCombinacoes()">Girar Combinações</button>
     </div>
+    <div class="resultado" id="resultado"></div>
+  </div>
 
-    <script>
-        // Controla o comportamento do menu
-        const menuLinks = document.querySelectorAll('.menu ul li a');
-        const sections = document.querySelectorAll('.section');
+  <div class="notificacao" id="notificacao">Preencha pelo menos dois campos para gerar combinações.</div>
 
-        menuLinks.forEach(link => {
-            link.addEventListener('click', (event) => {
-                // Evita o comportamento padrão do link
-                event.preventDefault();
+  <script>
+    function gerarQuadro() {
+      const tamanho = parseInt(document.getElementById("tamanho-quadro").value);
+      const quadroContainer = document.getElementById("quadro-container");
+      quadroContainer.innerHTML = "";
+      quadroContainer.style.gridTemplateColumns = `repeat(${tamanho}, 50px)`;
+      for (let i = 0; i < tamanho * tamanho; i++) {
+        const input = document.createElement("input");
+        input.type = "text";
+        input.maxLength = 1;
+        input.oninput = () => validarDigito(input);
+        quadroContainer.appendChild(input);
+      }
+      limparResultado();
+    }
 
-                // Esconde todas as seções
-                sections.forEach(section => {
-                    section.classList.remove('active');
-                });
+    function validarDigito(input) {
+      const valor = input.value;
+      if (!/^[0-9]$/.test(valor)) {
+        input.value = "";
+      }
+    }
 
-                // Mostra a seção clicada
-                const targetSection = document.querySelector(link.getAttribute('href'));
-                targetSection.classList.add('active');
-            });
-        });
-    </script>
+    let combinacoesGeradas = [];
+
+    function gerarCombinacoes() {
+      const inputs = document.querySelectorAll("#quadro-container input");
+      const digitos = Array.from(inputs).map(input => input.value).filter(v => v !== "");
+      if (digitos.length < 2) {
+        mostrarNotificacao("Preencha pelo menos dois campos para gerar combinações.");
+        return;
+      }
+      const combinacoes = new Set();
+      digitos.sort();
+      for (let i = 0; i < digitos.length; i++) {
+        for (let j = 0; j < digitos.length; j++) {
+          if (i !== j) {
+            combinacoes.add(`${digitos[i]}${digitos[j]}`);
+          }
+        }
+      }
+      combinacoesGeradas = Array.from(combinacoes);
+      mostrarCombinacoes(combinacoesGeradas);
+    }
+
+    function mostrarCombinacoes(lista) {
+      const resultado = document.getElementById("resultado");
+      resultado.innerHTML = "";
+      lista.forEach(comb => {
+        const div = document.createElement("div");
+        div.className = "comb";
+        div.textContent = comb;
+        resultado.appendChild(div);
+      });
+    }
+
+    function limparResultado() {
+      const resultado = document.getElementById("resultado");
+      resultado.innerHTML = "";
+      combinacoesGeradas = [];
+    }
+
+    function mostrarNotificacao(mensagem) {
+      const notif = document.getElementById("notificacao");
+      notif.textContent = mensagem;
+      notif.classList.add("show");
+      clearTimeout(window._notifTimeout);
+      window._notifTimeout = setTimeout(() => {
+        notif.classList.remove("show");
+      }, 3000);
+    }
+
+    function girarCombinacoes() {
+      if (combinacoesGeradas.length === 0) {
+        mostrarNotificacao("Nenhuma combinação para girar. Gere combinações primeiro.");
+        return;
+      }
+      const giradas = combinacoesGeradas.map(c => c.split("").reverse().join(""));
+      combinacoesGeradas = giradas;
+      mostrarCombinacoes(giradas);
+    }
+
+    gerarQuadro();
+  </script>
 </body>
-
 </html>
-

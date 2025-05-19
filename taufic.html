@@ -1,213 +1,227 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Relatório de Mini Quadrantes</title>
-  <style>
-    body {
-      background-color: #001a12;
-      color: white;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    .container {
-      max-width: 800px;
-      margin: auto;
-      padding: 20px;
-      text-align: center;
-    }
-    .titulo {
-      background: white;
-      color: black;
-      font-family: Impact, sans-serif;
-      font-weight: bold;
-      font-size: 28px;
-      border: 2px solid black;
-      border-radius: 8px;
-      padding: 10px;
-      margin-bottom: 20px;
-    }
-    .select-container {
-      margin-bottom: 20px;
-    }
-    select {
-      padding: 10px;
-      font-size: 16px;
-      width: 100%;
-      max-width: 300px;
-    }
-    button {
-      background-color: #cc5500;
-      color: white;
-      font-weight: bold;
-      padding: 10px 20px;
-      border: 2px solid black;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
-      margin-top: 10px;
-      text-shadow: 1px 1px 1px black;
-    }
-    #loading {
-      display: none;
-      margin-top: 15px;
-      font-weight: bold;
-      color: #00aaff;
-    }
-    .relatorio {
-      border: 2px solid black;
-      border-radius: 8px;
-      padding: 15px;
-      margin-top: 20px;
-      background-color: #002820;
-    }
-    .subtitulo {
-      background-color: white;
-      color: black;
-      font-weight: bold;
-      font-family: Impact, sans-serif;
-      border: 2px solid black;
-      border-radius: 6px;
-      margin-top: 15px;
-      padding: 8px;
-    }
-    .linha {
-      display: flex;
-      justify-content: space-between;
-      border-bottom: 1px solid white;
-      padding: 5px 0;
-    }
-    .destaque-verde {
-      background-color: green;
-      color: white;
-      font-weight: bold;
-      text-shadow: 1px 1px 1px black;
-      border: 1px solid black;
-      border-radius: 4px;
-      padding: 5px;
-    }
-    .destaque-vermelho {
-      background-color: red;
-      color: white;
-      font-weight: bold;
-      text-shadow: 1px 1px 1px black;
-      border: 1px solid black;
-      border-radius: 4px;
-      padding: 5px;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Análise de Mini Quadrantes</title>
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #001a12;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .container {
+    max-width: 95%;
+    width: 100%;
+    max-width: 600px;
+  }
+
+  .titulo {
+    background: white;
+    color: black;
+    font-family: Impact, sans-serif;
+    font-size: 24px;
+    text-align: center;
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 20px;
+    font-weight: bold;
+    border: 2px solid black;
+  }
+
+  .filtro {
+    margin: 20px auto;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  select, button {
+    padding: 10px;
+    font-weight: bold;
+    border-radius: 5px;
+    border: 2px solid black;
+  }
+
+  button {
+    background-color: #cc5500;
+    color: white;
+    cursor: pointer;
+    text-shadow: 1px 1px 0 black;
+  }
+
+  .loading {
+    display: none;
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .loader {
+    border: 5px solid white;
+    border-top: 5px solid blue;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 10px;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .relatorio {
+    background: white;
+    color: black;
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    border: 2px solid black;
+  }
+
+  .titulo-sub {
+    font-weight: bold;
+    font-size: 20px;
+    font-family: Impact, sans-serif;
+    color: black;
+    text-align: center;
+    margin: 15px 0 10px;
+    background: white;
+    padding: 5px;
+    border-radius: 8px;
+    border: 2px solid black;
+  }
+
+  .tabela {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .item {
+    border: 2px solid black;
+    padding: 10px;
+    border-radius: 5px;
+  }
+
+  .destacado {
+    background: green;
+    color: white;
+    font-weight: bold;
+    text-shadow: 1px 1px 0 black;
+  }
+
+  .atrasado {
+    background: red;
+    color: white;
+    font-weight: bold;
+    text-shadow: 1px 1px 0 black;
+  }
+
+  .erro {
+    text-align: center;
+    margin-top: 20px;
+    color: red;
+    font-weight: bold;
+  }
+</style>
 </head>
 <body>
-  <div class="container">
-    <div class="titulo">Relatório de Mini Quadrantes</div>
-    <div class="select-container">
-      <select id="filtro">
-        <option value="10">Últimos 10 concursos</option>
-        <option value="20">Últimos 20 concursos</option>
-        <option value="50">Últimos 50 concursos</option>
-        <option value="100">Últimos 100 concursos</option>
-      </select>
-      <br>
-      <button onclick="gerarRelatorio()">GERAR RELATÓRIO</button>
-      <div id="loading">Buscando dados dos mini quadrantes, aguarde só um instante...</div>
-    </div>
-    <div id="relatorio" class="relatorio"></div>
+<div class="container">
+  <div class="titulo">Análise de Mini Quadrantes</div>
+
+  <div class="filtro">
+    <select id="filtro">
+      <option value="10">10 Últimos Concursos</option>
+      <option value="20">20 Últimos Concursos</option>
+      <option value="50">50 Últimos Concursos</option>
+      <option value="100">100 Últimos Concursos</option>
+    </select>
+    <button onclick="gerarRelatorio()">Gerar Relatório</button>
   </div>
 
-  <script>
-    const miniQuadrantes = {
-      1: [1, 2, 11, 12],
-      2: [3, 4, 13, 14],
-      3: [5, 6, 15, 16],
-      4: [7, 8, 17, 18],
-      5: [9, 10, 19, 20],
-      6: [21, 22, 31, 32],
-      7: [23, 24, 33, 34],
-      8: [25, 26, 35, 36],
-      9: [27, 28, 37, 38],
-      10: [29, 30, 39, 40],
-      11: [41, 42, 51, 52],
-      12: [43, 44, 53, 54],
-      13: [45, 46, 55, 56],
-      14: [47, 48, 57, 58],
-      15: [49, 50, 59, 60]
-    };
+  <div class="loading" id="loading">
+    <div class="loader"></div>
+    <div>Buscando dados dos Mini Quadrantes,<br>aguarde só um instante.</div>
+  </div>
 
-    async function gerarRelatorio() {
-      const filtro = parseInt(document.getElementById("filtro").value);
-      const relatorioDiv = document.getElementById("relatorio");
-      const loadingDiv = document.getElementById("loading");
-      relatorioDiv.innerHTML = "";
-      loadingDiv.style.display = "block";
+  <div id="relatorio" class="relatorio" style="display:none;"></div>
+  <div id="erro" class="erro"></div>
+</div>
 
-      try {
-        const res = await fetch('https://premium-portaldeloteriasmacpoint.onrender.com/api.php');
-        const data = await res.json();
-        const concursos = data.slice(0, filtro);
-        const frequencias = {};
-        const atrasos = {};
-        const ultimosConcursos = [];
+<script>
+function obterMiniQuadrante(num) {
+  const linha = Math.floor((num - 1) / 10);
+  const coluna = (num - 1) % 10;
+  return `L${linha+1}C${coluna+1}`;
+}
 
-        for (let i = 1; i <= 15; i++) {
-          frequencias[i] = 0;
-          atrasos[i] = 0;
-        }
+function gerarRelatorio() {
+  const quantidade = parseInt(document.getElementById("filtro").value);
+  document.getElementById("relatorio").style.display = "none";
+  document.getElementById("erro").innerText = "";
+  document.getElementById("loading").style.display = "block";
 
-        concursos.forEach(concurso => {
-          const dezenas = concurso.numeros.map(Number);
-          const quadrantesPresentes = new Set();
+  fetch("https://premium-portaldeloteriasmacpoint.onrender.com/api.php")
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById("loading").style.display = "none";
+      const ultimos = data.slice(-quantidade);
+      const freq = {}, atraso = {}, usados = new Set();
 
-          for (let i = 1; i <= 15; i++) {
-            if (miniQuadrantes[i].some(d => dezenas.includes(d))) {
-              frequencias[i]++;
-              quadrantesPresentes.add(i);
-            }
-          }
-
-          for (let i = 1; i <= 15; i++) {
-            if (!quadrantesPresentes.has(i)) {
-              atrasos[i]++;
-            } else {
-              atrasos[i] = 0;
-            }
-          }
-
-          ultimosConcursos.push(`${concurso.numero} - ${dezenas.join(' ')}`);
+      ultimos.forEach((concurso, idx) => {
+        const quadrantesUsados = new Set();
+        concurso.Resultado.forEach(num => {
+          const quad = obterMiniQuadrante(num);
+          freq[quad] = (freq[quad] || 0) + 1;
+          quadrantesUsados.add(quad);
         });
+        Object.keys(freq).forEach(q => {
+          if (!quadrantesUsados.has(q)) {
+            atraso[q] = (atraso[q] || 0) + 1;
+          } else {
+            atraso[q] = 0;
+          }
+        });
+      });
 
-        loadingDiv.style.display = "none";
+      const freqOrdenada = Object.entries(freq).sort((a,b) => b[1]-a[1]);
+      const atrasoOrdenado = Object.entries(atraso).sort((a,b) => b[1]-a[1]);
 
-        relatorioDiv.innerHTML += `<div class="subtitulo">Concursos Utilizados</div>`;
-        ultimosConcursos.forEach(l => relatorioDiv.innerHTML += `<div>${l}</div>`);
-
-        relatorioDiv.innerHTML += `<div class="subtitulo">Frequência dos Mini Quadrantes</div>`;
-        for (let i = 1; i <= 15; i++) {
-          const classe = frequencias[i] >= Math.max(...Object.values(frequencias)) ? "destaque-verde" : "";
-          relatorioDiv.innerHTML += `
-            <div class="linha">
-              <div class="${classe}">Mini Quadrante ${i}: ${miniQuadrantes[i].join(', ')}</div>
-              <div>Ocorrências: ${frequencias[i]}</div>
-            </div>`;
-        }
-
-        relatorioDiv.innerHTML += `<div class="subtitulo">Atraso dos Mini Quadrantes</div>`;
-        for (let i = 1; i <= 15; i++) {
-          const classe = atrasos[i] >= Math.max(...Object.values(atrasos)) ? "destaque-vermelho" : "";
-          relatorioDiv.innerHTML += `
-            <div class="linha">
-              <div class="${classe}">Mini Quadrante ${i}: ${miniQuadrantes[i].join(', ')}</div>
-              <div>Concursos sem aparecer: ${atrasos[i]}</div>
-            </div>`;
-        }
-
-      } catch (err) {
-        loadingDiv.style.display = "none";
-        relatorioDiv.innerHTML = `<div style="color:red; font-weight:bold;">Algo deu errado, tente novamente mais tarde.</div>`;
-      }
-    }
-  </script>
+      const rel = document.getElementById("relatorio");
+      rel.innerHTML = `
+        <div class="titulo-sub">Mini Quadrantes com Maior Frequência</div>
+        <div class="tabela">
+          ${freqOrdenada.map(([qtd, val], i) => `
+            <div class="item ${i<5?'destacado':''}">${qtd}</div>
+            <div class="item ${i<5?'destacado':''}">${val} ocorrências</div>
+          `).join('')}
+        </div>
+        <div class="titulo-sub">Mini Quadrantes com Maior Atraso</div>
+        <div class="tabela">
+          ${atrasoOrdenado.map(([qtd, val], i) => `
+            <div class="item ${i<5?'atrasado':''}">${qtd}</div>
+            <div class="item ${i<5?'atrasado':''}">${val} concursos</div>
+          `).join('')}
+        </div>
+      `;
+      rel.style.display = "block";
+    })
+    .catch(() => {
+      document.getElementById("loading").style.display = "none";
+      document.getElementById("erro").innerText = "Algo deu errado, tente novamente mais tarde.";
+    });
+}
+</script>
 </body>
 </html>
 

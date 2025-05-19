@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Análise de Semi Linhas</title>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      color: #00ff00;
+    }
+    .quadro {
+      background-color: #222;
+      border: 2px solid #00ff00;
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+    .resultado {
+      font-size: 18px;
+      margin-top: 20px;
+      background-color: #111;
+      padding: 15px;
+      border-radius: 10px;
+    }
+    input {
+      padding: 10px;
+      font-size: 16px;
+      width: 80%;
+      max-width: 300px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: green;
+    }
+  </style>
+</head>
+<body>
+  <h1>Análise de Semi Linhas</h1>
+  <div class="quadro">
+    <p>Digite os números sorteados separados por vírgula:</p>
+    <input type="text" id="numeros" placeholder="Ex: 01,03,06,10,12">
+    <br>
+    <button onclick="analisar()">Analisar Semi Linhas</button>
+    <div class="resultado" id="resultado"></div>
+  </div>
+
+  <script>
+    function analisar() {
+      const semilinhas = [
+        [1,2,3,4,5],
+        [6,7,8,9,10],
+        [11,12,13,14,15],
+        [16,17,18,19,20],
+        [21,22,23,24,25],
+        [26,27,28,29,30],
+        [31,32,33,34,35],
+        [36,37,38,39,40],
+        [41,42,43,44,45],
+        [46,47,48,49,50],
+        [51,52,53,54,55],
+        [56,57,58,59,60]
+      ];
+
+      let input = document.getElementById("numeros").value;
+      let numeros = input.split(',').map(n => parseInt(n.trim()));
+      let contagem = Array(12).fill(0);
+
+      numeros.forEach(num => {
+        semilinhas.forEach((linha, index) => {
+          if (linha.includes(num)) {
+            contagem[index]++;
+          }
+        });
+      });
+
+      let resultado = "";
+      contagem.forEach((qtd, index) => {
+        resultado += `Semi Linha ${index+1} (${semilinhas[index].join(', ')}): ${qtd} número(s)<br>`;
+      });
+
+      document.getElementById("resultado").innerHTML = resultado;
+    }
+  </script>
+</body>
+</html>
+

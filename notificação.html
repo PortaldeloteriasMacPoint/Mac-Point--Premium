@@ -1,201 +1,160 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Notificações</title>
-<style>
-  body {
-    margin: 0;
-    background: #000;
-    color: #fff;
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    min-height: 100vh;
-    padding: 20px;
-  }
-  .container {
-    background: #111;
-    max-width: 600px;
-    width: 90%;
-    border-radius: 10px;
-    padding: 20px;
-    box-sizing: border-box;
-  }
-  h1 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  .notificacao {
-    background: #222;
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 15px;
-    position: relative;
-    box-sizing: border-box;
-    box-shadow: 0 0 8px #000;
-  }
-  .notificacao.lida {
-    opacity: 0.6;
-  }
-  .msg {
-    font-size: 1rem;
-    margin-bottom: 12px;
-  }
-  .data {
-    font-size: 0.8rem;
-    color: #aaa;
-    margin-bottom: 12px;
-  }
-  .botoes {
-    display: flex;
-    gap: 12px;
-  }
-  button {
-    flex: 1;
-    padding: 10px;
-    font-weight: bold;
-    font-family: 'Impact', sans-serif;
-    font-size: 1rem;
-    border: 2px solid black;
-    border-radius: 6px;
-    cursor: pointer;
-    color: white;
-    text-shadow: 1px 1px 0 #000;
-    transition: background-color 0.3s ease;
-    user-select: none;
-  }
-  button.lida {
-    background: #2ecc40; /* verde */
-  }
-  button.lida:hover {
-    background: #27ae60;
-  }
-  button.excluir {
-    background: #e74c3c; /* vermelho */
-  }
-  button.excluir:hover {
-    background: #c0392b;
-  }
-  button.lida.clicado {
-    background: #27ae60;
-    opacity: 0.7;
-  }
-  button.excluir.clicado {
-    background: #c0392b;
-    opacity: 0.7;
-  }
-  .vazio {
-    text-align: center;
-    font-style: italic;
-    color: #666;
-    margin-top: 40px;
-  }
-  @media (max-width: 400px) {
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notificações</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #000;
+      font-family: Arial, sans-serif;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
     .container {
+      width: 95%;
+      max-width: 700px;
+      margin-top: 30px;
+      background-color: #111;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 12px #000;
+    }
+    h2 {
+      text-align: center;
+      color: #fff;
+      text-shadow: 1px 1px 2px #000;
+      margin-bottom: 20px;
+    }
+    .notificacao {
+      background-color: #355E3B;
+      border: 2px solid #000;
+      border-radius: 10px;
       padding: 15px;
+      margin-bottom: 20px;
+      position: relative;
+      box-shadow: 2px 2px 5px #000;
     }
-    button {
-      font-size: 0.9rem;
-      padding: 8px;
+    .notificacao p {
+      font-size: 1rem;
+      line-height: 1.4;
+      color: #fff;
+      text-shadow: 1px 1px 2px #000;
+      margin-bottom: 10px;
     }
-  }
-</style>
+    .botoes {
+      display: flex;
+      gap: 10px;
+    }
+    .botao {
+      flex: 1;
+      padding: 10px;
+      border: 2px solid #000;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 0.95rem;
+      cursor: pointer;
+      text-shadow: 1px 1px 1px #000;
+      color: #fff;
+      transition: background 0.3s;
+    }
+    .botao.verde {
+      background-color: green;
+    }
+    .botao.verde:hover {
+      background-color: #0f0;
+      color: #000;
+    }
+    .botao.vermelho {
+      background-color: red;
+    }
+    .botao.vermelho:hover {
+      background-color: #f33;
+      color: #000;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
-    <h1>Minhas Notificações</h1>
-    <div id="notificacoes"></div>
-    <div id="vazio" class="vazio" style="display:none;">Você não possui notificações novas.</div>
+    <h2>Minhas Notificações</h2>
+    <div id="lista-notificacoes">
+      <!-- As notificações aparecerão aqui -->
+    </div>
   </div>
 
-<script>
-  const usuarioLogado = 'usuario1'; // ajustar conforme login real
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, collection, query, where, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-  // carregar notificações do localStorage simulando banco (usar firebase ou backend real para produção)
-  function carregarNotificacoes() {
-    const dados = JSON.parse(localStorage.getItem('notificacoes')) || {};
-    const user = dados[usuarioLogado] || { globais: [], individuais: [] };
-    // juntar globais + individuais
-    return [...user.globais, ...user.individuais].sort((a,b) => b.timestamp - a.timestamp);
-  }
+    const firebaseConfig = {
+      apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+      authDomain: "mac-projeto-4e552.firebaseapp.com",
+      projectId: "mac-projeto-4e552",
+      storageBucket: "mac-projeto-4e552.appspot.com",
+      messagingSenderId: "537330451519",
+      appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
+    };
 
-  function salvarNotificacoes(novas) {
-    const dados = JSON.parse(localStorage.getItem('notificacoes')) || {};
-    dados[usuarioLogado] = dados[usuarioLogado] || { globais: [], individuais: [] };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-    // Separar globais e individuais para manter a estrutura
-    let globais = [];
-    let individuais = [];
+    const lista = document.getElementById("lista-notificacoes");
 
-    // Para simplificar, globais são notificações que estão em globais do user original
-    // Aqui só atualizamos todas como individuais para evitar complexidade, em backend deve ser melhorado
-    individuais = novas;
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const q = query(collection(db, "notificacoes"), where("email", "==", user.email));
+        const querySnapshot = await getDocs(q);
 
-    dados[usuarioLogado].globais = globais; 
-    dados[usuarioLogado].individuais = individuais;
+        if (querySnapshot.empty) {
+          lista.innerHTML = "<p style='text-align:center;color:#aaa;'>Nenhuma notificação recebida.</p>";
+          return;
+        }
 
-    localStorage.setItem('notificacoes', JSON.stringify(dados));
-  }
+        querySnapshot.forEach(docSnap => {
+          const dados = docSnap.data();
+          const div = document.createElement("div");
+          div.className = "notificacao";
+          div.innerHTML = `
+            <p>${dados.mensagem}</p>
+            <div class="botoes">
+              <button class="botao verde">Marcar como lida</button>
+              <button class="botao vermelho">Excluir</button>
+            </div>
+          `;
 
-  function formatarData(ts) {
-    const d = new Date(ts * 1000);
-    return d.toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' });
-  }
+          const btnLer = div.querySelector(".verde");
+          const btnDel = div.querySelector(".vermelho");
 
-  function renderizar() {
-    const notificacoes = carregarNotificacoes();
-    const container = document.getElementById('notificacoes');
-    const vazio = document.getElementById('vazio');
-    container.innerHTML = '';
+          btnLer.onclick = async () => {
+            await updateDoc(doc(db, "notificacoes", docSnap.id), { lida: true });
+            btnLer.style.backgroundColor = "#0f0";
+            btnLer.innerText = "Lida";
+            btnLer.disabled = true;
+          };
 
-    if(notificacoes.length === 0) {
-      vazio.style.display = 'block';
-      return;
-    } else {
-      vazio.style.display = 'none';
-    }
+          btnDel.onclick = async () => {
+            await deleteDoc(doc(db, "notificacoes", docSnap.id));
+            div.remove();
+          };
 
-    notificacoes.forEach((n, i) => {
-      const div = document.createElement('div');
-      div.className = 'notificacao' + (n.lida ? ' lida' : '');
-      div.dataset.index = i;
-
-      div.innerHTML = `
-        <div class="msg">${n.mensagem}</div>
-        <div class="data">${formatarData(n.timestamp)}</div>
-        <div class="botoes">
-          <button class="lida" ${n.lida ? 'disabled' : ''}>Marcar como lida</button>
-          <button class="excluir">Excluir</button>
-        </div>
-      `;
-
-      const btnLida = div.querySelector('button.lida');
-      const btnExcluir = div.querySelector('button.excluir');
-
-      btnLida.addEventListener('click', () => {
-        btnLida.classList.add('clicado');
-        btnLida.disabled = true;
-        notificacoes[i].lida = true;
-        salvarNotificacoes(notificacoes);
-        renderizar();
-      });
-
-      btnExcluir.addEventListener('click', () => {
-        btnExcluir.classList.add('clicado');
-        notificacoes.splice(i,1);
-        salvarNotificacoes(notificacoes);
-        renderizar();
-      });
-
-      container.appendChild(div);
+          lista.appendChild(div);
+        });
+      } else {
+        lista.innerHTML = "<p style='text-align:center;color:#aaa;'>Você precisa estar logado para ver notificações.</p>";
+      }
     });
-  }
-
-  document.addEventListener('DOMContentLoaded', renderizar);
-</script>
+  </script>
 </body>
 </html>
 

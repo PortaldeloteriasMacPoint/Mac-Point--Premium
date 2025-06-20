@@ -37,11 +37,11 @@
             left: 0;
             z-index: 1000;
          text-shadow: 
-  1px 1px 0px black , 
-  -1px -1px 0px black , 
-  1px -1px 0px black , 
-  -1px 1px 0px black;  
-         border: 8px solid black  ;
+  1px 1px 0px white  , 
+  -1px -1px 0px white , 
+  1px -1px 0px White  , 
+  -1px 1px 0px White ;  
+         border: 1px solid black  ;
         }
          .icone {
             width: 40px;
@@ -59,7 +59,7 @@
 .foto-descricao-container {
   margin-top: 80px; /* altura da borda superior */
   width: 100%;
-height: calc(100vh - 80px); /* ocupa toda a altura da tela abaixo da borda */
+height: calc(110vh - 80px); /* ocupa toda a altura da tela abaixo da borda */
   background-color: #000;
   display: flex;
   flex-direction: column;
@@ -83,7 +83,7 @@ background-color: white;
   position: fixed;
   left: -300px;
   top: 85px;
-  max-height: calc(100vh - 150px); /* aumente um pouco o espaço inferior */
+  max-height: calc(110vh - 150px); /* aumente um pouco o espaço inferior */
   overflow-y: auto;
   transition: left 0.3s;
   padding: 10px;
@@ -191,7 +191,7 @@ background-color: white;
 .menu-lateral::-webkit-scrollbar-thumb {
   background-color: white ;
   border-radius: 10px;
-  border: 2px solid White  ;
+  border: 1px solid White  ;
 }
 </style>
   <style>
@@ -236,7 +236,7 @@ transform: translateY(-50%);
   top: 60px;
   height: calc(100vh - 60px - 24px);
   width: 250px;
-  background-color: #333;
+  background-color: black ;
   color: white;
   overflow-y: auto;
 }
@@ -275,7 +275,7 @@ border-radius: 50%;
       position: fixed;
       bottom: 0; left: 0;
       width: 100%; height: 60px;
-      background: #355E3B ;
+      background: white  ;
       border-top: 1px solid black;
       display: flex;
       justify-content: space-around;
@@ -301,7 +301,7 @@ border-radius: 50%;
   -1px 1px 0px White ;  
     }
  .rodape i:hover {
-      color: #355E3B  ;
+      color: #355E3B   ;
       }
       .rodape i.ativo {
   color: black;
@@ -349,12 +349,15 @@ border-radius: 50%;
 </div>
 
 
-    <h3>Menu Principal</h3>
+    <h3>Menu </h3>
     <button onclick="abrirIframe('home.html')"><i class="fas fa-house" style="margin-right: 6px;"></i> Home</button>
     <button onclick="abrirIframe('geradorpro.html')"><i class="fas fa-calculator" style="margin-right: 6px;"></i> Gerador de Jogos</button>
     <button onclick="abrirIframe('desdobramentos.html')"><i class="fas fa-layer-group" style="margin-right: 6px;"></i> Desdobramentos</button>
-    <button onclick="abrirIframe('resultados.html')"><i class="fas fa-chart-bar" style="margin-right: 6px;"></i> Resultados</button>
-<hr style="margin: 15px 0; border-color: white;">
+   <button onclick="abrirIframe('resultados.html')"><i class="fas fa-chart-bar" style="margin-right: 6px;"></i> Modalidades</button>
+<button onclick="abrirIframe('tabela.html')"><i class="fas fa-chart-bar" style="margin-right: 6px;"></i> Tabela</button>
+<button onclick="abrirIframe('palpite.html')"><i class="fas fa-chart-bar" style="margin-right: 6px;"></i> Palpite da Sorte</button>
+
+      <hr style="margin: 15px 0; border-color: white;">
 
     <h3 style="color: white;">Oráculos </h3>
     <button onclick="abrirIframe('tendencias.html')"><i class="fas fa-wave-square" style="margin-right: 6px;"></i> Horóscopo </button>
@@ -366,7 +369,8 @@ border-radius: 50%;
     <h3 style="color: white;">Tech SaaS Pro</h3>
     <button onclick="abrirIframe('fechamento.html')"><i class="fas fa-plus-square" style="margin-right: 6px;"></i> Ferramentas Avançadas </button>
 
-    <h3 style="color: white;">Análises de Grupos</h3>
+    <h3 style="color: white;">Jogos e Apps</h3>
+<button onclick="abrirIframe('painelapp.html')"><i class="fas fa-plus-square" style="margin-right: 6px;"></i> Painel </button>
 
 </div>
   <iframe id="conteudo" src="home.html"></iframe> 
@@ -441,12 +445,12 @@ document.getElementById('inputFoto').addEventListener('change', function () {
   function abrirIframe(url) {
     iframe.src = url;
     menuLateral.style.left = '-300px';
-    botaoMenu.style.backgroundColor = 'green';
+    botaoMenu.style.backgroundColor = 'black';
   }
 
 
 function logout() {
-            window.location.href = 'logotipo.html';
+            window.location.href = 'logout.html';
         }
     </script>
 <script>

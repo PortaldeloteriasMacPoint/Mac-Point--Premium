@@ -83,7 +83,7 @@ background-color: white;
   position: fixed;
   left: -300px;
   top: 85px;
-  max-height: calc(100vh - 150px); /* aumente um pouco o espaço inferior */
+  max-height: calc(100vh - 140px); /* aumente um pouco o espaço inferior */
   overflow-y: auto;
   transition: left 0.3s;
   padding: 10px;
@@ -399,13 +399,12 @@ border-radius: 50%;
       document.getElementById('conteudo').src = pagina;
     }
 
-    
-   
-       window.onload = function () {
+   window.onload = function () {
   const fotoSalva = localStorage.getItem('fotoUsuario');
-  if (fotoSalva) {
-    document.getElementById('fotoUsuario').src = fotoSalva;
-}
+  const img = document.getElementById('fotoUsuario');
+  if (fotoSalva && img) {
+    img.src = fotoSalva;
+  }
 };
 
 function selecionarNovaFoto() {
@@ -423,7 +422,10 @@ document.getElementById('inputFoto').addEventListener('change', function () {
     };
     leitor.readAsDataURL(arquivo);
   }
-});
+}); 
+   
+       
+
 
 
 
@@ -464,42 +466,17 @@ botoes.forEach(btn => {
       b.style.border = '1px solid #000';
     });
 
-    btn.style.backgroundColor = '#355E3B';
+    btn.style.backgroundColor = 'black';
     btn.style.color = 'white';
     btn.style.border = '1px solid black';
   });
 });
  </script>
 <script>
-  let mostrandoDezenas = false;
-
-  function gerarPalpite() {
-    const container = document.getElementById('dezenas-container');
-    container.innerHTML = '';
-if (!mostrandoDezenas) {
-      let dezenas = [];
-      while (dezenas.length < 6) {
-        let n = Math.floor(Math.random() * 60) + 1;
-        if (!dezenas.includes(n)) dezenas.push(n);
-      }
+  
 
       dezenas.forEach(num => {
-        const div = document.createElement('div');
-        div.className = 'circulo';
-        div.textContent = num < 10 ? '0' + num : num;
-        container.appendChild(div);
-      });
-    } else {
-      for (let i = 0; i < 6; i++) {
-        const div = document.createElement('div');
-        div.className = 'circulo';
-        div.innerHTML = '<span class="trevo">🍀</span>';
-        container.appendChild(div);
-      }
-    }
-
-    mostrandoDezenas = !mostrandoDezenas;
-  }
+      
   
 
 

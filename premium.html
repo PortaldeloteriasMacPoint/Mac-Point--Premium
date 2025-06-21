@@ -322,15 +322,15 @@ border-radius: 50%;
   display: block;
 }
 .rodape svg {
-  width: 28px;
-  height: 28px;
+  width: 20px;
+  height: 20px;
   cursor: pointer;
   position: relative;
   z-index: 2;
   border-radius: 50%;
-  padding: 6px;
+  padding: 3px;
   box-sizing: content-box;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, fill 0.3s;
   fill: black;
 }
 
@@ -338,25 +338,21 @@ border-radius: 50%;
   background-color: #355E3B;
   border: 2px solid black;
   box-shadow:
-    0 0 0 2px black,
-    0 0 10px #355E3B;
+    0 0 0 1px black,
+    0 0 4px #355E3B;
   transform: scale(1.05);
-    }
+  fill: white;
+}
 </style>
 </head>
-
 <body>
  <div class="borda-superior">
     <span>🍀 MAC POINT </span>
     <div class="icone" onclick="toggleMenu()">☰</div>
   </div>
-  
-
 <div class="foto-descricao-container">
   <img src="Screenshot_20250112-173043-1.jpg" alt="Foto de capa" class="foto-capa">  
-
-  
-    </div>
+  </div>
   </div>
 </div>
   <div class="menu-lateral" id="menuLateral">
@@ -364,9 +360,7 @@ border-radius: 50%;
   <img id="fotoUsuario" src="Screenshot_20250322-201229-1.jpg" alt="Foto do Usuário">
   <input type="file" id="inputFoto" accept="image/*" style="display:none">
 </div>
-
-
-    <h3>Menu </h3>
+      <h3>Menu </h3>
     <button onclick="abrirIframe('home.html')"><i class="fas fa-house" style="margin-right: 6px;"></i> Home</button>
     <button onclick="abrirIframe('geradorpro.html')"><i class="fas fa-calculator" style="margin-right: 6px;"></i> Gerador de Jogos</button>
     <button onclick="abrirIframe('desdobramentos.html')"><i class="fas fa-layer-group" style="margin-right: 6px;"></i> Desdobramentos</button>

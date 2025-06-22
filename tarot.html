@@ -2,20 +2,19 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cartas de Tarô</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tarô Interativo</title>
   <style>
     :root {
       --fundo: #f2f2f2;
       --card: #fff;
       --borda: #000;
       --destaque: #355E3B;
+      --alerta: #ff4444;
     }
-
     * {
       box-sizing: border-box;
     }
-
     body {
       margin: 0;
       font-family: 'Arial', sans-serif;
@@ -26,7 +25,6 @@
       min-height: 100vh;
       padding: 20px;
     }
-
     .container {
       max-width: 600px;
       width: 100%;
@@ -36,12 +34,10 @@
       padding: 20px;
       text-align: center;
     }
-
     h1 {
       margin-bottom: 20px;
       color: var(--destaque);
     }
-
     button {
       padding: 12px 20px;
       background: var(--destaque);
@@ -54,23 +50,19 @@
       transition: 0.3s;
       width: 100%;
     }
-
     button:hover {
       background: black;
       color: white;
     }
-
     .carta {
       margin-top: 20px;
     }
-
     .carta img {
       width: 100%;
       max-width: 300px;
       border: 2px solid var(--borda);
       border-radius: 10px;
     }
-
     .leitura {
       margin-top: 15px;
       font-size: 16px;
@@ -80,21 +72,35 @@
       text-align: left;
       border-radius: 8px;
     }
-
+    .notificacao {
+      margin-top: 15px;
+      font-weight: bold;
+      color: var(--alerta);
+    }
+    .loader {
+      margin: 20px auto;
+      width: 50px;
+      height: 50px;
+      border: 5px solid #ccc;
+      border-top: 5px solid var(--destaque);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
     @media (max-width: 480px) {
-      h1 {
-        font-size: 24px;
-      }
-      button {
-        font-size: 16px;
-      }
+      h1 { font-size: 24px; }
+      button { font-size: 16px; }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Cartas de Tarô</h1>
+    <h1>O que as cartas dizem a você?</h1>
     <button onclick="sortearCarta()">Tirar uma Carta</button>
+    <div class="notificacao" id="notificacao"></div>
     <div class="carta" id="cartaContainer"></div>
   </div>
 
@@ -103,40 +109,60 @@
       {
         nome: "O Louco",
         imagem: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/RWS_Tarot_00_Fool.jpg/440px-RWS_Tarot_00_Fool.jpg",
-        leitura: "O Louco representa novos começos, liberdade e espontaneidade. Pode indicar que você está pronto para iniciar uma nova jornada."
+        leitura: "Novos começos, liberdade e espontaneidade."
       },
       {
         nome: "A Morte",
         imagem: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/RWS_Tarot_13_Death.jpg/440px-RWS_Tarot_13_Death.jpg",
-        leitura: "A Morte não representa necessariamente algo negativo, mas sim transformações, encerramentos e renascimentos. Uma fase está terminando para que outra comece."
+        leitura: "Transformações, encerramentos e renascimentos."
       },
       {
         nome: "A Estrela",
         imagem: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/RWS_Tarot_17_Star.jpg/440px-RWS_Tarot_17_Star.jpg",
-        leitura: "A Estrela traz esperança, fé e cura. Ela sugere que você está no caminho certo e deve continuar com otimismo."
+        leitura: "Esperança, fé e cura."
       },
       {
         nome: "A Torre",
         imagem: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/RWS_Tarot_16_Tower.jpg/440px-RWS_Tarot_16_Tower.jpg",
-        leitura: "A Torre simboliza mudanças súbitas e revelações. Algo que parecia sólido pode ruir, mas abrirá caminho para algo novo."
+        leitura: "Mudanças súbitas e revelações."
       },
       {
         nome: "A Sacerdotisa",
         imagem: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/RWS_Tarot_02_High_Priestess.jpg/440px-RWS_Tarot_02_High_Priestess.jpg",
-        leitura: "A Sacerdotisa representa sabedoria interior, mistério e intuição. Escute sua voz interior e busque respostas dentro de você."
+        leitura: "Sabedoria interior, mistério e intuição."
       }
     ];
 
+    const MAX_TENTATIVAS = 3;
+
     function sortearCarta() {
-      const sorteada = cartas[Math.floor(Math.random() * cartas.length)];
-      document.getElementById('cartaContainer').innerHTML = `
-        <h2>${sorteada.nome}</h2>
-        <img src="${sorteada.imagem}" alt="${sorteada.nome}">
-        <div class="leitura">${sorteada.leitura}</div>
-      `;
+      const hoje = new Date().toLocaleDateString();
+      const dados = JSON.parse(localStorage.getItem("tarotTentativas") || "{}");
+
+      if (!dados[hoje]) dados[hoje] = 0;
+
+      if (dados[hoje] >= MAX_TENTATIVAS) {
+        document.getElementById('notificacao').innerText = "Você já tirou 3 cartas hoje. Tente novamente amanhã.";
+        return;
+      }
+
+      document.getElementById('notificacao').innerText = "Sorteando sua carta...";
+      const container = document.getElementById('cartaContainer');
+      container.innerHTML = `<div class="loader"></div>`;
+
+      setTimeout(() => {
+        const sorteada = cartas[Math.floor(Math.random() * cartas.length)];
+        container.innerHTML = `
+          <h2>${sorteada.nome}</h2>
+          <img src="${sorteada.imagem}" alt="${sorteada.nome}">
+          <div class="leitura">${sorteada.leitura}</div>
+        `;
+        dados[hoje]++;
+        localStorage.setItem("tarotTentativas", JSON.stringify(dados));
+        document.getElementById('notificacao').innerText = "";
+      }, 1500);
     }
   </script>
 </body>
 </html>
-
 

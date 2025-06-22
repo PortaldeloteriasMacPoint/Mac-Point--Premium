@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Oráculo de Búzios</title>
+  <style>
+    :root {
+      --fundo: #f2f2f2;
+      --card: #fff;
+      --borda: #000;
+      --destaque: #355E3B;
+      --alerta: #ff4444;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background: var(--fundo);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      width: 100%;
+      background: var(--card);
+      border: 2px solid var(--borda);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 20px;
+      color: var(--destaque);
+    }
+    button {
+      padding: 12px 20px;
+      background: var(--destaque);
+      color: white;
+      border: 2px solid var(--borda);
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+      width: 100%;
+    }
+    button:hover {
+      background: black;
+      color: white;
+    }
+    .oraculo {
+      margin-top: 20px;
+      user-select: none;
+    }
+    .oraculo img {
+      width: 100%;
+      max-width: 280px;
+      border: 2px solid var(--borda);
+      border-radius: 10px;
+      display: block;
+      margin: 0 auto 15px auto;
+      object-fit: contain;
+      background: white;
+    }
+    .leitura {
+      font-size: 16px;
+      background: #e9ffe9;
+      border-left: 5px solid var(--destaque);
+      padding: 10px;
+      text-align: left;
+      border-radius: 8px;
+      min-height: 120px;
+    }
+    .notificacao {
+      margin-top: 15px;
+      font-weight: bold;
+      color: var(--alerta);
+      min-height: 24px;
+    }
+    .loader {
+      margin: 20px auto;
+      width: 50px;
+      height: 50px;
+      border: 5px solid #ccc;
+      border-top: 5px solid var(--destaque);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @media (max-width: 480px) {
+      h1 { font-size: 24px; }
+      button { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Oráculo de Búzios</h1>
+    <button onclick="sortearBuzios()">Jogar os Búzios</button>
+    <div class="notificacao" id="notificacao"></div>
+    <div class="oraculo" id="oraculoContainer"></div>
+  </div>
+
+  <script>
+    const buzios = [
+      {
+        nome: "Ileke Meji",
+        imagem: "https://i.ibb.co/vPVmDyT/ileke-meji.png",
+        leitura: "Mudança profunda e revelação, momento para introspecção e planejamento."
+      },
+      {
+        nome: "Ofun Meji",
+        imagem: "https://i.ibb.co/wcd9N1D/ofun-meji.png",
+        leitura: "Prosperidade e equilíbrio, bons ventos para iniciar novos projetos."
+      },
+      {
+        nome: "Oyeku Meji",
+        imagem: "https://i.ibb.co/QQrqP8D/oyeku-meji.png",
+        leitura: "Proteção espiritual e sabedoria. Momento de enfrentar desafios com confiança."
+      },
+      {
+        nome: "Irosun Meji",
+        imagem: "https://i.ibb.co/TmvQ7Hz/irosun-meji.png",
+        leitura: "Cura e renovação, oportunidade de deixar para trás o que não serve mais."
+      },
+      {
+        nome: "Odi Meji",
+        imagem: "https://i.ibb.co/dgRXN1Q/odi-meji.png",
+        leitura: "Desafios e testes, mas com força para superar obstáculos."
+      }
+    ];
+
+    const MAX_TENTATIVAS = 3;
+
+    function sortearBuzios() {
+      const hoje = new Date().toLocaleDateString();
+      const dados = JSON.parse(localStorage.getItem("buziosTentativas") || "{}");
+
+      if (!dados[hoje]) dados[hoje] = 0;
+
+      if (dados[hoje] >= MAX_TENTATIVAS) {
+        document.getElementById('notificacao').innerText = "Você já jogou 3 vezes hoje. Volte amanhã.";
+        return;
+      }
+
+      document.getElementById('notificacao').innerText = "Jogando os búzios...";
+      const container = document.getElementById('oraculoContainer');
+      container.innerHTML = `<div class="loader"></div>`;
+
+      setTimeout(() => {
+        const sorteado = buzios[Math.floor(Math.random() * buzios.length)];
+        container.innerHTML = `
+          <h2>${sorteado.nome}</h2>
+          <img src="${sorteado.imagem}" alt="${sorteado.nome}" onerror="this.style.display='none'">
+          <div class="leitura">${sorteado.leitura}</div>
+        `;
+        dados[hoje]++;
+        localStorage.setItem("buziosTentativas", JSON.stringify(dados));
+        document.getElementById('notificacao').innerText = "";
+      }, 1500);
+    }
+  </script>
+</body>
+</html>
+

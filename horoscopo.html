@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Horóscopo Diário</title>
+  <style>
+    body {
+      background-color: #000;
+      color: white;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      color: #355E3B;
+    }
+    .signos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .signo {
+      background-color: #111;
+      border: 2px solid #355E3B;
+      border-radius: 10px;
+      padding: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+      color: white;
+      user-select: none;
+    }
+    .signo:hover {
+      background-color: #355E3B;
+    }
+    .signo img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      transition: 0.3s;
+      border: none;
+      filter: none;
+    }
+    .signo.ativo {
+      background-color: white;
+      color: black;
+      border: 2px solid #000;
+    }
+    .signo.ativo img {
+      border: 1px solid black;
+      filter: brightness(0);
+    }
+    #resultado {
+      margin-top: 30px;
+      background-color: #111;
+      padding: 20px;
+      border-radius: 12px;
+      border: 2px solid #355E3B;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      display: none;
+      text-align: left;
+      color: white;
+    }
+    #resultado h2 {
+      color: #355E3B;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+    .texto p {
+      margin: 8px 0;
+    }
+    .numeros {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 20px;
+      gap: 10px;
+    }
+    .numero {
+      background-color: #355E3B;
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      font-size: 16px;
+      user-select: none;
+    }
+    #erro {
+      margin-top: 20px;
+      background-color: #b00020;
+      color: white;
+      padding: 10px;
+      border-radius: 10px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      display: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Horóscopo Diário</h1>
+  <div class="signos" id="signosContainer"></div>
+
+  <div id="resultado">
+    <h2 id="nomeSigno"></h2>
+    <div class="texto">
+      <p><strong>Geral:</strong> <span id="geral"></span></p>
+      <p><strong>Amor:</strong> <span id="amor"></span></p>
+      <p><strong>Trabalho:</strong> <span id="trabalho"></span></p>
+      <p><strong>Saúde:</strong> <span id="saude"></span></p>
+    </div>
+    <div class="numeros" id="numerosDaSorte"></div>
+  </div>
+
+  <div id="erro">❌ Não foi possível carregar o horóscopo do dia. Tente novamente mais tarde.</div>
+
+  <script>
+    const signos = [
+      { nome: "aries", label: "Áries", icon: "https://img.icons8.com/ios/50/fa314a/aries.png" },
+      { nome: "taurus", label: "Touro", icon: "https://img.icons8.com/ios/50/fa314a/taurus.png" },
+      { nome: "gemini", label: "Gêmeos", icon: "https://img.icons8.com/ios/50/fa314a/gemini.png" },
+      { nome: "cancer", label: "Câncer", icon: "https://img.icons8.com/ios/50/fa314a/cancer.png" },
+      { nome: "leo", label: "Leão", icon: "https://img.icons8.com/ios/50/fa314a/leo.png" },
+      { nome: "virgo", label: "Virgem", icon: "https://img.icons8.com/ios/50/fa314a/virgo.png" },
+      { nome: "libra", label: "Libra", icon: "https://img.icons8.com/ios/50/fa314a/libra.png" },
+      { nome: "scorpio", label: "Escorpião", icon: "https://img.icons8.com/ios/50/fa314a/scorpio.png" },
+      { nome: "sagittarius", label: "Sagitário", icon: "https://img.icons8.com/ios/50/fa314a/sagittarius.png" },
+      { nome: "capricorn", label: "Capricórnio", icon: "https://img.icons8.com/ios/50/fa314a/capricorn.png" },
+      { nome: "aquarius", label: "Aquário", icon: "https://img.icons8.com/ios/50/fa314a/aquarius.png" },
+      { nome: "pisces", label: "Peixes", icon: "https://img.icons8.com/ios/50/fa314a/pisces.png" }
+    ];
+
+    const container = document.getElementById("signosContainer");
+    let signoAtivo = null;
+
+    signos.forEach(signo => {
+      const div = document.createElement("div");
+      div.classList.add("signo");
+      div.setAttribute("data-signo", signo.nome);
+      div.innerHTML = `<img src="${signo.icon}" alt="${signo.label}" /><br>${signo.label}`;
+      div.onclick = () => carregarSigno(signo.nome, div);
+      container.appendChild(div);
+    });
+
+    async function carregarSigno(signo, div) {
+      // Remove ativo anterior
+      if (signoAtivo) signoAtivo.classList.remove("ativo");
+      div.classList.add("ativo");
+      signoAtivo = div;
+
+      // Esconder resultado e erro enquanto carrega
+      document.getElementById("resultado").style.display = "none";
+      document.getElementById("erro").style.display = "none";
+
+      const hoje = new Date().getDate().toString().padStart(2, '0');
+      const url = `horoscopos/${hoje}.json`; // Ajuste para o caminho correto dos seus JSONs
+
+      try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("HTTP error " + res.status);
+        const data = await res.json();
+        const info = data.signos[signo];
+        if (!info) throw new Error("Signo não encontrado");
+
+        document.getElementById("nomeSigno").textContent = info.nome;
+        document.getElementById("geral").textContent = info.geral;
+        document.getElementById("amor").textContent = info.amor;
+        document.getElementById("trabalho").textContent = info.trabalho;
+        document.getElementById("saude").textContent = info.saude;
+
+        const numerosContainer = document.getElementById("numerosDaSorte");
+        numerosContainer.innerHTML = "";
+        info.numeros_da_sorte.forEach(num => {
+          const bolinha = document.createElement("div");
+          bolinha.classList.add("numero");
+          bolinha.textContent = num.toString().padStart(2, '0');
+          numerosContainer.appendChild(bolinha);
+        });
+
+        document.getElementById("resultado").style.display = "block";
+      } catch {
+        document.getElementById("erro").style.display = "block";
+      }
+    }
+  </script>
+</body>
+</html>
+

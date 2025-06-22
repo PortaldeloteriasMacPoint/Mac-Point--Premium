@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cartas de Tarô</title>
+  <style>
+    :root {
+      --fundo: #f2f2f2;
+      --card: #fff;
+      --borda: #000;
+      --destaque: #355E3B;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background: var(--fundo);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      width: 100%;
+      background: var(--card);
+      border: 2px solid var(--borda);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: var(--destaque);
+    }
+
+    button {
+      padding: 12px 20px;
+      background: var(--destaque);
+      color: white;
+      border: 2px solid var(--borda);
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+      width: 100%;
+    }
+
+    button:hover {
+      background: black;
+      color: white;
+    }
+
+    .carta {
+      margin-top: 20px;
+    }
+
+    .carta img {
+      width: 100%;
+      max-width: 300px;
+      border: 2px solid var(--borda);
+      border-radius: 10px;
+    }
+
+    .leitura {
+      margin-top: 15px;
+      font-size: 16px;
+      background: #e9ffe9;
+      border-left: 5px solid var(--destaque);
+      padding: 10px;
+      text-align: left;
+      border-radius: 8px;
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 24px;
+      }
+      button {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Cartas de Tarô</h1>
+    <button onclick="sortearCarta()">Tirar uma Carta</button>
+    <div class="carta" id="cartaContainer"></div>
+  </div>
+
+  <script>
+    const cartas = [
+      {
+        nome: "O Louco",
+        imagem: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/RWS_Tarot_00_Fool.jpg/440px-RWS_Tarot_00_Fool.jpg",
+        leitura: "O Louco representa novos começos, liberdade e espontaneidade. Pode indicar que você está pronto para iniciar uma nova jornada."
+      },
+      {
+        nome: "A Morte",
+        imagem: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/RWS_Tarot_13_Death.jpg/440px-RWS_Tarot_13_Death.jpg",
+        leitura: "A Morte não representa necessariamente algo negativo, mas sim transformações, encerramentos e renascimentos. Uma fase está terminando para que outra comece."
+      },
+      {
+        nome: "A Estrela",
+        imagem: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/RWS_Tarot_17_Star.jpg/440px-RWS_Tarot_17_Star.jpg",
+        leitura: "A Estrela traz esperança, fé e cura. Ela sugere que você está no caminho certo e deve continuar com otimismo."
+      },
+      {
+        nome: "A Torre",
+        imagem: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/RWS_Tarot_16_Tower.jpg/440px-RWS_Tarot_16_Tower.jpg",
+        leitura: "A Torre simboliza mudanças súbitas e revelações. Algo que parecia sólido pode ruir, mas abrirá caminho para algo novo."
+      },
+      {
+        nome: "A Sacerdotisa",
+        imagem: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/RWS_Tarot_02_High_Priestess.jpg/440px-RWS_Tarot_02_High_Priestess.jpg",
+        leitura: "A Sacerdotisa representa sabedoria interior, mistério e intuição. Escute sua voz interior e busque respostas dentro de você."
+      }
+    ];
+
+    function sortearCarta() {
+      const sorteada = cartas[Math.floor(Math.random() * cartas.length)];
+      document.getElementById('cartaContainer').innerHTML = `
+        <h2>${sorteada.nome}</h2>
+        <img src="${sorteada.imagem}" alt="${sorteada.nome}">
+        <div class="leitura">${sorteada.leitura}</div>
+      `;
+    }
+  </script>
+</body>
+</html>
+
+

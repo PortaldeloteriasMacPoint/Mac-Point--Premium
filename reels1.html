@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reels</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #000; color: #fff; font-family: sans-serif; }
+    header {
+      background: linear-gradient(to right, #355e3b, #4ca16b);
+      padding: 0.5rem; text-align: center; border-radius: 0 0 12px 12px;
+    }
+    header h1 {
+      font-size: 1.2rem; font-weight: bold; margin: 0;
+    }
+    .btns {
+      overflow-x: auto; display: flex; gap: 8px;
+      padding: 0.5rem 1rem; white-space: nowrap; justify-content: center;
+    }
+    .btns button {
+      padding: 6px 14px; font-size: 0.9rem;
+      background: none; border: 1px solid #355E3B; color: white;
+      border-radius: 6px; cursor: pointer;
+    }
+    .btns button.active {
+      background: #fff; color: #355E3B; font-weight: bold;
+    }
+    .card {
+      background: #111; margin: 1rem auto; width: 95%;
+      max-width: 450px; border-radius: 12px;
+      overflow: hidden; box-shadow: 0 0 10px #355E3B;
+    }
+    .card iframe {
+      width: 100%; height: 220px; border: none;
+    }
+    .acoes {
+      display: flex; gap: 18px; padding: 10px;
+      align-items: center; justify-content: flex-start;
+    }
+    .acoes div {
+      display: flex; align-items: center; gap: 6px;
+      cursor: pointer;
+    }
+    .acoes svg {
+      width: 22px; height: 22px;
+      fill: white;
+      transition: fill 0.3s ease;
+    }
+    .acoes svg.liked { fill: red; }
+    .acoes svg.favorited { fill: gold; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🎬 Reels Profissionais</h1>
+  </header>
+  <div class="btns">
+    <button class="active" onclick="setCat(this)" data-cat="musicas">Músicas</button>
+    <button onclick="setCat(this)" data-cat="loterias">Loterias</button>
+    <button onclick="setCat(this)" data-cat="filmes">Filmes</button>
+    <button onclick="setCat(this)" data-cat="humor">Humor</button>
+    <button onclick="setCat(this)" data-cat="animes">Animes</button>
+    <button onclick="setCat(this)" data-cat="favoritos">Favoritos</button>
+    <button onclick="setCat(this)" data-cat="novidades">Novidades</button>
+    <button onclick="setCat(this)" data-cat="outros">Outros</button>
+  </div>
+  <main id="videos"></main>
+
+  <script>
+    const categorias = {
+      musicas: ["hTWKbfoikeg", "YjygaDPCtXE"],
+      loterias: ["UceaB4D0jpo"],
+      filmes: ["K4TOrB7at0Y"],
+      humor: ["lXMskKTw3Bc"],
+      animes: ["Wg9ax49c1Qk"],
+      favoritos: [],
+      novidades: ["gzMf4JmxSdY"],
+      outros: ["tgbNymZ7vqY"]
+    }
+
+    let categoriaAtual = "musicas";
+
+    function getLikes() {
+      return JSON.parse(localStorage.getItem("likes") || "[]");
+    }
+
+    function getFavs() {
+      return JSON.parse(localStorage.getItem("favs") || "[]");
+    }
+
+    function toggleLike(id) {
+      let likes = getLikes();
+      if (likes.includes(id)) {
+        likes = likes.filter(v => v !== id);
+      } else {
+        likes.push(id);
+      }
+      localStorage.setItem("likes", JSON.stringify(likes));
+      renderCategoria(categoriaAtual);
+    }
+
+    function toggleFav(id) {
+      let favs = getFavs();
+      if (favs.includes(id)) {
+        favs = favs.filter(v => v !== id);
+      } else {
+        favs.push(id);
+      }
+      localStorage.setItem("favs", JSON.stringify(favs));
+      renderCategoria(categoriaAtual);
+    }
+
+    function compartilhar(id) {
+      const url = `https://youtu.be/${id}`;
+      if (navigator.share) {
+        navigator.share({ title: "Veja este vídeo", url });
+      } else {
+        prompt("Copie o link para compartilhar:", url);
+      }
+    }
+
+    function renderCategoria(cat) {
+      categoriaAtual = cat;
+      const container = document.getElementById("videos");
+      container.innerHTML = "";
+
+      const likes = getLikes();
+      const favs = getFavs();
+
+      let lista = cat === "favoritos" ? favs : categorias[cat] || [];
+
+      for (const id of lista) {
+        const liked = likes.includes(id);
+        const favorited = favs.includes(id);
+
+        container.innerHTML += `
+          <div class="card">
+            <iframe src="https://www.youtube.com/embed/${id}?modestbranding=1&rel=0" allowfullscreen></iframe>
+            <div class="acoes">
+              <div class="like" onclick="toggleLike('${id}')">
+                <svg viewBox="0 0 24 24" class="${liked ? 'liked' : ''}">
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
+                    C2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09
+                    C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.42 22 8.5
+                    c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+              </div>
+              <div class="fav" onclick="toggleFav('${id}')">
+                <svg viewBox="0 0 24 24" class="${favorited ? 'favorited' : ''}">
+                  <path d="M12 17.27L18.18 21 16.54 13.97
+                    22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24
+                    7.46 13.97 5.82 21z"/>
+                </svg>
+              </div>
+              <div class="share" onclick="compartilhar('${id}')">
+                <svg viewBox="0 0 24 24">
+                  <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91
+                    12.7c.05-.23.09-.46.09-.7s-.03-.47-.09-.7l7.02-4.11
+                    c.5.5 1.19.81 1.97.81 1.66 0 3-1.34 3-3s-1.34-3-3-3
+                    -3 1.34-3 3c0 .24.04.47.09.7L8.91 9.81C8.41 9.31
+                    7.72 9 7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.72 0
+                    1.41-.31 1.91-.81l7.13 4.18c-.05.21-.08.43-.08.63
+                    0 1.52 1.23 2.75 2.75 2.75s2.75-1.23
+                    2.75-2.75-1.23-2.75-2.75-2.75z"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function setCat(el) {
+      document.querySelectorAll('.btns button').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+      renderCategoria(el.dataset.cat);
+    }
+
+    window.onload = () => {
+      renderCategoria("musicas");
+    }
+  </script>
+</body>
+</html>
+

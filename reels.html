@@ -44,8 +44,9 @@
       if (user) {
         usuarioLogado = user;
         document.getElementById("loginBtn").style.display = "none";
-        renderCategoria("musicas");
+        document.getElementById("avisoLogin").style.display = "none";
       }
+      renderCategoria("musicas");
     });
 
     window.curtir = async function(videoId) {
@@ -88,15 +89,27 @@
       categoriaAtual = categoria;
       const container = document.getElementById("videos");
       container.innerHTML = "";
-      let videos = categoria === "favoritos" && usuarioLogado ? (await getDoc(doc(db, "favoritos", usuarioLogado.uid))).data()?.videos || [] : categorias[categoria];
+      let videos = [];
+
+      if (categoria === "favoritos" && usuarioLogado) {
+        const snap = await getDoc(doc(db, "favoritos", usuarioLogado.uid));
+        videos = snap.exists() ? snap.data().videos : [];
+      } else {
+        videos = categorias[categoria] || [];
+      }
+
       for (const id of videos) {
         const ref = doc(db, "curtidas", id);
         const snap = await getDoc(ref);
         const likes = snap.exists() ? snap.data().usuarios.length : 0;
-        const liked = snap.exists() && snap.data().usuarios.includes(usuarioLogado?.uid);
-        const favSnap = usuarioLogado ? await getDoc(doc(db, "favoritos", usuarioLogado.uid)) : null;
-        const favs = favSnap?.data()?.videos || [];
-        const favorited = favs.includes(id);
+        const liked = usuarioLogado && snap.exists() && snap.data().usuarios.includes(usuarioLogado.uid);
+        let favorited = false;
+
+        if (usuarioLogado) {
+          const favSnap = await getDoc(doc(db, "favoritos", usuarioLogado.uid));
+          favorited = favSnap.exists() && favSnap.data().videos.includes(id);
+        }
+
         container.innerHTML += `
           <div class="card">
             <iframe src="https://www.youtube.com/embed/${id}?modestbranding=1&rel=0" allowfullscreen></iframe>
@@ -148,6 +161,7 @@
     <h1>🎥 Vídeos Recomendados</h1>
   </header>
   <button id="loginBtn">Entrar com Google</button>
+  <div id="avisoLogin" style="text-align:center; padding: 1rem;">Entre com o Google para curtir e favoritar vídeos.</div>
   <div class="btns">
     <button class="active" onclick="setCat(this)" data-cat="musicas">Músicas</button>
     <button onclick="setCat(this)" data-cat="loterias">Loterias</button>
@@ -161,5 +175,4 @@
   <main id="videos"></main>
 </body>
 </html>
-
 

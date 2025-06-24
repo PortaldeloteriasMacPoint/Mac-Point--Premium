@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mac Point Informa</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    :root {
+      --verde-escuro: #355E3B;
+      --verde-claro: #4CAF50;
+      --preto: #000;
+      --branco: #fff;
+    }
+
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+
+    body {
+      background: var(--preto);
+      color: var(--branco);
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .feed-wrapper {
+      max-width: 720px;
+      width: 100%;
+    }
+
+    .feed-header {
+      text-align: center;
+      font-size: 1.8rem;
+      padding: 15px;
+      background: linear-gradient(90deg, var(--verde-escuro), var(--verde-claro));
+      border-radius: 12px;
+      margin-bottom: 25px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .feed-header img {
+      width: 40px;
+      height: 40px;
+    }
+
+    .feed-list {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .post-card {
+      background: #121212;
+      border: 2px solid var(--verde-escuro);
+      border-radius: 14px;
+      padding: 18px 20px;
+      box-shadow: 0 0 15px rgba(53, 94, 59, 0.6);
+    }
+
+    .post-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 12px;
+    }
+
+    .post-header img.icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 10px;
+    }
+
+    .post-title {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: var(--verde-claro);
+    }
+
+    .post-date {
+      font-size: 0.85rem;
+      color: #bbb;
+    }
+
+    .post-content {
+      margin: 12px 0 15px;
+      font-size: 1rem;
+      color: #ddd;
+    }
+
+    .post-media img, .post-media video {
+      width: 100%;
+      border-radius: 12px;
+      margin-bottom: 10px;
+    }
+
+    .post-actions {
+      display: flex;
+      gap: 20px;
+      font-size: 1.2rem;
+      color: #ccc;
+    }
+
+    .post-actions span {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .post-actions .liked { color: red; }
+    .post-actions .starred { color: gold; }
+
+    @media (max-width: 600px) {
+      .feed-header { font-size: 1.4rem; flex-direction: column; }
+      .post-title { font-size: 1.1rem; }
+      .post-content { font-size: 0.95rem; }
+      .post-actions { font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="feed-wrapper">
+    <div class="feed-header">
+      <img src="img/macpoint-icon.png" alt="Ícone Mac Point" />
+      Mac Point Informa
+    </div>
+    <section class="feed-list" id="feedList">
+      <!-- Conteúdo dinâmico -->
+    </section>
+  </div>
+
+  <script>
+    async function renderFeed() {
+      const response = await fetch("feedinforma.php");
+      const posts = await response.json();
+      const feedList = document.getElementById("feedList");
+      feedList.innerHTML = "";
+
+      posts.forEach(post => {
+        const postEl = document.createElement("article");
+        postEl.className = "post-card";
+        postEl.innerHTML = `
+          <div class="post-header">
+            <img class="icon" src="${post.icon}" alt="Ícone" />
+            <div>
+              <div class="post-title">${post.title}</div>
+              <div class="post-date">${post.date}</div>
+            </div>
+          </div>
+          <div class="post-content">${post.content}</div>
+          ${post.mediaType && post.mediaSrc ? `
+            <div class="post-media">
+              ${post.mediaType === 'video' ? 
+                `<video controls><source src="${post.mediaSrc}" type="video/mp4"></video>` : 
+                `<img src="${post.mediaSrc}" alt="Imagem">`}
+            </div>` : ''}
+          <div class="post-actions">
+            <span class="like"><i class="fa-solid fa-heart"></i> <span class="count">0</span></span>
+            <span class="star"><i class="fa-solid fa-star"></i> <span class="count">0</span></span>
+            <span class="share"><i class="fa-solid fa-share-nodes"></i></span>
+          </div>
+        `;
+        feedList.appendChild(postEl);
+      });
+    }
+
+    renderFeed();
+  </script>
+</body>
+</html>
+

@@ -1,132 +1,318 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Feed - Mac Point Informa</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <style>
-    :root {
-      --verde-escuro: #355E3B;
-      --verde-claro: #4CAF50;
-      --preto: #000;
-      --branco: #fff;
-    }
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      background: var(--preto);
-      color: var(--branco);
-      font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      justify-content: center;
-      padding: 20px;
-    }
-    .feed-wrapper {
-      max-width: 720px;
-      width: 100%;
-    }
-    .feed-header {
-      text-align: center;
-      font-size: 1.8rem;
-      padding: 15px;
-      background: linear-gradient(90deg, var(--verde-escuro), var(--verde-claro));
-      border-radius: 12px;
-      margin-bottom: 25px;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-    }
-    .feed-header img {
-      width: 40px;
-      height: 40px;
-    }
-    .feed-content .post-card {
-      background: #121212;
-      border: 2px solid var(--verde-escuro);
-      border-radius: 14px;
-      padding: 18px 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 0 15px rgba(53, 94, 59, 0.6);
-    }
-    .post-header {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      margin-bottom: 12px;
-    }
-    .post-header .icon {
-      width: 50px;
-      height: 50px;
-      border-radius: 10px;
-    }
-    .post-title {
-      font-size: 1.2rem;
-      font-weight: bold;
-      color: var(--verde-claro);
-    }
-    .post-date {
-      font-size: 0.85rem;
-      color: #bbb;
-    }
-    .post-content {
-      margin: 12px 0 15px;
-      font-size: 1rem;
-      color: #ddd;
-    }
-    .post-media img {
-      width: 100%;
-      border-radius: 12px;
-    }
-    .post-actions {
-      display: flex;
-      gap: 20px;
-      font-size: 1.2rem;
-      color: #ccc;
-      margin-top: 10px;
-    }
-    .post-actions span {
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-    @media (max-width: 600px) {
-      .feed-header {
-        font-size: 1.4rem;
-        flex-direction: column;
-        padding: 10px;
-      }
-      .post-title {
-        font-size: 1.1rem;
-      }
-      .post-content {
-        font-size: 0.95rem;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="feed-wrapper">
-    <div class="feed-header">
-      <img src="img/macpoint-icon.png" alt="Ícone" />
-      Mac Point Informa
-    </div>
-    <div class="feed-content" id="feed"></div>
-  </div>
+<!DOCTYPE html>  <html lang="pt-BR">  
+<head>  
+<meta charset="UTF-8" />  
+<meta name="viewport" content="width=device-width, initial-scale=1" />  
+<title>Feed Loterias Profissional</title>  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />  
+<style>  
+  :root {  
+    --verde-escuro: #355E3B;  
+    --verde-claro: #4CAF50;  
+    --preto: #000000;  
+    --branco: #FFFFFF;  
+  }  
+  * {  
+    margin: 0; padding: 0; box-sizing: border-box;  
+  }  
+  body {  
+    background: var(--preto);  
+    color: var(--branco);  
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  
+    padding: 20px 15px;  
+    display: flex;  
+    justify-content: center;  
+    min-height: 100vh;  
+  }  
+  .feed-wrapper {  
+    width: 100%;  
+    max-width: 720px;  
+  }  
+  header.feed-header {  
+    text-align: center;  
+    padding: 15px 10px;  
+    background: linear-gradient(90deg, var(--verde-escuro), var(--verde-claro));  
+    border-radius: 12px;  
+    margin-bottom: 25px;  
+    font-size: 2rem;  
+    font-weight: 700;  
+    letter-spacing: 1px;  
+    user-select: none;  
+  }  
+  .feed-list {  
+    display: flex;  
+    flex-direction: column;  
+    gap: 25px;  
+  }  
+  .post-card {  
+    background: #121212;  
+    border: 2px solid var(--verde-escuro);  
+    border-radius: 14px;  
+    box-shadow: 0 0 15px rgba(53, 94, 59, 0.6);  
+    padding: 18px 20px;  
+    transition: border-color 0.3s ease;  
+  }  
+  .post-card:hover {  
+    border-color: var(--verde-claro);  
+    box-shadow: 0 0 22px rgba(76, 175, 80, 0.9);  
+  }  
+  .post-header {  
+    display: flex;  
+    align-items: center;  
+    gap: 15px;  
+    margin-bottom: 12px;  
+  }  
+  .post-header img.icon {  
+    width: 54px;  
+    height: 54px;  
+    border-radius: 10px;  
+    object-fit: contain;  
+  }  
+  .post-title-date {  
+    display: flex;  
+    flex-direction: column;  
+  }  
+  .post-title {  
+    font-size: 1.25rem;  
+    font-weight: 700;  
+    color: var(--verde-claro);  
+    user-select: text;  
+  }  
+  .post-date {  
+    font-size: 0.85rem;  
+    color: #bbb;  
+    user-select: text;  
+  }  
+  .post-content {  
+    margin: 12px 0 15px;  
+    font-size: 1rem;  
+    line-height: 1.4;  
+    color: #ddd;  
+    user-select: text;  
+  }  
+  .post-media {  
+    margin-bottom: 15px;  
+    max-height: 300px;  
+    overflow: hidden;  
+    border-radius: 12px;  
+  }  
+  .post-media img,  
+  .post-media video {  
+    width: 100%;  
+    height: auto;  
+    border-radius: 12px;  
+    object-fit: cover;  
+  }  
+  .post-actions {  
+    display: flex;  
+    gap: 25px;  
+    font-size: 1.2rem;  
+    color: #ccc;  
+    user-select: none;  
+  }  
+  .post-actions span {  
+    cursor: pointer;  
+    display: flex;  
+    align-items: center;  
+    gap: 6px;  
+    transition: color 0.25s ease;  
+  }  
+  .post-actions span:hover {  
+    color: var(--verde-claro);  
+  }  
+  .post-actions .liked {  
+    color: #ff4d4d;  
+  }  
+  .post-actions .starred {  
+    color: gold;  
+  }  
+  @media (max-width: 600px) {  
+    body {  
+      padding: 15px 10px;  
+    }  
+    header.feed-header {  
+      font-size: 1.7rem;  
+      margin-bottom: 18px;  
+    }  
+    .post-header img.icon {  
+      width: 44px;  
+      height: 44px;  
+    }  
+    .post-title {  
+      font-size: 1.1rem;  
+    }  
+    .post-content {  
+      font-size: 0.95rem;  
+    }  
+    .post-actions {  
+      font-size: 1rem;  
+      gap: 18px;  
+    }  
+  }  
+</style>  
+</head>  
+<body>  
+  <main class="feed-wrapper">  
+    <header class="feed-header">🧾 Feed Atualizado de Loterias</header>  <section class="feed-list" id="feedList">  
+  <!-- Posts serão injetados aqui via JS -->  
+</section>
 
-  <script>
-    fetch("posts.html")
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById("feed").innerHTML = html;
-      });
-  </script>
-</body>
-</html>
+  </main>  <script>  
+  const posts = [  
+    {  
+      id: 1,  
+      icon: "https://img.icons8.com/color/48/lotto.png",  
+      title: "Mega-Sena Resultado Concurso 2735",  
+      date: "22/06/2025",  
+      content: "Números sorteados: 04 - 12 - 23 - 33 - 47 - 59. Acumulou! Próximo prêmio estimado em R$ 90 milhões.",  
+      likes: 34,  
+      stars: 12,  
+      mediaType: "image",  
+      mediaSrc: "https://images.unsplash.com/photo-1611538715689-c74dd3449966?auto=format&fit=crop&w=700&q=60"  
+    },  
+    {  
+      id: 2,  
+      icon: "Screenshot_20250123-232747-1.jpg",  
+      title: "Dica da Semana - Fechamento 6-9",  
+      date: "21/06/2025",  
+      content: "Utilize fechamento 6-9 para aumentar suas chances nas loterias múltiplas como Quina e Lotofácil. Experimente nosso simulador gratuito!",  
+      likes: 19,  
+      stars: 7,  
+      mediaType: "video",  
+      mediaSrc: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm"  
+    },  
+    {  
+      id: 3,  
+      icon: "https://img.icons8.com/color/48/lotto.png",  
+      title: "Novidade: Planilhas Automáticas",  
+      date: "18/06/2025",  
+      content: "Lançamos planilhas automatizadas para organizar seus jogos e apostas com facilidade. Veja o vídeo explicativo e saiba como adquirir!",  
+      likes: 25,  
+      stars: 18,  
+      mediaType: "image",  
+      mediaSrc: "https://images.unsplash.com/photo-1556740738-b6a63e27c4df?auto=format&fit=crop&w=700&q=60"  
+    },  
+    {  
+      id: 4,  
+      icon: "https://img.icons8.com/color/48/lotto.png",  
+      title: "Estudo Estatístico - Números Quentes",  
+      date: "15/06/2025",  
+      content: "Confira os números mais sorteados da Mega-Sena nos últimos 6 meses e aprenda a montar suas combinações com base em dados.",  
+      likes: 45,  
+      stars: 32,  
+      mediaType: null,  
+      mediaSrc: null  
+    }  
+  ];  
+  
+  function createPost(post) {  
+    const postEl = document.createElement('article');  
+    postEl.className = 'post-card';  
+  
+    postEl.innerHTML = `  
+      <div class="post-header">  
+        <img class="icon" src="${post.icon}" alt="Ícone do post" />  
+        <div class="post-title-date">  
+          <h3 class="post-title">${post.title}</h3>  
+          <span class="post-date">${post.date}</span>  
+        </div>  
+      </div>  
+      <div class="post-content">${post.content}</div>  
+      ${post.mediaType ? `<div class="post-media">  
+        ${post.mediaType === 'video'   
+          ? `<video controls preload="metadata" muted playsinline>  
+              <source src="${post.mediaSrc}" type="video/webm" />  
+              Seu navegador não suporta vídeos.  
+            </video>`  
+          : `<img src="${post.mediaSrc}" alt="Imagem do post" />`  
+        }  
+      </div>` : ''}  
+      <div class="post-actions">  
+        <span class="like" data-id="${post.id}"><i class="fa-solid fa-heart"></i> <span class="count">${post.likes}</span></span>  
+        <span class="star" data-id="${post.id}"><i class="fa-solid fa-star"></i> <span class="count">${post.stars}</span></span>  
+        <span class="share" data-id="${post.id}"><i class="fa-solid fa-share-nodes"></i></span>  
+      </div>  
+    `;  
+    return postEl;  
+  }  
+  
+  function renderFeed() {  
+    const feedList = document.getElementById('feedList');  
+    feedList.innerHTML = '';  
+    posts.forEach(post => {  
+      feedList.appendChild(createPost(post));  
+    });  
+    addEventListeners();  
+  }  
+  
+  function addEventListeners() {  
+    document.querySelectorAll('.like').forEach(btn => {  
+      btn.onclick = () => {  
+        const postId = +btn.dataset.id;  
+        const post = posts.find(p => p.id === postId);  
+        const icon = btn.querySelector('i');  
+        const countEl = btn.querySelector('.count');  
+        if(icon.classList.contains('liked')) {  
+          icon.classList.remove('liked');  
+          post.likes--;  
+        } else {  
+          icon.classList.add('liked');  
+          post.likes++;  
+          // Optional: Remove star if liked  
+          const starBtn = document.querySelector(`.star[data-id="${postId}"] i`);  
+          if(starBtn && starBtn.classList.contains('starred')) {  
+            starBtn.classList.remove('starred');  
+            const starCount = document.querySelector(`.star[data-id="${postId}"] .count`);  
+            post.stars--;  
+            starCount.textContent = post.stars;  
+          }  
+        }  
+        countEl.textContent = post.likes;  
+      };  
+    });  
+  
+    document.querySelectorAll('.star').forEach(btn => {  
+      btn.onclick = () => {  
+        const postId = +btn.dataset.id;  
+        const post = posts.find(p => p.id === postId);  
+        const icon = btn.querySelector('i');  
+        const countEl = btn.querySelector('.count');  
+        if(icon.classList.contains('starred')) {  
+          icon.classList.remove('starred');  
+          post.stars--;  
+        } else {  
+          icon.classList.add('starred');  
+          post.stars++;  
+          // Optional: Remove like if starred  
+          const likeBtn = document.querySelector(`.like[data-id="${postId}"] i`);  
+          if(likeBtn && likeBtn.classList.contains('liked')) {  
+            likeBtn.classList.remove('liked');  
+            const likeCount = document.querySelector(`.like[data-id="${postId}"] .count`);  
+            post.likes--;  
+            likeCount.textContent = post.likes;  
+          }  
+        }  
+        countEl.textContent = post.stars;  
+      };  
+    });  
+  
+    document.querySelectorAll('.share').forEach(btn => {  
+      btn.onclick = () => {  
+        const postId = +btn.dataset.id;  
+        const post = posts.find(p => p.id === postId);  
+        if(navigator.share) {  
+          navigator.share({  
+            title: post.title,  
+            text: post.content,  
+          }).catch(() => {});  
+        } else {  
+          alert('Compartilhamento não suportado nesse navegador.');  
+        }  
+      };  
+    });  
+  }  
+  
+  renderFeed();  
+</script>  </body>  
+</html>  
+
 

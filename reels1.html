@@ -3,57 +3,135 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Reels</title>
+  <title>Vídeos Recomendados - Mac Point </title>
   <style>
     * { box-sizing: border-box; }
     body { margin: 0; background: #000; color: #fff; font-family: sans-serif; }
+
     header {
       background: linear-gradient(to right, #355e3b, #4ca16b);
-      padding: 0.5rem; text-align: center; border-radius: 0 0 12px 12px;
+      padding: 1rem;
+      text-align: center;
+      border-radius: 0 0 12px 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     }
+
     header h1 {
-      font-size: 1.2rem; font-weight: bold; margin: 0;
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin: 0;
     }
+
     .btns {
-      overflow-x: auto; display: flex; gap: 8px;
-      padding: 0.5rem 1rem; white-space: nowrap; justify-content: center;
+      overflow-x: auto;
+      display: flex;
+      gap: 8px;
+      padding: 0.5rem 1rem;
+      white-space: nowrap;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
     }
+
+    .btns::-webkit-scrollbar {
+      display: none;
+    }
+
     .btns button {
-      padding: 6px 14px; font-size: 0.9rem;
-      background: none; border: 1px solid #355E3B; color: white;
-      border-radius: 6px; cursor: pointer;
+      flex: 0 0 auto;
+      scroll-snap-align: start;
+      min-width: 110px;
+      padding: 8px 14px;
+      font-size: 0.95rem;
+      background: none;
+      border: 2px solid #355E3B;
+      color: white;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: 0.3s;
     }
+
+    .btns button:hover {
+      background: #355E3B;
+      color: #fff;
+      font-weight: bold;
+    }
+
     .btns button.active {
-      background: #fff; color: #355E3B; font-weight: bold;
+      background: #fff;
+      color: #355E3B;
+      font-weight: bold;
     }
+
     .card {
-      background: #111; margin: 1rem auto; width: 95%;
-      max-width: 450px; border-radius: 12px;
-      overflow: hidden; box-shadow: 0 0 10px #355E3B;
+      background: #111;
+      margin: 1rem auto;
+      width: 95%;
+      max-width: 450px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 10px #355E3B;
     }
-    .card iframe {
-      width: 100%; height: 220px; border: none;
+
+    .iframe-container {
+      position: relative;
+      width: 100%;
+      height: 220px;
     }
+
+    .iframe-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: none;
+    }
+
+    .skeleton {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(-90deg, #2a2a2a 0%, #3a3a3a 50%, #2a2a2a 100%);
+      background-size: 200% 100%;
+      animation: shimmer 1.2s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
     .acoes {
-      display: flex; gap: 18px; padding: 10px;
-      align-items: center; justify-content: flex-start;
+      display: flex;
+      gap: 18px;
+      padding: 10px;
+      align-items: center;
+      justify-content: flex-start;
     }
+
     .acoes div {
-      display: flex; align-items: center; gap: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
       cursor: pointer;
     }
+
     .acoes svg {
-      width: 22px; height: 22px;
+      width: 22px;
+      height: 22px;
       fill: white;
-      transition: fill 0.3s ease;
+      transition: fill 0.3s ease, transform 0.2s ease;
     }
+
     .acoes svg.liked { fill: red; }
     .acoes svg.favorited { fill: gold; }
+    .acoes div:hover svg {
+      transform: scale(1.1);
+    }
   </style>
 </head>
 <body>
   <header>
-    <h1>🎬 Reels Profissionais</h1>
+    <h1></h1>
   </header>
   <div class="btns">
     <button class="active" onclick="setCat(this)" data-cat="musicas">Músicas</button>
@@ -69,15 +147,52 @@
 
   <script>
     const categorias = {
-      musicas: ["hTWKbfoikeg", "YjygaDPCtXE"],
-      loterias: ["UceaB4D0jpo"],
-      filmes: ["K4TOrB7at0Y"],
-      humor: ["lXMskKTw3Bc"],
-      animes: ["Wg9ax49c1Qk"],
-      favoritos: [],
-      novidades: ["gzMf4JmxSdY"],
-      outros: ["tgbNymZ7vqY"]
-    }
+  musicas: [
+    "hTWKbfoikeg", "YjygaDPCtXE", "CevxZvSJLk8", "3JZ_D3ELwOQ", "kXYiU_JCYtU",
+    "fLexgOxsZu0", "RgKAFK5djSk", "ktvTqknDobU", "2Vv-BfVoq4g", "K0ibBPhiaG0",
+    "JGwWNGJdvx8", "uelHwf8o7_U", "oRdxUFDoQe0", "OPf0YbXqDm0", "pRpeEdMmmQ0",
+    "YqeW9_5kURI", "09R8_2nJtjg", "O-zpOMYRi0w", "60ItHLz5WEA", "7wtfhZwyrcc"
+  ],
+  loterias: [
+    "UceaB4D0jpo", "PHkPN43zw5Y", "bAoR_V6qlfA", "rfX3UBmBj-o", "2aq13yU3D-M",
+    "sHbYr9kLSNw", "zueCpgwgKO4", "zjU4hxD1rjI", "XUBzyCmx0Y4", "K-Cx2LzV8FI",
+    "4YDYZErde6I", "Y8D_tP0Y1ps", "qUZ64LgVhrA", "Z5AkXZzMd58", "dKFaQv2r38U",
+    "XQWnqjIvOTo", "gTfGxAVsRcc", "VLy1IsfFoK0", "obGx4PSnZ5A", "S7WYIekUqF0"
+  ],
+  filmes: [
+    "K4TOrB7at0Y", "8ugaeA-nMTc", "hA6hldpSTF8", "Z1BCujX3pw8", "TcMBFSGVi1c",
+    "6ZfuNTqbHE8", "L3pk_TBkihU", "t433PEQGErc", "EXeTwQWrcwY", "YoHD9XEInc0",
+    "8Qn_spdM5Zg", "vKQi3bBA1y8", "ybji16u608U", "xjDjIWPwcPU", "3P0LzBBru8s",
+    "qSqVVswa420", "3cxixDgHUYw", "Q0CbN8sfihY", "JNwNXF9Y6kY", "Zi88i4CpHe4"
+  ],
+  humor: [
+    "lXMskKTw3Bc", "bSsmlqaVO4o", "mJ3A2-p8nS4", "oHg5SJYRHA0", "xZrC9ZZjTH8",
+    "iq_UvhVScdM", "6GDeUjAzMvs", "nG2x3V3_Aik", "6KOqKHrZ81U", "DLzxrzFCyOs",
+    "dQw4w9WgXcQ", "LO1mTELoj6o", "mQiiYMyEsrA", "FbLq11fM3xw", "7aXwPHnXEMI",
+    "sUjVNIbYQyg", "iVYh2zzN-20", "9yF1xxgNIsk", "Wl9rVX8dW5I", "DjcpbRK5v9s"
+  ],
+  animes: [
+    "Wg9ax49c1Qk", "Uj5iyG_j6Wc", "uKxQTVp0RNI", "h2JvDahW9wM", "TuQ8T3M6YkM",
+    "Wl9rVX8dW5I", "xU47nhruN-Q", "qUpzAw5Kw7M", "kz1GQ-m8Dys", "KJGnBGMSoaI",
+    "t6MXHFXmHfA", "2mB6v9y3J-M", "R2VoA2nMp84", "8qe4L5L1k08", "B7GJvvlxoIM",
+    "VYOjWnS4cMY", "yEJ_3urHF6U", "wLrd99vZf7w", "bFEoMO0pc7k", "O4JZs19JD6E"
+  ],
+  favoritos: [],
+  novidades: [
+    "gzMf4JmxSdY", "8c0Wn8X_N-8", "9J47kQV0D5g", "QEFfOYyzA3k", "lTx3G6h2xyA",
+    "Jk1zH3Q5kkk", "HYkP0-Z2DO4", "mRrvu9ogvDQ", "z0n1aQ3IxWI", "npX9nFYriFA",
+    "v8vQk9XpRco", "5nC5X-qPi4I", "ffnwCXzFJcI", "RJnKaAtK0eU", "iKPIGFdqkRk",
+    "bTO2aZzTKM0", "7XcgsYw4e3U", "oGD4B2YMXn8", "UzuhR1XvK2s", "L6aRYPI-TT0"
+  ],
+  outros: [
+    "tgbNymZ7vqY", "yQq1-_ujXrM", "HhjHYkPQ8F0", "1Kf_6BWcOO4", "zm9mSHLf8wU",
+    "Ek59gYvN1no", "cMfG8L42dAw", "3dlD2zMkLhA", "EglLi6kHLMY", "t32YzU7T_4o",
+    "GbzBJZ2C1Mk", "J_ub7Etch2U", "EtDPTiJ9DUo", "6p0bG1-sZ3Q", "es0wTeYYse8",
+    "vGLWmx3vAZI", "rKY7S2gLJJk", "0SBIhRYH1xo", "UFlvDCN8axI", "ZBYT-SJ6MfQ"
+  ]
+};
+
+
 
     let categoriaAtual = "musicas";
 
@@ -134,40 +249,61 @@
         const liked = likes.includes(id);
         const favorited = favs.includes(id);
 
-        container.innerHTML += `
-          <div class="card">
-            <iframe src="https://www.youtube.com/embed/${id}?modestbranding=1&rel=0" allowfullscreen></iframe>
-            <div class="acoes">
-              <div class="like" onclick="toggleLike('${id}')">
-                <svg viewBox="0 0 24 24" class="${liked ? 'liked' : ''}">
-                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
-                    C2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09
-                    C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.42 22 8.5
-                    c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                </svg>
-              </div>
-              <div class="fav" onclick="toggleFav('${id}')">
-                <svg viewBox="0 0 24 24" class="${favorited ? 'favorited' : ''}">
-                  <path d="M12 17.27L18.18 21 16.54 13.97
-                    22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24
-                    7.46 13.97 5.82 21z"/>
-                </svg>
-              </div>
-              <div class="share" onclick="compartilhar('${id}')">
-                <svg viewBox="0 0 24 24">
-                  <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91
-                    12.7c.05-.23.09-.46.09-.7s-.03-.47-.09-.7l7.02-4.11
-                    c.5.5 1.19.81 1.97.81 1.66 0 3-1.34 3-3s-1.34-3-3-3
-                    -3 1.34-3 3c0 .24.04.47.09.7L8.91 9.81C8.41 9.31
-                    7.72 9 7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.72 0
-                    1.41-.31 1.91-.81l7.13 4.18c-.05.21-.08.43-.08.63
-                    0 1.52 1.23 2.75 2.75 2.75s2.75-1.23
-                    2.75-2.75-1.23-2.75-2.75-2.75z"/>
-                </svg>
-              </div>
-            </div>
+        const card = document.createElement("div");
+        card.className = "card";
+
+        const iframeContainer = document.createElement("div");
+        iframeContainer.className = "iframe-container";
+
+        const skeleton = document.createElement("div");
+        skeleton.className = "skeleton";
+
+        const iframe = document.createElement("iframe");
+        iframe.src = `https://www.youtube.com/embed/${id}?modestbranding=1&rel=0`;
+        iframe.allowFullscreen = true;
+
+        iframe.onload = () => {
+          skeleton.remove();
+          iframe.style.display = "block";
+        };
+
+        iframeContainer.appendChild(skeleton);
+        iframeContainer.appendChild(iframe);
+        card.appendChild(iframeContainer);
+
+        const acoes = document.createElement("div");
+        acoes.className = "acoes";
+        acoes.innerHTML = `
+          <div class="like" onclick="toggleLike('${id}')">
+            <svg viewBox="0 0 24 24" class="${liked ? 'liked' : ''}">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
+              C2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09
+              C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.42 22 8.5
+              c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+          </div>
+          <div class="fav" onclick="toggleFav('${id}')">
+            <svg viewBox="0 0 24 24" class="${favorited ? 'favorited' : ''}">
+              <path d="M12 17.27L18.18 21 16.54 13.97
+              22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24
+              7.46 13.97 5.82 21z"/>
+            </svg>
+          </div>
+          <div class="share" onclick="compartilhar('${id}')">
+            <svg viewBox="0 0 24 24">
+              <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91
+              12.7c.05-.23.09-.46.09-.7s-.03-.47-.09-.7l7.02-4.11
+              c.5.5 1.19.81 1.97.81 1.66 0 3-1.34 3-3s-1.34-3-3-3
+              -3 1.34-3 3c0 .24.04.47.09.7L8.91 9.81C8.41 9.31
+              7.72 9 7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.72 0
+              1.41-.31 1.91-.81l7.13 4.18c-.05.21-.08.43-.08.63
+              0 1.52 1.23 2.75 2.75 2.75s2.75-1.23
+              2.75-2.75-1.23-2.75-2.75-2.75z"/>
+            </svg>
           </div>
         `;
+        card.appendChild(acoes);
+        container.appendChild(card);
       }
     }
 

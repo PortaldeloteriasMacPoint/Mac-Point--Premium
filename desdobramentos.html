@@ -1,385 +1,255 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Simulador de Loteria Pro</title>
-<style>
-  :root {
-    --verde: #355E3B;
-    --branco: #ffffff;
-    --preto: #000000;
-  }
-  body {
-    background: var(--branco);
-    color: var(--preto);
-    font-family: Arial, sans-serif;
-    margin: 0; padding: 10px;
-    display: flex; justify-content: center;
-  }
-  .container {
-    width: 100%; max-width: 1024px;
-    border: 2px solid var(--preto);
-    border-radius: 10px;
-    padding: 15px;
-    box-sizing: border-box;
-  }
-  h1, h3 {
-    text-align: center;
-    margin: 10px 0;
-  }
-  select, input, button {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
-    font-size: 16px;
-    border: 2px solid var(--preto);
-    border-radius: 10px;
-    box-sizing: border-box;
-    background: var(--branco);
-    color: var(--preto);
-    font-weight: bold;
-  }
-  button {
-    background: var(--verde);
-    color: var(--branco);
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  button:active, button.active {
-    background: var(--preto);
-    color: var(--branco);
-    border-color: var(--preto);
-    transform: scale(1.05);
-  }
-  .tabs {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin: 15px 0;
-  }
-  .tab {
-    padding: 10px 20px;
-    background: var(--branco);
-    color: var(--preto);
-    border: 2px solid var(--preto);
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: bold;
-    user-select: none;
-    transition: all 0.3s ease;
-  }
-  .tab.active {
-    background: var(--preto);
-    color: var(--branco);
-  }
-  .section {
-    display: none;
-  }
-  .section.active {
-    display: block;
-  }
-  #volante {
-    margin: 15px auto 30px auto;
-    display: grid;
-    gap: 6px;
-    width: 100%;
-    max-width: 420px;
-    user-select: none;
-    justify-content: center;
-  }
-  #volante.mega {
-    grid-template-columns: repeat(10, 1fr);
-  }
-  #volante.quina {
-    grid-template-columns: repeat(10, 1fr);
-  }
-  .dezena {
-    background: var(--branco);
-    border: 2px solid var(--preto);
-    border-radius: 8px;
-    text-align: center;
-    padding: 6px 0;
-    font-weight: bold;
-    font-size: 13px;
-    cursor: pointer;
-    min-width: 32px;
-    user-select: none;
-    transition: all 0.3s ease;
-  }
-  .dezena.selecionada {
-    background: #A9D08E;
-    color: var(--preto);
-    border-color: var(--preto);
-  }
-  .dezena.fixa {
-    background: green;
-    color: var(--branco);
-    border-color: var(--preto);
-  }
-  #resultados {
-    max-width: 700px;
-    margin: 0 auto 20px auto;
-  }
-.jogo-box {
-  background-color: #355E3B;
-  border: 2px solid black;
-  color: white;
-  border-radius: 10px;
-  padding: 12px;
-  margin-bottom: 12px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  font-weight: bold;
-}
-.jogo-box h3 {
-  margin-bottom: 10px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-weight: 700;
-  color: white;
-}
-.dezena-jogo {
-  background: white;
-  color: #355E3B;
-  border: 2px solid black;
-  border-radius: 6px;
-  padding: 5px 10px;
-  margin: 4px;
-  font-weight: 600;
-}
-  #notificacao {
-    text-align: center;
-    padding: 10px;
-    background: var(--preto);
-    color: var(--branco);
-    border-radius: 10px;
-    margin-bottom: 10px;
-    display: none;
-    font-weight: bold;
-    user-select: none;
-  }
-  @media (max-width: 600px) {
-    #volante {
-      max-width: 320px;
-      gap: 5px;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Desdobramento com Voltante</title>
+  <style>
+    * {margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif;}
+    body {
+      background: #000;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    .container {
+      width: 100%;
+      max-width: 800px;
+      background: #111;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 12px #0f0;
+      border: 2px solid #355E3B;
+    }
+    h1 {
+      text-align: center;
+      color: #fff;
+      font-size: 22px;
+      margin-bottom: 20px;
+      text-shadow: 1px 1px 2px #000;
+    }
+    .voltante {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(36px, 1fr));
+      gap: 8px;
+      margin-bottom: 20px;
     }
     .dezena {
-      font-size: 11px;
-      padding: 5px 0;
-      min-width: 26px;
+      background: #1d1d1d;
+      color: #0f0;
+      border: 2px solid #355E3B;
+      border-radius: 50%;
+      aspect-ratio: 1/1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 13px;
+      cursor: pointer;
+      transition: 0.2s;
+      user-select: none;
+      box-shadow: 0 0 3px #0f0;
     }
-    .dezena-jogo {
-      font-size: 12px;
-      padding: 5px 7px;
-      min-width: 26px;
+    .dezena:hover {
+      background: #333;
+      transform: scale(1.05);
     }
-    button, select, input {
+    .dezena.selecionada {
+      background-color: #0f0;
+      color: #000;
+      border-color: #fff;
+      box-shadow: 0 0 8px #0f0;
+    }
+    .dezena.fixa {
+      background-color: gold;
+      color: #000;
+      border-color: #fff;
+      box-shadow: 0 0 8px gold;
+    }
+    label {
       font-size: 14px;
+      margin-bottom: 5px;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      background: #000;
+      color: #fff;
+      border: 2px solid #355E3B;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+    .botoes {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .botoes button {
+      flex: 1;
+      padding: 10px;
+      background: #355E3B;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 0 6px #0f0;
+    }
+    .botoes button:hover {
+      background: #0f0;
+      color: #000;
+    }
+    .aviso {
+      background: #f00;
+      padding: 10px;
+      border-radius: 8px;
+      color: #fff;
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+      animation: fadeout 3s forwards;
+    }
+    @keyframes fadeout {
+      0% {opacity: 1;}
+      80% {opacity: 1;}
+      100% {opacity: 0; display: none;}
+    }
+    .jogo {
+      background: linear-gradient(90deg, #355E3B, #0f0);
+      color: #000;
+      font-weight: bold;
       padding: 8px;
+      margin: 5px 0;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 14px;
+      box-shadow: 0 0 4px #0f0;
     }
-    .jogo-box h3 {
-      font-size: 1rem;
-    }
-  }
-</style>
+  </style>
 </head>
 <body>
   <div class="container">
-    <h1>Simulador de Loteria Pro</h1>
-    <div class="tabs">
-      <div class="tab active" onclick="mudarTab('gerador', this)">Gerador</div>
-      <div class="tab" onclick="mudarTab('resultados', this)">Resultados</div>
+    <h1>Desdobramento com Voltante</h1>
+    <div class="voltante" id="voltante"></div>
+    <label for="tamanho">Tamanho dos jogos</label>
+    <input type="number" id="tamanho" value="6" min="6" max="15"/>
+    <div class="botoes">
+      <button onclick="desdobrar()">Gerar</button>
+      <button onclick="limparVoltante()">Limpar</button>
     </div>
-
-    <div class="section active" id="gerador">
-      <select id="modalidade" onchange="criarVolante()">
-        <option value="mega">Mega Sena</option>
-        <option value="quina">Quina</option>
-      </select>
-      <input type="number" id="qtdDezenas" placeholder="Quantidade de dezenas (ex: 20)" min="1" />
-      <input type="number" id="qtdJogos" placeholder="Quantidade de jogos (máx. 1000)" min="1" max="1000" />
-      <button id="btnRand" onclick="gerarAleatorios()">Gerar Randômicos</button>
-      <button id="btnDesdobrar" onclick="desdobrarJogos()">Desdobrar Jogos</button>
-<button onclick="limparVolante()">Limpar Volante</button>
-
-
-
-
-
-
-      <div id="volante" class="mega"></div>
-    </div>
-
-    <div class="section" id="resultados">
-      <div id="resultadosJogos"></div>
-    </div>
-
-    <div id="notificacao"></div>
+    <div id="resultado"></div>
   </div>
 
-<script>
-const modalidades = {
-  mega: { total: 60, colunas: 10, linhas: 6 },
-  quina: { total: 80, colunas: 10, linhas: 8 }
-};
+  <script>
+    const voltante = document.getElementById('voltante');
+    const resultado = document.getElementById('resultado');
 
-let fixas = [];
-let selecionadas = [];
-let jogos = [];
-
-function criarVolante() {
-  fixas = [];
-  selecionadas = [];
-  jogos = [];
-  document.getElementById('resultadosJogos').innerHTML = '';
-  const volante = document.getElementById('volante');
-  const modalidade = document.getElementById('modalidade').value;
-  const { total, colunas } = modalidades[modalidade];
-
-  volante.className = `volante ${modalidade}`;
-  volante.style.gridTemplateColumns = `repeat(${colunas}, 1fr)`;
-  volante.innerHTML = '';
-
-  for (let i = 1; i <= total; i++) {
-    const dez = document.createElement('div');
-    dez.className = 'dezena';
-    dez.innerText = i.toString().padStart(2, '0');
-
-    dez.dataset.clique = "0";
-
-    dez.addEventListener('click', () => {
-      let clique = Number(dez.dataset.clique);
-      clique = (clique + 1) % 3;
-      dez.dataset.clique = clique;
-
-      const numero = parseInt(dez.innerText);
-
-      // Remove antes
-      fixas = fixas.filter(n => n !== numero);
-      selecionadas = selecionadas.filter(n => n !== numero);
-      dez.classList.remove('fixa', 'selecionada');
-
-      if (clique === 1) {
-        selecionadas.push(numero);
-        dez.classList.add('selecionada');
-      } else if (clique === 2) {
-        fixas.push(numero);
-        dez.classList.add('fixa');
-      }
-    });
-
-    volante.appendChild(dez);
-  }
-}
-
-function atualizarVolante() {
-  document.querySelectorAll('.dezena').forEach(el => {
-    const numero = parseInt(el.innerText);
-    el.classList.remove('fixa', 'selecionada');
-    el.dataset.clique = "0";
-    if (fixas.includes(numero)) {
-      el.classList.add('fixa');
-      el.dataset.clique = "2";
-    } else if (selecionadas.includes(numero)) {
-      el.classList.add('selecionada');
-      el.dataset.clique = "1";
+    for (let i = 1; i <= 60; i++) {
+      const dez = document.createElement('div');
+      dez.classList.add('dezena');
+      dez.textContent = i.toString().padStart(2, '0');
+      let clickCount = 0;
+      dez.onclick = () => {
+        clickCount++;
+        if (clickCount === 1) {
+          dez.classList.add('selecionada');
+          dez.classList.remove('fixa');
+        } else if (clickCount === 2) {
+          dez.classList.remove('selecionada');
+          dez.classList.add('fixa');
+        } else {
+          dez.classList.remove('selecionada');
+          dez.classList.remove('fixa');
+          clickCount = 0;
+        }
+        setTimeout(() => { clickCount = 0 }, 400);
+      };
+      voltante.appendChild(dez);
     }
-  });
-}
 
-function gerarAleatorios() {
-  const modalidade = document.getElementById('modalidade').value;
-  const { total } = modalidades[modalidade];
-  const qtd = parseInt(document.getElementById('qtdDezenas').value);
-  if (!qtd || qtd <= fixas.length || qtd > total) {
-    mostrarNotificacao("Quantidade inválida");
-    return;
-  }
+    function combinar(arr, k, limiteMax) {
+      let res = [];
+      function helper(path, start) {
+        if (res.length >= limiteMax) return;
+        if (path.length === k) {
+          res.push(path);
+          return;
+        }
+        for (let i = start; i < arr.length; i++) {
+          helper([...path, arr[i]], i + 1);
+          if (res.length >= limiteMax) return;
+        }
+      }
+      helper([], 0);
+      return res;
+    }
 
-  const disponiveis = [...Array(total)].map((_, i) => i + 1).filter(n => !fixas.includes(n));
-  const sorteadas = disponiveis.sort(() => Math.random() - 0.5).slice(0, qtd - fixas.length);
+    function fatorial(n) {
+      let r = 1;
+      for (let i = 2; i <= n; i++) r *= i;
+      return r;
+    }
 
-  selecionadas = [...sorteadas];
-  atualizarVolante();
-  mostrarNotificacao("Randômicos gerados com sucesso");
-}
+    function calcularCombinacoes(n, k) {
+      return fatorial(n) / (fatorial(k) * fatorial(n - k));
+    }
 
-function desdobrarJogos() {
-  const qtd = parseInt(document.getElementById('qtdDezenas').value);
-  const nJogos = parseInt(document.getElementById('qtdJogos').value);
-  const modalidade = document.getElementById('modalidade').value;
-  const { total } = modalidades[modalidade];
+    function mostrarAviso(texto, corFundo = '#f00') {
+      const aviso = document.createElement('div');
+      aviso.className = 'aviso';
+      aviso.style.backgroundColor = corFundo;
+      aviso.innerHTML = texto;
+      resultado.appendChild(aviso);
+      setTimeout(() => aviso.remove(), 3000);
+    }
 
-  if (!qtd || qtd <= fixas.length || qtd > total) {
-    mostrarNotificacao("Quantidade de dezenas inválida");
-    return;
-  }
-  if (!nJogos || nJogos < 1 || nJogos > 1000) {
-    mostrarNotificacao("Quantidade de jogos inválida");
-    return;
-  }
+    function desdobrar() {
+      const tamanho = parseInt(document.getElementById('tamanho').value);
+      const fixas = Array.from(document.querySelectorAll('.dezena.fixa')).map(el => parseInt(el.textContent));
+      const variaveis = Array.from(document.querySelectorAll('.dezena.selecionada')).map(el => parseInt(el.textContent));
+      resultado.innerHTML = '';
 
-  jogos = [];
-  const base = [...fixas, ...selecionadas];
-  if (base.length < qtd) {
-    // Completar com números aleatórios para atingir qtd
-    const disponiveis = [...Array(total)].map((_, i) => i + 1)
-      .filter(n => !base.includes(n));
-    const needed = qtd - base.length;
-    const extras = disponiveis.sort(() => Math.random() - 0.5).slice(0, needed);
-    base.push(...extras);
-  }
+      if ((fixas.length + variaveis.length) < tamanho) {
+        mostrarAviso(`Selecione ao menos ${tamanho} dezenas.`, '#f00');
+        return;
+      }
 
-  for (let i = 0; i < nJogos; i++) {
-    const jogo = base.slice().sort(() => Math.random() - 0.5).slice(0, qtd).sort((a,b)=>a-b);
-    jogos.push(jogo);
-  }
+      const restantes = tamanho - fixas.length;
+      const totalComb = calcularCombinacoes(variaveis.length, restantes);
+      const limite = 3000;
 
-  mostrarJogos(jogos);
-  mudarTab('resultados');
-}
+      if (totalComb > limite) {
+        mostrarAviso(`⚠️ Total de combinações: ${totalComb.toLocaleString()}. Limite: ${limite}.`, '#f00');
+      } else {
+        mostrarAviso(`✔️ Total de combinações: ${totalComb.toLocaleString()}`, '#355E3B');
+      }
 
-function mostrarJogos(lista) {
-  const container = document.getElementById('resultadosJogos');
-  container.innerHTML = '';
-  const modalidade = document.getElementById('modalidade').value;
+      const combinacoes = combinar(variaveis, restantes, limite);
+      const jogos = combinacoes.map(c => [...fixas, ...c]);
 
-  lista.forEach((jogo, i) => {
-    const div = document.createElement('div');
-    div.className = 'jogo-box';
-    div.innerHTML = `<h3>Jogo ${i + 1} - ${modalidade === 'mega' ? 'Mega Sena' : 'Quina'} - ${jogo.length} dezenas</h3>` +
-      jogo.map(n => `<span class="dezena-jogo">${n.toString().padStart(2, '0')}</span>`).join('');
-    container.appendChild(div);
-  });
-}
+      jogos.forEach(jogo => {
+        const div = document.createElement('div');
+        div.className = 'jogo';
+        div.textContent = jogo.map(n => n.toString().padStart(2, '0')).sort().join(' - ');
+        resultado.appendChild(div);
+      });
+    }
 
-function mostrarNotificacao(msg) {
-  const box = document.getElementById('notificacao');
-  box.innerText = msg;
-  box.style.display = 'block';
-  setTimeout(() => box.style.display = 'none', 3000);
-}
-
-function mudarTab(id, elTab) {
-  document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-
-  document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-  if (elTab) elTab.classList.add('active');
-}
-
-window.onload = () => {
-  criarVolante();
-};
-function limparVolante() {
-  fixas = [];
-  selecionadas = [];
-  document.querySelectorAll('.dezena').forEach(dez => {
-    dez.classList.remove('selecionada', 'fixa');
-    dez.dataset.clicks = 0; // reset clique se usar atributo
-  });
-  mostrarNotificacao('Volante limpo para novo desdobramento');
-}
-</script>
+    function limparVoltante() {
+      document.querySelectorAll('.dezena').forEach(el => {
+        el.classList.remove('selecionada');
+        el.classList.remove('fixa');
+      });
+      resultado.innerHTML = '';
+    }
+  </script>
 </body>
 </html>
 

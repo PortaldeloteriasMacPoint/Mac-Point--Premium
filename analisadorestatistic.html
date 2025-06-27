@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analisador Estatístico</title>
+  <style>
+    * {margin: 0; padding: 0; box-sizing: border-box;}
+    body {
+      background: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      padding: 2vh 4vw;
+      text-align: center;
+    }
+    h1 {
+      color: white;
+      text-shadow: 0 0 10px #00ff88;
+      margin-bottom: 2vh;
+      font-size: 4vw;
+    }
+    .container {
+      width: 100%;
+      max-width: 700px;
+      margin: auto;
+      background: #111;
+      padding: 4vw;
+      border-radius: 15px;
+      border: 2px solid #355E3B;
+      box-shadow: 0 0 15px #00ff88;
+    }
+    textarea {
+      width: 100%;
+      height: 30vh;
+      padding: 2vw;
+      background: #fff;
+      color: #000;
+      border: 1px solid #000;
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: 1rem;
+      margin-bottom: 2vh;
+    }
+    button {
+      width: 100%;
+      padding: 2vh 0;
+      background: linear-gradient(45deg, #00ff88, #355E3B);
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      color: #000;
+      cursor: pointer;
+      font-size: 1.1rem;
+      box-shadow: 0 0 10px #00ff88;
+    }
+    .resultado {
+      margin-top: 3vh;
+      background: #222;
+      padding: 2vh;
+      border-radius: 10px;
+      border: 1px solid #355E3B;
+      box-shadow: 0 0 10px #00ff88 inset;
+      text-align: left;
+      font-size: 1rem;
+    }
+    .resultado span {
+      display: inline-block;
+      padding: 6px 10px;
+      margin: 4px;
+      background: #00ff88;
+      color: #000;
+      font-weight: bold;
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <h1></h1>
+  <div class="container">
+    <textarea id="entrada" placeholder="Cole aqui seus jogos (1 por linha)"></textarea>
+    <button onclick="analisar()">Analisar</button>
+    <div id="resultado" class="resultado"></div>
+  </div>
+
+  <script>
+    function analisar() {
+      const texto = document.getElementById('entrada').value.trim();
+      const linhas = texto.split('\n').filter(l => l.trim() !== '');
+      const contador = {};
+
+      linhas.forEach(linha => {
+        const dezenas = linha.trim().split(/\s+/).map(n => parseInt(n));
+        dezenas.forEach(n => {
+          if (!isNaN(n)) {
+            contador[n] = (contador[n] || 0) + 1;
+          }
+        });
+      });
+
+      const resultado = document.getElementById('resultado');
+      resultado.innerHTML = '<h3>Ocorrências:</h3>';
+
+      const ordenado = Object.entries(contador).sort((a, b) => b[1] - a[1]);
+      ordenado.forEach(([dezena, qtd]) => {
+        const span = document.createElement('span');
+        span.textContent = `${String(dezena).padStart(2, '0')} = ${qtd}`;
+        resultado.appendChild(span);
+      });
+    }
+  </script>
+</body>
+</html>
+

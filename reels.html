@@ -5,59 +5,107 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Carregando Reels - Mac Point</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Impact&display=swap');
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     body {
-      margin: 0;
       background: #000;
-      color: white;
       font-family: 'Impact', sans-serif;
+      height: 100vh;
+      width: 100vw;
       display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      height: 100vh;
+      overflow: hidden;
       text-align: center;
     }
 
-    .logo {
+    .container {
+      position: relative;
+      width: 30vw;
+      height: 30vw;
+      min-width: 180px;
+      min-height: 180px;
+      max-width: 300px;
+      max-height: 300px;
+      z-index: 1;
+    }
+
+    .icon a {
       display: flex;
-      font-size: 3rem;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      font-size: 9vw;
+      text-decoration: none;
+      color: black;
+    }
+
+    .icon {
+      width: 100%;
+      height: 100%;
+      background: white;
+      border-radius: 50%;
+      z-index: 3;
+      position: relative;
+      margin: auto;
+      border: 6px solid black;
+      box-shadow: 0 0 20px 10px rgba(0, 255, 0, 0.3);
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      font-size: 14px;
       font-weight: bold;
-      letter-spacing: 2px;
-      animation: pulse 1s infinite;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 2px solid black;
+      animation: explode 2s ease-out infinite;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
 
-    .logo span {
-      text-shadow: 0 0 2px white, 0 0 5px white;
+    @keyframes explode {
+      0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0.4);
+        opacity: 0;
+      }
     }
 
-    .logo .mac {
-      color: #355E3B;
-      -webkit-text-stroke: 1px white;
-    }
-
-    .logo .point {
-      color: darkcyan;
-      -webkit-text-stroke: 1px white;
+    .text {
+      margin-top: 10px;
+      font-size: 2.2rem;
+      color: #fff;
+      animation: pulse 1.4s infinite;
+      letter-spacing: 3px;
     }
 
     @keyframes pulse {
       0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
+      50% { transform: scale(1.1); }
       100% { transform: scale(1); }
     }
 
-    p {
-      font-size: 1rem;
-      color: #ccc;
-      margin-top: 20px;
-    }
-
-    .dots {
+    .loading-dots {
       display: flex;
+      justify-content: center;
+      margin-top: 10px;
       gap: 10px;
-      margin-top: 30px;
     }
 
     .dot {
@@ -65,34 +113,50 @@
       height: 10px;
       background: white;
       border-radius: 50%;
-      opacity: 0.7;
-      animation: bounce 1.2s infinite ease-in-out;
+      animation: blink 1.2s infinite;
     }
 
-    .dot:nth-child(1) {
-      animation-delay: 0s;
-    }
+    .dot:nth-child(1) { animation-delay: 0s; }
+    .dot:nth-child(2) { animation-delay: 0.2s; }
+    .dot:nth-child(3) { animation-delay: 0.4s; }
 
-    .dot:nth-child(2) {
-      animation-delay: 0.2s;
-    }
-
-    .dot:nth-child(3) {
-      animation-delay: 0.4s;
-    }
-
-    @keyframes bounce {
+    @keyframes blink {
       0%, 100% { transform: scale(1); opacity: 0.6; }
-      50% { transform: scale(1.8); opacity: 1; }
+      50% { transform: scale(1.5); opacity: 1; }
     }
+
+    .vermelha  { background: red;     color: white;  }
+    .amarela   { background: yellow;  color: black;  }
+    .verde     { background: green;   color: white;  }
+    .marrom    { background: brown;   color: white;  }
+    .azul      { background: blue;    color: white;  }
+    .rosa      { background: pink;    color: black;  }
+    .preta     { background: black;   color: white;  }
+    .cinza     { background: gray;    color: white;  }
+    .laranja   { background: orange;  color: black;  }
+    .branca    { background: white;   color: black;  }
   </style>
 </head>
 <body>
-  <div class="logo">
-    <span class="mac">MAC</span>&nbsp;
-    <span class="point">POINT</span>
+  <div class="container">
+    <div class="icon">
+      <a href="https://macpoint.com.br" target="_blank">🍀</a>
+    </div>
+
+    <div class="particle vermelha" style="--x: -300px; --y: -250px;">01</div>
+    <div class="particle amarela" style="--x: 350px; --y: -200px;">12</div>
+    <div class="particle verde" style="--x: -320px; --y: 220px;">23</div>
+    <div class="particle marrom" style="--x: 300px; --y: 240px;">34</div>
+    <div class="particle azul" style="--x: -360px; --y: 50px;">45</div>
+    <div class="particle rosa" style="--x: 280px; --y: -300px;">26</div>
+    <div class="particle preta" style="--x: 0px; --y: -350px;">37</div>
+    <div class="particle cinza" style="--x: -270px; --y: 320px;">48</div>
+    <div class="particle laranja" style="--x: 370px; --y: -330px;">59</div>
+    <div class="particle branca" style="--x: -380px; --y: -310px;">60</div>
   </div>
-  <div class="dots">
+
+  <div class="text">MAC POINT</div>
+  <div class="loading-dots">
     <div class="dot"></div>
     <div class="dot"></div>
     <div class="dot"></div>
@@ -100,24 +164,26 @@
 
   <script>
     const waitVideosLoaded = async () => {
-      try {
-        const res = await fetch("reels2.html", { method: "HEAD" });
-        if (res.ok) {
-          const iframe = document.createElement("iframe");
-          iframe.src = "reels2.html";
-          iframe.style.display = "none";
-          document.body.appendChild(iframe);
-          iframe.onload = () => location.href = "reels2.html";
-        } else {
-          const iframe = document.createElement("iframe");
-          iframe.src = "reels1.html";
-          iframe.style.display = "none";
-          document.body.appendChild(iframe);
-          iframe.onload = () => location.href = "reels1.html";
+      setTimeout(async () => {
+        try {
+          const res = await fetch("reels2.html", { method: "HEAD" });
+          if (res.ok) {
+            const iframe = document.createElement("iframe");
+            iframe.src = "reels2.html";
+            iframe.style.display = "none";
+            document.body.appendChild(iframe);
+            iframe.onload = () => location.href = "reels2.html";
+          } else {
+            const iframe = document.createElement("iframe");
+            iframe.src = "reels1.html";
+            iframe.style.display = "none";
+            document.body.appendChild(iframe);
+            iframe.onload = () => location.href = "reels1.html";
+          }
+        } catch {
+          location.href = "reels1.html";
         }
-      } catch {
-        location.href = "reels1.html";
-      }
+      }, 3000);
     };
 
     waitVideosLoaded();

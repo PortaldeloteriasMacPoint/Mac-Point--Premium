@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Volante Personalizado</title>
+  <style>
+    * {margin: 0; padding: 0; box-sizing: border-box;}
+    body {
+      background: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      color: white;
+      text-shadow: 0 0 10px #00ff88;
+      margin-bottom: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 600px;
+      margin: auto;
+      background: #111;
+      padding: 20px;
+      border-radius: 15px;
+      border: 2px solid #355E3B;
+      box-shadow: 0 0 15px #00ff88;
+    }
+
+    textarea, select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid #000;
+      border-radius: 8px;
+      font-family: monospace;
+      background: #fff;
+      color: #000;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      background: linear-gradient(45deg, #00ff88, #355E3B);
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      color: #000;
+      cursor: pointer;
+      box-shadow: 0 0 10px #00ff88;
+    }
+
+    .volantes { display: none; }
+
+    .volante {
+      background: #fff;
+      color: #000;
+      width: 95%;
+      max-width: 900px;
+      margin: 30px auto;
+      border: 2px solid #355E3B;
+      border-radius: 15px;
+      padding: 20px;
+      page-break-inside: avoid;
+    }
+
+    .volante h2 {
+      text-align: center;
+      color: #355E3B;
+      margin-bottom: 20px;
+      font-size: 20px;
+    }
+
+    .grade {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 5px;
+      justify-content: center;
+    }
+
+    .dezena {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 5px;
+      background: #eee;
+      border: 1px solid #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .selecionada {
+      background: linear-gradient(145deg, #00ff88, #355E3B);
+      border: 2px solid #355E3B;
+      color: #000;
+      box-shadow: 0 0 6px #00ff88;
+      font-weight: bold;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    @media print {
+      body * { visibility: hidden; }
+      .volantes, .volantes * {
+        visibility: visible;
+      }
+      .volantes {
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        padding: 10px;
+      }
+      .container, textarea, button, select {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Volante de Impressão</h1>
+  <div class="container">
+    <select id="modalidade">
+      <option value="megasena">Mega Sena (60 dezenas)</option>
+      <option value="quina">Quina (80 dezenas)</option>
+    </select>
+    <textarea id="jogos" placeholder="Cole os jogos aqui. Ex: 01 02 03 04 05 06"></textarea>
+    <button onclick="gerarVolantes()">Gerar e Imprimir</button>
+  </div>
+
+  <div class="volantes" id="volantes"></div>
+
+  <script>
+    function gerarVolantes() {
+      const modalidade = document.getElementById("modalidade").value;
+      const maxDezenas = modalidade === "quina" ? 80 : 60;
+      const tituloFormatado = modalidade === "quina" ? "Quina" : "Mega Sena";
+      const linhas = document.getElementById("jogos").value.trim().split("\n").filter(l => l.trim() !== "");
+      const area = document.getElementById("volantes");
+      area.innerHTML = "";
+
+      linhas.forEach((linha, index) => {
+        const selecionadas = linha.trim().split(/\s+/).map(d => parseInt(d)).filter(n => !isNaN(n));
+        const volante = document.createElement("div");
+        volante.className = "volante";
+
+        const titulo = document.createElement("h2");
+        titulo.textContent = `JOGO ${index + 1} - ${tituloFormatado}`;
+        volante.appendChild(titulo);
+
+        const grade = document.createElement("div");
+        grade.className = "grade";
+
+        for (let i = 1; i <= maxDezenas; i++) {
+          const dez = document.createElement("div");
+          dez.className = "dezena";
+          dez.textContent = String(i).padStart(2, '0');
+          if (selecionadas.includes(i)) {
+            dez.classList.add("selecionada");
+          }
+          grade.appendChild(dez);
+        }
+
+        volante.appendChild(grade);
+        area.appendChild(volante);
+      });
+
+      window.print();
+    }
+  </script>
+</body>
+</html>
+

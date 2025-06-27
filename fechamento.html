@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portal de Jogos e Apps</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #000;
+      font-family: Arial, sans-serif;
+      color: #fff;
+      overflow-x: hidden;
+    }
+    header {
+      text-align: center;
+      padding: 30px 10px;
+      background: linear-gradient(45deg, #355E3B, #00ff88);
+      text-shadow: 1px 1px 3px black;
+    }
+    header h1 {
+      font-size: 2rem;
+    }
+    .secao {
+      padding: 20px;
+    }
+    .titulo-secao {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      border-left: 5px solid #355E3B;
+      padding-left: 10px;
+      color: #00ff88;
+      text-shadow: 1px 1px 2px #000;
+    }
+    .scroll-horizontal {
+      display: flex;
+      overflow-x: auto;
+      gap: 15px;
+      padding-bottom: 10px;
+    }
+    .item {
+      background: #fff;
+      color: #000;
+      min-width: 160px;
+      border-radius: 10px;
+      padding: 15px;
+      text-align: center;
+      flex-shrink: 0;
+      box-shadow: 0 0 10px #00ff88aa;
+    }
+    .item i {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      color: #355E3B;
+    }
+    .item a {
+      text-decoration: none;
+      color: #000;
+      font-weight: bold;
+    }
+    .carrossel {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      gap: 10px;
+    }
+    .card {
+      scroll-snap-align: start;
+      flex: 0 0 80%;
+      background: #111;
+      border: 2px solid #355E3B;
+      border-radius: 12px;
+      padding: 20px;
+      color: white;
+      box-shadow: 0 0 10px #355E3Baa;
+    }
+    .card h3 {
+      color: #00ff88;
+      margin-bottom: 10px;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #111;
+      color: #999;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 768px) {
+      .item { min-width: 140px; }
+      .card { flex: 0 0 95%; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🌟 Recomendações de Jogos e Apps</h1>
+  </header>
+
+  <section class="secao">
+    <div class="titulo-secao">🎮 Jogos Populares</div>
+    <div class="scroll-horizontal">
+      <div class="item"><i class="fas fa-gamepad"></i><br><a href="https://play.google.com/store/apps/details?id=com.supercell.clashroyale" target="_blank">Clash Royale</a></div>
+      <div class="item"><i class="fas fa-dice"></i><br><a href="https://play.google.com/store/apps/details?id=com.king.candycrushsaga" target="_blank">Candy Crush</a></div>
+      <div class="item"><i class="fas fa-chess"></i><br><a href="https://play.google.com/store/apps/details?id=com.chess" target="_blank">Chess.com</a></div>
+      <div class="item"><i class="fas fa-football-ball"></i><br><a href="https://play.google.com/store/apps/details?id=com.ea.gp.fifamobile" target="_blank">FIFA Mobile</a></div>
+    </div>
+  </section>
+
+  <section class="secao">
+    <div class="titulo-secao">📱 Apps Essenciais</div>
+    <div class="scroll-horizontal">
+      <div class="item"><i class="fas fa-video"></i><br><a href="https://play.google.com/store/apps/details?id=com.google.android.youtube" target="_blank">YouTube</a></div>
+      <div class="item"><i class="fab fa-instagram"></i><br><a href="https://play.google.com/store/apps/details?id=com.instagram.android" target="_blank">Instagram</a></div>
+      <div class="item"><i class="fab fa-whatsapp"></i><br><a href="https://play.google.com/store/apps/details?id=com.whatsapp" target="_blank">WhatsApp</a></div>
+      <div class="item"><i class="fas fa-music"></i><br><a href="https://play.google.com/store/apps/details?id=com.spotify.music" target="_blank">Spotify</a></div>
+    </div>
+  </section>
+
+  <section class="secao">
+    <div class="titulo-secao">🔥 Em Destaque</div>
+    <div class="carrossel">
+      <div class="card">
+        <h3>🎯 Brawl Stars</h3>
+        <p>Jogo de combate rápido da Supercell. Escolha seu personagem e entre na arena!</p>
+      </div>
+      <div class="card">
+        <h3>🛡️ Mobile Legends</h3>
+        <p>MOBA mobile com batalhas épicas 5v5. Escolha seu herói e vença!</p>
+      </div>
+      <div class="card">
+        <h3>🎶 TikTok</h3>
+        <p>Explore vídeos curtos e conteúdos criativos do mundo inteiro.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 Mac Point - Todos os direitos reservados.
+  </footer>
+</body>
+</html>
+
+
+  

@@ -46,6 +46,12 @@
       border: 6px solid black;
       box-shadow: 0 0 20px 10px rgba(0, 255, 0, 0.3);
       overflow: hidden;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    .icon.show {
+      opacity: 1;
     }
 
     .icon img {
@@ -136,7 +142,7 @@
 <body>
   <div class="container">
     <div class="icon">
-      <img src="https://via.placeholder.com/300" alt="Imagem" />
+      <img src="https://via.placeholder.com/300" alt="Imagem" onload="this.parentElement.classList.add('show')" />
     </div>
 
     <div class="particle vermelha" style="--x: -300px; --y: -250px;">01</div>

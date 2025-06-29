@@ -45,6 +45,8 @@
       color: #000;
       transition: transform 0.3s, box-shadow 0.3s;
       cursor: pointer;
+      position: relative;
+      z-index: 2;
     }
     .card:hover {
       transform: scale(1.05);
@@ -94,13 +96,19 @@
       text-shadow: 1px 1px #aaa;
     }
     .desc {
-      margin-bottom: 20px;
+      margin-bottom: 15px;
       font-size: 14px;
       text-align: left;
     }
     .desc ul {
       padding-left: 20px;
       list-style: square;
+    }
+    .descricao-personalizada {
+      font-size: 13px;
+      text-align: left;
+      color: #000;
+      margin-bottom: 20px;
     }
     .btn-assinar {
       background: #355E3B;
@@ -132,12 +140,14 @@
       text-align: center;
       line-height: 45px;
       font-weight: bold;
-      font-size: 14px;
+      font-size: 16px;
       z-index: 0;
-      animation: queda linear infinite;
+      animation: queda linear;
+      user-select: none;
+      pointer-events: none;
     }
     @keyframes queda {
-      0% {transform: translateY(-100px);}
+      0% {transform: translateY(-60px);}
       100% {transform: translateY(100vh);}
     }
     @media (max-width: 768px) {
@@ -153,10 +163,10 @@
     <div class="cards">
       <div class="card" onclick="window.open('https://example.com/mensal', '_blank')">
         <div class="card-header">
-          <img src="https://i.postimg.cc/pXL2KXyT/Screenshot-20241023-201613-1.jpg" />
+          <img src="Screenshot_20250123-232747-1.jpg" />
           <h2>Plano Mensal</h2>
         </div>
-        <img class="plan-img" src="https://i.postimg.cc/pXL2KXyT/Screenshot-20241023-201613-1.jpg" />
+        <img class="plan-img" src="Screenshot_20250112-200556-1.jpg" />
         <div class="preco"><s>R$29,90</s> <strong>R$19,90</strong></div>
         <div class="desc">
           <ul>
@@ -165,14 +175,17 @@
             <li>Suporte incluso</li>
           </ul>
         </div>
+        <p class="descricao-personalizada">
+          Explore todos os recursos premium do Mac Point por 30 dias. Ideal para quem deseja testar as ferramentas avançadas, simuladores, dicas e relatórios com total liberdade e sem compromisso de longo prazo.
+        </p>
         <button class="btn-assinar" onclick="window.open('https://example.com/mensal', '_blank')">Assinar</button>
       </div>
       <div class="card" onclick="window.open('https://example.com/trimestral', '_blank')">
         <div class="card-header">
-          <img src="https://i.postimg.cc/pXL2KXyT/Screenshot-20241023-201613-1.jpg" />
+          <img src="Screenshot_20250123-232747-1.jpg" />
           <h2>Plano Trimestral</h2>
         </div>
-        <img class="plan-img" src="https://i.postimg.cc/pXL2KXyT/Screenshot-20241023-201613-1.jpg" />
+        <img class="plan-img" src="Screenshot_20250112-173043-1.jpg" />
         <div class="preco"><s>R$89,70</s> <strong>R$62,90</strong></div>
         <div class="desc">
           <ul>
@@ -181,14 +194,17 @@
             <li>Suporte especial incluso</li>
           </ul>
         </div>
+        <p class="descricao-personalizada">
+          Três meses com tudo liberado. Mais economia e tempo para aproveitar todas as funcionalidades PRO, com acesso contínuo às atualizações, estratégias e suporte exclusivo.
+        </p>
         <button class="btn-assinar" onclick="window.open('https://example.com/trimestral', '_blank')">Assinar</button>
       </div>
       <div class="card" onclick="window.open('https://example.com/anual', '_blank')">
         <div class="card-header">
-          <img src="https://i.postimg.cc/pXL2KXyT/Screenshot-20241023-201613-1.jpg" />
+          <img src="Screenshot_20250123-232747-1.jpg" />
           <h2>Plano Anual</h2>
         </div>
-        <img class="plan-img" src="https://i.postimg.cc/pXL2KXyT/Screenshot-20241023-201613-1.jpg" />
+        <img class="plan-img" src="Screenshot_20250123-232747-1.jpg" />
         <div class="preco"><s>R$358,80</s> <strong>R$179,40</strong></div>
         <div class="desc">
           <ul>
@@ -197,11 +213,81 @@
             <li>Recursos premium liberados</li>
           </ul>
         </div>
+        <p class="descricao-personalizada">
+          Um ano completo de acesso ilimitado às ferramentas mais avançadas do Mac Point. Receba conteúdos exclusivos, prioridade em suporte e aproveite o melhor custo-benefício da plataforma.
+        </p>
         <button class="btn-assinar" onclick="window.open('https://example.com/anual', '_blank')">Assinar</button>
       </div>
     </div>
   </div>
+<script src="script.js"></script>
+ <script src="proteção.js"></script>
+<script>
+function checkConsoleAccess() {
+    fetch('verifica_email.php')
+        .then(response => response.json())
+        .then(data => {
+            if (!data.autorizado) {
+                document.body.innerHTML = `
+                    <div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.9); display: flex; justify-content: center; align-items: center; text-align: center; z-index: 9999;">
+                        <div style="background: red; color: white; padding: 20px; border-radius: 10px; border: 2px solid black; font-family: Arial, sans-serif; max-width: 80%; box-shadow: 0 0 10px black;">
+                            <h1 style="color: white; text-shadow: 2px 2px 0 black;">⚠️ Console Detectado! 🔒</h1>
+                            <p style="color: yellow; text-shadow: 1px 1px 0 black; font-weight: bold;">Acesso Negado!</p>
+                            <p>O sistema detectou uma tentativa de acesso não autorizado.</p>
+                            <p style="font-weight: bold; color: white;">Sua conta está bloqueada.</p>
+                            <p>Você será redirecionado...</p>
+                        </div>
+                    </div>
+                `;
+                setTimeout(() => {
+                    window.location.href = "login.html";
+                }, 3000);
+            }
+        })
+        .catch(error => console.error('Erro ao verificar acesso:', error));
+}
 
+window.addEventListener("keydown", (e) => {
+    if (e.key === "F12" || (e.ctrlKey && e.shiftKey && e.key === "I")) {
+        e.preventDefault();
+        checkConsoleAccess();
+    }
+});
+
+window.addEventListener("contextmenu", (e) => {
+    e.preventDefault();
+    checkConsoleAccess();
+});
+</script>
+<script type="module">
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+        authDomain: "mac-projeto-4e552.firebaseapp.com",
+        projectId: "mac-projeto-4e552",
+        storageBucket: "mac-projeto-4e552.appspot.com",
+        messagingSenderId: "537330451519",
+        appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Verifica o status de autenticação ao carregar a página
+    window.onload = () => {
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                // Usuário autenticado, exibe o conteúdo protegido
+                document.getElementById("protectedContent").style.display = "block";
+            } else {
+                // Redireciona para a página de login se não estiver autenticado
+                window.location.href = "index.html";
+            }
+        });
+    };
+</script>
   <script>
     const cores = {
       vermelha: [1,11,21,31,41,51,61,71,81,91],
@@ -214,8 +300,8 @@
       branca: [10,20,30,40,50,60,70,80,90,0]
     };
 
-    function gerarLoteBolas() {
-      for (let i = 0; i < 5; i++) {
+    function gerarBolas() {
+      for (let i = 0; i < 4; i++) {
         let numero = Math.floor(Math.random() * 100);
         let cor = '#fff', corTexto = '#000', contorno = '#000';
 
@@ -243,7 +329,7 @@
         bola.style.left = `${Math.random() * 100}%`;
         bola.style.top = `-50px`;
         bola.style.opacity = '1';
-        bola.style.animationDuration = `${6 + Math.random() * 3}s`;
+        bola.style.animationDuration = `${6 + Math.random() * 2}s`;
 
         document.body.appendChild(bola);
 
@@ -251,10 +337,24 @@
           bola.remove();
         }, 10000);
       }
+
+      const trevo = document.createElement('div');
+      trevo.className = 'bola';
+      trevo.textContent = '🍀';
+      trevo.style.background = '#000';
+      trevo.style.color = '#0f0';
+      trevo.style.border = '2px solid #0f0';
+      trevo.style.left = `${Math.random() * 100}%`;
+      trevo.style.top = `-60px`;
+      trevo.style.fontSize = '16px';
+      trevo.style.animationDuration = `${7 + Math.random() * 2}s`;
+      document.body.appendChild(trevo);
+      setTimeout(() => trevo.remove(), 10000);
     }
 
-    gerarLoteBolas();
-    setInterval(gerarLoteBolas, 2500);
+    gerarBolas();
+    setInterval(gerarBolas, 2500);
   </script>
 </body>
 </html>
+

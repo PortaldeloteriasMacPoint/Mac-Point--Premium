@@ -20,27 +20,25 @@
       z-index: 0;
     }
     .bola {
-  position: absolute;
-  width: 8vw;
-  height: 8vw;
-  max-width: 70px;
-  max-height: 70px;
-  min-width: 40px;
-  min-height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 2.2vw;
-  animation: cair linear infinite;
-  border: 2px solid #000;
-  z-index: 0;
-  color: #fff;
-  text-shadow: 1px 1px 2px #000;
-}
-
-
+      position: absolute;
+      width: 8vw;
+      height: 8vw;
+      max-width: 70px;
+      max-height: 70px;
+      min-width: 40px;
+      min-height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 2vw;
+      animation: cair linear infinite;
+      border: 2px solid #000;
+      z-index: 0;
+      color: #fff;
+      text-shadow: 1px 1px 2px #000;
+    }
     @keyframes cair {
       0% { transform: translateY(-60px); }
       100% { transform: translateY(110vh); }
@@ -194,7 +192,7 @@
       top: 20px;
       right: 30px;
       font-size: 30px;
-      color: red;
+      color: #fff;
       font-weight: bold;
       cursor: pointer;
     }
@@ -269,10 +267,10 @@
   <div class="background-bolas" id="fundoBolas"></div>
   <div class="container">
     <div class="topo">
-      <img src="Screenshot_20250123-232747-1.jpg">
+      <img src="Screenshot_20250123-232747-1.jpg" alt="Logo Mac Point">
       <h1>Portal Mac Point</h1>
     </div>
-    <img src="Screenshot_20250112-173043-1.jpg" class="capa">
+    <img src="Screenshot_20250112-173043-1.jpg" class="capa" alt="Capa Portal Mac Point">
     <div class="apresentacao">
       Bem-vindo ao Portal Mac Point! Plataforma profissional com ferramentas exclusivas para você gerar, organizar e analisar seus jogos com inteligência e tecnologia.
     </div>
@@ -299,7 +297,8 @@
     <div class="copy">&copy; 2025 Portal Mac Point. Todos os direitos reservados.</div>
   </footer>
   <script src="script.js"></script>
-<script src="proteção.js"></script>
+  <script src="proteção2.js"></script>
+  <script src="proteção.js"></script>
 <script>
 function checkConsoleAccess() {
     fetch('verifica_email.php')
@@ -363,29 +362,6 @@ window.addEventListener("contextmenu", (e) => {
         fundo.appendChild(bola);
       }
     }
-    function mostrarPlano(plano) {
-      document.querySelectorAll('.modalidade-card').forEach(el => el.style.display = "none");
-      const data = planos[plano];
-      const destaque = plano === "pro"
-        ? `<div class="destaque-pro">✨ Acesso Total às Ferramentas Exclusivas, Relatórios e Análises em Tempo Real</div>`
-        : "";
-      const card = document.getElementById(plano);
-      card.innerHTML = `
-        ${destaque}
-        <div class="modalidade-header">
-          <img src="https://i.postimg.cc/pXL2KXyT/Screenshot-20241023-201613-1.jpg">
-          <h2>${data.titulo}</h2>
-        </div>
-        <div class="descricao">${data.descricao}</div>
-        <div class="topicos">${data.topicos.map(t => "• " + t).join("<br>")}</div>
-        <div class="carrossel">
-          <img src="Screenshot_20250628-012751-1.jpg" onclick="ver(this.src)">
-          <img src="Screenshot_20250626-191104-1.jpg" onclick="ver(this.src)">
-        </div>
-        <button class="btn-ilimitado" onclick="window.open('https://exemplo.com/${plano}', '_blank')">🔓 Acesso ${plano === 'pro' ? 'Ilimitado' : 'Gratuito'}</button>
-      `;
-      card.style.display = "block";
-    }
     const planos = {
       gratuito: {
         titulo: "Plano Gratuito",
@@ -417,6 +393,29 @@ window.addEventListener("contextmenu", (e) => {
         ]
       }
     };
+    function mostrarPlano(plano) {
+      document.querySelectorAll('.modalidade-card').forEach(el => el.style.display = "none");
+      const data = planos[plano];
+      const destaque = plano === "pro"
+        ? `<div class="destaque-pro">✨ Acesso Total às Ferramentas Exclusivas, Relatórios e Análises em Tempo Real</div>`
+        : "";
+      const card = document.getElementById(plano);
+      card.innerHTML = `
+        ${destaque}
+        <div class="modalidade-header">
+          <img src="Screenshot_20250123-232747-1.jpg" alt="Ícone Plano">
+          <h2>${data.titulo}</h2>
+        </div>
+        <div class="descricao">${data.descricao}</div>
+        <div class="topicos">${data.topicos.map(t => "• " + t).join("<br>")}</div>
+        <div class="carrossel">
+          <img src="Screenshot_20250628-012751-1.jpg" onclick="ver(this.src)" alt="Imagem 1">
+          <img src="Screenshot_20250626-191104-1.jpg" onclick="ver(this.src)" alt="Imagem 2">
+        </div>
+        <button class="btn-ilimitado" onclick="window.open('${plano === 'pro' ? 'planospro.html' : 'cadastro.html'}', '_blank')">🔓 Acesso ${plano === 'pro' ? 'Ilimitado' : 'Gratuito'}</button>
+      `;
+      card.style.display = "block";
+    }
     function ver(src) {
       document.getElementById("preview").style.display = "flex";
       document.querySelector("#preview img").src = src;

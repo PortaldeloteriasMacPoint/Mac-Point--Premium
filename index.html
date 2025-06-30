@@ -1,203 +1,401 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal de Loterias Mac Point Premium</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-image: url('Screenshot_20250118-130351-1.jpg');
-            background-size: cover;
-            background-position: center;
-            color: white;
-            text-align: center;
-        }
-        .capa {
-            width: 100%;
-            height: auto;
-        }
-        .titulo {
-            font-size: 3em;
-            color: yellow;
-            animation: pulse 1s infinite;
-            background-color: black;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        .quadro {
-            background-color: #006400;
-            color: white;
-            border: 3px solid #00FF00;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px auto;
-            max-width: 600px;
-        }
-        .plano {
-            font-size: 1.2em;
-            margin-bottom: 15px;
-        }
-        .valor {
-            color: yellow;
-        }
-        .botao {
-            background-color: orange;
-            color: black;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 15px;
-            cursor: pointer;
-            animation: pulse 1s infinite;
-        }
-        .botao:hover {
-            background-color: darkorange;
-        }
-        .imagens {
-            position: relative;
-            max-width: 600px;
-            margin: 20px auto;
-            border: 2px solid #00FF00;
-            background-color: black;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        .imagens img {
-            width: 100%;
-            height: auto;
-            display: none;
-        }
-        .imagens img.active {
-            display: block;
-        }
-        .seta {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(255, 255, 255, 0.5);
-            color: black;
-            font-size: 2em;
-            padding: 10px;
-            cursor: pointer;
-            border-radius: 50%;
-            user-select: none;
-        }
-        .seta.esquerda {
-            left: 10px;
-        }
-        .seta.direita {
-            right: 10px;
-        }
-        .seta:hover {
-            background-color: rgba(255, 255, 255, 0.8);
-        }
-        .quadro-premium {
-            background-color: #006400;
-            color: white;
-            border: 3px solid #00FF00;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px auto;
-            max-width: 600px;
-        }
-        .quadro-premium h2 {
-            color: yellow;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-        .quadro-premium p {
-            color: white;
-            font-size: 1.1em;
-            line-height: 1.5;
-        }
-        .estrelas {
-            margin: 15px 0;
-        }
-        .estrelas span {
-            font-size: 2em;
-            cursor: pointer;
-        }
-        .estrelas span:hover,
-        .estrelas span:hover ~ span {
-            color: gold;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Mac Point</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #000;
+      color: #fff;
+      overflow-x: hidden;
+    }
+    .background-bolas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .bola {
+      position: absolute;
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 40px;
+      font-weight: bold;
+      font-size: 14px;
+      animation: cair linear infinite;
+      border: 2px solid #000;
+      z-index: 0;
+    }
+    @keyframes cair {
+      0% { transform: translateY(-60px); }
+      100% { transform: translateY(110vh); }
+    }
+    .container {
+      position: relative;
+      z-index: 1;
+      width: 95%;
+      max-width: 1100px;
+      margin: auto;
+      padding: 20px;
+    }
+    .topo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #355E3B;
+      border: 3px solid #000;
+      border-radius: 12px;
+      padding: 10px;
+      flex-wrap: wrap;
+    }
+    .topo img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 15px;
+      border: 2px solid #000;
+    }
+    .topo h1 {
+      font-size: 24px;
+      color: #fff;
+      text-shadow: 2px 2px #000;
+      font-family: Impact, sans-serif;
+    }
+    .capa {
+      width: 100%;
+      border-radius: 10px;
+      border: 3px solid #355E3B;
+      margin: 20px 0;
+    }
+    .apresentacao {
+      text-align: center;
+      font-size: 16px;
+      color: #ccc;
+      margin: 10px 0 30px;
+    }
+    .filtro {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .plan-btn {
+      flex: 1;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: bold;
+      background: #355E3B;
+      border: 2px solid #000;
+      color: #fff;
+      border-radius: 10px;
+      text-shadow: 1px 1px #000;
+      cursor: pointer;
+    }
+    .plan-btn#btnPro {
+      background: linear-gradient(90deg, #355E3B, #00ff99);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); box-shadow: 0 0 10px #ffd700; }
+      50% { transform: scale(1.05); box-shadow: 0 0 25px #ffd700; }
+      100% { transform: scale(1); box-shadow: 0 0 10px #ffd700; }
+    }
+    .modalidade-card {
+      display: none;
+      background: #111;
+      border: 3px solid #355E3B;
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 30px;
+    }
+    .modalidade-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 15px;
+    }
+    .modalidade-header img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+      object-fit: cover;
+      border: 2px solid #000;
+    }
+    .modalidade-header h2 {
+      font-family: Impact, sans-serif;
+      color: #fff;
+      font-size: 20px;
+      text-shadow: 1px 1px #000;
+    }
+    .descricao {
+      font-size: 15px;
+      color: #ccc;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .topicos {
+      font-size: 16px;
+      margin-bottom: 15px;
+      color: #fff;
+      font-weight: bold;
+      text-align: center;
+    }
+    .carrossel {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 10px;
+    }
+    .carrossel img {
+      width: 100%;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 2px solid #355E3B;
+      transition: transform 0.2s;
+      cursor: pointer;
+    }
+    .carrossel img:hover {
+      transform: scale(1.05);
+    }
+    .preview {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.95);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+    .preview img {
+      max-width: 90%;
+      max-height: 90%;
+      border: 4px solid #fff;
+      border-radius: 8px;
+    }
+    .fechar {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 30px;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .btn-ilimitado {
+      margin: 25px auto 0;
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      padding: 16px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #fff;
+      background: linear-gradient(45deg, #355E3B, #00ff99);
+      border: 2px solid #000;
+      border-radius: 12px;
+      text-shadow: 1px 1px #000;
+      box-shadow: 0 0 10px gold;
+      cursor: pointer;
+    }
+    .destaque-pro {
+      background: #222;
+      border: 2px dashed #ffd700;
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      text-shadow: 1px 1px #000;
+    }
+    .aviso {
+      margin: 40px auto;
+      padding: 20px;
+      background: #1a1a1a;
+      border-radius: 12px;
+      border: 2px solid #355E3B;
+      text-align: center;
+    }
+    .aviso h3 {
+      font-size: 22px;
+      color: #00ff99;
+      margin-bottom: 10px;
+      text-shadow: 1px 1px #000;
+    }
+    .aviso p {
+      font-size: 15px;
+      color: #eee;
+    }
+    footer {
+      width: 100%;
+      background: #0d0d0d;
+      padding: 15px 10px;
+      border-top: 3px solid #355E3B;
+      text-align: center;
+      position: relative;
+      bottom: 0;
+    }
+    footer a {
+      color: #00ff99;
+      margin: 0 15px;
+      font-weight: bold;
+      font-size: 14px;
+      text-decoration: none;
+    }
+    .copy {
+      margin-top: 10px;
+      color: #aaa;
+      font-size: 13px;
+    }
+  </style>
 </head>
 <body>
-    <img src="Screenshot_20250112-173043-1.jpg" alt="Capa" class="capa">
-    <h1 class="titulo">Portal de Loterias Mac Point Premium</h1>
+  <div class="background-bolas" id="fundoBolas"></div>
 
-    <div class="quadro">
-        <h2>Apresentação da Plataforma</h2>
-        <p>Nossa plataforma oferece diversas vantagens para os entusiastas de loterias...</p>
-    </div>
-
-    <div class="imagens">
-        <div class="seta esquerda" onclick="mudarImagem(-1)">&#10094;</div>
-        <img src="https://i.postimg.cc/RhR6GJdg/Screenshot-20250112-173043-1.jpg" class="active">
-        <img src="https://i.postimg.cc/NfRBhwww/Screenshot-20250112-200147-1.jpg">
-        <img src="URL_DA_IMAGEM3">
-        <div class="seta direita" onclick="mudarImagem(1)">&#10095;</div>
+  <div class="container">
+    <div class="topo">
+      <img src="Screenshot_20250123-232747-1.jpg">
+      <h1>Portal Mac Point</h1>
     </div>
 
-    <div class="section">
-        <h2>Aumente suas chances de ganhar com as melhores análises e dicas de loterias!</h2>
-        <p>Escolha o plano que melhor se adapta ao seu estilo e comece a transformar sua sorte com acesso exclusivo a estratégias vencedoras!</p>
+    <img src="Screenshot_20250112-173043-1.jpg" class="capa">
+
+    <div class="apresentacao">
+      Bem-vindo ao Portal Mac Point! Plataforma profissional com ferramentas exclusivas para você gerar, organizar e analisar seus jogos com inteligência e tecnologia.
     </div>
 
-    <div class="offer">
-        <p>🌟 **Oferta de Lançamento!** Assine agora e ganhe 25% de desconto no PLANO TRIMENSAL e  50% de DESCONTO do PLANO ANUAL. Oferta válida por tempo ilimitado  APROVEITE. 🌟</p>
+    <div class="filtro">
+      <button class="plan-btn" onclick="mostrarPlano('gratuito')">Plano Gratuito</button>
+      <button class="plan-btn" id="btnPro" onclick="mostrarPlano('pro')">Plano Pro</button>
     </div>
 
-    <div class="quadro">
-        <h2>PLANO MENSAL</h2>
-        <p class="plano">De <span class="valor">R$29,90</span> por <span class="valor">R$19,90</span></p>
-        <button class="botao" onclick="window.location.href='URL_DO_LINK'">Acesso Ilimitado</button>
-    </div>
-    <div class="quadro">
-        <h2>PLANO TRIMENSAL</h2>
-        <p class="plano">De <span class="valor">R$89,70</span> por <span class="valor">R$59,70</span></p>
-        <button class="botao" onclick="window.location.href='URL_DO_LINK'">Acesso Ilimitado</button>
-    </div>
-    <div class="quadro">
-        <h2>PLANO ANUAL</h2>
-        <p class="plano">De <span class="valor">R$358,80</span> por <span class="valor">R$239,40</span></p>
-        <button class="botao" onclick="window.location.href='URL_DO_LINK'">Acesso Ilimitado</button>
-    </div>
+    <div id="gratuito" class="modalidade-card"></div>
+    <div id="pro" class="modalidade-card"></div>
 
-    <div class="quadro-premium">
-        <h2>Por que se tornar Premium?</h2>
-        <p>Ao se tornar Premium, você terá acesso a:</p>
-        <ul>
-            <li>Acesso exclusivo a análises detalhadas</li>
-            <li>Ferramentas avançadas para simulações</li>
-            <li>Relatórios personalizados</li>
-            <li>Suporte especializado</li>
-        </ul>
-        <div class="estrelas">
-            <span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span>
-            <p>Média de Votações: 4.5</p>
+    <div class="aviso">
+      <h3>📢 AVISO LEGAL</h3>
+      <p>A plataforma <strong style="color:#00ff99;">Mac Point</strong> é independente e <strong>não possui vínculo com a Caixa Econômica Federal</strong>. Todos os recursos são voltados para fins estatísticos e entretenimento.</p>
+    </div>
+  </div>
+
+  <div class="preview" id="preview">
+    <span class="fechar" onclick="fechar()">✖</span>
+    <img src="" alt="preview">
+  </div>
+
+  <footer>
+    <div>
+      <a href="politica.html" target="_blank">Política de Privacidade</a>
+      <a href="termos.html" target="_blank">Termos de Uso</a>
+    </div>
+    <div class="copy">&copy; 2025 Portal Mac Point. Todos os direitos reservados.</div>
+  </footer>
+
+  <script>
+    function corDaBola(n){
+      const c = n.toString().padStart(2, '0');
+      if ('011121314151617181191'.includes(c)) return {bg: 'red', color: '#fff', border: '#000'};
+      if ('021222324252627282292'.includes(c)) return {bg: '#355E3B', color: '#fff', border: '#000'};
+      if ('031323334353637383393'.includes(c)) return {bg: 'green', color: '#fff', border: '#000'};
+      if ('041424344454647484494'.includes(c)) return {bg: '#ffd700', color: '#000', border: '#000'};
+      if ('051525354555657585595'.includes(c)) return {bg: 'blue', color: '#fff', border: '#000'};
+      return {bg: '#444', color: '#fff', border: '#000'};
+    }
+
+    function criarBolas(){
+      const fundo = document.getElementById("fundoBolas");
+      for(let i=0;i<40;i++){
+        const bola = document.createElement("div");
+        const n = Math.floor(Math.random()*100);
+        const est = corDaBola(n);
+        bola.className = "bola";
+        bola.textContent = n.toString().padStart(2, '0');
+        bola.style.left = Math.random()*100 + "vw";
+        bola.style.animationDuration = (5+Math.random()*5)+"s";
+        bola.style.backgroundColor = est.bg;
+        bola.style.color = est.color;
+        bola.style.borderColor = est.border;
+        fundo.appendChild(bola);
+      }
+    }
+
+    const planos = {
+      gratuito: {
+        titulo: "Plano Gratuito",
+        descricao: "Funcionalidades básicas para iniciantes e curiosos em loterias.",
+        topicos: [
+          "Gerador de jogos com editar/copiar/excluir",
+          "Desdobramentos com notificação",
+          "Calculadora de probabilidade",
+          "Tabelas básicas com algumas proporções",
+          "Limite de 3000 jogos",
+          "Palpite da sorte personalizado",
+          "Horóscopo diário (Oráculos)",
+          "Painel de recomendações de jogos e apps",
+          "Painel com vídeos de áreas relacionadas"
+        ]
+      },
+      pro: {
+        titulo: "Plano Pro",
+        descricao: "Ferramentas avançadas Tech SaaS Pro com relatórios e análises exclusivas.",
+        topicos: [
+          "Histórico de modalidades com relatório",
+          "Conversores avançados (soma, bicho, Fibonacci, primos, quadrantes)",
+          "Volante com impressão personalizada",
+          "Relatórios de pendência e frequência",
+          "Retorno de dezenas",
+          "Últimos 10 concursos: quentes, frias e medianas",
+          "Feed exclusivo com informações das loterias",
+          "Painel de recomendações e vídeos premium"
+        ]
+      }
+    };
+
+    function mostrarPlano(plano) {
+      document.querySelectorAll('.modalidade-card').forEach(el => el.style.display = "none");
+      const data = planos[plano];
+      const destaque = plano === "pro"
+        ? `<div class="destaque-pro">✨ Acesso Total às Ferramentas Exclusivas, Relatórios e Análises em Tempo Real</div>`
+        : "";
+      const card = document.getElementById(plano);
+      card.innerHTML = `
+        ${destaque}
+        <div class="modalidade-header">
+          <img src="https://i.postimg.cc/pXL2KXyT/Screenshot-20241023-201613-1.jpg">
+          <h2>${data.titulo}</h2>
         </div>
-        <button class="botao" style="font-size: 1.5em; margin-top: 20px;" onclick="window.location.href='cadastro.html'">IR PARA CADASTRO</button>
-    </div>
+        <div class="descricao">${data.descricao}</div>
+        <div class="topicos">${data.topicos.map(t => "• " + t).join("<br>")}</div>
+        <div class="carrossel">
+          ${plano === "gratuito" ? `
+            <img src="Screenshot_20250628-012751-1.jpg" onclick="ver(this.src)">
+            <img src="Screenshot_20250626-191104-1.jpg" onclick="ver(this.src)">
+          ` : `
+            ${[...Array(12).keys()].map(i => `<img src="https://via.placeholder.com/300x200?text=${data.titulo}+${i + 1}" onclick="ver(this.src)">`).join("")}
+          `}
+        </div>
+        <button class="btn-ilimitado" onclick="window.open('https://exemplo.com/${plano}', '_blank')">🔓 Acesso ${plano === 'pro' ? 'Ilimitado' : 'Gratuito'}</button>
+      `;
+      card.style.display = "block";
+    }
 
-    <script>
-        let indiceImagem = 0;
-        const imagens = document.querySelectorAll('.imagens img');
+    function ver(src) {
+      document.getElementById("preview").style.display = "flex";
+      document.querySelector("#preview img").src = src;
+    }
 
-        function mudarImagem(direcao) {
-            imagens[indiceImagem].classList.remove('active');
-            indiceImagem = (indiceImagem + direcao + imagens.length) % imagens.length;
-            imagens[indiceImagem].classList.add('active');
-        }
-    </script>
+    function fechar() {
+      document.getElementById("preview").style.display = "none";
+    }
+
+    criarBolas();
+  </script>
 </body>
 </html>
 

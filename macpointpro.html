@@ -365,6 +365,7 @@
       menuLateral.style.left = '-300px';
     }
   </script>
+  <script>
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
@@ -411,5 +412,6 @@ onAuthStateChanged(auth, (user) => {
     emailSpan.textContent = "Usuário não autenticado";
   }
 });
+</script>
 </body>
 </html>

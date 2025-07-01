@@ -148,6 +148,7 @@
 
     <!-- reCAPTCHA -->
    <script src="protecao.js"></script>
+<script src="protecao2.js"></script>
 
 <script>
 // Bloqueia F12, Ctrl+Shift+I e clique com botão direito
@@ -207,7 +208,7 @@ setInterval(function() {
                 signInWithEmailAndPassword(auth, email, senha)
                     .then(() => {
                         mostrarMensagem("Login efetuado com SUCESSO!", "sucesso");
-                        setTimeout(() => window.location.href = "macpoint.html", 1500);
+                        setTimeout(() => window.location.href = "macmac.html", 1500);
                     })
                     .catch(() => {
                         mostrarMensagem("Algo deu errado! Tente novamente.", "erro");

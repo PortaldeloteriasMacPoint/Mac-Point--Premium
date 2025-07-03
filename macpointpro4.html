@@ -68,33 +68,7 @@
       font-size: 22px;
       box-shadow: 0 0 10px #00ff88;
     }
-   .conteudo {
-  height: calc(100vh - 80px);
-  display: flex;
-  position: relative;
-  overflow: hidden;
-}
-  .menu-icons {
-  position: absolute;
-  top: 80px;
-  right: -110px;
-  width: 100px;
-  height: calc(100vh - 80px);
-  background-color: #000;
-  border-left: 2px solid #355E3B;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 15px;
-  gap: 20px;
-  overflow-y: auto;
-  transition: right 0.3s ease;
-  z-index: 5;
-}
-
-
-    
-    .icon-card {
+   .icon-card {
       width: 65px;
       height: 75px;
       background-color: #111;
@@ -135,31 +109,7 @@
       background-color: #355E3B;
       box-shadow: 0 0 10px 3px #00ff88;
     }
-    
-.menu-lateral {
-  position: absolute;
-  top: 0;
-  left: -260px;
-  width: 260px;
-  height: calc(100vh - 60px);
-  margin-top: 80px;
-  background-color: #000;
-  border-right: 2px solid white;
-  padding: 20px;
-  overflow-y: auto;
-  transition: left 0.3s ease;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-sizing: border-box;
-  z-index: 5;
-}
-
-
-
-
-.menu-lateral::-webkit-scrollbar {
+    .menu-lateral::-webkit-scrollbar {
   width: 8px;
 }
 
@@ -252,13 +202,59 @@
       text-shadow: 1px 1px 2px black;
       max-width: 90%;
     }
-   iframe {
+ .conteudo {
+  flex: 1;
+  display: flex;
+  position: relative;
+  overflow: auto;
+}
+
+.menu-lateral {
+  position: absolute;
+  top: 0;
+  left: -260px;
+  width: 260px;
+  height: 100%;
+  background-color: #000;
+  border-right: 2px solid white;
+  padding: 20px;
+  overflow-y: scroll;
+  transition: left 0.3s ease;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  z-index: 5;
+}
+
+.menu-icons {
+  position: absolute;
+  top: 0;
+  right: -110px;
+  width: 100px;
+  height: 100%;
+  background-color: #000;
+  border-left: 2px solid #355E3B;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 15px;
+  gap: 20px;
+  overflow-y: auto;
+  transition: right 0.3s ease;
+  z-index: 5;
+}
+
+iframe {
   width: 100%;
   height: 100%;
   border: none;
   display: none;
   z-index: 1;
-} 
+}
+
+  
   </style>
   <style>
     .titulo-container {

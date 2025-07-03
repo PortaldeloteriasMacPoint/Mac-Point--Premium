@@ -132,7 +132,8 @@
       background-color: #355E3B;
       box-shadow: 0 0 10px 3px #00ff88;
     }
-    .menu-lateral {
+    
+.menu-lateral {
   position: absolute;
   top: 0;
   left: -260px;
@@ -141,7 +142,7 @@
   background-color: #000;
   border-right: 2px solid white;
   padding: 20px;
-  overflow-y: auto;
+  overflow-y: scroll;
   transition: left 0.3s ease;
   color: white;
   display: flex;
@@ -164,8 +165,7 @@
   border-radius: 4px;
   border: 2px solid #111;
 }
-
-    .perfil-usuario img {
+  .perfil-usuario img {
       width: 120px;
       height: 120px;
       border-radius: 50%;
@@ -219,13 +219,12 @@
       color: white;
     }
     .capa {
-  flex: 1;
   width: 100%;
-  max-height: 40vh;
-  background: url('Screenshot_20250123-232747-1.jpg') center/cover no-repeat;
+  height: 100vh;
+  background: url('Screenshot_20250123-232747-1.jpg') center center / cover no-repeat;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   flex-direction: column;
   text-align: center;
   padding: 20px;

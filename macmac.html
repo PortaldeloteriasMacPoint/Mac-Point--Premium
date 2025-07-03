@@ -151,18 +151,19 @@
       border-color: white;
     }
     #conteudo {
-      position: fixed;
-      top: 78px;
-      bottom: 60px;
-      left: 0;
-      right: 0;
-      width: 100vw;
-      height: calc(100vh - 138px);
-      border: none;
-      z-index: 900;
-      display: block;
-      background-color: white;
-    }
+  position: fixed;
+  top: 78px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: auto;
+  border: none;
+  z-index: 900;
+  display: block;
+  background-color: white;
+}
+      
     .rodape {
       position: fixed;
       bottom: 0;
@@ -221,7 +222,7 @@
 </head>
 <body>
   <div class="borda-superior">
-    <span>🍀 MAC POINT</span>
+    <span id="tituloMacPoint" style="cursor: pointer;">🍀 MAC POINT</span>
     <div class="icone" id="botaoMenu">☰</div>
   </div>
 
@@ -420,6 +421,19 @@ window.addEventListener("contextmenu", (e) => {
       }
     });
   </script>
+  <script>
+  const rodape = document.querySelector(".rodape");
+  const titulo = document.getElementById("tituloMacPoint");
+  const conteudo = document.getElementById("conteudo");
+  let rodapeVisivel = false;
+
+  rodape.style.display = "none";
+
+  titulo.addEventListener("click", () => {
+    rodapeVisivel = !rodapeVisivel;
+    rodape.style.display = rodapeVisivel ? "flex" : "none";
+  });
+</script>
 </body>
 </html>
 

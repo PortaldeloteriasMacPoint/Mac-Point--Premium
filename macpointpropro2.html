@@ -45,7 +45,7 @@
       color: white;
       font-weight: bold;
       box-shadow: 0 0 10px #00ff88;
-      font-size: 20px;
+      font-size: 18px;
     }
     .titulo-container img {
       width: 28px;
@@ -132,23 +132,27 @@
       background-color: #355E3B;
       box-shadow: 0 0 10px 3px #00ff88;
     }
-    .menu-lateral {
-      position: absolute;
-      top: 0;
-      left: -260px;
-      width: 260px;
-      height: 100%;
-      background-color: #000;
-      border-right: 2px solid white;
-      padding: 20px;
-      overflow-y: auto;
-      transition: left 0.3s ease;
-      color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      z-index: 5;
-    }
+    
+.menu-lateral {
+  position: absolute;
+  top: 0;
+  left: -260px;
+  width: 260px;
+  height: 100%;
+  background-color: #000;
+  border-right: 2px solid white;
+  padding: 20px;
+  overflow-y: auto;
+  max-height: 100vh;
+  transition: left 0.3s ease;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 5;
+}
+
+
     .perfil-usuario img {
       width: 120px;
       height: 120px;

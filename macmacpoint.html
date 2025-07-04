@@ -3,18 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#000000" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <title>Mac Point</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
       height: 100%;
-      background-color: #355E3B;
       font-family: Arial, sans-serif;
+      background-color: #000;
       overflow: hidden;
     }
     .borda-superior {
@@ -45,14 +42,12 @@
       background-color: #355E3B;
       cursor: pointer;
       border: 2px solid white;
+      color: white;
       transition: background-color 0.3s;
-      user-select: none;
     }
-    .icone:hover {
-      background-color: #4b7a4b;
-    }
+    .icone:hover { background-color: #4b7a4b; }
     .foto-descricao-container {
-      position: fixed;
+      position: absolute;
       top: 78px;
       left: 0;
       width: 100%;
@@ -85,9 +80,7 @@
       color: white;
       z-index: 1100;
     }
-    .menu-lateral.aberto {
-      left: 0;
-    }
+    .menu-lateral.aberto { left: 0; }
     .foto-container {
       width: 100px;
       height: 100px;
@@ -122,15 +115,12 @@
       font-size: 16px;
       color: black;
       text-align: left;
-      position: relative;
       transition: background-color 0.3s, color 0.3s;
     }
     .menu-lateral button i {
       margin-right: 8px;
       min-width: 20px;
       text-align: center;
-      position: relative;
-      top: 1px;
     }
     .menu-lateral button:hover,
     .menu-lateral button.ativo {
@@ -139,14 +129,14 @@
       border-color: white;
     }
     #conteudo {
-      position: fixed;
+      position: absolute;
       top: 78px;
       left: 0;
       width: 100%;
       height: calc(100vh - 78px);
       border: none;
-      z-index: 800;
       display: none;
+      z-index: 800;
     }
     .rodape {
       position: fixed;
@@ -164,36 +154,26 @@
       border: 1px solid white;
       transition: bottom 0.3s ease;
     }
-    .rodape.mostrar {
-      bottom: 0;
-    }
+    .rodape.mostrar { bottom: 0; }
     .rodape svg {
       width: 25px;
       height: 25px;
       cursor: pointer;
       border-radius: 50%;
       padding: 3px;
-      box-sizing: content-box;
       transition: transform 0.3s ease, fill 0.3s;
       fill: white;
+      stroke: black;
+      stroke-width: 1;
     }
     .rodape svg.ativo {
       background-color: #355E3B;
       border: 2px solid black;
       box-shadow: 0 0 0 1px white, 0 0 4px #355E3B;
       transform: scale(1.05);
-      fill: white;
     }
-    .menu-lateral {
-      scrollbar-width: thin;
-      scrollbar-color: white black;
-    }
-    .menu-lateral::-webkit-scrollbar {
-      width: 10px;
-    }
-    .menu-lateral::-webkit-scrollbar-track {
-      background: black;
-    }
+    .menu-lateral::-webkit-scrollbar { width: 10px; }
+    .menu-lateral::-webkit-scrollbar-track { background: black; }
     .menu-lateral::-webkit-scrollbar-thumb {
       background-color: white;
       border-radius: 10px;
@@ -216,7 +196,6 @@
       <img id="fotoUsuario" src="Screenshot_20250322-201229-1.jpg" alt="Foto do Usuário" />
       <input type="file" id="inputFoto" accept="image/*" style="display:none" />
     </div>
-
     <h3>Menu</h3>
     <button onclick="abrirIframe('home.html', this)"><i class="fas fa-house"></i>Home</button>
     <button onclick="abrirIframe('geradorpro.html', this)"><i class="fas fa-calculator"></i>Gerador de Jogos</button>
@@ -224,24 +203,19 @@
     <button onclick="abrirIframe('resultados.html', this)"><i class="fas fa-chart-bar"></i>Modalidades</button>
     <button onclick="abrirIframe('tabela.html', this)"><i class="fas fa-table"></i>Tabela</button>
     <button onclick="abrirIframe('palpite.html', this)"><i class="fas fa-star"></i>Palpite da Sorte</button>
-
     <hr style="border-color: white; margin: 15px 0" />
-
     <h3>Oráculos</h3>
     <button onclick="abrirIframe('horoscopo.html', this)"><i class="fas fa-wave-square"></i>Horóscopo</button>
     <button onclick="abrirIframe('tarot.html', this)"><i class="fas fa-database"></i>Tarô</button>
     <button onclick="abrirIframe('busios.html', this)"><i class="fas fa-chart-line"></i>Búzios</button>
-
     <hr style="border-color: white; margin: 15px 0" />
-
     <h3>Tech SaaS Pro</h3>
     <button onclick="abrirIframe('planospro.html', this)"><i class="fas fa-plus-square"></i>Ferramentas Avançadas</button>
-
     <h3>Jogos e Apps</h3>
     <button onclick="abrirIframe('painelapp.html', this)"><i class="fas fa-th-large"></i>Painel</button>
   </nav>
 
-  <iframe id="conteudo" src="" frameborder="0"></iframe>
+  <iframe id="conteudo" src=""></iframe>
 
   <footer class="rodape" id="rodape">
     <svg onclick="abrirRodape('home.html', this)" class="ativo" viewBox="0 0 24 24">
@@ -268,6 +242,7 @@
     const botoesMenu = menuLateral.querySelectorAll("button");
     const capa = document.getElementById("capaContainer");
     const rodape = document.getElementById("rodape");
+    const titulo = document.getElementById("tituloMacPoint");
 
     botaoMenu.addEventListener("click", () => {
       menuLateral.classList.toggle("aberto");
@@ -278,38 +253,26 @@
       iframe.src = url;
       iframe.style.display = "block";
       capa.style.display = "none";
-      botoesMenu.forEach((b) => {
-        b.classList.remove("ativo");
-        b.style.backgroundColor = "white";
-        b.style.color = "black";
-        b.style.border = "2px solid black";
-      });
+      botoesMenu.forEach((b) => b.classList.remove("ativo"));
       botao.classList.add("ativo");
-      botao.style.backgroundColor = "black";
-      botao.style.color = "white";
-      botao.style.border = "2px solid white";
-      menuLateral.classList.remove("aberto");
-      botaoMenu.style.backgroundColor = "#355E3B";
+      rodape.classList.remove("mostrar");
     }
 
     function abrirRodape(pagina, elemento) {
       iframe.src = pagina;
       iframe.style.display = "block";
       capa.style.display = "none";
-      document.querySelectorAll(".rodape svg").forEach((icon) => {
-        icon.classList.remove("ativo");
-      });
+      document.querySelectorAll(".rodape svg").forEach((icon) => icon.classList.remove("ativo"));
       elemento.classList.add("ativo");
     }
+
+    titulo.addEventListener("click", () => {
+      rodape.classList.toggle("mostrar");
+    });
 
     function sair() {
       window.location.href = "logout.html";
     }
-
-    const titulo = document.getElementById("tituloMacPoint");
-    titulo.addEventListener("click", () => {
-      rodape.classList.toggle("mostrar");
-    });
 
     window.onload = () => {
       const fotoSalva = localStorage.getItem("fotoUsuario");

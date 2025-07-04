@@ -257,16 +257,37 @@
 
   <input type="file" id="fotoInput" accept="image/*" onchange="carregarFoto(event)" />
   <div class="menu-lateral" id="menu">
-    <div class="foto-circulo" onclick="document.getElementById('fotoInput').click()" id="fotoPerfil">
-      <i class="fas fa-user" style="color:white; font-size:24px;"></i>
-    </div>
-    <h2>Menu Principal</h2>
-    <button onclick="abrirSecao('home.html', this)"><i class="fas fa-house"></i> Página Inicial</button>
-    <button onclick="abrirSecao('gerador.html', this)"><i class="fas fa-dice"></i> Gerador de Jogos</button>
-    <button onclick="abrirSecao('desdobramentos.html', this)"><i class="fas fa-layer-group"></i> Desdobramentos</button>
-    <button onclick="abrirSecao('resultados.html', this)"><i class="fas fa-chart-line"></i> Resultados</button>
-    <button onclick="abrirSecao('tabela.html', this)"><i class="fas fa-table"></i> Conferência</button>
+  <div class="foto-circulo" onclick="document.getElementById('fotoInput').click()" id="fotoPerfil">
+    <i class="fas fa-user" style="color:white; font-size:24px;"></i>
   </div>
+  <h2>Menu Principal</h2>
+  <button onclick="abrirSecao('home.html', this)"><i class="fas fa-house"></i> Página Inicial</button>
+  <button onclick="abrirSecao('gerador.html', this)"><i class="fas fa-dice"></i> Gerador de Jogos</button>
+  <button onclick="abrirSecao('desdobramentos.html', this)"><i class="fas fa-layer-group"></i> Desdobramentos</button>
+  <button onclick="abrirSecao('resultados.html', this)"><i class="fas fa-chart-line"></i> Resultados</button>
+  <button onclick="abrirSecao('tabela.html', this)"><i class="fas fa-table"></i> Conferência</button>
+
+  <!-- NOVOS ITENS AQUI -->
+  
+  <h2>Análises/Estatísticas</h2>
+  <button onclick="abrirSecao('pares-impares.html', this)">Pares/Ímpares</button>
+  <button onclick="abrirSecao('ciclos.html', this)">Ciclos</button>
+  
+  <div class="submenu" style="display: block; margin-left: 20px;">
+    <button onclick="abrirSecao('ocorrencias.html', this)">Ocorrências</button>
+    <button onclick="abrirSecao('frequencia.html', this)">Frequência</button>
+  </div>
+  
+  <h2>Oráculos</h2>
+  <button onclick="abrirSecao('cartas-taro.html', this)">Cartas de Tarô</button>
+  <button onclick="abrirSecao('horoscopo.html', this)">Horóscopo</button>
+  
+  <h2>Jogos e App</h2>
+  <button onclick="abrirSecao('painel.html', this)">Painel</button>
+  
+  <h2>Tech SaaS Pro</h2>
+  <button onclick="abrirSecao('ferramentas-avancadas.html', this)">Ferramentas Avançadas</button>
+</div>
 
   <div class="capa" id="capa">
     <h1>Bem-vindo ao Mac Point</h1>

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <title>Mac Point</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      height: 100%;
+      background-color: #355E3B;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+    .borda-superior {
+      width: 100%;
+      background-color: black;
+      color: white;
+      font-family: Impact, sans-serif;
+      font-size: 20px;
+      font-weight: bold;
+      padding: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      text-shadow: 1px 1px 0 black, -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black;
+      border: 1px solid white;
+    }
+    .icone {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #355E3B;
+      cursor: pointer;
+      border: 2px solid white;
+      transition: background-color 0.3s;
+      user-select: none;
+    }
+    .icone:hover {
+      background-color: #4b7a4b;
+    }
+    .foto-descricao-container {
+      position: fixed;
+      top: 78px;
+      left: 0;
+      width: 100%;
+      height: calc(100vh - 78px);
+      background-color: black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      z-index: 900;
+    }
+    .foto-capa {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .menu-lateral {
+      background-color: black;
+      border-left: 5px solid white;
+      padding: 20px 20px 100px 20px;
+      width: 250px;
+      height: calc(100vh - 78px);
+      overflow-y: auto;
+      position: fixed;
+      top: 78px;
+      bottom: 0;
+      left: -300px;
+      transition: left 0.3s ease;
+      color: white;
+      z-index: 1100;
+    }
+    .menu-lateral.aberto {
+      left: 0;
+    }
+    .foto-container {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin: 0 auto 20px auto;
+      cursor: pointer;
+      border: 2px solid white;
+      box-shadow: 0 0 10px white;
+    }
+    .foto-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .menu-lateral h3 {
+      font-weight: bold;
+      font-size: 22px;
+      margin-bottom: 10px;
+      text-shadow: 1px 1px 0 black, -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black;
+    }
+    .menu-lateral button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin: 6px 0;
+      background: white;
+      border: 2px solid black;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      color: black;
+      text-align: left;
+      position: relative;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .menu-lateral button i {
+      margin-right: 8px;
+      min-width: 20px;
+      text-align: center;
+      position: relative;
+      top: 1px;
+    }
+    .menu-lateral button:hover,
+    .menu-lateral button.ativo {
+      background-color: black;
+      color: white;
+      border-color: white;
+    }
+    #conteudo {
+      position: fixed;
+      top: 78px;
+      left: 0;
+      width: 100%;
+      height: calc(100vh - 78px);
+      border: none;
+      z-index: 800;
+      display: none;
+    }
+    .rodape {
+      position: fixed;
+      bottom: -60px;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      background: black;
+      border-top: 1px solid white;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 1200;
+      text-shadow: 1px 1px 0 black, -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black;
+      border: 1px solid white;
+      transition: bottom 0.3s ease;
+    }
+    .rodape.mostrar {
+      bottom: 0;
+    }
+    .rodape svg {
+      width: 25px;
+      height: 25px;
+      cursor: pointer;
+      border-radius: 50%;
+      padding: 3px;
+      box-sizing: content-box;
+      transition: transform 0.3s ease, fill 0.3s;
+      fill: white;
+    }
+    .rodape svg.ativo {
+      background-color: #355E3B;
+      border: 2px solid black;
+      box-shadow: 0 0 0 1px white, 0 0 4px #355E3B;
+      transform: scale(1.05);
+      fill: white;
+    }
+    .menu-lateral {
+      scrollbar-width: thin;
+      scrollbar-color: white black;
+    }
+    .menu-lateral::-webkit-scrollbar {
+      width: 10px;
+    }
+    .menu-lateral::-webkit-scrollbar-track {
+      background: black;
+    }
+    .menu-lateral::-webkit-scrollbar-thumb {
+      background-color: white;
+      border-radius: 10px;
+      border: 1px solid white;
+    }
+  </style>
+</head>
+<body>
+  <div class="borda-superior">
+    <span id="tituloMacPoint" style="cursor: pointer;">🍀 MAC POINT</span>
+    <div class="icone" id="botaoMenu">☰</div>
+  </div>
+
+  <div class="foto-descricao-container" id="capaContainer">
+    <img src="Screenshot_20250112-173043-1.jpg" alt="Foto de capa" class="foto-capa" />
+  </div>
+
+  <nav class="menu-lateral" id="menuLateral">
+    <div class="foto-container" onclick="selecionarNovaFoto()">
+      <img id="fotoUsuario" src="Screenshot_20250322-201229-1.jpg" alt="Foto do Usuário" />
+      <input type="file" id="inputFoto" accept="image/*" style="display:none" />
+    </div>
+
+    <h3>Menu</h3>
+    <button onclick="abrirIframe('home.html', this)"><i class="fas fa-house"></i>Home</button>
+    <button onclick="abrirIframe('geradorpro.html', this)"><i class="fas fa-calculator"></i>Gerador de Jogos</button>
+    <button onclick="abrirIframe('desdobramentos.html', this)"><i class="fas fa-layer-group"></i>Desdobramentos</button>
+    <button onclick="abrirIframe('resultados.html', this)"><i class="fas fa-chart-bar"></i>Modalidades</button>
+    <button onclick="abrirIframe('tabela.html', this)"><i class="fas fa-table"></i>Tabela</button>
+    <button onclick="abrirIframe('palpite.html', this)"><i class="fas fa-star"></i>Palpite da Sorte</button>
+
+    <hr style="border-color: white; margin: 15px 0" />
+
+    <h3>Oráculos</h3>
+    <button onclick="abrirIframe('horoscopo.html', this)"><i class="fas fa-wave-square"></i>Horóscopo</button>
+    <button onclick="abrirIframe('tarot.html', this)"><i class="fas fa-database"></i>Tarô</button>
+    <button onclick="abrirIframe('busios.html', this)"><i class="fas fa-chart-line"></i>Búzios</button>
+
+    <hr style="border-color: white; margin: 15px 0" />
+
+    <h3>Tech SaaS Pro</h3>
+    <button onclick="abrirIframe('planospro.html', this)"><i class="fas fa-plus-square"></i>Ferramentas Avançadas</button>
+
+    <h3>Jogos e Apps</h3>
+    <button onclick="abrirIframe('painelapp.html', this)"><i class="fas fa-th-large"></i>Painel</button>
+  </nav>
+
+  <iframe id="conteudo" src="" frameborder="0"></iframe>
+
+  <footer class="rodape" id="rodape">
+    <svg onclick="abrirRodape('home.html', this)" class="ativo" viewBox="0 0 24 24">
+      <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+    </svg>
+    <svg onclick="abrirRodape('planospro.html', this)" viewBox="0 0 24 24">
+      <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zm0-8v2h14V9H7z" />
+    </svg>
+    <svg onclick="abrirRodape('reels.html', this)" viewBox="0 0 24 24">
+      <path d="M10 16.5l6-4.5-6-4.5v9z" />
+    </svg>
+    <svg onclick="abrirRodape('notificacoes.html', this)" viewBox="0 0 24 24">
+      <path d="M12 22c1.1 0 2-.9 2-2H10a2 2 0 002 2zm6-6V9c0-3.07-1.63-5.64-4.5-6.32V2h-3v.68C7.63 3.36 6 5.92 6 9v7l-2 2v1h16v-1l-2-2z" />
+    </svg>
+    <svg onclick="sair()" viewBox="0 0 24 24">
+      <path d="M16 13v-2H7V8l-5 4 5 4v-3zM20 3H4c-1.1 0-2 .9-2 2v4h2V5h16v14H4v-4H2v4c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" />
+    </svg>
+  </footer>
+
+  <script>
+    const menuLateral = document.getElementById("menuLateral");
+    const botaoMenu = document.getElementById("botaoMenu");
+    const iframe = document.getElementById("conteudo");
+    const botoesMenu = menuLateral.querySelectorAll("button");
+    const capa = document.getElementById("capaContainer");
+    const rodape = document.getElementById("rodape");
+
+    botaoMenu.addEventListener("click", () => {
+      menuLateral.classList.toggle("aberto");
+      botaoMenu.style.backgroundColor = menuLateral.classList.contains("aberto") ? "red" : "#355E3B";
+    });
+
+    function abrirIframe(url, botao) {
+      iframe.src = url;
+      iframe.style.display = "block";
+      capa.style.display = "none";
+      botoesMenu.forEach((b) => {
+        b.classList.remove("ativo");
+        b.style.backgroundColor = "white";
+        b.style.color = "black";
+        b.style.border = "2px solid black";
+      });
+      botao.classList.add("ativo");
+      botao.style.backgroundColor = "black";
+      botao.style.color = "white";
+      botao.style.border = "2px solid white";
+      menuLateral.classList.remove("aberto");
+      botaoMenu.style.backgroundColor = "#355E3B";
+    }
+
+    function abrirRodape(pagina, elemento) {
+      iframe.src = pagina;
+      iframe.style.display = "block";
+      capa.style.display = "none";
+      document.querySelectorAll(".rodape svg").forEach((icon) => {
+        icon.classList.remove("ativo");
+      });
+      elemento.classList.add("ativo");
+    }
+
+    function sair() {
+      window.location.href = "logout.html";
+    }
+
+    const titulo = document.getElementById("tituloMacPoint");
+    titulo.addEventListener("click", () => {
+      rodape.classList.toggle("mostrar");
+    });
+
+    window.onload = () => {
+      const fotoSalva = localStorage.getItem("fotoUsuario");
+      if (fotoSalva) {
+        document.getElementById("fotoUsuario").src = fotoSalva;
+      }
+    };
+
+    function selecionarNovaFoto() {
+      document.getElementById("inputFoto").click();
+    }
+
+    document.getElementById("inputFoto").addEventListener("change", function () {
+      const arquivo = this.files[0];
+      if (arquivo) {
+        const leitor = new FileReader();
+        leitor.onload = function (e) {
+          const base64 = e.target.result;
+          document.getElementById("fotoUsuario").src = base64;
+          localStorage.setItem("fotoUsuario", base64);
+        };
+        leitor.readAsDataURL(arquivo);
+      }
+    });
+  </script>
+</body>
+</html>

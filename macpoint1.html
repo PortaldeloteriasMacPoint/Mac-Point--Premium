@@ -2,16 +2,27 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Mac Point</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+ <title>Mac Point</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
-  html,body{height:100%;width:100%;font-family:Arial,sans-serif;background:#355E3B;overflow:hidden;}
-  .borda-superior{
-    position:fixed;top:0;left:0;right:0;height:60px;background:#000;border-bottom:2px solid #355E3B;
-    display:flex;align-items:center;justify-content:space-between;padding:0 15px;color:#fff;z-index:1000;
-  }
+  html, body {
+  overflow: auto; /* antes era hidden */
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.capa, .iframe-container {
+  height: calc(100vh - 60px - env(safe-area-inset-bottom));
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.capa p, .capa h1 {
+  max-width: 600px;
+  margin: 0 auto;
+  font-size: clamp(1rem, 2.5vw, 1.3rem); /* fonte responsiva */
+}
   .borda-superior .titulo{
     font-family:Impact,sans-serif;font-size:22px;cursor:pointer;user-select:none;
   }

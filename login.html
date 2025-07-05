@@ -208,7 +208,7 @@ setInterval(function() {
                 signInWithEmailAndPassword(auth, email, senha)
                     .then(() => {
                         mostrarMensagem("Login efetuado com SUCESSO!", "sucesso");
-                        setTimeout(() => window.location.href = "macmac.html", 1500);
+                        setTimeout(() => window.location.href = "intermediário.html", 1500);
                     })
                     .catch(() => {
                         mostrarMensagem("Algo deu errado! Tente novamente.", "erro");

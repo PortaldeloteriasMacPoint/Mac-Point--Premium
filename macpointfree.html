@@ -247,6 +247,11 @@
     }
 
     input[type="file"] { display: none; }
+
+.submenu {
+  display: none;
+  margin-left: 20px;
+}
   </style>
 </head>
 <body>
@@ -304,45 +309,33 @@
   </svg>
   Conferência
 </button>
-<h2> Análise/Estatística</h2>
-<!-- Pares/Ímpares -->
-<button onclick="abrirSecao('pares-impares.html', this)">
+<!-- Botão principal -->
+<button onclick="toggleSubmenu('submenu-estatistica')">
   <svg viewBox="0 0 24 24" width="20" height="20">
-    <circle cx="8" cy="12" r="3"/>
-    <circle cx="16" cy="12" r="3"/>
+    <path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/>
   </svg>
-  Pares/Ímpares
+  Análise/Estatística
 </button>
 
-<!-- Ciclos -->
-<button onclick="abrirSecao('ciclos.html', this)">
-  <svg viewBox="0 0 24 24" width="20" height="20">
-    <path d="M12 4V1L8 5l4 4V6c3.3 0 
-             6 2.7 6 6s-2.7 6-6 6-6-2.7-6-6H4
-             c0 4.4 3.6 8 8 8s8-3.6 8-8-3.6-8-8-8z"/>
-  </svg>
-  Ciclos
-</button>
+<!-- Submenu -->
+<div id="submenu-estatistica" class="submenu">
+  <button onclick="abrirSecao('pares-impares.html', this)">
+    <svg viewBox="0 0 24 24" width="20" height="20">
+      <circle cx="8" cy="12" r="3"/>
+      <circle cx="16" cy="12" r="3"/>
+    </svg>
+    Pares/Ímpares
+  </button>
 
-<!-- Ocorrências -->
-<button onclick="abrirSecao('ocorrencias.html', this)">
-  <svg viewBox="0 0 24 24" width="20" height="20">
-    <path d="M11 7h2v6h-2zm0 8h2v2h-2z"/>
-    <path d="M12 2C6.5 2 2 6.5 
-             2 12s4.5 10 10 10 10-4.5 
-             10-10S17.5 2 12 2z"/>
-  </svg>
-  Ocorrências
-</button>
-
-<!-- Frequência -->
-<button onclick="abrirSecao('frequencia.html', this)">
-  <svg viewBox="0 0 24 24" width="20" height="20">
-    <path d="M3 17h2v4H3zm4-4h2v8H7zm4-6h2v14h-2zm4 
-             8h2v6h-2zm4-10h2v16h-2z"/>
-  </svg>
-  Frequência
-</button>
+  <button onclick="abrirSecao('ciclos.html', this)">
+    <svg viewBox="0 0 24 24" width="20" height="20">
+      <path d="M12 4V1L8 5l4 4V6c3.3 0 
+               6 2.7 6 6s-2.7 6-6 6-6-2.7-6-6H4
+               c0 4.4 3.6 8 8 8s8-3.6 8-8-3.6-8-8-8z"/>
+    </svg>
+    Ciclos
+  </button>
+</div>
 <h2>Oráculos </h2>
 <!-- Cartas de Tarô -->
 <button onclick="abrirSecao('cartas-taro.html', this)">
@@ -490,6 +483,10 @@ window.addEventListener("contextmenu", (e) => {
     function toggleMenu() {
       document.getElementById("menu").classList.toggle("ativo");
     }
+function toggleSubmenu(id) {
+  const submenu = document.getElementById(id);
+  submenu.style.display = submenu.style.display === "block" ? "none" : "block";
+}
 
     function alternarRodape() {
       const rodape = document.getElementById("rodape");
@@ -531,6 +528,7 @@ window.addEventListener("contextmenu", (e) => {
         document.getElementById("fotoPerfil").innerHTML = `<img src="${img}" alt="Foto do usuário" />`;
       }
     };
+
   </script>
 </body>
 </html>

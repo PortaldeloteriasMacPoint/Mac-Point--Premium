@@ -3,170 +3,138 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Análise de MEGA SENA- Filtro Ciclo</title>
+  <title>Análise de MEGA SENA - Filtro Ciclo</title>
   <style>
-    body {
+    * {
+      box-sizing: border-box;
+    }
+    html, body {
       margin: 0;
-      background-color: white;
+      padding: 0;
+      background: linear-gradient(to bottom, #000000, #355E3B);
       font-family: Arial, sans-serif;
-      color: #001a12;
+      color: white;
       display: flex;
       flex-direction: column;
       align-items: center;
+      min-height: 100vh;
     }
-
     h1 {
-      color: #008c72;
-      text-shadow: 2px 2px 2px black;
-      margin: 20px 0;
-      font-size: 2em;
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      margin: 2rem 0 1rem;
       text-align: center;
       font-family: Impact, sans-serif;
-      font-weight: bold;
+      text-shadow: 2px 2px 0 #000, -2px -2px 0 #000;
     }
-
     .painel {
-      background-color: #001a12;
+      background: rgba(0,0,0,0.8);
       color: white;
       padding: 20px;
       border-radius: 12px;
-      text-shadow: 1px 1px 1px black;
-      box-shadow: 0 0 10px rgba(0,0,0,0.4);
-      width: 90%;
-      max-width: 800px;
+      text-shadow: 1px 1px black;
+      box-shadow: 0 0 15px #00ff7f55;
+      width: 95%;
+      max-width: 900px;
       text-align: center;
     }
-
     select, button {
       padding: 10px;
       margin: 10px 5px;
-      font-size: 1em;
+      font-size: 1rem;
       border-radius: 8px;
       border: 2px solid black;
       background-color: #004d3c;
       color: white;
-      text-shadow: 1px 1px 1px black;
+      text-shadow: 1px 1px black;
     }
-
     button {
       background-color: #cc5500;
       font-weight: bold;
     }
-
     button:hover {
       background-color: #ff6600;
       cursor: pointer;
     }
-
     .quadro {
-      background-color: #008c72;
-      border: 2px solid black;
+      background-color: #001a12;
+      border: 2px solid #00ff7f;
       border-radius: 12px;
-      margin-top: 20px;
+      margin: 20px auto;
       padding: 20px;
-      width: 90%;
-      max-width: 800px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+      width: 95%;
+      max-width: 900px;
+      box-shadow: 0 0 10px #00ff7f55;
       text-align: center;
       color: white;
       font-weight: bold;
       text-shadow: 1px 1px black;
-      font-family: Impact, sans-serif;
     }
-
     .dezena {
       display: inline-block;
-      width: 45px;
-      height: 45px;
-      line-height: 45px;
+      width: clamp(36px, 6vw, 48px);
+      height: clamp(36px, 6vw, 48px);
+      line-height: clamp(36px, 6vw, 48px);
       margin: 4px;
       border-radius: 50%;
       text-align: center;
       font-weight: bold;
       border: 2px solid black;
       font-family: Arial, sans-serif;
+      font-size: 1rem;
     }
-
     .loading {
       display: none;
       margin-top: 20px;
       text-align: center;
     }
-
     .loading.active {
       display: block;
     }
-
     .loader {
-      border: 8px solid #f3f3f3;
-      border-top: 8px solid #3498db;
+      border: 6px solid #333;
+      border-top: 6px solid #00ff7f;
       border-radius: 50%;
-      width: 50px;
-      height: 50px;
+      width: 40px;
+      height: 40px;
       animation: spin 1s linear infinite;
       margin: auto;
     }
-
     @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    @media (max-width: 768px) {
-      h1 {
-        font-size: 1.5em;
-      }
-
-      .painel, .quadro {
-        width: 95%;
-      }
-
-      .dezena {
-        width: 40px;
-        height: 40px;
-        line-height: 40px;
-        font-size: 0.9em;
-      }
+      0% { transform: rotate(0deg);}
+      100% { transform: rotate(360deg);}
     }
   </style>
 </head>
 <body>
-
-  <h1>🍀 Análise Mega Sena</h1>
-
+  <h1>Análise Mega Sena - Ciclo</h1>
   <div class="painel">
-    <label>Escolher quantidade de concursos:</label>
+    <label>Qtd. concursos:</label>
     <select id="qtdConcursos">
-      <option value="10">🍀10 últimos</option>
-      <option value="20">🍀20 últimos</option>
-      <option value="30">🍀30 últimos</option>
-      <option value="50"> 🍀50 últimos</option>
+      <option value="10">10 últimos</option>
+      <option value="20">20 últimos</option>
+      <option value="30">30 últimos</option>
+      <option value="50">50 últimos</option>
     </select>
-
-    <label>Tipo de filtro:</label>
+    <label>Filtro:</label>
     <select id="tipoAnalise">
-      <option value="ciclo">🍀Ciclo</option>
+      <option value="ciclo">Ciclo</option>
     </select>
-
     <button onclick="buscarDados()">Buscar</button>
   </div>
-
   <div class="loading" id="loading">
     <div class="loader"></div>
-    <p style="color: #001a12; font-weight: bold;">Buscando informações, aguarde só um instante...</p>
+    <p style="font-weight: bold;">Buscando dados...</p>
   </div>
-
   <div class="quadro" id="resultado">
-    <strong>Escolha os filtros acima e clique em Buscar para ver o relatório.</strong>
+    <strong>Selecione os filtros e clique em Buscar</strong>
   </div>
-
   <script>
     function getCorDaColuna(numero) {
       const cores = [
         ['#e74c3c', 'white'],
         ['#f1c40f', 'black'],
         ['#2ecc71', 'white'],
-        ['#8e44ad', 'white'],
+        ['#8B4513', 'white'],
         ['#3498db', 'white'],
         ['#ff69b4', 'black'],
         ['#000000', 'white'],
@@ -176,53 +144,42 @@
       ];
       return cores[(numero - 1) % 10] || ['#ccc', 'black'];
     }
-
     function criarBolas(dezenas) {
       return dezenas.map(n => {
         const [bg, corTexto] = getCorDaColuna(n);
         return `<div class="dezena" style="background-color: ${bg}; color: ${corTexto};">${String(n).padStart(2, '0')}</div>`;
       }).join('');
     }
-
     async function buscarDados() {
       const qtd = parseInt(document.getElementById('qtdConcursos').value);
       const resultadoDiv = document.getElementById('resultado');
       const loadingDiv = document.getElementById('loading');
-
       resultadoDiv.innerHTML = '';
       loadingDiv.classList.add('active');
-
       try {
         const res = await fetch('https://premium-portaldeloteriasmacpoint.onrender.com/api.php');
         const data = await res.json();
         const concursos = data.slice(-qtd).reverse();
-        let html = `<h2 style="text-shadow: 1px 1px black;">Análise de Ciclo - Últimos ${qtd} Concursos</h2>`;
-
+        let html = `<h2 style="text-shadow: 1px 1px black;">Análise - ${qtd} Concursos</h2>`;
         let dezenasAbertas = new Set();
         let cicloAtual = 1;
-
         concursos.forEach((c, i) => {
           const novasDezenas = c.Resultado.filter(n => !dezenasAbertas.has(n));
           novasDezenas.forEach(n => dezenasAbertas.add(n));
-
-          html += `<p>Concurso ${c.Concurso}:<br>${criarBolas(c.Resultado)}<br>Novas dezenas: ${criarBolas(novasDezenas)}</p>`;
-
+          html += `<p>Concurso ${c.Concurso}:<br>${criarBolas(c.Resultado)}<br>Novas: ${criarBolas(novasDezenas)}</p>`;
           if (dezenasAbertas.size === 60) {
-            html += `<p style="color: yellow; font-weight: bold;">Ciclo ${cicloAtual} encerrado no concurso ${c.Concurso} (${i + 1}º do filtro)</p><hr>`;
+            html += `<p style="color: #00ff7f;">Ciclo ${cicloAtual} fechado no concurso ${c.Concurso} (${i + 1} do filtro)</p><hr>`;
             dezenasAbertas.clear();
             cicloAtual++;
           }
         });
-
         resultadoDiv.innerHTML = html;
       } catch (error) {
-        resultadoDiv.innerHTML = `<p style="color: red;">Erro ao buscar dados: ${error.message}</p>`;
+        resultadoDiv.innerHTML = `<p style="color: red;">Erro: ${error.message}</p>`;
       } finally {
         loadingDiv.classList.remove('active');
       }
     }
   </script>
-
 </body>
 </html>
-

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>📊 Painel Geral - Mega Sena</title>
+  <style>
+    body {
+      background: black;
+      color: white;
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0 10px;
+      box-sizing: border-box;
+    }
+
+    h1 {
+      text-align: center;
+      color: #00ff88;
+      margin: 20px 0;
+    }
+
+    .filtros {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .filtros button {
+      background: #355E3B;
+      color: white;
+      border: 2px solid #00ff88;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .filtros button:hover {
+      background: #00ff88;
+      color: black;
+    }
+
+    .painel {
+      background: #111;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 900px;
+      margin: auto;
+      box-shadow: 0 0 15px #00ff88;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .stat-box {
+      background: #222;
+      border: 1px solid #00ff88;
+      border-radius: 8px;
+      padding: 15px;
+      margin: 10px;
+      flex: 1 1 200px;
+    }
+
+    .estatisticas {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: center;
+      border: 1px solid #444;
+    }
+
+    th {
+      background: #355E3B;
+    }
+
+    tr:nth-child(even) {
+      background: #1c1c1c;
+    }
+
+    @media (max-width: 600px) {
+      .stats {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>📊 Painel Geral - Mega Sena</h1>
+
+  <div class="filtros">
+    <button onclick="aplicarFiltro(10)">Últimos 10</button>
+    <button onclick="aplicarFiltro(20)">Últimos 20</button>
+    <button onclick="aplicarFiltro(50)">Últimos 50</button>
+    <button onclick="aplicarFiltro()">Todos</button>
+  </div>
+
+  <div class="painel">
+    <div class="stats">
+      <div class="stat-box">
+        <h3>Total de Concursos</h3>
+        <p id="totalConcursos">...</p>
+      </div>
+      <div class="stat-box">
+        <h3>Média de Soma</h3>
+        <p id="mediaSoma">...</p>
+      </div>
+    </div>
+
+    <div class="estatisticas">
+      <h3>🔢 Frequência das Dezenas</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Dezena</th>
+            <th>Quantidade</th>
+          </tr>
+        </thead>
+        <tbody id="tabelaFrequencia"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    let concursos = [];
+
+    function aplicarFiltro(qtd = null) {
+      const lista = qtd ? concursos.slice(-qtd) : concursos;
+      atualizarPainel(lista);
+    }
+
+    function atualizarPainel(lista) {
+      document.getElementById("totalConcursos").textContent = lista.length;
+
+      let totalSoma = 0;
+      const contagem = {};
+
+      for (const c of lista) {
+        const numeros = c.Resultado.map(Number);
+        totalSoma += numeros.reduce((a, b) => a + b, 0);
+        numeros.forEach(n => {
+          contagem[n] = (contagem[n] || 0) + 1;
+        });
+      }
+
+      const media = totalSoma / lista.length;
+      document.getElementById("mediaSoma").textContent = media.toFixed(2);
+
+      const corpoTabela = Object.keys(contagem)
+        .sort((a, b) => a - b)
+        .map(n => `<tr><td>${n}</td><td>${contagem[n]}</td></tr>`)
+        .join('');
+
+      document.getElementById("tabelaFrequencia").innerHTML = corpoTabela;
+    }
+
+    fetch("https://premium-portaldeloteriasmacpoint.onrender.com/api.php")
+      .then(res => res.json())
+      .then(data => {
+        concursos = data;
+        aplicarFiltro(); // inicia com todos
+      })
+      .catch(err => {
+        alert("Erro ao carregar dados da API");
+        console.error(err);
+      });
+  </script>
+</body>
+</html>
+
+

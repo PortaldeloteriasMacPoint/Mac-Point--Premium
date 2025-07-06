@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Análise de Ciclos</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #001a00 0%, #355E3B 70%, #000 100%);
+      color: #fff;
+      font-family: Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    h1 {
+      font-family: 'Impact', sans-serif;
+      font-weight: 900;
+      font-size: clamp(2rem, 5vw, 3rem);
+      margin: 2rem 0 1.5rem;
+      color: #fff;
+      text-shadow: 2px 2px 0 #000, -2px -2px 0 #000;
+      text-align: center;
+    }
+
+    h2 {
+      font-family: 'Impact', sans-serif;
+      font-weight: 900;
+      margin-bottom: 0.7rem;
+      color: #fff;
+      text-shadow: 1px 1px 0 #000, -1px -1px 0 #000;
+    }
+
+    .quadro {
+      background: #121a13cc;
+      border: 2px solid #355E3B;
+      border-radius: 16px;
+      padding: 1.8rem 1.2rem;
+      width: 90%;
+      max-width: 900px;
+      box-shadow: 0 0 10px #00ff7f55;
+      text-align: center;
+      font-weight: 700;
+      user-select: none;
+    }
+
+    .dezena {
+      display: inline-block;
+      width: clamp(38px, 6vw, 50px);
+      height: clamp(38px, 6vw, 50px);
+      line-height: clamp(38px, 6vw, 50px);
+      margin: 0.25rem 0.4rem;
+      border-radius: 50%;
+      text-align: center;
+      font-weight: 700;
+      border: 2px solid transparent;
+      font-family: Arial, sans-serif;
+      transition: border-color 0.3s ease;
+      text-shadow: 0 0 3px rgba(0,0,0,0.8);
+      box-shadow: inset 0 0 6px rgba(0,0,0,0.4);
+    }
+
+    .dezena:hover {
+      border-color: #00ff7f;
+      box-shadow: 0 0 8px #00ff7f;
+      cursor: default;
+    }
+
+    .dezena.destaque {
+      border-color: #ffff66 !important;
+      box-shadow: 0 0 10px #ffff66;
+    }
+
+    .ranking {
+      margin-top: 2.5rem;
+      width: 100%;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .ranking div {
+      margin: 0.35rem auto;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      max-width: 600px;
+      background: #001a12cc;
+      color: #fff;
+      text-shadow: 1px 1px 0 #000;
+      box-shadow: 0 0 6px #355E3B;
+      font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+      transition: background-color 0.3s ease;
+    }
+
+    .ranking div:hover {
+      background-color: #355E3Bcc;
+      cursor: default;
+    }
+
+    .loading {
+      display: none;
+      margin-top: 2rem;
+      text-align: center;
+      color: #355E3B;
+      font-weight: 700;
+      text-shadow: 1px 1px 0 #000;
+      user-select: none;
+    }
+
+    .loading.active {
+      display: block;
+    }
+
+    .loader {
+      border: 6px solid #222;
+      border-top: 6px solid #355E3B;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 0.8rem auto;
+      box-shadow: 0 0 12px #355E3B;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <h1>Análise de Ciclos</h1>
+
+  <div class="loading" id="loading">
+    <div class="loader"></div>
+    <p>Analisando os ciclos, aguarde...</p>
+  </div>
+
+  <div class="quadro" id="resultado">
+    <strong>Carregando análise...</strong>
+  </div>
+<script src="script.js"></script>
+<script src="proteção.js"></script>
+ <script type="module">
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+        authDomain: "mac-projeto-4e552.firebaseapp.com",
+        projectId: "mac-projeto-4e552",
+        storageBucket: "mac-projeto-4e552.appspot.com",
+        messagingSenderId: "537330451519",
+        appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Verifica o status de autenticação ao carregar a página
+    window.onload = () => {
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                // Usuário autenticado, exibe o conteúdo protegido
+                document.getElementById("protectedContent").style.display = "block";
+            } else {
+                // Redireciona para a página de login se não estiver autenticado
+                window.location.href = "index.html";
+            }
+        });
+    };
+</script>
+<script>
+function checkConsoleAccess() {
+    fetch('verifica_email.php')
+        .then(response => response.json())
+        .then(data => {
+            if (!data.autorizado) {
+                document.body.innerHTML = `
+                    <div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.9); display: flex; justify-content: center; align-items: center; text-align: center; z-index: 9999;">
+                        <div style="background: red; color: white; padding: 20px; border-radius: 10px; border: 2px solid black; font-family: Arial, sans-serif; max-width: 80%; box-shadow: 0 0 10px black;">
+                            <h1 style="color: white; text-shadow: 2px 2px 0 black;">⚠️ Console Detectado! 🔒</h1>
+                            <p style="color: yellow; text-shadow: 1px 1px 0 black; font-weight: bold;">Acesso Negado!</p>
+                            <p>O sistema detectou uma tentativa de acesso não autorizado.</p>
+                            <p style="font-weight: bold; color: white;">Sua conta está bloqueada.</p>
+                            <p>Você será redirecionado...</p>
+                        </div>
+                    </div>
+                `;
+                setTimeout(() => {
+                    window.location.href = "login.html";
+                }, 3000);
+            }
+        })
+        .catch(error => console.error('Erro ao verificar acesso:', error));
+}
+
+window.addEventListener("keydown", (e) => {
+    if (e.key === "F12" || (e.ctrlKey && e.shiftKey && e.key === "I")) {
+        e.preventDefault();
+        checkConsoleAccess();
+    }
+});
+
+window.addEventListener("contextmenu", (e) => {
+    e.preventDefault();
+    checkConsoleAccess();
+});
+</script>
+  <script>
+    function getCorDaColuna(numero) {
+      const cores = [
+        ['#e74c3c', 'white'],   // Coluna 1 - vermelho
+        ['#f1c40f', 'black'],   // Coluna 2 - amarelo
+        ['#2ecc71', 'white'],   // Coluna 3 - verde
+        ['#8B4513', 'white'],   // Coluna 4 - marrom (ajustado)
+        ['#3498db', 'white'],   // Coluna 5 - azul
+        ['#ff69b4', 'black'],   // Coluna 6 - rosa
+        ['#000000', 'white'],   // Coluna 7 - preto
+        ['#95a5a6', 'black'],   // Coluna 8 - cinza
+        ['#e67e22', 'white'],   // Coluna 9 - laranja
+        ['#ffffff', 'black']    // Coluna 10 - branco
+      ];
+      return cores[(numero - 1) % 10] || ['#ccc', 'black'];
+    }
+
+    function criarBolas(dezenas, destaque = []) {
+      return dezenas.map(n => {
+        const [bg, corTexto] = getCorDaColuna(n);
+        const destaqueClass = destaque.includes(n) ? 'destaque' : '';
+        return `<div class="dezena ${destaqueClass}" style="background-color: ${bg}; color: ${corTexto};">${String(n).padStart(2, '0')}</div>`;
+      }).join('');
+    }
+
+    async function buscarCiclo() {
+      const resultadoDiv = document.getElementById('resultado');
+      const loadingDiv = document.getElementById('loading');
+
+      resultadoDiv.innerHTML = '';
+      loadingDiv.classList.add('active');
+
+      try {
+        const res = await fetch('https://premium-portaldeloteriasmacpoint.onrender.com/api.php');
+        const dados = await res.json();
+        const todosResultados = dados.reverse().map(c => c.Resultado);
+
+        let ciclo = new Set();
+        let dezenasCiclo = new Set();
+        for (let i = 0; i < todosResultados.length; i++) {
+          todosResultados[i].forEach(n => dezenasCiclo.add(n));
+          if (dezenasCiclo.size >= 60) {
+            ciclo = new Set(todosResultados[i]);
+            break;
+          }
+        }
+
+        const todasDezenas = Array.from({ length: 60 }, (_, i) => i + 1);
+        const dezenasUltimo = new Set(todosResultados[0]);
+        const atrasadas = todasDezenas.filter(n => !dezenasUltimo.has(n) && !ciclo.has(n));
+
+        const ranking = atrasadas.map(n => {
+          let atraso = 0;
+          for (let j = 0; j < todosResultados.length; j++) {
+            if (!todosResultados[j].includes(n)) atraso++;
+            else break;
+          }
+          return { dezena: n, atraso };
+        }).sort((a, b) => b.atraso - a.atraso);
+
+        let html = `<h2>Volante - Ciclo Atual</h2>`;
+        html += criarBolas(todasDezenas, [...ciclo, ...atrasadas]);
+
+        html += `<div class="ranking"><h2>Ranking de Dezenas Atrasadas</h2>`;
+        ranking.forEach(r => {
+          html += `<div>Dezena ${String(r.dezena).padStart(2, '0')} - ${r.atraso} concursos sem sair</div>`;
+        });
+        html += `</div>`;
+
+        resultadoDiv.innerHTML = html;
+
+      } catch (e) {
+        resultadoDiv.innerHTML = `<p style="color: #ff4444; font-weight: 700;">Erro ao buscar dados</p>`;
+      } finally {
+        loadingDiv.classList.remove('active');
+      }
+    }
+
+    buscarCiclo();
+  </script>
+</body>
+</html>

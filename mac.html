@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>📊 Frequência de Dezenas</title>
+  <style>
+    body {
+      background: #000;
+      color: white;
+      font-family: sans-serif;
+      margin: 0;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    h1 {
+      text-align: center;
+      color: #00ff88;
+      margin-bottom: 20px;
+    }
+
+    canvas {
+      max-width: 100%;
+      background: #111;
+      border: 2px solid #355E3B;
+      border-radius: 10px;
+      margin: auto;
+      display: block;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>📊 Frequência das Dezenas</h1>
+  <canvas id="grafico"></canvas>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    fetch("https://premium-portaldeloteriasmacpoint.onrender.com/api.php")
+      .then(res => res.json())
+      .then(data => {
+        const freq = Array(61).fill(0); // Mega-Sena: 1 a 60
+
+        data.forEach(concurso => {
+          concurso.Resultado.forEach(num => {
+            freq[Number(num)]++;
+          });
+        });
+
+        const dezenas = freq.map((_, i) => i).slice(1);
+        const valores = freq.slice(1);
+
+        const ctx = document.getElementById("grafico").getContext("2d");
+        new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels: dezenas.map(n => n.toString().padStart(2, '0')),
+            datasets: [{
+              label: "Frequência",
+              data: valores,
+              backgroundColor: "#00ff88"
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  label: ctx => `Sorteada ${ctx.raw} vezes`
+                }
+              }
+            },
+            scales: {
+              x: {
+                ticks: {
+                  color: "#fff"
+                }
+              },
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  color: "#fff"
+                }
+              }
+            }
+          }
+        });
+      })
+      .catch(err => {
+        document.body.innerHTML = "<p style='text-align:center;color:red;'>Erro ao carregar dados.</p>";
+        console.error(err);
+      });
+  </script>
+</body>
+</html>
+
+

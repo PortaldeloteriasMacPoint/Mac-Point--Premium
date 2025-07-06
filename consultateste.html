@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linhas e Colunas</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: black;
+      color: white;
+      font-family: Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .painel {
+      background: linear-gradient(135deg, #1a1a1a, #000);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 15px #355E3B;
+      max-width: 100%;
+      width: 100%;
+      overflow-x: auto;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #00ff88;
+      font-size: clamp(1.2rem, 4vw, 2rem);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #111;
+      min-width: 600px;
+    }
+    th, td {
+      padding: 10px;
+      text-align: center;
+      border: 1px solid #333;
+      font-size: clamp(0.8rem, 2vw, 1rem);
+    }
+    th {
+      background: #355E3B;
+    }
+    tr:nth-child(even) {
+      background: #222;
+    }
+  </style>
+</head>
+<body>
+  <div class="painel">
+    <h1>Tabela Linhas e Colunas</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Concurso</th>
+          <th>Dezenas</th>
+          <th>Linhas</th>
+          <th>Colunas</th>
+        </tr>
+      </thead>
+      <tbody id="tabelaCorpo"></tbody>
+    </table>
+  </div>
+
+  <script>
+    async function carregarDados() {
+      const resposta = await fetch("https://premium-portaldeloteriasmacpoint.onrender.com/api.php");
+      const dados = await resposta.json();
+
+      const concursos = dados.map(item => ({
+        numero: item.numero,
+        dezenas: item.dezenas.map(Number)
+      })).slice(0, 50); // limitar a 50 últimos para performance
+
+      const getLinha = num => Math.ceil(num / 10);
+      const getColuna = num => num % 10 === 0 ? 10 : num % 10;
+
+      const corpo = document.getElementById("tabelaCorpo");
+      concursos.forEach(c => {
+        const linhas = [...new Set(c.dezenas.map(getLinha))].join(', ');
+        const colunas = [...new Set(c.dezenas.map(getColuna))].join(', ');
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${c.numero}</td>
+          <td>${c.dezenas.join(", ")}</td>
+          <td>${linhas}</td>
+          <td>${colunas}</td>
+        `;
+        corpo.appendChild(tr);
+      });
+    }
+
+    carregarDados();
+  </script>
+</body>
+</html>
+
+

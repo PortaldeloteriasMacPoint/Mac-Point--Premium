@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🍀 Mega Sena - Histórico de Resultados</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      background: #000;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 5vw 3vw;
+    }
+    h1 {
+      font-size: clamp(32px, 8vw, 60px);
+      color: #fff;
+      text-shadow:
+        1px 1px 0 #000,
+        -1px -1px 0 #000;
+    }
+    .container {
+      width: 100%;
+      max-width: 900px;
+      margin: auto;
+    }
+    .busca-container {
+      margin-top: 5vw;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .busca-container input,
+    .busca-container button {
+      padding: 2vw;
+      font-size: clamp(16px, 5vw, 24px);
+      border: 2px solid #000;
+      border-radius: 10px;
+    }
+    .busca-container input {
+      width: 60%;
+      background: #fff;
+      color: #000;
+    }
+    .busca-container button {
+      background: linear-gradient(145deg, #355E3B, #00ff7f);
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 6px #00ff7f40;
+      width: 30%;
+    }
+    .busca-container button:hover {
+      box-shadow: 0 0 10px #00ff7f80;
+    }
+    #loader {
+      margin: 30px auto;
+      border: 6px solid #355E3B;
+      border-top: 6px solid #00ff7f;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      display: none;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .voltante {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 1vw;
+      background: #001a12;
+      padding: 3vw;
+      border-radius: 12px;
+      margin-top: 5vw;
+      border: 3px solid #355E3B;
+    }
+    .casa {
+      width: 100%;
+      padding-top: 100%;
+      position: relative;
+      border: 2px solid #444;
+      border-radius: 10px;
+      background: #222;
+      color: #fff;
+      font-weight: bold;
+    }
+    .casa span {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: clamp(12px, 2.5vw, 18px);
+    }
+    .navegacao {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 3vw;
+      margin-top: 4vw;
+    }
+    .navegacao svg {
+      width: clamp(30px, 8vw, 50px);
+      height: clamp(30px, 8vw, 50px);
+      fill: #00ff7f;
+      cursor: pointer;
+    }
+    .navegacao .concurso-numero {
+      font-size: clamp(20px, 6vw, 36px);
+      font-weight: bold;
+      color: #00ff7f;
+    }
+    .destaque {
+      background: #43a047;
+      border: 2px solid #fff !important;
+      color: #fff !important;
+    }
+    .relatorio {
+      background: #001a12;
+      border: 2px solid #fff;
+      padding: 3vw;
+      border-radius: 15px;
+      margin-top: 4vw;
+      text-align: left;
+    }
+    .relatorio h2 {
+      text-align: center;
+      margin-top: 0;
+    }
+    .notificacao {
+      background: #355E3B;
+      padding: 2vw;
+      border-radius: 10px;
+      margin-top: 4vw;
+      font-size: clamp(16px, 4vw, 22px);
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🍀 Mega Sena</h1>
+    <div class="busca-container">
+      <input id="inputBusca" type="text" placeholder="🔎 Digite o número do concurso" />
+      <button id="btnBuscar">Buscar</button>
+    </div>
+    <div id="loader"></div>
+    <div class="navegacao">
+      <svg id="anterior" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      <span class="concurso-numero" id="numConcurso">Concurso</span>
+      <svg id="proximo" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+    </div>
+    <div class="voltante" id="voltante"></div>
+    <div id="relatorio"></div>
+    <div class="notificacao" id="notificacao"></div>
+  </div>
+<script src="script.js"></script>
+<script src="proteção.js"></script>
+ <script type="module">
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+        authDomain: "mac-projeto-4e552.firebaseapp.com",
+        projectId: "mac-projeto-4e552",
+        storageBucket: "mac-projeto-4e552.appspot.com",
+        messagingSenderId: "537330451519",
+        appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Verifica o status de autenticação ao carregar a página
+    window.onload = () => {
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                // Usuário autenticado, exibe o conteúdo protegido
+                document.getElementById("protectedContent").style.display = "block";
+            } else {
+                // Redireciona para a página de login se não estiver autenticado
+                window.location.href = "index.html";
+            }
+        });
+    };
+</script>
+<script>
+function checkConsoleAccess() {
+    fetch('verifica_email.php')
+        .then(response => response.json())
+        .then(data => {
+            if (!data.autorizado) {
+                document.body.innerHTML = `
+                    <div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.9); display: flex; justify-content: center; align-items: center; text-align: center; z-index: 9999;">
+                        <div style="background: red; color: white; padding: 20px; border-radius: 10px; border: 2px solid black; font-family: Arial, sans-serif; max-width: 80%; box-shadow: 0 0 10px black;">
+                            <h1 style="color: white; text-shadow: 2px 2px 0 black;">⚠️ Console Detectado! 🔒</h1>
+                            <p style="color: yellow; text-shadow: 1px 1px 0 black; font-weight: bold;">Acesso Negado!</p>
+                            <p>O sistema detectou uma tentativa de acesso não autorizado.</p>
+                            <p style="font-weight: bold; color: white;">Sua conta está bloqueada.</p>
+                            <p>Você será redirecionado...</p>
+                        </div>
+                    </div>
+                `;
+                setTimeout(() => {
+                    window.location.href = "login.html";
+                }, 3000);
+            }
+        })
+        .catch(error => console.error('Erro ao verificar acesso:', error));
+}
+
+window.addEventListener("keydown", (e) => {
+    if (e.key === "F12" || (e.ctrlKey && e.shiftKey && e.key === "I")) {
+        e.preventDefault();
+        checkConsoleAccess();
+    }
+});
+
+window.addEventListener("contextmenu", (e) => {
+    e.preventDefault();
+    checkConsoleAccess();
+});
+</script>
+  <script>
+    const inputBusca = document.getElementById("inputBusca");
+    const btnBuscar = document.getElementById("btnBuscar");
+    const resultadoDiv = document.getElementById("voltante");
+    const relatorioDiv = document.getElementById("relatorio");
+    const loader = document.getElementById("loader");
+    const numConcurso = document.getElementById("numConcurso");
+    const anterior = document.getElementById("anterior");
+    const proximo = document.getElementById("proximo");
+    const notificacao = document.getElementById("notificacao");
+    let concursos = [];
+    let indiceAtual = 0;
+
+    function exibirNotificacao(msg) {
+      notificacao.textContent = msg;
+      notificacao.style.display = 'block';
+      setTimeout(() => notificacao.style.display = 'none', 3000);
+    }
+
+    function gerarRelatorio(numeros) {
+      const pares = numeros.filter(n => n % 2 === 0).length;
+      const impares = numeros.length - pares;
+      const soma = numeros.reduce((a, b) => a + b, 0);
+      relatorioDiv.innerHTML = `
+        <div class="relatorio">
+          <h2>📁 Relatório do Concurso</h2>
+          <p><strong>Total de Dezenas:</strong> ${numeros.length}</p>
+          <p><strong>Pares:</strong> ${pares} | <strong>Ímpares:</strong> ${impares}</p>
+          <p><strong>Soma Total:</strong> ${soma}</p>
+          <p><strong>Média:</strong> ${(soma / numeros.length).toFixed(2)}</p>
+          <p><strong>Menor Dezena:</strong> ${Math.min(...numeros)}</p>
+          <p><strong>Maior Dezena:</strong> ${Math.max(...numeros)}</p>
+        </div>
+      `;
+    }
+
+    function desenharVoltante(concurso) {
+      numConcurso.textContent = `Concurso ${concurso.Concurso}`;
+      resultadoDiv.innerHTML = '';
+      for (let i = 1; i <= 60; i++) {
+        const casa = document.createElement('div');
+        casa.className = 'casa';
+        if (concurso.Resultado.includes(i.toString().padStart(2, '0')) || concurso.Resultado.includes(i)) {
+          casa.classList.add('destaque');
+        }
+        const span = document.createElement('span');
+        span.textContent = i.toString().padStart(2, '0');
+        casa.appendChild(span);
+        resultadoDiv.appendChild(casa);
+      }
+      const dezenas = concurso.Resultado.map(Number);
+      gerarRelatorio(dezenas);
+    }
+
+    function carregarConcurso(indice) {
+      if (indice < 0 || indice >= concursos.length) return;
+      indiceAtual = indice;
+      desenharVoltante(concursos[indiceAtual]);
+    }
+
+    anterior.onclick = () => carregarConcurso(indiceAtual - 1);
+    proximo.onclick = () => carregarConcurso(indiceAtual + 1);
+
+    fetch("https://premium-portaldeloteriasmacpoint.onrender.com/api.php")
+      .then(res => res.json())
+      .then(data => {
+        concursos = data;
+        if (concursos.length > 0) {
+          carregarConcurso(concursos.length - 1);
+          exibirNotificacao("Dados carregados com sucesso ✅");
+        }
+      })
+      .catch(err => {
+        exibirNotificacao("Erro ao carregar os dados ❌");
+        console.error("Erro:", err);
+      });
+
+    btnBuscar.onclick = () => {
+      const val = inputBusca.value.trim();
+      if (val === "") return;
+      const idx = concursos.findIndex(c => c.Concurso == val);
+      if (idx >= 0) carregarConcurso(idx);
+      else exibirNotificacao("Concurso não encontrado ❗");
+    }
+  </script>
+</body>
+</html>
+
+

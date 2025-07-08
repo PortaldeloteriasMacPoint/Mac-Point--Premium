@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Desdobramentos </title>
+  <title>Desdobramentos</title>
   <style>
     * {margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif;}
     body {
       background: #000;
       color: #fff;
+      min-height: 100vh;
+      padding: 20px;
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      padding: 20px;
-      min-height: 100vh;
     }
     .container {
       width: 100%;
@@ -23,13 +23,14 @@
       border-radius: 12px;
       box-shadow: 0 0 12px #0f0;
       border: 2px solid #355E3B;
+      position: relative;
     }
-    h1 {
-      text-align: center;
-      color: #fff;
-      font-size: 22px;
-      margin-bottom: 20px;
-      text-shadow: 1px 1px 2px #000;
+    .tutorial-icon {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      z-index: 10000;
+      cursor: pointer;
     }
     .voltante {
       display: grid;
@@ -53,10 +54,7 @@
       user-select: none;
       box-shadow: 0 0 3px #0f0;
     }
-    .dezena:hover {
-      background: #333;
-      transform: scale(1.05);
-    }
+    .dezena:hover {background: #333; transform: scale(1.05);}
     .dezena.selecionada {
       background-color: #0f0;
       color: #000;
@@ -72,6 +70,7 @@
     label {
       font-size: 14px;
       margin-bottom: 5px;
+      display: block;
     }
     input {
       width: 100%;
@@ -102,10 +101,7 @@
       transition: 0.3s;
       box-shadow: 0 0 6px #0f0;
     }
-    .botoes button:hover {
-      background: #0f0;
-      color: #000;
-    }
+    .botoes button:hover {background: #0f0; color: #000;}
     .aviso {
       background: #f00;
       padding: 10px;
@@ -132,9 +128,68 @@
       font-size: 14px;
       box-shadow: 0 0 4px #0f0;
     }
+    #tutorialModal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.95);
+      z-index: 9999;
+      overflow-y: auto;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .modalContent {
+      max-width: 850px;
+      margin: 0 auto;
+      background: #111;
+      padding: 30px 20px;
+      border-radius: 16px;
+      box-shadow: 0 0 25px #0f0;
+      border: 2px solid #355E3B;
+      color: #fff;
+      position: relative;
+    }
+    .fecharTutorial {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: #f00;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      font-weight: bold;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 0 6px #000;
+    }
+
+.container h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 22px;
+  color: #fff;
+  text-shadow: 1px 1px 2px #000;
+}
+
+
   </style>
 </head>
 <body>
+  <div class="tutorial-icon" onclick="abrirTutorial()">
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="#0f0" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 0 4px #0f0);">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10
+               10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm1.07-7.75
+               -.9.92C12.45 13.9 12 14.5 12 16h-2v-.5c0-.8.45-1.5
+               1.17-2.08l1.24-1.26c.37-.36.59-.86.59-1.41
+               0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21
+               1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/>
+    </svg>
+  </div>
+
   <div class="container">
     <h1>Desdobramento com Voltante</h1>
     <div class="voltante" id="voltante"></div>
@@ -146,8 +201,73 @@
     </div>
     <div id="resultado"></div>
   </div>
-  <script src="script.js"></script>
- <script src="proteção.js"></script>
+
+  <div id="tutorialModal">
+    <div class="modalContent">
+      <button class="fecharTutorial" onclick="fecharTutorial()">×</button>
+<h1 style="text-align:center; color:#0f0; margin-bottom:20px;">📘 Tutorial - Desdobramentos</h1>
+<p style="color:#ccc; font-size:15px; line-height:1.6; margin-bottom: 20px;">
+  Este sistema permite criar jogos desdobrados com combinações matemáticas otimizadas.
+  Você pode escolher dezenas variáveis e fixas para montar combinações automaticamente.
+</p><h2 style="color:#0f0; margin: 15px 0 5px;">🎯 Como funciona:</h2>
+<ul style="padding-left: 20px; font-size: 15px; color: #ccc; line-height: 1.6;">
+  <li><strong>Selecione dezenas:</strong> Clique 1 vez em uma dezena para torná-la <span style="color:lime;">variável</span>.</li>
+  <li><strong>Fixe dezenas:</strong> Clique 2 vezes para torná-la <span style="color:gold;">fixa</span>.</li>
+  <li><strong>Remova seleção:</strong> Clique 3 vezes na mesma dezena para limpar.</li>
+</ul><h2 style="color:#0f0; margin: 15px 0 5px;">📌 Regras do Desdobramento:</h2>
+<ul style="padding-left: 20px; font-size: 15px; color: #ccc; line-height: 1.6;">
+  <li><strong>Quantidade mínima:</strong> O número total de dezenas (fixas + variáveis) deve ser igual ou maior que o tamanho do jogo escolhido.</li>
+  <li><strong>Limite:</strong> O sistema gera no máximo <span style="color: #0f0; font-weight: bold;">3.000 combinações</span> por vez para evitar travamentos.</li>
+</ul><h2 style="color:#0f0; margin: 15px 0 5px;">🔢 Exemplo prático:</h2>
+<p style="color:#ccc; font-size:15px; line-height:1.6;">
+  Você seleciona 9 dezenas (3 fixas e 6 variáveis) e escolhe <strong>tamanho do jogo = 6</strong>. O sistema irá combinar as 6 variáveis entre si e incluir as 3 fixas em todos os jogos gerados.
+</p><h2 style="color:#0f0; margin: 15px 0 5px;">📋 Sobre a quantidade de jogos gerados:</h2>
+<p style="color:#ccc; font-size:15px; line-height:1.6;">
+  A quantidade de combinações possíveis é calculada automaticamente com base nas dezenas selecionadas. Um aviso será exibido:
+</p>
+<ul style="padding-left: 20px; font-size: 15px; color: #ccc; line-height: 1.6;">
+  <li><strong>✔️ Verde:</strong> Total de combinações dentro do limite permitido.</li>
+  <li><strong>⚠️ Vermelho:</strong> Número de combinações excede o limite e não será processado.</li>
+</ul><h2 style="color:#0f0; margin: 15px 0 5px;">📤 Exportação / Impressão:</h2>
+<p style="color:#ccc; font-size:15px; line-height:1.6;">
+  Para imprimir ou salvar os jogos gerados, use a função de impressão do navegador (Ctrl + P ou Toque no menu de três pontos e escolha “Imprimir”).
+</p><h2 style="color:#0f0; margin: 15px 0 5px;">🛡️ Observações:</h2>
+<ul style="padding-left: 20px; font-size: 15px; color: #ccc; line-height: 1.6;">
+  <li>Não garantimos premiações. Use por sua conta e risco.</li>
+  <li>Ferramenta criada para fins estatísticos, estudos e simulações.</li>
+</ul>     
+  </div>
+<script src="script.js"></script>
+<script src="proteção.js"></script>
+ <script type="module">
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+        authDomain: "mac-projeto-4e552.firebaseapp.com",
+        projectId: "mac-projeto-4e552",
+        storageBucket: "mac-projeto-4e552.appspot.com",
+        messagingSenderId: "537330451519",
+        appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Verifica o status de autenticação ao carregar a página
+    window.onload = () => {
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                // Usuário autenticado, exibe o conteúdo protegido
+                document.getElementById("protectedContent").style.display = "block";
+            } else {
+                // Redireciona para a página de login se não estiver autenticado
+                window.location.href = "index.html";
+            }
+        });
+    };
+</script>
 <script>
 function checkConsoleAccess() {
     fetch('verifica_email.php')
@@ -185,36 +305,6 @@ window.addEventListener("contextmenu", (e) => {
     checkConsoleAccess();
 });
 </script>
-<script type="module">
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
-
-    const firebaseConfig = {
-        apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
-        authDomain: "mac-projeto-4e552.firebaseapp.com",
-        projectId: "mac-projeto-4e552",
-        storageBucket: "mac-projeto-4e552.appspot.com",
-        messagingSenderId: "537330451519",
-        appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    // Verifica o status de autenticação ao carregar a página
-    window.onload = () => {
-        onAuthStateChanged(auth, user => {
-            if (user) {
-                // Usuário autenticado, exibe o conteúdo protegido
-                document.getElementById("protectedContent").style.display = "block";
-            } else {
-                // Redireciona para a página de login se não estiver autenticado
-                window.location.href = "index.html";
-            }
-        });
-    };
-</script>
-
   <script>
     const voltante = document.getElementById('voltante');
     const resultado = document.getElementById('resultado');
@@ -317,8 +407,14 @@ window.addEventListener("contextmenu", (e) => {
       });
       resultado.innerHTML = '';
     }
+
+    function abrirTutorial() {
+      document.getElementById('tutorialModal').style.display = 'block';
+    }
+
+    function fecharTutorial() {
+      document.getElementById('tutorialModal').style.display = 'none';
+    }
   </script>
-  <div style="height: 120px;"></div>
 </body>
 </html>
-

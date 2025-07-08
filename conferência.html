@@ -3,82 +3,120 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>🍀 Conferência MEGA SENA </title>
+  <title>Conferência MS - Mac Point </title>
   <style>
     * { box-sizing: border-box; }
     body {
       background: #000;
       color: #fff;
       font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 4vw 3vw;
-      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 5vw 3vw;
+      overflow-x: hidden;
     }
     h1 {
-      font-size: clamp(30px, 7vw, 50px);
-      color: #fff;
+      font-size: clamp(28px, 7vw, 48px);
+      margin-bottom: 4vw;
     }
     .painel {
-      max-width: 900px;
-      margin: auto;
-    }
-    .jogos-area, .resultado-area {
-      margin-top: 5vw;
+      width: 100%;
+      max-width: 700px;
     }
     textarea {
       width: 100%;
-      height: 150px;
-      padding: 2vw;
-      font-size: clamp(14px, 4vw, 20px);
-      border-radius: 10px;
+      height: 50px;
+      font-size: clamp(14px, 4vw, 18px);
+      padding: 1.5vw;
       border: 2px solid #355E3B;
+      border-radius: 10px;
       resize: none;
+      margin-bottom: 2vw;
     }
     button {
-      margin-top: 2vw;
-      padding: 2vw 4vw;
-      font-size: clamp(16px, 4vw, 22px);
+      width: 100%;
+      padding: 1.8vw;
+      font-size: clamp(16px, 4vw, 20px);
       background: linear-gradient(145deg, #355E3B, #00ff7f);
       border: none;
       color: #000;
       font-weight: bold;
       border-radius: 10px;
-      box-shadow: 0 0 8px #00ff7f80;
+      box-shadow: 0 0 10px #00ff7f80;
       cursor: pointer;
     }
-    button:hover {
-      box-shadow: 0 0 12px #00ff7f;
-    }
-    .resposta {
+    .resultado-area {
+      margin-top: 5vw;
       background: #001a12;
-      border: 2px solid #fff;
+      border: 2px solid #355E3B;
       padding: 3vw;
-      border-radius: 12px;
-      margin-top: 4vw;
-      font-size: clamp(14px, 4vw, 20px);
-      text-align: left;
-    }
-    .acerto {
-      color: #00ff7f;
-      font-weight: bold;
+      border-radius: 15px;
+      width: 100%;
     }
     .titulo-acerto {
-      margin-top: 3vw;
-      color: #00ff7f;
       font-size: clamp(18px, 5vw, 26px);
+      color: #00ff7f;
+      margin: 2vw 0 1vw;
+    }
+    .premio-bloco {
+      background: #002d1f;
+      border: 2px solid #00ff7f;
+      border-radius: 15px;
+      padding: 4vw;
+      margin-top: 3vw;
+      text-align: center;
+      animation: pulse 2s infinite;
+    }
+    .premio-bloco img {
+      width: 120px;
+      margin-bottom: 2vw;
+      border-radius: 15px;
+    }
+    .premio-bloco h2 {
+      font-size: clamp(20px, 6vw, 32px);
+      color: #00ff7f;
+      margin: 1vw 0;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 10px #00ff7f; }
+      50% { box-shadow: 0 0 20px #00ff7f88; }
+      100% { box-shadow: 0 0 10px #00ff7f; }
+    }
+    .money {
+      position: fixed;
+      top: -50px;
+      font-size: 60px;
+      z-index: 9999;
+      animation: fall linear infinite;
+    }
+    @keyframes fall {
+      0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(120vh) rotate(360deg); opacity: 0; }
+    }
+    #loader {
+      margin: 30px auto;
+      border: 6px solid #355E3B;
+      border-top: 6px solid #00ff7f;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      display: none;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
   </style>
 </head>
 <body>
+  <h1>🎯 Conferência - Mega Sena </h1>
   <div class="painel">
-    <h1>🍀 Conferência MEGA SENA </h1>
-    <div class="jogos-area">
-      <textarea id="meusJogos" placeholder="Digite seus jogos (ex: 09 18 28 35 39 48) um por linha"></textarea>
-      <button onclick="conferirHistorico()">Conferir no Histórico</button>
-    </div>
-    <div class="resultado-area">
-      <div class="resposta" id="resultadoConferencia">Aguardando conferência...</div>
-    </div>
+    <textarea id="meuJogo" placeholder="Ex: 09 18 28 35 39 48"></textarea>
+    <button onclick="conferir()">Conferir Resultado</button>
+    <div id="loader"></div>
+    <div id="resultado" class="resultado-area"></div>
   </div>
 <script src="script.js"></script>
 <script src="proteção.js"></script>
@@ -149,49 +187,73 @@ window.addEventListener("contextmenu", (e) => {
 });
 </script>
   <script>
-    function conferirHistorico() {
-      const jogosTexto = document.getElementById("meusJogos").value.trim();
-      const resposta = document.getElementById("resultadoConferencia");
-      if (!jogosTexto) return resposta.innerHTML = "Digite ao menos um jogo.";
+    const gerarChuva = () => {
+      for (let i = 0; i < 40; i++) {
+        const dinheiro = document.createElement("div");
+        dinheiro.classList.add("money");
+        dinheiro.textContent = "💵";
+        dinheiro.style.left = Math.random() * 100 + "vw";
+        dinheiro.style.animationDuration = 2 + Math.random() * 3 + "s";
+        document.body.appendChild(dinheiro);
+        setTimeout(() => dinheiro.remove(), 6000);
+      }
+    };
+
+    function conferir() {
+      const input = document.getElementById("meuJogo").value.trim().split(/\s+/).map(Number);
+      const resultDiv = document.getElementById("resultado");
+      const loader = document.getElementById("loader");
+
+      resultDiv.innerHTML = '';
+      loader.style.display = 'block';
 
       fetch("https://premium-portaldeloteriasmacpoint.onrender.com/api.php")
         .then(res => res.json())
         .then(data => {
-          const linhas = jogosTexto.split('\n').map(l => l.trim().split(/\s+/).map(Number));
-          const acertosPorQtd = {6: [], 5: [], 4: [], 3: []};
+          loader.style.display = 'none';
+          const jogosComAcertos = [];
 
-          linhas.forEach((jogo, idxJogo) => {
-            data.forEach((conc) => {
-              const dezenasConc = conc.Resultado.map(Number);
-              const acertos = jogo.filter(n => dezenasConc.includes(n));
-              if (acertos.length >= 3) {
-                acertosPorQtd[acertos.length].push({
-                  jogo: idxJogo + 1,
-                  acertos: acertos.length,
-                  dezenas: acertos,
-                  concurso: conc.Concurso,
-                  resultado: dezenasConc
-                });
-              }
-            });
-          });
-
-          let html = "";
-
-          [6, 5, 4, 3].forEach(qtd => {
-            if (acertosPorQtd[qtd].length > 0) {
-              html += `<div class="titulo-acerto">Jogos com ${qtd} Acertos</div>`;
-              acertosPorQtd[qtd].forEach(item => {
-                html += `<p><strong>Jogo ${item.jogo}:</strong> Concurso ${item.concurso} — Resultado: ${item.resultado.join(' ')}<br><span class="acerto">Acertos: ${item.acertos} (${item.dezenas.join(' ')})</span></p>`;
+          data.forEach(c => {
+            const dezenas = c.Resultado.map(Number);
+            const acertos = input.filter(n => dezenas.includes(n));
+            if (acertos.length >= 3) {
+              jogosComAcertos.push({
+                concurso: c.Concurso,
+                acertos: acertos,
+                qtd: acertos.length
               });
-              html += "<hr>";
             }
           });
 
-          resposta.innerHTML = html || "Nenhum jogo com 3 ou mais acertos encontrado no histórico.";
+          jogosComAcertos.sort((a, b) => b.qtd - a.qtd);
+
+          jogosComAcertos.forEach(jogo => {
+            const bloco = document.createElement('div');
+            bloco.innerHTML = `
+              <div class="titulo-acerto">Concurso ${jogo.concurso} - ${jogo.qtd} acertos</div>
+              <div style="margin-bottom:10px;">Acertos: ${jogo.acertos.join(', ')}</div>
+            `;
+            resultDiv.appendChild(bloco);
+
+            if (jogo.qtd === 6) {
+              const premio = document.createElement('div');
+              premio.className = 'premio-bloco';
+              premio.innerHTML = `
+                <img src="https://media.giphy.com/media/111ebonMs90YLu/giphy.gif" />
+                <h2>🎉 Você seria o novo milionário! Parabéns! 🎉</h2>
+              `;
+              resultDiv.appendChild(premio);
+              gerarChuva();
+            }
+          });
+
+          if (jogosComAcertos.length === 0) {
+            resultDiv.innerHTML = "<p style='text-align:center;'>Nenhum concurso com 3 ou mais acertos encontrados.</p>";
+          }
         })
         .catch(() => {
-          resposta.innerHTML = "Erro ao buscar os resultados.";
+          loader.style.display = 'none';
+          resultDiv.innerHTML = "<p style='text-align:center;'>Erro ao carregar os resultados.</p>";
         });
     }
   </script>

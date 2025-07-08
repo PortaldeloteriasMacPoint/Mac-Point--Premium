@@ -2,38 +2,44 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Tabela - Combinações Inteligentes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tabela de Combinações</title>
   <style>
-    * { box-sizing: border-box; }
+    * {margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif;}
     body {
-      margin: 0;
       background: linear-gradient(135deg, #000, #0a0a0a, #355E3B);
-      font-family: 'Segoe UI', sans-serif;
       color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       min-height: 100vh;
       padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
     }
     .container {
-      background-color: #000;
-      border: 2px solid #355E3B;
-      border-radius: 15px;
-      padding: 20px;
-      max-width: 600px;
       width: 100%;
-      box-shadow: 0 0 15px #00ff0070;
-      text-align: center;
+      max-width: 800px;
+      background: #111;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px #0f05;
+      border: 2px solid #355E3B;
+      position: relative;
     }
-    h2 {
+    h1 {
+      text-align: center;
       font-size: clamp(1.5rem, 4vw, 2rem);
       margin-bottom: 20px;
-      text-transform: uppercase;
+    }
+    .tutorial-icon {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      cursor: pointer;
+      z-index: 10000;
     }
     .configuracao {
       margin-bottom: 15px;
+      text-align: center;
     }
     select {
       padding: 10px;
@@ -42,8 +48,8 @@
       border: none;
       background: white;
       color: black;
-      width: 100%;
       max-width: 300px;
+      width: 100%;
     }
     .quadro-container {
       display: grid;
@@ -68,10 +74,11 @@
       font-weight: bold;
       border-radius: 8px;
       cursor: pointer;
-      margin: 10px 5px 0;
+      margin: 10px auto 0;
       background: #355E3B;
       color: white;
       border: 2px solid black;
+      display: block;
       text-shadow:
         -1px -1px 0 black,
          1px -1px 0 black,
@@ -135,6 +142,44 @@
       opacity: 1;
       pointer-events: auto;
     }
+    #tutorialModal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.95);
+      z-index: 9999;
+      overflow-y: auto;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .modalContent {
+      max-width: 850px;
+      margin: 0 auto;
+      background: #111;
+      padding: 30px 20px;
+      border-radius: 16px;
+      box-shadow: 0 0 25px #0f0;
+      border: 2px solid #355E3B;
+      color: #fff;
+      position: relative;
+    }
+    .fecharTutorial {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: #f00;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      font-weight: bold;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 0 6px #000;
+    }
     @media (max-width: 600px) {
       .quadro-container input {
         width: 40px;
@@ -145,36 +190,63 @@
         min-width: 40px;
         font-size: 14px;
       }
-      button {
-        width: 100%;
-      }
-      select {
+      button, select {
         width: 100%;
       }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Tabela - Combinações </h2>
-    <div class="configuracao">
-      <label for="tamanho-quadro">Tamanho do quadro:</label>
-      <select id="tamanho-quadro" onchange="gerarQuadro()">
-        <option value="3">3x3</option>
-        <option value="4">4x4</option>
-        <option value="5">5x5</option>
-      </select>
-    </div>
-    <div id="quadro-container" class="quadro-container"></div>
-    <button class="btn-verde" onclick="gerarCombinacoes()">Gerar Combinações</button>
-    <div id="resultado" class="resultado"></div>
-    <div class="frequencia" id="frequencia" style="display:none;">
-      <h3>Frequência dos Dígitos</h3>
-      <div id="frequencia-lista"></div>
-    </div>
+<div class="tutorial-icon" onclick="abrirTutorial()">
+  <svg width="32" height="32" viewBox="0 0 24 24" fill="#0f0" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 0 4px #0f0);">
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10
+             10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm1.07-7.75
+             -.9.92C12.45 13.9 12 14.5 12 16h-2v-.5c0-.8.45-1.5
+             1.17-2.08l1.24-1.26c.37-.36.59-.86.59-1.41
+             0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21
+             1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/>
+  </svg>
+</div>
+
+<div class="container">
+  <h1>Tabela de Combinações</h1>
+  <div class="configuracao">
+    <label for="tamanho-quadro">Tamanho do Quadro:</label>
+    <select id="tamanho-quadro" onchange="gerarQuadro()">
+      <option value="3">3x3</option>
+      <option value="4">4x4</option>
+      <option value="5">5x5</option>
+    </select>
   </div>
-  <div id="notificacao" class="notificacao"></div>
-  <script src="script.js"></script>
+  <div id="quadro-container" class="quadro-container"></div>
+  <button class="btn-verde" onclick="gerarCombinacoes()">Gerar Combinações</button>
+  <div id="resultado" class="resultado"></div>
+  <div class="frequencia" id="frequencia" style="display:none;">
+    <h3>Frequência dos Dígitos</h3>
+    <div id="frequencia-lista"></div>
+  </div>
+</div>
+
+<div id="notificacao" class="notificacao"></div>
+
+<div id="tutorialModal">
+  <div class="modalContent">
+    <button class="fecharTutorial" onclick="fecharTutorial()">×</button>
+    <h1 style="text-align:center; color:#0f0; margin-bottom:20px;">📘 Tutorial - Tabela de Combinações</h1>
+    <p style="color:#ccc; font-size:15px; line-height:1.6;">Este sistema permite montar uma matriz personalizada com dígitos (0–9) e gerar automaticamente todas as combinações possíveis de dois dígitos diferentes.</p>
+    <h2 style="color:#0f0; margin-top:15px;">Como usar:</h2>
+    <ul style="color:#ccc; font-size:15px; line-height:1.6;">
+      <li>Escolha o tamanho da tabela: 3x3, 4x4 ou 5x5.</li>
+      <li>Preencha os campos com dígitos de 0 a 9.</li>
+      <li>Clique em <strong>Gerar Combinações</strong>.</li>
+    </ul>
+    <h2 style="color:#0f0; margin-top:15px;">Resultado:</h2>
+    <p style="color:#ccc;">O sistema mostra todas as combinações possíveis de dois dígitos diferentes e também a frequência de cada número inserido.</p>
+    <h2 style="color:#0f0; margin-top:15px;">Validação:</h2>
+    <p style="color:#ccc;">Campos com letras ou múltiplos caracteres são ignorados.</p>
+  </div>
+</div>
+<script src="script.js"></script>
 <script src="proteção.js"></script>
  <script type="module">
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
@@ -242,77 +314,85 @@ window.addEventListener("contextmenu", (e) => {
     checkConsoleAccess();
 });
 </script>
-  <script>
-    function gerarQuadro() {
-      const tamanho = parseInt(document.getElementById("tamanho-quadro").value);
-      const quadro = document.getElementById("quadro-container");
-      quadro.innerHTML = "";
-      quadro.style.gridTemplateColumns = `repeat(${tamanho}, 50px)`;
-      for (let i = 0; i < tamanho * tamanho; i++) {
-        const input = document.createElement("input");
-        input.type = "text";
-        input.maxLength = 1;
-        input.oninput = () => {
-          if (!/^[0-9]$/.test(input.value)) input.value = "";
-        };
-        quadro.appendChild(input);
-      }
-      document.getElementById("resultado").innerHTML = "";
-      document.getElementById("frequencia").style.display = "none";
+<script>
+function gerarQuadro() {
+  const tamanho = parseInt(document.getElementById("tamanho-quadro").value);
+  const quadro = document.getElementById("quadro-container");
+  quadro.innerHTML = "";
+  quadro.style.gridTemplateColumns = `repeat(${tamanho}, 50px)`;
+  for (let i = 0; i < tamanho * tamanho; i++) {
+    const input = document.createElement("input");
+    input.type = "text";
+    input.maxLength = 1;
+    input.oninput = () => {
+      if (!/^[0-9]$/.test(input.value)) input.value = "";
+    };
+    quadro.appendChild(input);
+  }
+  document.getElementById("resultado").innerHTML = "";
+  document.getElementById("frequencia").style.display = "none";
+}
+
+function gerarCombinacoes() {
+  const inputs = document.querySelectorAll("#quadro-container input");
+  const digitos = Array.from(inputs).map(i => i.value).filter(v => v !== "");
+  if (digitos.length < 2) {
+    mostrarNotificacao("Preencha pelo menos dois campos.");
+    return;
+  }
+  const combinacoes = new Set();
+  for (let i = 0; i < digitos.length; i++) {
+    for (let j = 0; j < digitos.length; j++) {
+      if (i !== j) combinacoes.add(`${digitos[i]}${digitos[j]}`);
     }
+  }
+  const lista = Array.from(combinacoes).sort();
+  const resultado = document.getElementById("resultado");
+  resultado.innerHTML = "";
+  lista.forEach(comb => {
+    const div = document.createElement("div");
+    div.className = "comb";
+    div.textContent = comb;
+    resultado.appendChild(div);
+  });
 
-    function gerarCombinacoes() {
-      const inputs = document.querySelectorAll("#quadro-container input");
-      const digitos = Array.from(inputs).map(i => i.value).filter(v => v !== "");
-      if (digitos.length < 2) {
-        mostrarNotificacao("Preencha pelo menos dois campos.");
-        return;
-      }
-      const combinacoes = new Set();
-      for (let i = 0; i < digitos.length; i++) {
-        for (let j = 0; j < digitos.length; j++) {
-          if (i !== j) combinacoes.add(`${digitos[i]}${digitos[j]}`);
-        }
-      }
-      const lista = Array.from(combinacoes).sort();
-      const resultado = document.getElementById("resultado");
-      resultado.innerHTML = "";
-      lista.forEach(comb => {
-        const div = document.createElement("div");
-        div.className = "comb";
-        div.textContent = comb;
-        resultado.appendChild(div);
-      });
+  mostrarFrequencia(digitos);
+}
 
-      mostrarFrequencia(digitos);
-    }
+function mostrarFrequencia(digitos) {
+  const freq = {};
+  digitos.forEach(d => {
+    freq[d] = (freq[d] || 0) + 1;
+  });
+  const lista = Object.entries(freq).sort((a, b) => b[1] - a[1]);
+  const container = document.getElementById("frequencia-lista");
+  container.innerHTML = "";
+  lista.forEach(([dig, qt]) => {
+    const linha = document.createElement("div");
+    linha.className = "frequencia-item";
+    linha.textContent = `Dígito ${dig} apareceu ${qt}x`;
+    container.appendChild(linha);
+  });
+  document.getElementById("frequencia").style.display = "block";
+}
 
-    function mostrarFrequencia(digitos) {
-      const freq = {};
-      digitos.forEach(d => {
-        freq[d] = (freq[d] || 0) + 1;
-      });
-      const lista = Object.entries(freq).sort((a, b) => b[1] - a[1]);
-      const container = document.getElementById("frequencia-lista");
-      container.innerHTML = "";
-      lista.forEach(([dig, qt]) => {
-        const linha = document.createElement("div");
-        linha.className = "frequencia-item";
-        linha.textContent = `Dígito ${dig} apareceu ${qt}x`;
-        container.appendChild(linha);
-      });
-      document.getElementById("frequencia").style.display = "block";
-    }
+function mostrarNotificacao(msg) {
+  const el = document.getElementById("notificacao");
+  el.textContent = msg;
+  el.classList.add("show");
+  clearTimeout(window._notifTimeout);
+  window._notifTimeout = setTimeout(() => el.classList.remove("show"), 3000);
+}
 
-    function mostrarNotificacao(msg) {
-      const el = document.getElementById("notificacao");
-      el.textContent = msg;
-      el.classList.add("show");
-      clearTimeout(window._notifTimeout);
-      window._notifTimeout = setTimeout(() => el.classList.remove("show"), 3000);
-    }
+function abrirTutorial() {
+  document.getElementById("tutorialModal").style.display = 'block';
+}
+function fecharTutorial() {
+  document.getElementById("tutorialModal").style.display = 'none';
+}
 
-    gerarQuadro();
-  </script>
+gerarQuadro();
+</script>
 </body>
 </html>
+

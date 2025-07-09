@@ -268,21 +268,82 @@
 
   <iframe id="janela" class="iframe-area"></iframe>
 
-  <div class="conteudo" id="conteudo-principal">
-    <div class="capa"></div>
+  <div class="conteudo">
+<div class="capa"></div>
+  <div style="
+    position: relative;
+    width: 100%;
+    max-width: 1000px;
+    margin: auto;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 255, 153, 0.2), 0 0 60px rgba(0, 255, 153, 0.1);
+  ">
     <div style="
-      background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6));
-      padding: 24px;
-      border-radius: 16px;
-      margin-bottom: 40px;
-      box-shadow: 0 0 20px rgba(0, 255, 153, 0.2), 0 0 60px rgba(0, 255, 153, 0.1);
-      color: #ccc;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6)), url('https://source.unsplash.com/1600x900/?lottery,technology');
+      background-size: cover;
+      background-position: center;
+      height: clamp(220px, 35vw, 420px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
     ">
-      <p style="font-size: clamp(16px, 2.5vw, 20px); text-shadow: 0 0 4px #000;">
-        A plataforma inteligente para entusiastas de loteria. Simule, analise, cruze e descubra combinações com facilidade.
-      </p>
+      <h1 style="
+        font-size: clamp(30px, 6vw, 44px);
+        color: #fff;
+        text-shadow: 0 0 10px #000;
+        font-weight: bold;
+      ">
+        🍀 Bem-vindo ao Mac Point
+      </h1>
+    </div><div style="
+  background-color: #1a1a1a;
+  padding: 32px 24px;
+  text-align: center;
+">
+  <p style="
+    font-size: clamp(17px, 2.7vw, 22px);
+    color: #ddd;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 18px;
+    border-radius: 12px;
+    line-height: 1.6;
+    text-shadow: 0 0 5px #000;
+    max-width: 900px;
+    margin: auto;
+  ">
+    Descubra uma nova forma de apostar com inteligência! O <strong>Mac Point</strong> oferece ferramentas exclusivas para simulação de jogos, análise de resultados, cruzamento de dezenas, dicas estatísticas e muito mais. Otimize suas chances e explore funcionalidades avançadas pensadas para quem leva a sorte a sério.
+  </p>
+
+  <!-- Carrossel -->
+  <div style="
+    margin-top: 30px;
+    overflow: hidden;
+    border-radius: 12px;
+  ">
+    <div style="
+      display: flex;
+      width: 300%;
+      animation: deslizar 15s infinite linear;
+    ">
+      <img src="https://source.unsplash.com/800x400/?lottery,numbers" style="width: 100%; height: auto;" />
+      <img src="https://source.unsplash.com/800x400/?luck,technology" style="width: 100%; height: auto;" />
+      <img src="https://source.unsplash.com/800x400/?money,data" style="width: 100%; height: auto;" />
     </div>
   </div>
+</div>
+
+  </div>
+</div><style>
+@keyframes deslizar {
+  0% { transform: translateX(0%); }
+  33% { transform: translateX(-100%); }
+  66% { transform: translateX(-200%); }
+  100% { transform: translateX(0%); }
+}
+</style>
 
   <div class="rodape" id="rodape">
     <div class="icone-rodape" onclick="abrirPagina('index.html')">

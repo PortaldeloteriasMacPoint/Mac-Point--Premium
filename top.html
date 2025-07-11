@@ -237,7 +237,7 @@
       <span class="descricao">Crie jogos com probabilidades</span>
     </button>
     <button onclick="abrirIframe('geradorpro.html')">
-      <i class="fas fa-random"></i> 
+      <i class="fas fa-random"></i> Gerador com padrões 
       <span class="descricao">Crie jogos com padrão de frequência </span>
     </button>
     <button onclick="abrirIframe('tabelaproms.html')">
@@ -342,5 +342,15 @@
       window.location.href = url;
     }
   </script>
+  <script>
+  function filtrarMenu() {
+    const termo = document.getElementById("buscaMenu").value.toLowerCase();
+    const botoes = document.querySelectorAll(".menu-lateral button");
+    botoes.forEach(btn => {
+      const texto = btn.innerText.toLowerCase();
+      btn.style.display = texto.includes(termo) ? "block" : "none";
+    });
+  }
+</script>
 </body>
 </html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gerador com Soma, Fixas e Padrões de Linha</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: linear-gradient(to bottom, #000, #355E3B);
+      font-family: Arial, sans-serif;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    h1 {
+      font-size: clamp(24px, 5vw, 40px);
+      margin-bottom: 20px;
+      text-align: center;
+      text-shadow: 0 0 10px #00ff7f;
+    }
+    .painel {
+      background: rgba(0, 0, 0, 0.85);
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 0 20px #00ff7f88;
+      width: 100%;
+      max-width: 800px;
+      text-align: center;
+    }
+    textarea, input, select, button {
+      margin: 10px 5px;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+      width: 100%;
+      max-width: 400px;
+      background: #222;
+      color: white;
+    }
+    button {
+      background-color: #cc5500;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #ff6600;
+      cursor: pointer;
+    }
+    .jogo {
+      background-color: #001a12;
+      border: 2px solid #00ff7f;
+      border-radius: 12px;
+      padding: 16px;
+      margin: 10px 0;
+      box-shadow: 0 0 10px #00ff7f55;
+      font-size: clamp(16px, 3vw, 20px);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+    }
+    .dezena {
+      background: #355E3B;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      box-shadow: 0 0 5px #00ff7f;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎯 Gerador com Soma, Fixas e Padrões de Linha</h1>
+  <div class="painel">
+    <textarea id="dezenas" placeholder="Dezenas disponíveis (ex: 01,02,03...)"></textarea>
+    <textarea id="fixas" placeholder="Dezenas fixas (ex: 10,15)"></textarea>
+    <input type="number" id="soma" placeholder="Soma total desejada" />
+    <select id="linhasQtd">
+      <option value="0">Qualquer número de linhas</option>
+      <option value="1">1 linha</option>
+      <option value="2">2 linhas</option>
+      <option value="3">3 linhas</option>
+      <option value="4">4 linhas</option>
+      <option value="5">5 linhas</option>
+      <option value="6">6 linhas</option>
+    </select>
+    <button onclick="gerar()">Gerar Jogos</button>
+    <div id="saida"></div>
+  </div>
+  <script>
+    function linhaDeDezena(n) {
+      return Math.floor((n - 1) / 10) + 1;
+    }
+
+    function gerar() {
+      const dezenasInput = document.getElementById("dezenas").value.trim();
+      const fixasInput = document.getElementById("fixas").value.trim();
+      const somaDesejada = parseInt(document.getElementById("soma").value);
+      const linhasQtd = parseInt(document.getElementById("linhasQtd").value);
+      const saida = document.getElementById("saida");
+      saida.innerHTML = "";
+
+      if (!dezenasInput || isNaN(somaDesejada)) return;
+
+      const dezenas = dezenasInput.split(",").map(n => parseInt(n.trim())).filter(n => !isNaN(n));
+      const fixas = fixasInput ? fixasInput.split(",").map(n => parseInt(n.trim())).filter(n => !isNaN(n)) : [];
+
+      if (fixas.some(f => !dezenas.includes(f))) {
+        saida.innerHTML = "<p style='color:red;'>Dezenas fixas devem estar nas dezenas disponíveis.</p>";
+        return;
+      }
+
+      const restantes = dezenas.filter(n => !fixas.includes(n));
+      const jogos = new Set();
+      let tentativas = 0;
+
+      while (jogos.size < 100 && tentativas < 200000) {
+        tentativas++;
+        const embaralhado = [...restantes].sort(() => Math.random() - 0.5);
+        const jogo = [...fixas, ...embaralhado.slice(0, 6 - fixas.length)].sort((a, b) => a - b);
+
+        if (jogo.length !== 6) continue;
+
+        const soma = jogo.reduce((acc, n) => acc + n, 0);
+        if (soma !== somaDesejada) continue;
+
+        if (linhasQtd > 0) {
+          const linhasNoJogo = new Set(jogo.map(linhaDeDezena)).size;
+          if (linhasNoJogo !== linhasQtd) continue;
+        }
+
+        jogos.add(jogo.join(","));
+      }
+
+      if (jogos.size === 0) {
+        saida.innerHTML = "<p style='color:red;'>Nenhum jogo encontrado com essa soma, fixas e padrão de linhas.</p>";
+        return;
+      }
+
+      [...jogos].forEach(jogoStr => {
+        const div = document.createElement("div");
+        div.className = "jogo";
+        jogoStr.split(",").forEach(n => {
+          const el = document.createElement("div");
+          el.className = "dezena";
+          el.textContent = String(n).padStart(2, "0");
+          div.appendChild(el);
+        });
+        saida.appendChild(div);
+      });
+    }
+  </script>
+</body>
+</html>

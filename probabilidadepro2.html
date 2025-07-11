@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pendências Semi-Linhas e Semi-Colunas</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: linear-gradient(to bottom, #000, #355E3B);
+      color: white;
+      font-family: Arial, sans-serif;
+      min-height: 100vh;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      font-size: clamp(24px, 5vw, 36px);
+      margin-bottom: 20px;
+      text-align: center;
+      text-shadow: 0 0 10px #00ff7f;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+    .ajuda {
+      cursor: pointer;
+      font-size: 24px;
+      color: #00ff7f;
+      text-shadow: 0 0 5px #00ff7f;
+    }
+    .painel {
+      background: rgba(0,0,0,0.85);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px #00ff7f66;
+      width: 100%;
+      max-width: 900px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #00ff7f;
+      padding: 10px;
+      text-align: center;
+      font-size: clamp(14px, 2vw, 18px);
+    }
+    th {
+      background: #004d3c;
+    }
+    .highlight {
+      background: #004d3c;
+      font-weight: bold;
+      color: #00ff7f;
+      text-shadow: 0 0 8px #00ff7f;
+    }
+    #loader-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 40px 0;
+    }
+    .loader {
+      border: 10px solid #333;
+      border-top: 10px solid #00ff7f;
+      border-radius: 50%;
+      width: 80px;
+      height: 80px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 15px;
+    }
+    #loading-text {
+      font-weight: bold;
+      font-size: clamp(16px, 3vw, 20px);
+      color: #00ff7f;
+      text-shadow: 0 0 6px #00ff7f;
+      text-align: center;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg);}
+      100% { transform: rotate(360deg);}
+    }
+
+    #tutorial {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #000;
+      border: 2px solid #00ff7f;
+      border-radius: 16px;
+      padding: 30px 20px;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 0 30px #00ff7f99;
+      z-index: 999;
+      text-align: center;
+    }
+    #tutorial h2 {
+      color: #00ff7f;
+      margin-bottom: 15px;
+    }
+    #tutorial p {
+      font-size: clamp(14px, 2vw, 18px);
+      margin-bottom: 10px;
+    }
+    #fechar {
+      position: absolute;
+      top: -16px;
+      right: -16px;
+      background: red;
+      color: white;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 10px red;
+      border: 2px solid white;
+    }
+  </style>
+</head>
+<body>
+  <h1>
+    🔍 Pendências Semi-Linhas e Semi-Colunas
+    <span class="ajuda" onclick="document.getElementById('tutorial').style.display='block'">❔</span>
+  </h1>
+
+  <div class="painel">
+    <div id="loader-wrapper" style="display:none;">
+      <div class="loader"></div>
+      <div id="loading-text">Analisando dados...</div>
+    </div>
+    <div id="resultado">Carregando dados...</div>
+  </div>
+
+  <div id="tutorial">
+    <div id="fechar" onclick="document.getElementById('tutorial').style.display='none'">✕</div>
+    <h2>ℹ️ Como funciona?</h2>
+    <p>Esta ferramenta analisa os padrões de 4, 5 e 6 semi-linhas e 3, 4, 5, 6 semi-colunas nos últimos concursos da Mega-Sena.</p>
+    <p>Os dados exibem os padrões que estão em atraso comparados à sua frequência histórica.</p>
+    <p><strong>Obs:</strong> Geralmente as pendências ativas permanecem atrasadas na maioria das vezes. Utilize padrões de probabilidades recentes ou moderados.</p>
+  </div>
+
+  <script>
+    const resultado = document.getElementById("resultado");
+    const loaderWrapper = document.getElementById("loader-wrapper");
+
+    const semiLinhas = Array.from({length: 12}, (_, i) => {
+      const base = i * 5 + 1;
+      return Array.from({length: 5}, (_, j) => base + j);
+    });
+
+    const semiColunas = Array.from({length: 20}, (_, i) => {
+      const base = (i % 10) + 1 + Math.floor(i / 10) * 30;
+      return [base, base + 10, base + 20];
+    });
+
+    function obterPadroes(grupos, jogo) {
+      return grupos.map((g, i) => g.some(n => jogo.includes(n)) ? i + 1 : null)
+                   .filter(n => n !== null)
+                   .sort((a, b) => a - b);
+    }
+
+    function calcularIntervalos(padroes, concursos, filtroQtd) {
+      const ultConcurso = concursos.at(-1).Concurso;
+      const registros = {};
+      const intervalos = {};
+
+      concursos.forEach(c => {
+        const jogo = c.Resultado;
+        const padroesAtivos = obterPadroes(padroes, jogo);
+        if (filtroQtd.includes(padroesAtivos.length)) {
+          const chave = padroesAtivos.join(",");
+          if (!registros[chave]) registros[chave] = [];
+          registros[chave].push(c.Concurso);
+        }
+      });
+
+      for (const chave in registros) {
+        const lista = registros[chave];
+        if (lista.length < 2) {
+          intervalos[chave] = ultConcurso - lista[0];
+        } else {
+          let soma = 0;
+          for (let i = 1; i < lista.length; i++) {
+            soma += lista[i] - lista[i - 1];
+          }
+          intervalos[chave] = Math.round(soma / (lista.length - 1));
+        }
+      }
+
+      return intervalos;
+    }
+
+    async function buscar() {
+      loaderWrapper.style.display = "flex";
+      resultado.innerHTML = "";
+      try {
+        const res = await fetch("https://premium-portaldeloteriasmacpoint.onrender.com/api.php");
+        const data = await res.json();
+        const ultimos = data.slice(-100);
+        processar(ultimos);
+      } catch {
+        resultado.innerHTML = "<p style='color:red;'>Erro ao carregar dados.</p>";
+      } finally {
+        loaderWrapper.style.display = "none";
+      }
+    }
+
+    function processar(concursos) {
+      const ultConcurso = concursos.at(-1).Concurso;
+      const atrasosSL = {}, atrasosSC = {};
+      concursos.forEach(c => {
+        const jogo = c.Resultado;
+        const padSL = obterPadroes(semiLinhas, jogo);
+        const padSC = obterPadroes(semiColunas, jogo);
+        if ([4,5,6].includes(padSL.length)) atrasosSL[padSL.join(",")] = c.Concurso;
+        if ([3,4,5,6].includes(padSC.length)) atrasosSC[padSC.join(",")] = c.Concurso;
+      });
+
+      const intSL = calcularIntervalos(semiLinhas, concursos, [4,5,6]);
+      const intSC = calcularIntervalos(semiColunas, concursos, [3,4,5,6]);
+
+      const gerar = (mapa, intervalos) => Object.entries(mapa).map(([padrao, conc]) => {
+        const atraso = ultConcurso - conc;
+        const intervalo = intervalos[padrao] || 0;
+        return { padrao, atraso, intervalo, destaque: atraso >= intervalo && intervalo > 0 };
+      }).sort((a,b) => b.atraso - a.atraso);
+
+      const linhas = gerar(atrasosSL, intSL);
+      const colunas = gerar(atrasosSC, intSC);
+
+      let html = `<h2 style="text-align:center;">📌 Semi-Linhas (4,5,6)</h2>
+      <table><thead><tr><th>Padrão</th><th>Atraso</th><th>Intervalo Médio</th></tr></thead><tbody>`;
+      linhas.forEach(p => {
+        html += `<tr class="${p.destaque ? 'highlight' : ''}"><td>${p.padrao}</td><td>${p.atraso}</td><td>${p.intervalo}</td></tr>`;
+      });
+      html += `</tbody></table>`;
+
+      html += `<h2 style="text-align:center;margin-top:30px;">📌 Semi-Colunas (3,4,5,6)</h2>
+      <table><thead><tr><th>Padrão</th><th>Atraso</th><th>Intervalo Médio</th></tr></thead><tbody>`;
+      colunas.forEach(p => {
+        html += `<tr class="${p.destaque ? 'highlight' : ''}"><td>${p.padrao}</td><td>${p.atraso}</td><td>${p.intervalo}</td></tr>`;
+      });
+      html += `</tbody></table>`;
+
+      resultado.innerHTML = html;
+    }
+
+    buscar();
+  </script>
+</body>
+</html>
+

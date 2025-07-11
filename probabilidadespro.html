@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Probabilidades PRO - Pendências destacadas</title>
+  <style>
+    * { box-sizing: border-box; margin:0; padding:0; }
+    body {
+      background: linear-gradient(to bottom, #000, #355E3B);
+      color: white;
+      font-family: Arial, sans-serif;
+      min-height: 100vh;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      font-size: clamp(24px, 5vw, 36px);
+      margin-bottom: 20px;
+      text-align: center;
+      text-shadow: 0 0 10px #00ff7f;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+    .ajuda {
+      cursor: pointer;
+      font-size: 24px;
+      color: #00ff7f;
+      text-shadow: 0 0 5px #00ff7f;
+    }
+    .painel {
+      background: rgba(0,0,0,0.85);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px #00ff7f66;
+      width: 100%;
+      max-width: 900px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #00ff7f;
+      padding: 10px;
+      text-align: center;
+      font-size: clamp(14px, 2vw, 18px);
+    }
+    th {
+      background: #004d3c;
+    }
+    .highlight {
+      background: #004d3c;
+      font-weight: bold;
+      color: #00ff7f;
+      text-shadow: 0 0 8px #00ff7f;
+    }
+    #loader-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 40px 0;
+    }
+    .loader {
+      border: 10px solid #333;
+      border-top: 10px solid #00ff7f;
+      border-radius: 50%;
+      width: 80px;
+      height: 80px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 15px;
+    }
+    #loading-text {
+      font-weight: bold;
+      font-size: clamp(16px, 3vw, 20px);
+      color: #00ff7f;
+      text-shadow: 0 0 6px #00ff7f;
+      text-align: center;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg);}
+      100% { transform: rotate(360deg);}
+    }
+
+    /* Modal tutorial */
+    #tutorial {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #000;
+      border: 2px solid #00ff7f;
+      border-radius: 16px;
+      padding: 30px 20px;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 0 30px #00ff7f99;
+      z-index: 999;
+      text-align: center;
+    }
+    #tutorial h2 {
+      color: #00ff7f;
+      margin-bottom: 15px;
+    }
+    #tutorial p {
+      font-size: clamp(14px, 2vw, 18px);
+      margin-bottom: 10px;
+    }
+    #fechar {
+      position: absolute;
+      top: -16px;
+      right: -16px;
+      background: red;
+      color: white;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 10px red;
+      border: 2px solid white;
+    }
+  </style>
+</head>
+<body>
+  <h1>
+    📊 Probabilidades PRO - Pendências destacadas
+    <span class="ajuda" onclick="document.getElementById('tutorial').style.display='block'">❔</span>
+  </h1>
+
+  <div class="painel">
+    <div id="loader-wrapper" style="display:none;">
+      <div class="loader"></div>
+      <div id="loading-text">Analisando dados...</div>
+    </div>
+    <div id="resultado">Carregando dados...</div>
+  </div>
+
+  <!-- TUTORIAL -->
+  <div id="tutorial">
+    <div id="fechar" onclick="document.getElementById('tutorial').style.display='none'">✕</div>
+    <h2>🔍 Como funciona?</h2>
+    <p>Esta ferramenta analisa os últimos 100 concursos da Mega-Sena e destaca os padrões de linhas e colunas com maior atraso.</p>
+    <p>Você verá as combinações que estão mais atrasadas comparando com a média histórica de aparição.</p>
+    <p><strong>Obs:</strong> Geralmente as pendências ativas permanecem atrasadas na maioria das vezes. Utilize padrões de probabilidades recentes ou moderados.</p>
+  </div>
+
+  <script>
+    const linhas = [
+      [1,2,3,4,5,6,7,8,9,10],
+      [11,12,13,14,15,16,17,18,19,20],
+      [21,22,23,24,25,26,27,28,29,30],
+      [31,32,33,34,35,36,37,38,39,40],
+      [41,42,43,44,45,46,47,48,49,50],
+      [51,52,53,54,55,56,57,58,59,60],
+    ];
+
+    const colunas = [
+      [1,11,21,31,41,51],
+      [2,12,22,32,42,52],
+      [3,13,23,33,43,53],
+      [4,14,24,34,44,54],
+      [5,15,25,35,45,55],
+      [6,16,26,36,46,56],
+      [7,17,27,37,47,57],
+      [8,18,28,38,48,58],
+      [9,19,29,39,49,59],
+      [10,20,30,40,50,60],
+    ];
+
+    const loaderWrapper = document.getElementById("loader-wrapper");
+    const resultado = document.getElementById("resultado");
+
+    function padraoLinhas(jogo) {
+      return linhas.map((linha, i) => 
+        linha.some(num => jogo.includes(num)) ? i+1 : null
+      ).filter(x=>x!==null).sort((a,b)=>a-b);
+    }
+
+    function padraoColunas(jogo) {
+      return colunas.map((col, i) => 
+        col.some(num => jogo.includes(num)) ? i+1 : null
+      ).filter(x=>x!==null).sort((a,b)=>a-b);
+    }
+
+    function calcularIntervalos(padroesHistorico, ultConcursos) {
+      const ultConcurso = ultConcursos[ultConcursos.length - 1].Concurso;
+      const registros = {};
+      const aparicoes = {};
+
+      ultConcursos.forEach(c => {
+        const jogo = c.Resultado;
+        const linhasAtivas = padraoLinhas(jogo);
+        const colunasAtivas = padraoColunas(jogo);
+
+        if([3,4,5,6].includes(linhasAtivas.length)) {
+          const key = linhasAtivas.join(',');
+          if (!registros[key]) registros[key] = [];
+          registros[key].push(c.Concurso);
+        }
+        if([4,5,6].includes(colunasAtivas.length)) {
+          const key = colunasAtivas.join(',');
+          if (!registros[key]) registros[key] = [];
+          registros[key].push(c.Concurso);
+        }
+      });
+
+      for (const key in registros) {
+        const concursos = registros[key];
+        if (concursos.length < 2) {
+          aparicoes[key] = ultConcurso - concursos[0];
+          continue;
+        }
+        let somaIntervalo = 0;
+        for(let i=1; i< concursos.length; i++) {
+          somaIntervalo += concursos[i] - concursos[i-1];
+        }
+        aparicoes[key] = Math.round(somaIntervalo / (concursos.length -1));
+      }
+      return aparicoes;
+    }
+
+    async function buscarDados() {
+      loaderWrapper.style.display = "flex";
+      resultado.innerHTML = "";
+      try {
+        const res = await fetch('https://premium-portaldeloteriasmacpoint.onrender.com/api.php');
+        const dados = await res.json();
+        analisar(dados.slice(-100));
+      } catch(e) {
+        resultado.innerHTML = "<p style='color:red;'>Erro ao carregar dados.</p>";
+      } finally {
+        loaderWrapper.style.display = "none";
+      }
+    }
+
+    function analisar(dados) {
+      const ultConcurso = dados[dados.length-1].Concurso;
+      const atrasosLinha = {};
+      const atrasosColuna = {};
+
+      dados.forEach(c => {
+        const jogo = c.Resultado;
+        const linhasAtivas = padraoLinhas(jogo);
+        const colunasAtivas = padraoColunas(jogo);
+
+        if([3,4,5,6].includes(linhasAtivas.length)) {
+          const key = linhasAtivas.join(',');
+          atrasosLinha[key] = c.Concurso;
+        }
+        if([4,5,6].includes(colunasAtivas.length)) {
+          const key = colunasAtivas.join(',');
+          atrasosColuna[key] = c.Concurso;
+        }
+      });
+
+      const intervalos = calcularIntervalos({...atrasosLinha, ...atrasosColuna}, dados);
+
+      function gerarPendencias(atr) {
+        return Object.entries(atr).map(([padrao, concurso]) => {
+          const atraso = ultConcurso - concurso;
+          const intervaloMedio = intervalos[padrao] || 0;
+          const destaque = atraso >= intervaloMedio && intervaloMedio > 0;
+          return { padrao, atraso, intervaloMedio, destaque };
+        }).sort((a,b) => b.atraso - a.atraso);
+      }
+
+      const pendLinha = gerarPendencias(atrasosLinha);
+      const pendColuna = gerarPendencias(atrasosColuna);
+
+      let html = `<h2 style="text-align:center;">⏳ Linhas (3,4,5,6) Mais Atrasadas</h2>`;
+      html += `<table><thead><tr><th>Padrão de Linhas</th><th>Atraso</th><th>Intervalo Médio</th></tr></thead><tbody>`;
+      pendLinha.forEach(p => {
+        html += `<tr class="${p.destaque ? 'highlight' : ''}"><td>${p.padrao}</td><td>${p.atraso}</td><td>${p.intervaloMedio}</td></tr>`;
+      });
+      html += `</tbody></table>`;
+
+      html += `<h2 style="text-align:center; margin-top:30px;">⏳ Colunas (4,5,6) Mais Atrasadas</h2>`;
+      html += `<table><thead><tr><th>Padrão de Colunas</th><th>Atraso</th><th>Intervalo Médio</th></tr></thead><tbody>`;
+      pendColuna.forEach(p => {
+        html += `<tr class="${p.destaque ? 'highlight' : ''}"><td>${p.padrao}</td><td>${p.atraso}</td><td>${p.intervaloMedio}</td></tr>`;
+      });
+      html += `</tbody></table>`;
+
+      resultado.innerHTML = html;
+    }
+
+    buscarDados();
+  </script>
+</body>
+</html>
+

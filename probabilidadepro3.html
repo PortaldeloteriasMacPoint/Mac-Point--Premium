@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Probabilidades - Grupos de Soma</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: linear-gradient(to bottom, #000, #355E3B);
+      color: white;
+      font-family: Arial, sans-serif;
+      min-height: 100vh;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      font-size: clamp(24px, 5vw, 36px);
+      margin-bottom: 20px;
+      text-align: center;
+      text-shadow: 0 0 10px #00ff7f;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+    .ajuda {
+      cursor: pointer;
+      font-size: 24px;
+      color: #00ff7f;
+      text-shadow: 0 0 5px #00ff7f;
+    }
+    .painel {
+      background: rgba(0,0,0,0.85);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px #00ff7f66;
+      width: 100%;
+      max-width: 900px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #00ff7f;
+      padding: 10px;
+      text-align: center;
+      font-size: clamp(14px, 2vw, 18px);
+    }
+    th {
+      background: #004d3c;
+    }
+    .highlight {
+      background: #004d3c;
+      font-weight: bold;
+      color: #00ff7f;
+      text-shadow: 0 0 8px #00ff7f;
+    }
+    #loader-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 40px 0;
+    }
+    .loader {
+      border: 10px solid #333;
+      border-top: 10px solid #00ff7f;
+      border-radius: 50%;
+      width: 80px;
+      height: 80px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 15px;
+    }
+    #loading-text {
+      font-weight: bold;
+      font-size: clamp(16px, 3vw, 20px);
+      color: #00ff7f;
+      text-shadow: 0 0 6px #00ff7f;
+      text-align: center;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg);}
+      100% { transform: rotate(360deg);}
+    }
+    #tutorial {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #000;
+      border: 2px solid #00ff7f;
+      border-radius: 16px;
+      padding: 30px 20px;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 0 30px #00ff7f99;
+      z-index: 999;
+      text-align: center;
+    }
+    #tutorial h2 {
+      color: #00ff7f;
+      margin-bottom: 15px;
+    }
+    #tutorial p {
+      font-size: clamp(14px, 2vw, 18px);
+      margin-bottom: 10px;
+    }
+    #fechar {
+      position: absolute;
+      top: -16px;
+      right: -16px;
+      background: red;
+      color: white;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 10px red;
+      border: 2px solid white;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔢 Grupos de Soma <span class="ajuda" onclick="document.getElementById('tutorial').style.display='block'">❔</span></h1>
+
+  <div class="painel">
+    <div id="loader-wrapper" style="display:none;">
+      <div class="loader"></div>
+      <div id="loading-text">Analisando dados...</div>
+    </div>
+    <div id="resultado">Carregando dados...</div>
+  </div>
+
+  <div id="tutorial">
+    <div id="fechar" onclick="document.getElementById('tutorial').style.display='none'">✕</div>
+    <h2>ℹ️ Como funciona?</h2>
+    <p>Este painel exibe os grupos de soma (1 a 9) com base em dezenas específicas.</p>
+    <p>Ele detecta os padrões ativos (4, 5 ou 6 grupos) e verifica atrasos históricos.</p>
+    <p><strong>Obs:</strong> Grupos em atraso são boas referências para estratégias.</p>
+  </div>
+
+  <script>
+    const loaderWrapper = document.getElementById("loader-wrapper");
+    const resultado = document.getElementById("resultado");
+
+    const gruposSoma = [
+      [1,10,19,28,37,46,55],
+      [2,11,20,29,38,47,56],
+      [3,12,21,30,39,48,57],
+      [4,13,22,31,40,49,58],
+      [5,14,23,32,41,50,59],
+      [6,15,24,33,42,51,60],
+      [7,16,25,34,43,52],
+      [8,17,26,35,44,53],
+      [9,18,27,36,45,54]
+    ];
+
+    function obterGruposAtivos(jogo) {
+      return gruposSoma.map((g, i) => g.some(n => jogo.includes(n)) ? i + 1 : null)
+        .filter(n => n !== null)
+        .sort((a, b) => a - b);
+    }
+
+    function calcularIntervalos(registros, concursos) {
+      const ult = concursos.at(-1).Concurso;
+      const intervalos = {};
+      for (const chave in registros) {
+        const lista = registros[chave];
+        if (lista.length < 2) {
+          intervalos[chave] = ult - lista[0];
+        } else {
+          let soma = 0;
+          for (let i = 1; i < lista.length; i++) {
+            soma += lista[i] - lista[i - 1];
+          }
+          intervalos[chave] = Math.round(soma / (lista.length - 1));
+        }
+      }
+      return intervalos;
+    }
+
+    async function buscarDados() {
+      loaderWrapper.style.display = "flex";
+      resultado.innerHTML = "";
+      try {
+        const res = await fetch("https://premium-portaldeloteriasmacpoint.onrender.com/api.php");
+        const dados = await res.json();
+        processar(dados.slice(-100));
+      } catch {
+        resultado.innerHTML = "<p style='color:red;'>Erro ao carregar dados.</p>";
+      } finally {
+        loaderWrapper.style.display = "none";
+      }
+    }
+
+    function processar(concursos) {
+      const ultConcurso = concursos.at(-1).Concurso;
+      const registros = {};
+      const ultimos = {};
+
+      concursos.forEach(c => {
+        const jogo = c.Resultado;
+        const ativos = obterGruposAtivos(jogo);
+        if ([4,5,6].includes(ativos.length)) {
+          const chave = ativos.join(',');
+          if (!registros[chave]) registros[chave] = [];
+          registros[chave].push(c.Concurso);
+          ultimos[chave] = c.Concurso;
+        }
+      });
+
+      const intervalos = calcularIntervalos(registros, concursos);
+      const pendencias = Object.entries(ultimos).map(([padrao, concurso]) => {
+        const atraso = ultConcurso - concurso;
+        const intervalo = intervalos[padrao] || 0;
+        return {
+          padrao,
+          atraso,
+          intervalo,
+          destaque: atraso >= intervalo && intervalo > 0
+        };
+      }).sort((a, b) => b.atraso - a.atraso);
+
+      let html = `<h2 style="text-align:center;">📌 Grupos de Soma Ativos (4, 5 ou 6)</h2>
+        <table><thead><tr><th>Padrão</th><th>Atraso</th><th>Intervalo Médio</th></tr></thead><tbody>`;
+      pendencias.forEach(p => {
+        html += `<tr class="${p.destaque ? 'highlight' : ''}">
+            <td>${p.padrao}</td><td>${p.atraso}</td><td>${p.intervalo}</td>
+        </tr>`;
+      });
+      html += `</tbody></table>`;
+      resultado.innerHTML = html;
+    }
+
+    buscarDados();
+  </script>
+</body>
+</html>
+

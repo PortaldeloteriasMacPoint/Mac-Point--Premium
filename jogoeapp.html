@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Central de Recomendados - Games, Apps & IA</title>
+<style>
+  * {
+    margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth;
+  }
+  ::-webkit-scrollbar {
+    width: 3px; height: 3px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(120deg, #355E3B, #00ff00cc);
+    border-radius: 10px;
+  }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(180deg, #000000, #121212);
+    color: #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding-bottom: 40px;
+  }
+  header {
+    width: 100%;
+    padding: 25px 20px;
+    background: #000;
+    border-bottom: 3px solid #355E3B;
+    box-shadow: 0 0 20px #00ff0040;
+    user-select: none;
+    text-align: center;
+  }
+  header h1 {
+    font-size: 2.8rem;
+    font-weight: 900;
+    color: #00ff00;
+    text-shadow: 0 0 10px #00ff0099;
+    letter-spacing: 1.5px;
+  }
+  .container {
+    width: 95%;
+    max-width: 1280px;
+    margin-top: 40px;
+  }
+  .section-title {
+    font-size: 2rem;
+    color: #00ff00;
+    margin-bottom: 25px;
+    text-align: center;
+    text-shadow: 0 0 8px #00ff0077;
+    font-weight: 700;
+  }
+  .carousel {
+    display: flex;
+    overflow-x: auto;
+    gap: 18px;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 20px;
+  }
+  .carousel::-webkit-scrollbar {
+    height: 4px;
+  }
+  .carousel::-webkit-scrollbar-thumb {
+    background: #00ff0077;
+    border-radius: 12px;
+  }
+  .card {
+    flex: 0 0 280px;
+    background: #121212;
+    border: 1.5px solid #355E3B;
+    border-radius: 12px;
+    box-shadow: 0 0 25px #00ff0040;
+    scroll-snap-align: start;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 35px #00ff0080;
+  }
+  .card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 15px;
+  }
+  .card h3 {
+    color: #00ff00;
+    font-weight: 800;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+  }
+  .card p {
+    color: #bfbfbf;
+    font-size: 0.9rem;
+    flex-grow: 1;
+  }
+  @media (max-width: 900px) {
+    .card {
+      flex: 0 0 240px;
+      padding: 16px;
+    }
+    .card img {
+      height: 140px;
+    }
+  }
+  @media (max-width: 480px) {
+    header h1 {
+      font-size: 1.8rem;
+    }
+    .card {
+      flex: 0 0 200px;
+      padding: 14px;
+    }
+    .card img {
+      height: 110px;
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-size: 1.6rem;
+      margin-bottom: 15px;
+    }
+  }
+</style>
+</head>
+<body>
+  <header>
+    <h1>Central de Recomendados</h1>
+  </header>
+
+  <main class="container">
+
+    <section id="jogos">
+      <h2 class="section-title">🎮 Jogos Populares</h2>
+      <div class="carousel">
+        <article class="card">
+          <img src="https://i.imgur.com/lhYQ3nb.jpg" alt="Cyber Rush">
+          <h3>Cyber Rush</h3>
+          <p>Corrida futurista cheia de adrenalina, gráficos modernos e trilha sonora imersiva.</p>
+        </article>
+        <article class="card">
+          <img src="https://i.imgur.com/dyJfO2O.jpg" alt="Dragon Arena">
+          <h3>Dragon Arena</h3>
+          <p>Batalhas mágicas entre dragões e guerreiros, com jogabilidade dinâmica e multiplayer.</p>
+        </article>
+        <article class="card">
+          <img src="https://i.imgur.com/71gRj1K.jpg" alt="Galaxy Shooter">
+          <h3>Galaxy Shooter</h3>
+          <p>Defenda o universo em combates espaciais intensos com naves customizáveis.</p>
+        </article>
+        <article class="card">
+          <img src="https://i.imgur.com/4OxmbcP.jpg" alt="Valorant">
+          <h3>Valorant</h3>
+          <p>FPS tático com personagens únicos e partidas competitivas eletrizantes.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="apps">
+      <h2 class="section-title">📱 Apps Essenciais</h2>
+      <div class="carousel">
+        <article class="card">
+          <img src="https://i.imgur.com/82eoK9E.jpg" alt="Notion">
+          <h3>Notion</h3>
+          <p>Organize seus projetos, anotações e tarefas em um app versátil e colaborativo.</p>
+        </article>
+        <article class="card">
+          <img src="https://i.imgur.com/tWkgTGf.jpg" alt="CapCut">
+          <h3>CapCut</h3>
+          <p>Editor de vídeo fácil e poderoso, ideal para criar conteúdos para redes sociais.</p>
+        </article>
+        <article class="card">
+          <img src="https://i.imgur.com/fAZGm7b.jpg" alt="Duolingo">
+          <h3>Duolingo</h3>
+          <p>Aprenda idiomas com lições interativas, gamificadas e divertidas.</p>
+        </article>
+        <article class="card">
+          <img src="https://i.imgur.com/wFW4BAI.jpg" alt="Canva">
+          <h3>Canva</h3>
+          <p>Crie designs profissionais, desde posts até apresentações com facilidade.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="ia">
+      <h2 class="section-title">🤖 Apps de Inteligência Artificial</h2>
+      <div class="carousel">
+        <article class="card">
+          <img src="https://i.imgur.com/4WTHPSy.png" alt="ChatGPT">
+          <h3>ChatGPT</h3>
+          <p>Assistente de IA para conversas, criação de textos, codificação e muito mais.</p>
+        </article>
+        <article class="card">
+          <img src="https://i.imgur.com/Jx3jVLP.png" alt="DALL·E">
+          <h3>DALL·E</h3>
+          <p>Gere imagens incríveis a partir de descrições textuais com esta IA avançada.</p>
+        </article>
+        <article class="card">
+          <img src="https://i.imgur.com/rXq1JyC.png" alt="Grammarly">
+          <h3>Grammarly</h3>
+          <p>Correção gramatical e sugestões inteligentes para textos em inglês.</p>
+        </article>
+        <article class="card">
+          <img src="https://i.imgur.com/LK6oL7Y.png" alt="Runway ML">
+          <h3>Runway ML</h3>
+          <p>Ferramenta IA para edição de vídeo e criação criativa de mídia.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="produtividade">
+      <h2 class="section-title">🧠 Produtividade</h2>
+      <div class="carousel">
+        <article class="card">
+          <img src="https://i.imgur.com/snp9rNl.jpg" alt="Trello">
+          <h3>Trello</h3>
+          <p>Organize tarefas e projetos com quadros intuitivos e colaborativos.</p>
+        </article>
+        <article class="card">
+          <img src="https://i.imgur.com/YpgEx2c.jpg" alt="Evernote">
+          <h3>Evernote</h3>
+          <p>Notas sincronizadas, listas e organização para todas suas ideias.</p>
+        </article>
+        <article class="card">
+          <img src="https://i.imgur.com/EPSkJBL.jpg" alt="Google Keep">
+          <h3>Google Keep</h3>
+          <p>Notas rápidas, lembretes coloridos e sincronização com Google.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="mobile">
+      <h2 class="section-title">📲 Jogos Mobile</h2>
+      <div class="carousel">
+        <article class="card">
+          <img src="https://i.imgur.com/Mpfa2PW.jpg" alt="Subway Surfers">
+          <h3>Subway Surfers</h3>
+          <p>Corra e desvie de obstáculos para coletar moedas no caminho.</p>
+        </article>
+        <article class="card">
+          <img src="https://i.imgur.com/mC7RRPz.jpg" alt="Free Fire">
+          <h3>Free Fire</h3>
+          <p>Batalhas eletrizantes em combates rápidos e estratégicos.</p>
+        </article>
+        <article class="card">
+          <img src="https://i.imgur.com/niD8pON.jpg" alt="Clash Royale">
+          <h3>Clash Royale</h3>
+          <p>Duelo de cartas em tempo real com personagens épicos e estratégias variadas.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="contato">
+      <h2 class="section-title">📞 Contato</h2>
+      <div class="card" style="text-align: center;">
+        <p>Envie sugestões ou indicações de apps e jogos!</p>
+        <p>WhatsApp: <strong>(11) 99999-9999</strong></p>
+        <p>Email: contato@centralrecomendados.com</p>
+      </div>
+    </section>
+    
+  </main>
+</body>
+</html>
+

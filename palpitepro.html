@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Palpites PRO 🍀</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #000;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      padding: 4vw 2vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .titulo {
+      font-size: 7vw;
+      color: #00ff88;
+      text-shadow: 0 0 12px #00ff88;
+      margin-bottom: 3vh;
+      text-align: center;
+    }
+    .painel {
+      background: linear-gradient(135deg, #000, #355E3B);
+      border: 2px solid #355E3B;
+      border-radius: 20px;
+      box-shadow: 0 0 15px #00ff88aa, inset 0 0 10px #355E3B88;
+      padding: 5vw;
+      max-width: 700px;
+      width: 100%;
+    }
+    label {
+      display: block;
+      margin-bottom: 1vh;
+      font-weight: bold;
+      color: #00ff88;
+    }
+    select {
+      width: 100%;
+      padding: 1vh;
+      font-size: 1rem;
+      margin-bottom: 3vh;
+      background: #111;
+      color: #fff;
+      border-radius: 10px;
+      border: none;
+    }
+    button {
+      width: 100%;
+      padding: 1.5vh;
+      font-size: 1.1rem;
+      font-weight: bold;
+      background: linear-gradient(45deg, #00ff88, #355E3B);
+      color: #000;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #00ff88cc;
+      transition: 0.3s;
+    }
+    button:hover { filter: brightness(1.1); }
+    .resultado {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2vh;
+      margin-top: 4vh;
+    }
+    .linha {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1vw;
+      justify-content: center;
+      margin-top: 1vh;
+    }
+    .bola {
+      width: 60px;
+      height: 60px;
+      background: #000;
+      border: 3px solid #fff;
+      border-radius: 50%;
+      font-size: 1.3rem;
+      color: #fff;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-shadow: 1px 1px 2px #000;
+      box-shadow: 0 0 10px #00ff88;
+      animation: girar 1.2s ease-in-out;
+    }
+    .time, .sorteio-label {
+      font-size: 1.2rem;
+      margin-top: 1vh;
+      color: #00ff88;
+      text-align: center;
+      text-shadow: 0 0 8px #00ff88;
+    }
+    @keyframes girar {
+      0% { transform: rotateY(0); }
+      100% { transform: rotateY(1440deg); }
+    }
+    @media (max-width: 600px) {
+      .titulo { font-size: 9vw; }
+      .bola { width: 50px; height: 50px; font-size: 1.1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="titulo">PALPITE PRO 🍀</div>
+  <div class="painel">
+    <label for="modalidade">Escolha a modalidade:</label>
+    <select id="modalidade" onchange="ajustarQtd()">
+      <option value="mega">Mega Sena (6 dezenas de 01 a 60)</option>
+      <option value="quina">Quina (5 dezenas de 01 a 80)</option>
+      <option value="lotomania">Lotomania (50 dezenas de 00 a 99)</option>
+      <option value="lotofacil">Lotofácil (15 dezenas de 01 a 25)</option>
+      <option value="duplasena">Dupla Sena (6 dezenas de 01 a 50, 2 sorteios)</option>
+      <option value="timemania">Timemania (7 dezenas de 01 a 80 + Time)</option>
+      <option value="dia">Dia de Sorte (7 dezenas de 01 a 31)</option>
+    </select>
+
+    <input type="hidden" id="quantidade" value="6" />
+    <button onclick="gerarPalpite()">GERAR PALPITE</button>
+    <div class="resultado" id="resultado"></div>
+  </div>
+
+  <script>
+    const times = [
+      "Flamengo", "Corinthians", "Palmeiras", "São Paulo", "Santos",
+      "Grêmio", "Internacional", "Cruzeiro", "Atlético-MG", "Vasco",
+      "Botafogo", "Bahia", "Fortaleza", "Ceará", "Fluminense",
+      "Athletico-PR", "Goiás", "Sport", "Vitória", "Chapecoense"
+    ];
+
+    function ajustarQtd() {
+      const modalidade = document.getElementById('modalidade').value;
+      const quantidade = document.getElementById('quantidade');
+      if (modalidade === 'mega') quantidade.value = 6;
+      if (modalidade === 'quina') quantidade.value = 5;
+      if (modalidade === 'lotomania') quantidade.value = 50;
+      if (modalidade === 'lotofacil') quantidade.value = 15;
+      if (modalidade === 'duplasena') quantidade.value = 6;
+      if (modalidade === 'timemania') quantidade.value = 7;
+      if (modalidade === 'dia') quantidade.value = 7;
+    }
+
+    function gerarPalpite() {
+      const modalidade = document.getElementById('modalidade').value;
+      const qtd = parseInt(document.getElementById('quantidade').value);
+      const resultado = document.getElementById('resultado');
+      resultado.innerHTML = '';
+
+      let max = 60;
+      let incluir00 = false;
+
+      switch(modalidade) {
+        case 'quina': max = 80; break;
+        case 'lotomania': max = 99; incluir00 = true; break;
+        case 'lotofacil': max = 25; break;
+        case 'duplasena': max = 50; break;
+        case 'timemania': max = 80; break;
+        case 'dia': max = 31; break;
+      }
+
+      function gerarNumeros() {
+        const numeros = new Set();
+        while (numeros.size < qtd) {
+          let n = Math.floor(Math.random() * (max + 1));
+          if (incluir00 && n === 0) {
+            numeros.add('00');
+          } else if (n > 0) {
+            numeros.add(String(n).padStart(2, '0'));
+          }
+        }
+        return Array.from(numeros).sort();
+      }
+
+      if (modalidade === 'duplasena') {
+        ['1º SORTEIO', '2º SORTEIO'].forEach((label, sorteioIndex) => {
+          const sorteio = document.createElement('div');
+          sorteio.className = 'sorteio-label';
+          sorteio.textContent = label;
+          resultado.appendChild(sorteio);
+
+          const linha = document.createElement('div');
+          linha.className = 'linha';
+          gerarNumeros().forEach((n, index) => {
+            const bola = document.createElement('div');
+            bola.className = 'bola';
+            bola.textContent = '🍀';
+            linha.appendChild(bola);
+            setTimeout(() => bola.textContent = n, 1000 + index * 100 + sorteioIndex * 800);
+          });
+          resultado.appendChild(linha);
+        });
+      } else {
+        const linha = document.createElement('div');
+        linha.className = 'linha';
+        gerarNumeros().forEach((n, index) => {
+          const bola = document.createElement('div');
+          bola.className = 'bola';
+          bola.textContent = '🍀';
+          linha.appendChild(bola);
+          setTimeout(() => bola.textContent = n, 1000 + index * 100);
+        });
+        resultado.appendChild(linha);
+
+        if (modalidade === 'timemania') {
+          const time = times[Math.floor(Math.random() * times.length)];
+          const timeDiv = document.createElement('div');
+          timeDiv.className = 'time';
+          timeDiv.textContent = `Time do Coração: ${time}`;
+          resultado.appendChild(timeDiv);
+        }
+      }
+    }
+
+    ajustarQtd();
+  </script>
+</body>
+</html>
+

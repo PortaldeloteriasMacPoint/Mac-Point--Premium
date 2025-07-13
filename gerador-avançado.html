@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gerador com Filtros</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      background: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      margin: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: #111;
+      border: 2px solid #355E3B;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #0f0;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    label {
+      margin-top: 10px;
+      display: block;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      background: #000;
+      color: #fff;
+      border: 1px solid #355E3B;
+      border-radius: 5px;
+    }
+    .row {
+      display: flex;
+      gap: 10px;
+    }
+    .row input {
+      width: 100%;
+    }
+    button {
+      background: #355E3B;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0f0;
+      color: #000;
+    }
+    .jogo {
+      background: #1a1a1a;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #355E3B;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .dezena {
+      background: #000;
+      border: 1px solid #fff;
+      padding: 5px 10px;
+      border-radius: 4px;
+    }
+    .notificacao {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0f0;
+      color: #000;
+      font-weight: bold;
+      padding: 12px 20px;
+      border-radius: 8px;
+      border: 2px solid #355E3B;
+      z-index: 9999;
+      box-shadow: 0 0 10px #0f0;
+      display: none;
+    }
+    .erro {
+      background: red !important;
+      color: #fff !important;
+      border: 2px solid #f00 !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎯 Gerador com Filtros Inteligentes</h1>
+
+    <label>Modalidade:</label>
+    <select id="modalidade" onchange="atualizarLimites()">
+      <option value="megasena">Mega-Sena</option>
+      <option value="quina">Quina</option>
+      <option value="lotomania">Lotomania</option>
+    </select>
+
+    <label>Quantidade de Jogos:</label>
+    <input type="number" id="quantidade" value="5" min="1" max="100"/>
+
+    <label>Intervalo das Dezenas:</label>
+    <div class="row">
+      <input type="number" id="minimo" value="1" placeholder="Mínimo"/>
+      <input type="number" id="maximo" value="60" placeholder="Máximo"/>
+    </div>
+
+    <label>Quantidade de Pares e Ímpares:</label>
+    <div class="row">
+      <input type="number" id="qtdPares" placeholder="Pares" oninput="atualizarImpares()"/>
+      <input type="number" id="qtdImpares" placeholder="Ímpares" disabled/>
+    </div>
+
+    <label>Dezenas Fixas (vírgula):</label>
+    <input type="text" id="fixas" placeholder="Ex: 10,22,35"/>
+
+    <label>Soma Mínima / Máxima das Dezenas:</label>
+    <div class="row">
+      <input type="number" id="somaMin" placeholder="Soma mínima"/>
+      <input type="number" id="somaMax" placeholder="Soma máxima"/>
+    </div>
+
+    <button onclick="gerarJogos()">Gerar Jogos</button>
+
+    <div id="resultado"></div>
+  </div>
+
+  <div id="notificacao" class="notificacao"></div>
+
+  <script>
+    const modalidades = {
+      megasena: { total: 6, max: 60 },
+      quina: { total: 5, max: 80 },
+      lotomania: { total: 20, max: 100 }
+    };
+
+    function atualizarLimites() {
+      const mod = document.getElementById("modalidade").value;
+      document.getElementById("minimo").value = 1;
+      document.getElementById("maximo").value = modalidades[mod].max;
+      document.getElementById("qtdPares").value = "";
+      document.getElementById("qtdImpares").value = "";
+    }
+
+    function atualizarImpares() {
+      const mod = document.getElementById("modalidade").value;
+      const total = modalidades[mod].total;
+      const pares = parseInt(document.getElementById("qtdPares").value);
+      const impares = total - (pares || 0);
+      document.getElementById("qtdImpares").value = impares >= 0 ? impares : "";
+    }
+
+    function notificar(msg, erro = false) {
+      const box = document.getElementById("notificacao");
+      box.textContent = msg;
+      box.classList.toggle("erro", erro);
+      box.style.display = "block";
+      setTimeout(() => { box.style.display = "none"; }, 2500);
+    }
+
+    function gerarJogos() {
+      const modalidade = document.getElementById("modalidade").value;
+      const qtdJogos = parseInt(document.getElementById("quantidade").value);
+      const totalDezenas = modalidades[modalidade].total;
+      const maxNumero = parseInt(document.getElementById("maximo").value);
+      const minNumero = parseInt(document.getElementById("minimo").value);
+      const qtdPares = parseInt(document.getElementById("qtdPares").value) || null;
+      const qtdImpares = parseInt(document.getElementById("qtdImpares").value) || null;
+      const fixas = document.getElementById("fixas").value.split(",").map(n => parseInt(n)).filter(n => !isNaN(n));
+      const somaMin = parseInt(document.getElementById("somaMin").value) || null;
+      const somaMax = parseInt(document.getElementById("somaMax").value) || null;
+
+      if (fixas.length > totalDezenas) {
+        notificar("❌ Quantidade de dezenas fixas maior que o total permitido!", true);
+        return;
+      }
+
+      const jogosGerados = [];
+      let tentativas = 0;
+
+      while (jogosGerados.length < qtdJogos && tentativas < 5000) {
+        let jogo = [...fixas];
+        while (jogo.length < totalDezenas) {
+          let n = Math.floor(Math.random() * (maxNumero - minNumero + 1)) + minNumero;
+          if (!jogo.includes(n)) jogo.push(n);
+        }
+        jogo.sort((a, b) => a - b);
+
+        const soma = jogo.reduce((acc, val) => acc + val, 0);
+        const pares = jogo.filter(n => n % 2 === 0).length;
+        const impares = totalDezenas - pares;
+
+        if (
+          (qtdPares === null || pares === qtdPares) &&
+          (qtdImpares === null || impares === qtdImpares) &&
+          (somaMin === null || soma >= somaMin) &&
+          (somaMax === null || soma <= somaMax)
+        ) {
+          jogosGerados.push(jogo);
+        }
+
+        tentativas++;
+      }
+
+      if (jogosGerados.length === 0) {
+        notificar("⚠️ Nenhum jogo gerado com os filtros aplicados!", true);
+      } else {
+        mostrarJogos(jogosGerados);
+        notificar(`✅ ${jogosGerados.length} jogos gerados com sucesso!`);
+      }
+    }
+
+    function mostrarJogos(jogos) {
+      const res = document.getElementById("resultado");
+      res.innerHTML = "";
+      jogos.forEach(jogo => {
+        const div = document.createElement("div");
+        div.className = "jogo";
+        jogo.forEach(n => {
+          const span = document.createElement("span");
+          span.className = "dezena";
+          span.textContent = n.toString().padStart(2, "0");
+          div.appendChild(span);
+        });
+        res.appendChild(div);
+      });
+    }
+
+    atualizarLimites();
+  </script>
+</body>
+</html>
+

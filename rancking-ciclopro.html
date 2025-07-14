@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Análise de Ciclo PRO</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom, #000, #355E3B);
+      font-family: Arial, sans-serif;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      margin: 2rem 0 1rem;
+      font-family: Impact, sans-serif;
+      text-shadow: 2px 2px 0 #000, -2px -2px 0 #000;
+      text-align: center;
+    }
+    .container {
+      background: rgba(0, 0, 0, 0.85);
+      border: 2px solid #355E3B;
+      border-radius: 12px;
+      padding: 1.5rem;
+      width: 95%;
+      max-width: 950px;
+      box-shadow: 0 0 10px #00ff7f55;
+    }
+    .controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      gap: 2rem;
+    }
+    .controls button {
+      background: #00ff7f;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      color: #000;
+      transition: 0.3s;
+    }
+    .controls button:hover {
+      background: #00cc66;
+    }
+    .resultado-info {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 1px 1px #000;
+    }
+    .volante {
+      text-align: center;
+      margin-top: 1rem;
+    }
+    .dezena {
+      display: inline-block;
+      width: clamp(38px, 6vw, 50px);
+      height: clamp(38px, 6vw, 50px);
+      line-height: clamp(38px, 6vw, 50px);
+      margin: 4px;
+      border-radius: 50%;
+      text-align: center;
+      font-weight: bold;
+      font-size: 1rem;
+      text-shadow: 0 0 3px #000;
+      border: 2px solid #000;
+      transition: transform 1s, background-color 1s;
+      position: relative;
+    }
+    .dezena.faltante {
+      background-color: white !important;
+      color: #000 !important;
+      border: 2px solid #00ff7f !important;
+      animation: giro 6s infinite;
+    }
+    @keyframes giro {
+      0%, 100% { transform: rotateY(0deg); }
+      45% { transform: rotateY(180deg); background-color: white !important; color: #000 !important; }
+      55% { transform: rotateY(180deg); background-color: var(--corReal) !important; color: var(--textoReal) !important; }
+      100% { transform: rotateY(360deg); }
+    }
+    .frequencia {
+      margin-top: 2rem;
+      text-align: center;
+    }
+    .frequencia div {
+      margin: 3px auto;
+      background: #002a1d;
+      border-radius: 6px;
+      padding: 6px 10px;
+      max-width: 400px;
+      font-size: 0.95rem;
+      text-shadow: 1px 1px #000;
+      box-shadow: 0 0 5px #355E3B;
+    }
+    .loading {
+      display: none;
+      text-align: center;
+      margin: 2rem;
+      font-weight: bold;
+      color: #00ff7f;
+    }
+    .loading.active {
+      display: block;
+    }
+    .loader {
+      border: 6px solid #333;
+      border-top: 6px solid #00ff7f;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 1rem auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg);}
+      100% { transform: rotate(360deg);}
+    }
+  </style>
+</head>
+<body>
+  <h1>Análise de Ciclo PRO</h1>
+  <div class="loading" id="loading">
+    <div class="loader"></div>
+    <p>Carregando dados, aguarde...</p>
+  </div>
+  <div class="container" style="display:none;" id="container">
+    <div class="controls">
+      <button onclick="mudarConcurso(-1)">← Anterior</button>
+      <span class="resultado-info" id="infoResultado">Concurso</span>
+      <button onclick="mudarConcurso(1)">Próximo →</button>
+    </div>
+    <div class="volante" id="volante"></div>
+    <div class="frequencia" id="frequencia"></div>
+  </div>
+  <script>
+    let resultados = [];
+    let index = 0;
+    function getCorDaColuna(numero) {
+      const cores = [
+        ['#e74c3c', 'white'], ['#f1c40f', 'black'], ['#2ecc71', 'white'],
+        ['#8B4513', 'white'], ['#3498db', 'white'], ['#ff69b4', 'black'],
+        ['#000000', 'white'], ['#95a5a6', 'black'], ['#e67e22', 'white'], ['#ffffff', 'black']
+      ];
+      return cores[(numero - 1) % 10];
+    }
+    async function carregarResultados() {
+      const loading = document.getElementById('loading');
+      const container = document.getElementById('container');
+      loading.classList.add('active');
+      try {
+        const res = await fetch('https://premium-portaldeloteriasmacpoint.onrender.com/api.php');
+        const dados = await res.json();
+        resultados = dados.reverse().map(d => d.Resultado);
+        atualizarVolante();
+        container.style.display = 'block';
+      } catch (e) {
+        alert("Erro ao carregar dados");
+      } finally {
+        loading.classList.remove('active');
+      }
+    }
+    function atualizarVolante() {
+      const volante = document.getElementById('volante');
+      const info = document.getElementById('infoResultado');
+      const freqDiv = document.getElementById('frequencia');
+      const atual = resultados[index];
+      info.textContent = `Concurso #${resultados.length - index}`;
+      let acumuladas = new Set();
+      let ciclo = new Set();
+      for (let i = index; i < resultados.length; i++) {
+        resultados[i].forEach(n => acumuladas.add(n));
+        if (acumuladas.size >= 60) {
+          ciclo = new Set(resultados[i]);
+          break;
+        }
+      }
+      const todas = Array.from({ length: 60 }, (_, i) => i + 1);
+      const faltantes = todas.filter(d => !atual.includes(d) && !ciclo.has(d));
+      volante.innerHTML = todas.map(n => {
+        const [cor, texto] = getCorDaColuna(n);
+        const isFaltante = faltantes.includes(n);
+        const styleVar = isFaltante ? `--corReal:${cor}; --textoReal:${texto};` : '';
+        const classe = isFaltante ? 'dezena faltante' : 'dezena';
+        return `<div class="${classe}" style="${styleVar} background-color:${cor}; color:${texto};">${String(n).padStart(2, '0')}</div>`;
+      }).join('');
+      const freq = todas.map(n => {
+        let total = 0;
+        for (let i = index; i < resultados.length; i++) {
+          if (resultados[i].includes(n)) total++;
+        }
+        return { dezena: n, total };
+      }).sort((a, b) => b.total - a.total);
+      freqDiv.innerHTML = `<h2>Frequência das Dezenas</h2>` + freq.map(f =>
+        `<div>Dezena ${String(f.dezena).padStart(2, '0')} - ${f.total} ocorrência(s)</div>`
+      ).join('');
+    }
+    function mudarConcurso(direcao) {
+      const novo = index + direcao;
+      if (novo >= 0 && novo < resultados.length) {
+        index = novo;
+        atualizarVolante();
+      }
+    }
+    carregarResultados();
+  </script>
+</body>
+</html>

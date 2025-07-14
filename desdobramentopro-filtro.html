@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Desdobramento com Filtros</title>
+  <style>
+    * {box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif;}
+    body {
+      background: #000;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    .container {
+      width: 100%;
+      max-width: 850px;
+      background: #111;
+      padding: 20px;
+      border-radius: 12px;
+      border: 2px solid #355E3B;
+      box-shadow: 0 0 10px #0f0;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #0f0;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      margin-bottom: 5px;
+      color: #0f0;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      background: #000;
+      color: #fff;
+      border: 2px solid #355E3B;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+    button {
+      background: #355E3B;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0f0;
+      color: #000;
+    }
+    .jogo {
+      margin-top: 20px;
+    }
+    .jogo h3 {
+      text-align: center;
+      color: #0f0;
+      margin-bottom: 10px;
+    }
+    .volante {
+      display: grid;
+      justify-content: center;
+      gap: 5px;
+      margin-bottom: 20px;
+    }
+    .bola {
+      width: 22px;
+      height: 22px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #000;
+      border: 1px solid #fff;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 14px;
+    }
+    .notificacao {
+      text-align: center;
+      background: #0f0;
+      color: #000;
+      font-weight: bold;
+      padding: 8px;
+      margin-top: 10px;
+      border-radius: 8px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Desdobramento com Filtros</h1>
+
+    <label>Modalidade</label>
+    <select id="modalidade">
+      <option value="mega">Mega-Sena</option>
+      <option value="quina">Quina</option>
+      <option value="loto">Lotofácil</option>
+    </select>
+
+    <label>Dezenas para Desdobrar (ex: 1,2,3,4,...)</label>
+    <input type="text" id="dezenas" placeholder="Ex: 1,2,3,4,5,6,7,8,9,10,11,12"/>
+
+    <label>Qtd. de Pares</label>
+    <input type="number" id="pares" min="0" max="20" />
+
+    <label>Soma Mínima</label>
+    <input type="number" id="somaMin" />
+
+    <label>Soma Máxima</label>
+    <input type="number" id="somaMax" />
+
+    <label>Qtd. de Jogos</label>
+    <input type="number" id="qtdJogos" value="5" min="1" max="100"/>
+
+    <button onclick="gerarDesdobramentos()">Gerar Jogos</button>
+
+    <div class="notificacao" id="notificacao"></div>
+
+    <div id="resultado"></div>
+  </div>
+
+  <script>
+    function gerarDesdobramentos() {
+      const modalidade = document.getElementById("modalidade").value;
+      const dezenas = document.getElementById("dezenas").value.split(",").map(n => parseInt(n.trim())).filter(n => !isNaN(n));
+      const pares = parseInt(document.getElementById("pares").value);
+      const impares = dezenas.length - pares;
+      const somaMin = parseInt(document.getElementById("somaMin").value);
+      const somaMax = parseInt(document.getElementById("somaMax").value);
+      const qtdJogos = parseInt(document.getElementById("qtdJogos").value);
+
+      let tamanhoJogo = 6, colunas = 10, linhas = 6;
+      if (modalidade === "quina") { tamanhoJogo = 5; linhas = 8; }
+      else if (modalidade === "loto") { tamanhoJogo = 15; colunas = 5; linhas = 5; }
+
+      const combinacoes = [];
+
+      function gerarCombinacao(base, temp = [], start = 0) {
+        if (temp.length === tamanhoJogo) {
+          const qtdPares = temp.filter(n => n % 2 === 0).length;
+          const soma = temp.reduce((a, b) => a + b, 0);
+          if (qtdPares === pares && soma >= somaMin && soma <= somaMax) {
+            combinacoes.push([...temp]);
+          }
+          return;
+        }
+        for (let i = start; i < base.length; i++) {
+          temp.push(base[i]);
+          gerarCombinacao(base, temp, i + 1);
+          temp.pop();
+          if (combinacoes.length >= qtdJogos) return;
+        }
+      }
+
+      gerarCombinacao(dezenas.sort((a,b)=>a-b));
+
+      const res = document.getElementById("resultado");
+      res.innerHTML = "";
+
+      if (combinacoes.length === 0) {
+        document.getElementById("notificacao").style.display = "block";
+        document.getElementById("notificacao").textContent = "❌ Nenhum jogo encontrado com os filtros.";
+        return;
+      } else {
+        document.getElementById("notificacao").style.display = "block";
+        document.getElementById("notificacao").textContent = `✅ ${combinacoes.length} jogo(s) gerado(s) com sucesso!`;
+      }
+
+      combinacoes.forEach((jogo, i) => {
+        const div = document.createElement("div");
+        div.className = "jogo";
+        const h3 = document.createElement("h3");
+        h3.textContent = `Jogo ${i + 1}`;
+        div.appendChild(h3);
+
+        const grid = document.createElement("div");
+        grid.className = "volante";
+        grid.style.gridTemplateColumns = `repeat(${colunas}, 1fr)`;
+
+        for (let l = 0; l < colunas * linhas; l++) {
+          const bola = document.createElement("div");
+          bola.className = "bola";
+          const numero = l + 1;
+          bola.textContent = numero.toString().padStart(2, '0');
+          if (jogo.includes(numero)) {
+            bola.style.background = "#0f0";
+            bola.style.color = "#000";
+            bola.style.fontWeight = "bold";
+          }
+          grid.appendChild(bola);
+        }
+
+        div.appendChild(grid);
+        res.appendChild(div);
+      });
+    }
+  </script>
+</body>
+</html>
+

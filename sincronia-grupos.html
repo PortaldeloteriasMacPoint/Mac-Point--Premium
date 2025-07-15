@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sincronização de Grupos</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom, #000, #355E3B);
+      font-family: Arial, sans-serif;
+      color: white;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .container {
+      width: 95%;
+      max-width: 950px;
+      margin: 20px auto;
+    }
+    .titulo-principal {
+      font-family: Impact, sans-serif;
+      font-size: 6vw;
+      background: #000;
+      border: 2px solid #355E3B;
+      padding: 10px;
+      text-align: center;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    .filtros {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    select, button {
+      padding: 10px;
+      font-size: 4vw;
+      max-width: 250px;
+      width: 45%;
+      border-radius: 6px;
+      border: 2px solid white;
+      background: #000;
+      color: white;
+    }
+    button {
+      background: #355E3B;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #00ff88;
+      color: black;
+    }
+    #loading {
+      font-size: 4vw;
+      text-align: center;
+      margin-top: 15px;
+    }
+    .loader {
+      border: 4px solid #ccc;
+      border-top: 4px solid #00ff88;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+      display: inline-block;
+      margin-left: 10px;
+      vertical-align: middle;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .relatorio {
+      background-color: #000;
+      color: white;
+      padding: 20px;
+      border-radius: 6px;
+      border: 2px solid #355E3B;
+      margin-top: 20px;
+    }
+    .secao h2 {
+      font-size: 5vw;
+      border: 1px solid #355E3B;
+      padding: 10px;
+      background-color: #001a12;
+      border-radius: 6px;
+      text-align: center;
+    }
+    .linha {
+      display: flex;
+      justify-content: space-between;
+      margin: 6px 0;
+      padding: 10px;
+      border: 1px solid #355E3B;
+      border-radius: 4px;
+      background-color: #111;
+      font-size: 4vw;
+      flex-wrap: wrap;
+    }
+    .verde { background-color: #00aa44; }
+    .vermelho { background-color: #aa0022; }
+    @media (min-width: 768px) {
+      .titulo-principal { font-size: 32px; }
+      select, button { font-size: 16px; width: 200px; }
+      #loading { font-size: 16px; }
+      .secao h2 { font-size: 22px; }
+      .linha { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="titulo-principal">Sincronização de Grupos</div>
+    <div class="filtros">
+      <select id="filtro">
+        <option value="10">🍀 Últimos 10 concursos</option>
+        <option value="20">🍀 Últimos 20 concursos</option>
+        <option value="50">🍀 Últimos 50 concursos</option>
+        <option value="100">🍀 Últimos 100 concursos</option>
+      </select>
+      <button onclick="gerarRelatorio()">Gerar Relatório</button>
+    </div>
+    <div id="loading"></div>
+    <div id="relatorio" class="relatorio" style="display: none;"></div>
+  </div>
+  <script>
+    async function gerarRelatorio() {
+      const filtro = parseInt(document.getElementById('filtro').value);
+      const loading = document.getElementById('loading');
+      const relatorio = document.getElementById('relatorio');
+      loading.innerHTML = `Buscando dados... <div class="loader"></div>`;
+      relatorio.style.display = 'none';
+
+      try {
+        const res = await fetch('https://premium-portaldeloteriasmacpoint.onrender.com/api.php');
+        const data = await res.json();
+        const resultados = data.slice(-filtro);
+
+        const combinacoes = {};
+
+        resultados.forEach((item, index) => {
+          const dezenas = item.Resultado;
+          const grupos = [];
+
+          if (dezenas.some(d => [1,10,19,28,37,46,55].includes(d))) grupos.push('Soma1');
+          if (dezenas.some(d => [1,2,3,4].includes(Math.ceil(d / 4)))) grupos.push('Bicho');
+          if (dezenas.some(d => d <= 10)) grupos.push('Linha1');
+          if (dezenas.some(d => [1,11,21,31,41,51].includes(d))) grupos.push('Coluna1');
+          if (dezenas.some(d => [1,5,13,21,25].includes(d))) grupos.push('Quadrante1');
+
+          const chave = grupos.sort().join('+');
+          if (!combinacoes[chave]) combinacoes[chave] = { freq: 0, ult: index, dezenas: [] };
+          combinacoes[chave].freq++;
+          combinacoes[chave].ult = index;
+          combinacoes[chave].dezenas = [...new Set([...combinacoes[chave].dezenas, ...dezenas])];
+        });
+
+        const entradas = Object.entries(combinacoes);
+        const maisFreq = entradas.sort((a,b)=>b[1].freq - a[1].freq).slice(0,3);
+        const maisAtraso = entradas.sort((a,b)=>b[1].ult - a[1].ult).slice(0,3);
+
+        let html = `<div class="secao"><h2>Sincronizações Frequentes</h2>`;
+        maisFreq.forEach(([chave, dados]) => {
+          html += `<div class="linha verde"><div>${chave}</div><div>${dados.freq}x<br>Dezenas: ${dados.dezenas.join(', ')}</div></div>`;
+        });
+        html += `</div><div class="secao"><h2>Sincronizações Atrasadas</h2>`;
+        maisAtraso.forEach(([chave, dados]) => {
+          html += `<div class="linha vermelho"><div>${chave}</div><div>${filtro - dados.ult} concursos<br>Dezenas: ${dados.dezenas.join(', ')}</div></div>`;
+        });
+        html += `</div>`;
+
+        relatorio.innerHTML = html;
+        relatorio.style.display = 'block';
+        loading.innerHTML = '';
+      } catch (e) {
+        loading.innerHTML = '<span style="color:red;">Erro ao buscar dados</span>';
+      }
+    }
+  </script>
+</body>
+</html>
+
+
+

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Posicionamento por Ordem- Mac Point </title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom, #000, #355E3B);
+      font-family: Arial, sans-serif;
+      color: white;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .container {
+      width: 95%;
+      max-width: 900px;
+      margin: 20px auto;
+    }
+    .titulo-principal {
+      font-family: Impact, sans-serif;
+      font-size: 7vw;
+      background: #000;
+      border: 2px solid #355E3B;
+      padding: 10px;
+      text-align: center;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    .filtros {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    select, button {
+      padding: 10px;
+      font-size: 4vw;
+      max-width: 250px;
+      width: 45%;
+      border-radius: 6px;
+      border: 2px solid white;
+      background: #000;
+      color: white;
+    }
+    button {
+      background: #355E3B;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #00ff88;
+      color: black;
+    }
+    #loading {
+      font-size: 4vw;
+      text-align: center;
+      margin-top: 15px;
+    }
+    .loader {
+      border: 4px solid #ccc;
+      border-top: 4px solid #00ff88;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+      display: inline-block;
+      margin-left: 10px;
+      vertical-align: middle;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .relatorio {
+      background-color: #000;
+      color: white;
+      padding: 20px;
+      border-radius: 6px;
+      border: 2px solid #355E3B;
+      margin-top: 20px;
+    }
+    .secao h2 {
+      font-size: 5vw;
+      border: 1px solid #355E3B;
+      padding: 10px;
+      background-color: #001a12;
+      border-radius: 6px;
+      text-align: center;
+    }
+    .linha {
+      display: flex;
+      justify-content: space-between;
+      margin: 6px 0;
+      padding: 10px;
+      border: 1px solid #355E3B;
+      border-radius: 4px;
+      background-color: #111;
+      font-size: 4vw;
+    }
+    .verde {
+      background-color: #00aa44;
+    }
+    .vermelho {
+      background-color: #aa0022;
+    }
+    @media (min-width: 768px) {
+      .titulo-principal { font-size: 32px; }
+      select, button { font-size: 16px; width: 200px; }
+      #loading { font-size: 16px; }
+      .secao h2 { font-size: 22px; }
+      .linha { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="titulo-principal">Análise por Posição de Ordem- Taufic </div>
+    <div class="filtros">
+      <select id="filtro">
+        <option value="10">🍀 Últimos 10 concursos</option>
+        <option value="20">🍀 Últimos 20 concursos</option>
+        <option value="50">🍀 Últimos 50 concursos</option>
+        <option value="100">🍀 Últimos 100 concursos</option>
+      </select>
+      <button onclick="gerarRelatorio()">Gerar Relatório</button>
+    </div>
+    <div id="loading"></div>
+    <div id="relatorio" class="relatorio" style="display: none;"></div>
+  </div>
+
+  <script>
+    const gruposOrdem = {
+      1: [1,3,5,7,9,21,23,25,27,29,41,43,45,47,49],
+      2: [2,4,6,8,10,22,24,26,28,30,42,44,46,48,50],
+      3: [11,13,15,17,19,31,33,35,37,39,51,53,55,57,59],
+      4: [12,14,16,18,20,32,34,36,38,40,52,54,56,58,60]
+    };
+
+    async function gerarRelatorio() {
+      const filtro = parseInt(document.getElementById('filtro').value);
+      const loading = document.getElementById('loading');
+      const relatorio = document.getElementById('relatorio');
+
+      loading.innerHTML = `Buscando dados... <div class="loader"></div>`;
+      relatorio.style.display = 'none';
+
+      try {
+        const res = await fetch('https://premium-portaldeloteriasmacpoint.onrender.com/api.php');
+        const data = await res.json();
+        const resultados = data.slice(-filtro);
+
+        const frequencias = {}, ultimos = {};
+        for (let i = 1; i <= 4; i++) {
+          frequencias[i] = 0;
+          ultimos[i] = -1;
+        }
+
+        resultados.forEach((item, index) => {
+          for (let i = 1; i <= 4; i++) {
+            if (gruposOrdem[i].some(n => item.Resultado.includes(n))) {
+              frequencias[i]++;
+              ultimos[i] = index;
+            }
+          }
+        });
+
+        const atrasos = {};
+        for (let i = 1; i <= 4; i++) {
+          atrasos[i] = ultimos[i] === -1 ? filtro : filtro - ultimos[i];
+        }
+
+        const topFreq = Object.entries(frequencias).sort((a,b)=>b[1]-a[1]).slice(0,2).map(e=>parseInt(e[0]));
+        const topAtraso = Object.entries(atrasos).sort((a,b)=>b[1]-a[1]).slice(0,2).map(e=>parseInt(e[0]));
+
+        let html = `<div class="secao"><h2>Frequência por Grupo</h2>`;
+        for (let i = 1; i <= 4; i++) {
+          let classe = topFreq.includes(i) ? 'verde' : '';
+          html += `<div class="linha ${classe}"><div>Grupo ${i} (${gruposOrdem[i].join(', ')})</div><div>Ocorrências: ${frequencias[i]}</div></div>`;
+        }
+        html += `</div>`;
+
+        html += `<div class="secao"><h2>Atraso por Grupo</h2>`;
+        for (let i = 1; i <= 4; i++) {
+          let classe = topAtraso.includes(i) ? 'vermelho' : '';
+          html += `<div class="linha ${classe}"><div>Grupo ${i} (${gruposOrdem[i].join(', ')})</div><div>Atraso: ${atrasos[i]} concursos</div></div>`;
+        }
+        html += `</div>`;
+
+        relatorio.innerHTML = html;
+        relatorio.style.display = 'block';
+        loading.innerHTML = '';
+      } catch (error) {
+        loading.innerHTML = `<span style="color:red;">Erro ao buscar dados.</span>`;
+      }
+    }
+  </script>
+</body>
+</html>
+

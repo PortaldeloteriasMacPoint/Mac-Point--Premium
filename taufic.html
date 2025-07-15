@@ -1,227 +1,251 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<title>Análise de Mini Quadrantes</title>
-<style>
-  body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #001a12;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+  <meta charset="UTF-8">
+  <title>Análise de taufic- Mac Point </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-  .container {
-    max-width: 95%;
-    width: 100%;
-    max-width: 600px;
-  }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: black;
+      color: white;
+      font-family: Arial, sans-serif;
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+    }
 
-  .titulo {
-    background: white;
-    color: black;
-    font-family: Impact, sans-serif;
-    font-size: 24px;
-    text-align: center;
-    padding: 10px;
-    border-radius: 8px;
-    margin-top: 20px;
-    font-weight: bold;
-    border: 2px solid black;
-  }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px;
+    }
 
-  .filtro {
-    margin: 20px auto;
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-  }
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
 
-  select, button {
-    padding: 10px;
-    font-weight: bold;
-    border-radius: 5px;
-    border: 2px solid black;
-  }
+    ::-webkit-scrollbar-thumb {
+      background-color: #355E3B;
+      border-radius: 10px;
+    }
 
-  button {
-    background-color: #cc5500;
-    color: white;
-    cursor: pointer;
-    text-shadow: 1px 1px 0 black;
-  }
+    ::-webkit-scrollbar-track {
+      background-color: #111;
+    }
 
-  .loading {
-    display: none;
-    text-align: center;
-    margin-top: 20px;
-  }
+    .container {
+      width: 100%;
+      max-width: 800px;
+      background: linear-gradient(145deg, #001a12, #355E3B);
+      padding: 25px;
+      border-radius: 18px;
+      box-shadow: 0 0 30px #00ff8855;
+    }
 
-  .loader {
-    border: 5px solid white;
-    border-top: 5px solid blue;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    animation: spin 1s linear infinite;
-    margin: 0 auto 10px;
-  }
+    .titulo {
+      background: white;
+      color: black;
+      font-family: Impact, sans-serif;
+      font-size: 28px;
+      text-align: center;
+      padding: 14px;
+      border-radius: 12px;
+      font-weight: bold;
+      border: 2px solid black;
+      margin-bottom: 20px;
+    }
 
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
+    .filtro {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
 
-  .relatorio {
-    background: white;
-    color: black;
-    padding: 20px;
-    margin: 20px auto;
-    border-radius: 10px;
-    width: 100%;
-    box-sizing: border-box;
-    border: 2px solid black;
-  }
+    select, button {
+      padding: 14px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 10px;
+      border: 2px solid white;
+      background-color: #355E3B;
+      color: white;
+      width: 100%;
+    }
 
-  .titulo-sub {
-    font-weight: bold;
-    font-size: 20px;
-    font-family: Impact, sans-serif;
-    color: black;
-    text-align: center;
-    margin: 15px 0 10px;
-    background: white;
-    padding: 5px;
-    border-radius: 8px;
-    border: 2px solid black;
-  }
+    button {
+      background-color: #cc5500;
+      text-shadow: 1px 1px 0 black;
+      cursor: pointer;
+    }
 
-  .tabela {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 5px;
-    margin-bottom: 20px;
-    text-align: center;
-  }
+    .loading {
+      display: none;
+      text-align: center;
+      margin-top: 20px;
+    }
 
-  .item {
-    border: 2px solid black;
-    padding: 10px;
-    border-radius: 5px;
-  }
+    .loader {
+      border: 5px solid white;
+      border-top: 5px solid #00ff88;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 10px;
+    }
 
-  .destacado {
-    background: green;
-    color: white;
-    font-weight: bold;
-    text-shadow: 1px 1px 0 black;
-  }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
 
-  .atrasado {
-    background: red;
-    color: white;
-    font-weight: bold;
-    text-shadow: 1px 1px 0 black;
-  }
+    .relatorio {
+      background: white;
+      color: black;
+      padding: 20px;
+      border-radius: 15px;
+      width: 100%;
+      margin-top: 20px;
+      border: 2px solid black;
+      overflow-x: auto;
+    }
 
-  .erro {
-    text-align: center;
-    margin-top: 20px;
-    color: red;
-    font-weight: bold;
-  }
-</style>
+    .titulo-sub {
+      font-weight: bold;
+      font-size: 22px;
+      font-family: Impact, sans-serif;
+      text-align: center;
+      background: white;
+      padding: 10px;
+      border-radius: 10px;
+      border: 2px solid black;
+      margin: 20px 0 10px;
+    }
+
+    .tabela {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      text-align: center;
+    }
+
+    .item {
+      border: 2px solid black;
+      padding: 12px;
+      border-radius: 8px;
+      background: #eee;
+      font-weight: bold;
+    }
+
+    .destacado {
+      background: green;
+      color: white;
+      text-shadow: 1px 1px 0 black;
+    }
+
+    .atrasado {
+      background: red;
+      color: white;
+      text-shadow: 1px 1px 0 black;
+    }
+
+    .erro {
+      text-align: center;
+      margin-top: 20px;
+      color: red;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-<div class="container">
-  <div class="titulo">Análise de Mini Quadrantes</div>
+  <div class="container">
+    <div class="titulo">Análise de Mini Quadrantes </div>
 
-  <div class="filtro">
-    <select id="filtro">
-      <option value="10">10 Últimos Concursos</option>
-      <option value="20">20 Últimos Concursos</option>
-      <option value="50">50 Últimos Concursos</option>
-      <option value="100">100 Últimos Concursos</option>
-    </select>
-    <button onclick="gerarRelatorio()">Gerar Relatório</button>
+    <div class="filtro">
+      <select id="filtro">
+        <option value="10"> 🍀 10 Últimos Concursos</option>
+        <option value="20"> 🍀 20 Últimos Concursos</option>
+        <option value="50"> 🍀 50 Últimos Concursos</option>
+        <option value="100">🍀 100 Últimos Concursos</option>
+      </select>
+      <button onclick="gerarRelatorio()">Gerar Relatório</button>
+    </div>
+
+    <div class="loading" id="loading">
+      <div class="loader"></div>
+      <div>Buscando dados das dezenas,<br>aguarde só um instante.</div>
+    </div>
+
+    <div id="relatorio" class="relatorio" style="display:none;"></div>
+    <div id="erro" class="erro"></div>
   </div>
 
-  <div class="loading" id="loading">
-    <div class="loader"></div>
-    <div>Buscando dados dos Mini Quadrantes,<br>aguarde só um instante.</div>
-  </div>
+  <script>
+    function gerarRelatorio() {
+      const quantidade = parseInt(document.getElementById("filtro").value);
+      document.getElementById("relatorio").style.display = "none";
+      document.getElementById("erro").innerText = "";
+      document.getElementById("loading").style.display = "block";
 
-  <div id="relatorio" class="relatorio" style="display:none;"></div>
-  <div id="erro" class="erro"></div>
-</div>
+      fetch("https://premium-portaldeloteriasmacpoint.onrender.com/api.php")
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById("loading").style.display = "none";
+          const ultimos = data.slice(-quantidade);
+          const freq = {}, atraso = {};
 
-<script>
-function obterMiniQuadrante(num) {
-  const linha = Math.floor((num - 1) / 10);
-  const coluna = (num - 1) % 10;
-  return `L${linha+1}C${coluna+1}`;
-}
+          ultimos.forEach((concurso) => {
+            const dezenasUsadas = new Set();
+            concurso.Resultado.forEach(num => {
+              const dez = String(num).padStart(2, '0');
+              freq[dez] = (freq[dez] || 0) + 1;
+              dezenasUsadas.add(dez);
+            });
+            Object.keys(freq).forEach(d => {
+              if (!dezenasUsadas.has(d)) {
+                atraso[d] = (atraso[d] || 0) + 1;
+              } else {
+                atraso[d] = 0;
+              }
+            });
+          });
 
-function gerarRelatorio() {
-  const quantidade = parseInt(document.getElementById("filtro").value);
-  document.getElementById("relatorio").style.display = "none";
-  document.getElementById("erro").innerText = "";
-  document.getElementById("loading").style.display = "block";
+          const freqOrdenada = Object.entries(freq).sort((a,b) => b[1]-a[1]);
+          const atrasoOrdenado = Object.entries(atraso).sort((a,b) => b[1]-a[1]);
 
-  fetch("https://premium-portaldeloteriasmacpoint.onrender.com/api.php")
-    .then(res => res.json())
-    .then(data => {
-      document.getElementById("loading").style.display = "none";
-      const ultimos = data.slice(-quantidade);
-      const freq = {}, atraso = {}, usados = new Set();
-
-      ultimos.forEach((concurso, idx) => {
-        const quadrantesUsados = new Set();
-        concurso.Resultado.forEach(num => {
-          const quad = obterMiniQuadrante(num);
-          freq[quad] = (freq[quad] || 0) + 1;
-          quadrantesUsados.add(quad);
+          const rel = document.getElementById("relatorio");
+          rel.innerHTML = `
+            <div class="titulo-sub">Dezenas com Maior Frequência</div>
+            <div class="tabela">
+              ${freqOrdenada.map(([dez, val], i) => `
+                <div class="item ${i<5?'destacado':''}">Dezena ${dez}</div>
+                <div class="item ${i<5?'destacado':''}">${val} ocorrências</div>
+              `).join('')}
+            </div>
+            <div class="titulo-sub">Dezenas com Maior Atraso</div>
+            <div class="tabela">
+              ${atrasoOrdenado.map(([dez, val], i) => `
+                <div class="item ${i<5?'atrasado':''}">Dezena ${dez}</div>
+                <div class="item ${i<5?'atrasado':''}">${val} concursos</div>
+              `).join('')}
+            </div>
+          `;
+          rel.style.display = "block";
+        })
+        .catch(() => {
+          document.getElementById("loading").style.display = "none";
+          document.getElementById("erro").innerText = "Algo deu errado, tente novamente mais tarde.";
         });
-        Object.keys(freq).forEach(q => {
-          if (!quadrantesUsados.has(q)) {
-            atraso[q] = (atraso[q] || 0) + 1;
-          } else {
-            atraso[q] = 0;
-          }
-        });
-      });
-
-      const freqOrdenada = Object.entries(freq).sort((a,b) => b[1]-a[1]);
-      const atrasoOrdenado = Object.entries(atraso).sort((a,b) => b[1]-a[1]);
-
-      const rel = document.getElementById("relatorio");
-      rel.innerHTML = `
-        <div class="titulo-sub">Mini Quadrantes com Maior Frequência</div>
-        <div class="tabela">
-          ${freqOrdenada.map(([qtd, val], i) => `
-            <div class="item ${i<5?'destacado':''}">${qtd}</div>
-            <div class="item ${i<5?'destacado':''}">${val} ocorrências</div>
-          `).join('')}
-        </div>
-        <div class="titulo-sub">Mini Quadrantes com Maior Atraso</div>
-        <div class="tabela">
-          ${atrasoOrdenado.map(([qtd, val], i) => `
-            <div class="item ${i<5?'atrasado':''}">${qtd}</div>
-            <div class="item ${i<5?'atrasado':''}">${val} concursos</div>
-          `).join('')}
-        </div>
-      `;
-      rel.style.display = "block";
-    })
-    .catch(() => {
-      document.getElementById("loading").style.display = "none";
-      document.getElementById("erro").innerText = "Algo deu errado, tente novamente mais tarde.";
-    });
-}
-</script>
+    }
+  </script>
 </body>
 </html>
 

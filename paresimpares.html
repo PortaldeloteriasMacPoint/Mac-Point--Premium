@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pares e Ímpares - Mac Point</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom, #000, #355E3B);
+      font-family: Arial, sans-serif;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+    .container {
+      width: 95%;
+      max-width: 900px;
+      margin: 20px auto;
+    }
+    .titulo-principal {
+      font-family: Impact, sans-serif;
+      font-size: 7vw;
+      background: #000;
+      border: 2px solid #355E3B;
+      padding: 10px;
+      text-align: center;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    .filtros {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    select, button {
+      padding: 10px;
+      font-size: 4vw;
+      max-width: 200px;
+      width: 45%;
+      border-radius: 6px;
+      border: 2px solid white;
+    }
+    button {
+      background: #355E3B;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #00ff88;
+      color: black;
+    }
+    #loading {
+      font-size: 4vw;
+      text-align: center;
+      margin-top: 15px;
+    }
+    .loader {
+      border: 4px solid #ccc;
+      border-top: 4px solid #00ff88;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+      display: inline-block;
+      margin-left: 10px;
+      vertical-align: middle;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .relatorio {
+      background-color: #000;
+      color: white;
+      padding: 20px;
+      border-radius: 6px;
+      border: 2px solid #355E3B;
+      margin-top: 20px;
+    }
+    .secao {
+      margin-bottom: 20px;
+    }
+    .secao h2 {
+      font-size: 5vw;
+      border: 1px solid #355E3B;
+      padding: 10px;
+      background-color: #001a12;
+      border-radius: 6px;
+      text-align: center;
+    }
+    .linha {
+      display: flex;
+      justify-content: space-between;
+      margin: 6px 0;
+      padding: 10px;
+      border: 1px solid #355E3B;
+      border-radius: 4px;
+      background-color: #111;
+      font-size: 4vw;
+    }
+    .verde {
+      background-color: #00aa44;
+    }
+    .vermelho {
+      background-color: #aa0022;
+    }
+    @media (min-width: 768px) {
+      .titulo-principal { font-size: 32px; }
+      select, button { font-size: 16px; width: 200px; }
+      #loading { font-size: 16px; }
+      .secao h2 { font-size: 22px; }
+      .linha { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="titulo-principal">Análise Pares e Ímpares</div>
+    <div class="filtros">
+      <select id="filtro">
+        <option value="10">🍀 Últimos 10 concursos</option>
+        <option value="20">🍀 Últimos 20 concursos</option>
+        <option value="50">🍀 Últimos 50 concursos</option>
+        <option value="100">🍀 Últimos 100 concursos</option>
+      </select>
+      <button onclick="gerarRelatorio()">Gerar Relatório</button>
+    </div>
+    <div id="loading"></div>
+    <div id="relatorio" class="relatorio" style="display: none;"></div>
+  </div>
+
+  <script>
+    async function gerarRelatorio() {
+      const filtro = parseInt(document.getElementById('filtro').value);
+      const loading = document.getElementById('loading');
+      const relatorio = document.getElementById('relatorio');
+      loading.innerHTML = `Buscando dados... <div class="loader"></div>`;
+      relatorio.style.display = 'none';
+
+      try {
+        const res = await fetch('https://premium-portaldeloteriasmacpoint.onrender.com/api.php');
+        const data = await res.json();
+        const resultados = data.slice(-filtro);
+
+        let paresTotais = 0;
+        let imparesTotais = 0;
+        const combinacoes = {};
+        const ocorrencias = [];
+
+        resultados.forEach((item, index) => {
+          const dezenas = item.Resultado;
+          const pares = dezenas.filter(n => n % 2 === 0).length;
+          const impares = dezenas.length - pares;
+          paresTotais += pares;
+          imparesTotais += impares;
+
+          const chave = `${pares}P-${impares}I`;
+          if (!combinacoes[chave]) {
+            combinacoes[chave] = { count: 0, lastIndex: index };
+          }
+          combinacoes[chave].count++;
+          combinacoes[chave].lastIndex = index;
+
+          ocorrencias.push({
+            concurso: item.Concurso,
+            data: item.Data,
+            pares,
+            impares,
+            chave
+          });
+        });
+
+        const maisFrequente = Object.entries(combinacoes).sort((a, b) => b[1].count - a[1].count)[0];
+        const maisAtrasada = Object.entries(combinacoes).sort((a, b) => a[1].lastIndex - b[1].lastIndex)[0];
+
+        let html = `<div class="secao"><h2>Resumo Total</h2>
+          <div class="linha verde"><div>Pares: ${paresTotais}</div><div>Ímpares: ${imparesTotais}</div></div></div>`;
+
+        html += `<div class="secao"><h2>Mais Frequente</h2>
+          <div class="linha verde"><div>Combinação: ${maisFrequente[0]}</div><div>Ocorrências: ${maisFrequente[1].count}</div></div></div>`;
+
+        html += `<div class="secao"><h2>Mais Atrasada</h2>
+          <div class="linha vermelho"><div>Combinação: ${maisAtrasada[0]}</div><div>Atrasa há: ${resultados.length - 1 - maisAtrasada[1].lastIndex} concursos</div></div></div>`;
+
+        html += `<div class="secao"><h2>Detalhes por Concurso</h2>`;
+        ocorrencias.forEach((item) => {
+          let classe = item.chave === maisFrequente[0] ? 'verde' : '';
+          html += `<div class="linha ${classe}"><div>Conc. ${item.concurso} - ${item.data || ''}</div><div>${item.pares}P / ${item.impares}I</div></div>`;
+        });
+        html += `</div>`;
+
+        relatorio.innerHTML = html;
+        relatorio.style.display = 'block';
+        loading.innerHTML = '';
+      } catch (error) {
+        loading.innerHTML = `<span style="color:red;">Erro ao buscar dados.</span>`;
+      }
+    }
+  </script>
+</body>
+</html>
+

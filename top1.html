@@ -15,7 +15,7 @@ html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb { background-color:
 .topo {  
   height: 60px;  
   width: 100%;  
-  background: white ;  
+  background: black  ;  
   display: flex;  
   align-items: center;  
   justify-content: space-between;  
@@ -24,7 +24,7 @@ html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb { background-color:
   top: 0;  
   left: 0;  
   z-index: 1001;  
-  border-bottom: 3px solid #355E3B;  
+  border-bottom: 5px solid #355E3B;  
 }  
 .titulo {  
   font-family: Impact, sans-serif;  
@@ -145,15 +145,23 @@ html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb { background-color:
   font-weight: 900;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: #2c3e50;
+  color: white ;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+text-shadow: 
+  -1px -1px 0 #000,  
+   1px -1px 0 #000,
+  -1px  1px 0 #000,
+   1px  1px 0 #000;
 }
 
 
 
 
 
-.conteudo h1 { font-size: clamp(24px, 5vw, 36px); margin-bottom: 20px; } .conteudo p { font-size: clamp(16px, 3vw, 18px); background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; } .rodape { position: fixed; bottom: 0; left: 0; width: 100%; height: 70px; background: white ; display: flex; justify-content: space-around; align-items: center; border-top: 3px solid #355E3B; z-index: 1000; } .icone-rodape { width: 40px; height: 40px; border-radius: 50%; background: transparent; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: all 0.3s ease; border: 2px solid transparent; } .icone-rodape.ativo { background: #355E3B; border: 2px solid white; box-shadow: 0 0 0 4px black inset, 0 0 0 6px white inset; } .icone-rodape svg { fill: white; stroke: black; stroke-width: 1; width: 30px; height: 30px; transition: 0.3s; } .conteudo { position: relative; z-index: 1; margin-top: 60px; margin-bottom: 70px; overflow-y: auto; max-width: 1000px; margin-left: auto; margin-right: auto; background-color: #000; color: white; display: flex; flex-direction: column; padding: 20px; }
+.conteudo h1 { font-size: clamp(24px, 5vw, 36px); margin-bottom: 20px; } .conteudo p { font-size: clamp(16px, 3vw, 18px); background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; }
+ .rodape { position: fixed; bottom: 0; left: 0; width: 100%; height: 70px; background: black  ; display: flex; justify-content: space-around; align-items: center; border-top: 5px solid #355E3B; z-index: 1000; }
+
+ .icone-rodape { width: 40px; height: 40px; border-radius: 50%; background: transparent; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: all 0.3s ease; border: 2px solid transparent; } .icone-rodape.ativo { background: #355E3B; border: 2px solid white; box-shadow: 0 0 0 4px black inset, 0 0 0 4px white inset; } .icone-rodape svg { fill: white; stroke: black; stroke-width: 1; width: 40px; height: 40px; transition: 0.3s; } .conteudo { position: relative; z-index: 1; margin-top: 60px; margin-bottom: 70px; overflow-y: auto; max-width: 1000px; margin-left: auto; margin-right: auto; background-color: #000; color: white; display: flex; flex-direction: column; padding: 20px; }
 
 .apresentacao { flex: 1; display: flex; flex-direction: column; } .apresentacao img { flex-shrink: 0; width: 100%; height: auto; object-fit: cover; display: block; } .apresentacao-titulo { padding: 16px; text-align: center; }
 
@@ -182,10 +190,11 @@ html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb { background-color:
   </button>    <button onclick="abrirIframe('conferência.html')">  
     <i class="fas fa-vial"></i> Simulador Histórico  
     <span class="descricao">Simule e compare resultados</span>  
-  </button>    <button onclick="abrirIframe('conferidor.html')">  
-    <i class="fas fa-check-circle"></i> Conferidor de Acertos  
-    <span class="descricao">Verifique seus jogos com resultados</span>  
-  </button>    <div class="categoria"><i class="fas fa-chart-line"></i> Relatórios</div>    <button onclick="abrirIframe('ciclos.html')">  
+  </button>    
+
+
+
+  <div class="categoria"><i class="fas fa-chart-line"></i> Relatórios</div>    <button onclick="abrirIframe('ciclos.html')">  
     <i class="fas fa-sync-alt"></i> Ciclos  
     <span class="descricao">Análise de ciclos e recorrência</span>  
   </button>    <button onclick="abrirIframe('paresimpares.html')">  
@@ -202,10 +211,7 @@ html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb { background-color:
     <span class="descricao">Pendências estatísticas</span>  
   </button>   
 
-<button onclick="abrirIframe('grupo_soma.html')">  
-  <i class="fas fa-plus"></i> Grupo de Soma  
-  <span class="descricao">Análise de grupos de soma</span>  
-</button>  
+
 
 <button onclick="abrirIframe('taufic.html')">  
   <i class="fas fa-th"></i> Mini Quadrantes  
@@ -222,39 +228,43 @@ html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb { background-color:
   <span class="descricao">Posições segundo Taufic</span>  
 </button>  
 
-<button onclick="abrirIframe('sincronizacao-grupos.html')">  
-  <i class="fas fa-sync-alt"></i> Sincronização de Grupos  
-  <span class="descricao">Integração entre grupos</span>  
-</button>  
+
 
 <button onclick="abrirIframe('quadrantes-aritmeticos.html')">  
   <i class="fas fa-border-all"></i> Quadrante Aritméticos  
-  <span class="descricao">Análise por quadrantes</span>  
+  <span class="descricao">Análise por Quadrante Aritmético </span>  
 </button>
 
 
 
 
 
- <button onclick="abrirIframe('pendencia-semi.html')">  
+ <button onclick="abrirIframe('semilinhas.html')">  
     <i class="fas fa-th-large"></i> Semi Linhas  
     <span class="descricao">Pendências por segmentos</span>  
-  </button>    <button onclick="abrirIframe('pendencia-soma.html')">  
+  </button>    <button onclick="abrirIframe('gruposoma.html')">  
     <i class="fas fa-calculator"></i> Grupos de Soma  
     <span class="descricao">Pendência por faixas somadas</span>  
-  </button>    <div class="categoria"><i class="fas fa-cogs"></i> Análise PRO</div>    <button onclick="abrirIframe('analisadorjogos.html')">  
+  </button>    <div class="categoria"><i class="fas fa-cogs"></i> Análise PRO</div>   
+<button onclick="abrirIframe('sincronizacao-grupos.html')">  
+  <i class="fas fa-sync-alt"></i> Sincronização de Grupos  
+  <span class="descricao">Integração entre grupos</span>  
+</button>  
+
+ <button onclick="abrirIframe('analisadorjogos.html')">  
     <i class="fas fa-eye"></i> Analisador de Jogos  
     <span class="descricao">Frequência e gráficos</span>  
   </button>    <button onclick="abrirIframe('desdobramento.html')">  
     <i class="fas fa-sitemap"></i> Desdobramento  
-    <span class="descricao">Distribua dezenas estrategicamente</span>  
+    <span class="descricao">Distribuidor de dezenas </span>  
   </button>    <button onclick="abrirIframe('tabelaproms.html')">  
     <i class="fas fa-table"></i> Tabela Probabilidades  
     <span class="descricao">Estudo com filtros poderosos</span>  
-  </button>    <button onclick="abrirIframe('relatorios.html')">  
-    <i class="fas fa-folder-open"></i> Relatórios PRO  
-    <span class="descricao">Painéis detalhados de dados</span>  
-  </button>  
+  </button>   
+
+ 
+
+
 <div class="categoria"><i class="fas fa-magic"></i> Oráculos</div><button onclick="abrirIframe('cartas-taro.html')">
   <i class="fas fa-spa"></i> Cartas de Tarô
   <span class="descricao">Consulta simbólica espiritual</span>
@@ -264,21 +274,26 @@ html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb { background-color:
 </button><div class="categoria"><i class="fas fa-user-cog"></i> Personalização</div><button onclick="abrirIframe('avatar.html')">
   <i class="fas fa-user-circle"></i> Avatar
   <span class="descricao">Crie seu perfil visual</span>
-</button><div class="categoria"><i class="fas fa-tools"></i> Ferramentas Extras</div><button onclick="abrirIframe('desdobraquina.html')">
-  <i class="fas fa-layer-group"></i> Desdobra Quina
-  <span class="descricao">Desdobrador exclusivo da Quina</span>
-</button><div class="categoria"><i class="fas fa-layer-group"></i> Grupos de Análises</div><button onclick="abrirIframe('grupos-tutorial.html')">
+</button><div class="categoria"><i class="fas fa-tools"></i> Ferramenta Complementar </div><button onclick="abrirIframe('extra.html')">
+  <i class="fas fa-layer-group"></i>  Final de sorteio 
+  <span class="descricao">Painel de Análises </span>
+</button>
+<button onclick="abrirIframe('relatorios.html')">  
+    <i class="fas fa-folder-open"></i> Relatórios PRO  
+    <span class="descricao">Painel detalhado de Modalidades </span>  
+  </button>  
+
+<div class="categoria"><i class="fas fa-layer-group"></i> Grupos de Análises</div><button onclick="abrirIframe('grupos-tutorial.html')">
   <i class="fas fa-book-reader"></i> Tutorial de Grupos
   <span class="descricao">Explicação dos tipos de grupos analisados (linhas, colunas, somas, dezenas fixas, etc.)</span>
-</button><button onclick="abrirIframe('grupos-analise.html')">
-  <i class="fas fa-th-large"></i> Análise de Grupos
-  <span class="descricao">Ferramenta para comparar padrões entre grupos</span>
-</button></div>    <iframe id="janela" class="iframe-area"></iframe>  <div class="conteudo">  
+</button>
+</div>    <iframe id="janela" class="iframe-area"></iframe>  <div class="conteudo">  
   <div class="apresentacao" style="border-radius: 16px; overflow: hidden; box-shadow: 0 0 20px rgba(0, 255, 153, 0.2), 0 0 60px rgba(0, 255, 153, 0.1); background-color: #1a1a1a;">  
     <img src="Screenshot_20250715-172400-1.jpg" alt="Capa" style="width: 100%; height: auto; object-fit: cover; display: block;">  
     <div class="apresentacao-titulo" style="padding: 16px; text-align: center;">  
-      <h1 style="font-size: clamp(22px, 6vw, 38px); background: linear-gradient(to right, #4CAF50, #2ecc71); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: bold; text-shadow: 0 0 8px #000; margin: 0;">🍀 Bem-vindo ao Mac Point</h1>  
-      <p style="color: white; margin-top: 8px;"> O Portal de Loterias Mac Point é uma plataforma independente, sem qualquer vínculo com a Caixa Econômica Federal. Oferece ferramentas poderosas para análises e dados estatísticos, com foco principal na Mega-Sena, mas também compatível com outras modalidades de loteria. A plataforma está em constante evolução e pode receber novas atualizações e melhorias no futuro.     </p>  
+      <h1 style="font-size: clamp(22px, 6vw, 38px); background: linear-gradient(to right, #4CAF50, #2ecc71); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: bold; text-shadow: 0 0 8px #000; margin: 0;">🍀 Bem-vindo ao Mac Point Pro </h1>  
+      <p style="color: white; margin-top: 8px;"> O Portal de Loterias Mac Point é uma plataforma independente, sem qualquer vínculo com a Caixa Econômica Federal. Oferece ferramentas poderosas para análises e dados estatísticos, com foco principal na Mega-Sena, mas também compatível com outras modalidades de loteria. A plataforma está em constante evolução e pode receber novas atualizações e melhorias no futuro.   
+  </p>  
     </div>  
   </div>  
 </div>  <div class="rodape" id="rodape">  <div class="icone-rodape" onclick="abrirIframe('feed.html', this)">  
@@ -295,9 +310,19 @@ onclick="abrirIframe('jogoeapp.html', this)">
   <svg viewBox="0 0 24 24">  
     <path d="M17 2H7a2 2 0 00-2 2v16l7-3 7 3V4a2 2 0 00-2-2z"/>  
   </svg>  
-</div>  <div class="icone-rodape" onclick="abrirPagina('sair.html', this)">  
-  <svg viewBox="0 0 24 24"><path d="M16 13v-2H7V8l-5 4 5 4v-3zM20 3H4a2 2 0 00-2 2v14a2 2 0 002 2h16a2 2 0 002-2V5a2 2 0 00-2-2z"/></svg>  
-</div>  </div>    <script>  
+</div>
+
+ <div class="icone-rodape" onclick="window.location.href='logout.html'">
+  <svg viewBox="0 0 24 24">
+    <path d="M16 13v-2H7V8l-5 4 5 4v-3zM20 3H4a2 2 0 00-2 2v14a2 2 0 002 2h16a2 2 0 002-2V5a2 2 0 00-2-2z"/>
+  </svg>
+</div>
+  </div>   
+<script>
+  
+
+
+ 
     function toggleMenu() {  
       document.getElementById("menu").classList.toggle("ativo");  
     }  
@@ -328,7 +353,9 @@ document.querySelectorAll(".icone-rodape").forEach(i => i.classList.remove("ativ
 if (el) el.classList.add("ativo");
 document.querySelector(".conteudo").style.display = "none";
 }
-
+function abrirPagina(url) {
+    window.location.href = url;
+  }
 function abrirPagina(url, el) {
 document.querySelectorAll(".icone-rodape").forEach(i => i.classList.remove("ativo"));
 if (el) el.classList.add("ativo");

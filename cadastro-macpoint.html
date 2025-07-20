@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cadastro - Mac Point </title>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      background: #000;
+      border-radius: 12px;
+      padding: 25px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 0 15px #00ff00;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .header-box {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #000;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 20px;
+      gap: 15px;
+    }
+
+    .header-box img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+    }
+
+    .header-box span {
+      font-size: 28px;
+      font-weight: bold;
+      font-family: Impact, sans-serif;
+      color: white;
+      text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #fff;
+      color: #000;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      background-color: #00ff00;
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      box-sizing: border-box;
+    }
+
+    button:hover {
+      background-color: #1aff1a;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 14px;
+      width: 100%;
+      color: #fff;
+    }
+
+    .checkbox-container {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      width: 100%;
+      color: #fff;
+    }
+
+    .checkbox-container input {
+      margin-right: 10px;
+    }
+
+    .g-recaptcha {
+      width: 100% !important;
+      max-width: 304px;
+      margin: 0 auto 10px auto;
+    }
+
+    .g-recaptcha div {
+      margin: 0 auto !important;
+      display: block !important;
+    }
+
+    .login-link {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #ccc;
+      text-align: center;
+      width: 100%;
+    }
+
+    .login-link a {
+      color: #00ff00;
+      text-decoration: none;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+
+    #mensagem {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #fff;
+      color: #000;
+      border-radius: 10px;
+      padding: 15px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      font-family: Arial, sans-serif;
+      box-shadow: 0 0 10px #00ff00;
+      display: none;
+      z-index: 999;
+      text-align: center;
+      max-width: 90%;
+      min-width: 280px;
+    }
+
+    @media (max-width: 480px) {
+      .header-box span {
+        font-size: 24px;
+      }
+
+      .header-box img {
+        width: 50px;
+        height: 50px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="mensagem"></div>
+
+  <div class="container">
+    <div class="header-box">
+      <img src="Screenshot_20250715-172400-1.jpg" alt="Ícone" />
+      <span>Cadastro - Mac Point </span>
+    </div>
+
+    <input type="text" id="nome" placeholder="Nome completo" required>
+    <input type="email" id="email" placeholder="E-mail" required>
+    <input type="password" id="senha" placeholder="Senha" required>
+
+    <div class="checkbox-container">
+      <input type="checkbox" id="termos" required>
+      <label for="termos">Li e concordo com os termos de uso</label>
+    </div>
+
+    <div class="g-recaptcha" data-sitekey="SUA_SITE_KEY_AQUI"></div>
+
+    <button onclick="cadastrar()">Cadastrar</button>
+
+    <div class="login-link">
+      Já tem cadastro? <a href="login.html">Faça login</a>
+    </div>
+  </div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "SUA_API_KEY_AQUI",
+      authDomain: "SEU_DOMINIO.firebaseapp.com",
+      projectId: "SEU_PROJECT_ID",
+      storageBucket: "SEU_BUCKET.appspot.com",
+      messagingSenderId: "SEU_SENDER_ID",
+      appId: "SEU_APP_ID"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    function mostrarMensagem(texto) {
+      const msg = document.getElementById("mensagem");
+      msg.innerHTML = texto;
+      msg.style.display = "block";
+      setTimeout(() => {
+        msg.style.display = "none";
+      }, 3000);
+    }
+
+    function cadastrar() {
+      const nome = document.getElementById('nome').value;
+      const email = document.getElementById('email').value;
+      const senha = document.getElementById('senha').value;
+      const termos = document.getElementById('termos').checked;
+      const recaptchaResponse = grecaptcha.getResponse();
+
+      if (!nome || !email || !senha || !termos) {
+        mostrarMensagem("Preencha todos os campos e aceite os termos.");
+        return;
+      }
+
+      if (!recaptchaResponse) {
+        mostrarMensagem("Confirme o reCAPTCHA.");
+        return;
+      }
+
+      firebase.auth().createUserWithEmailAndPassword(email, senha)
+        .then((userCredential) => {
+          return userCredential.user.updateProfile({ displayName: nome });
+        })
+        .then(() => {
+          mostrarMensagem("Cadastro realizado com sucesso!");
+          setTimeout(() => {
+            window.location.href = "login.html";
+          }, 2500);
+        })
+        .catch((error) => {
+          mostrarMensagem("Erro: " + error.message);
+        });
+    }
+  </script>
+</body>
+</html>

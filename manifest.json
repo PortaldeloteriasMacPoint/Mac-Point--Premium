@@ -1,0 +1,21 @@
+{
+  "name": "Mac Point",
+  "short_name": "MacPoint",
+  "start_url": "/Mac-Point--Premium/index.html",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#ff6600",
+  "icons": [
+    {
+      "src": "macpoint.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "macpoint.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
+

@@ -1,0 +1,290 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Portal de Loterias - MAC POINT</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #000000, #001a00, #355E3B);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5vh 5vw;
+      color: white;
+    }
+
+    .container {
+      background: #000000;
+      border: 2px solid #355E3B;
+      border-radius: 20px;
+      padding: 5vw;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 0 25px rgba(0, 255, 0, 0.3);
+      text-align: center;
+    }
+
+    .icone-titulo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .foto-icone {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #355E3B, #00ff00);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      color: white;
+      box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+    }
+
+    h2, .titulo-macpoint {
+      margin-bottom: 10px;
+      text-shadow: 1px 1px 3px black;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      color: #fff;
+    }
+
+    .titulo-macpoint {
+      font-size: 2rem;
+      color: #355E3B;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      margin: 12px 0;
+      border-radius: 10px;
+      border: 1px solid #333;
+      background-color: #111;
+      color: white;
+      font-size: 1rem;
+    }
+
+    input::placeholder {
+      color: #aaa;
+    }
+
+    .termos {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      margin: 10px 0;
+      color: #ddd;
+      text-align: left;
+    }
+
+    .termos a {
+      color: #00ff00;
+      text-decoration: none;
+    }
+
+    .termos a:hover {
+      text-decoration: underline;
+    }
+
+    .g-recaptcha {
+      margin: 15px 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: bold;
+      border: 2px solid #355E3B;
+      background: linear-gradient(135deg, #355E3B, #00aa00);
+      color: white;
+      box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+      cursor: not-allowed;
+      opacity: 0.6;
+      transition: 0.3s;
+    }
+
+    button.ativo {
+      cursor: pointer;
+      opacity: 1;
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, #00aa00, #007700);
+    }
+
+    #mensagem, #sucesso {
+      margin-top: 15px;
+      font-size: 0.9rem;
+      padding: 10px;
+      border-radius: 8px;
+      border: 2px solid black;
+      text-shadow: 1px 1px 2px black;
+    }
+
+    #mensagem {
+      background: red;
+      color: white;
+    }
+
+    #sucesso {
+      background: green;
+      color: white;
+    }
+
+    p {
+      margin-top: 10px;
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+
+    p a {
+      color: #00ff00;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    p a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 480px) {
+      h2 {
+        font-size: 1.2rem;
+      }
+
+      .titulo-macpoint {
+        font-size: 1.5rem;
+      }
+
+      .foto-icone {
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+      }
+
+      input, button {
+        font-size: 0.95rem;
+        padding: 10px;
+      }
+    }
+  </style>
+
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+      authDomain: "mac-projeto-4e552.firebaseapp.com",
+      projectId: "mac-projeto-4e552",
+      storageBucket: "mac-projeto-4e552.appspot.com",
+      messagingSenderId: "537330451519",
+      appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const botaoCadastro = document.getElementById("cadastrar");
+      const termos = document.getElementById("termos");
+
+      termos.addEventListener("change", () => {
+        botaoCadastro.disabled = !termos.checked;
+        botaoCadastro.classList.toggle("ativo", termos.checked);
+      });
+
+      botaoCadastro.addEventListener("click", () => {
+        let nome = document.getElementById("nome").value.trim();
+        let email = document.getElementById("email").value.trim();
+        let senha = document.getElementById("senha").value.trim();
+        let mensagem = document.getElementById("mensagem");
+        let sucesso = document.getElementById("sucesso");
+        let recaptchaResponse = grecaptcha.getResponse();
+
+        mensagem.innerText = "";
+        sucesso.innerText = "";
+
+        if (!termos.checked) {
+          mensagem.innerText = "Você deve aceitar os termos.";
+          return;
+        }
+
+        if (recaptchaResponse === "") {
+          mensagem.innerText = "Por favor, complete o reCAPTCHA.";
+          return;
+        }
+
+        if (nome === "" || email === "" || senha === "") {
+          mensagem.innerText = "Preencha todos os campos.";
+          return;
+        }
+
+        createUserWithEmailAndPassword(auth, email, senha)
+          .then((userCredential) => {
+            const user = userCredential.user;
+            return updateProfile(user, { displayName: nome });
+          })
+          .then(() => {
+            sucesso.innerText = "Cadastro realizado com sucesso!";
+            setTimeout(() => {
+              window.location.href = "login.html";
+            }, 1000);
+          })
+          .catch((error) => {
+            console.error("Erro:", error.message);
+            mensagem.innerText = "Erro ao cadastrar. Tente novamente.";
+          });
+      });
+    });
+  </script>
+</head>
+<body>
+  <div class="container">
+    <div class="icone-titulo">
+      <div class="foto-icone">🍀</div>
+    </div>
+    <h2>PORTAL DE LOTERIAS</h2>
+    <h3 class="titulo-macpoint">Mac Point</h3>
+    <input type="text" id="nome" placeholder="Nome completo">
+    <input type="email" id="email" placeholder="E-mail">
+    <input type="password" id="senha" placeholder="Senha">
+    <div class="termos">
+      <input type="checkbox" id="termos"> 
+      <label for="termos">Li e concordo com os <a href="#">Termos de uso</a></label>
+    </div>
+    <div class="g-recaptcha" data-sitekey="6LdCx_EqAAAAALglxJ8LUElGwD6QyDn84HhF4SEt"></div>
+    <button id="cadastrar" disabled>Cadastrar</button>
+    <p id="mensagem"></p>
+    <p id="sucesso"></p>
+    <p>Já tem cadastro? <a href="login.html">Faça login</a></p>
+  </div>
+</body>
+</html>
+

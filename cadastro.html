@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
+<!DOCTYPE html><html lang="pt-BR"><head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="manifest" href="manifest.json">
@@ -135,7 +133,7 @@
       Já tem cadastro? <a href="login.html" target="_blank">Faça login</a>
     </div>
   </div>
-<script>
+  <script>
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('service-worker.js');
   }
@@ -190,7 +188,6 @@
       messagingSenderId: "537330451519",
       appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
     };
-
     firebase.initializeApp(firebaseConfig);
 
     function cadastrar() {
@@ -240,6 +237,9 @@
           document.getElementById("confirmarSenha").value = "";
           document.getElementById("termos").checked = false;
           grecaptcha.reset();
+          setTimeout(() => {
+            window.location.href = "login.html";
+          }, 2000);
         })
         .catch(err => {
           let msg = "Algo deu errado! Tente novamente mais tarde.";
@@ -252,4 +252,3 @@
   </script>
 </body>
 </html>
-

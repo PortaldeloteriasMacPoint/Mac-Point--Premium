@@ -6,6 +6,9 @@
   <title>Mac Point</title>
   <meta name="theme-color" content="#1a1a1a" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="manifest" href="manifest.json">
+<link rel="icon" href="macpoint.png" type="image/png" sizes="512x512">
+<meta name="theme-color" content="#ff6600">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
@@ -260,11 +263,12 @@
     <div class="menu-icon" onclick="toggleMenu()"><i class="fas fa-bars" style="color:white;"></i></div>
   </div>
 
-  <input type="file" id="fotoInput" accept="image/*" onchange="carregarFoto(event)" />
-  <div class="menu-lateral" id="menu">
-  <div class="foto-circulo" onclick="document.getElementById('fotoInput').click()" id="fotoPerfil">
-    <i class="fas fa-user" style="color:white; font-size:24px;"></i>
+ <input type="file" id="inputFoto" accept="image/*" onchange="carregarFoto(event)" style="display: none;">
+<div class="menu-lateral" id="menu">
+  <div class="foto-circulo" onclick="document.getElementById('inputFoto').click()">
+    <img id="fotoPreview" src="default.png" style="width: 60px; height: 60px; border-radius: 50%;">
   </div>
+</div> 
   <h2>Menu Principal</h2>
   
 <!-- Palpite Inteligente -->
@@ -433,6 +437,12 @@
     <svg onclick="abrirSecao('reels.html', this)" viewBox="0 0 24 24"><path d="M10 16.5l6-4.5-6-4.5v9z" /></svg>
     <svg onclick="window.location='logout.html'" viewBox="0 0 24 24"><path d="M16 13v-2H7V8l-5 4 5 4v-3zM20 3H4a2 2 0 00-2 2v14a2 2 0 002 2h16a2 2 0 002-2V5a2 2 0 00-2-2z"/></svg>
   </div>
+
+ <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js');
+  }
+</script> 
 <script src="script.js"></script>
 <script src="proteção.js"></script>
  <script type="module">
@@ -531,26 +541,32 @@ function toggleSubmenu(id) {
       }, 800);
     }
 
-    function carregarFoto(event) {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          const fotoPerfil = document.getElementById("fotoPerfil");
-          fotoPerfil.innerHTML = `<img src="${e.target.result}" alt="Foto do usuário" />`;
-          localStorage.setItem("fotoUsuario", e.target.result);
-        };
-        reader.readAsDataURL(file);
-      }
-    }
+function carregarFoto(event) {
+  const input = event.target;
+  const reader = new FileReader();
+  reader.onload = function () {
+    const base64Image = reader.result;
+    document.getElementById('fotoPreview').src = base64Image;
+    localStorage.setItem('fotoUsuario', base64Image);
+  };
+  if (input.files && input.files[0]) {
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+window.onload = function () {
+  const fotoSalva = localStorage.getItem('fotoUsuario');
+  if (fotoSalva) {
+    document.getElementById('fotoPreview').src = fotoSalva;
+  }
+};
 
-    window.onload = () => {
-      const img = localStorage.getItem("fotoUsuario");
-      if (img) {
-        document.getElementById("fotoPerfil").innerHTML = `<img src="${img}" alt="Foto do usuário" />`;
-      }
-    };
+
+
+    
+        
 
   </script>
+
+  
 </body>
 </html>

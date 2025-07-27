@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<link rel="manifest" href="manifest.json">
-<link rel="icon" href="macpoint.png" type="image/png" sizes="512x512">
-<meta name="theme-color" content="#ff6600">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="macpoint.png" type="image/png" sizes="512x512">
+  <meta name="theme-color" content="#ff6600">
   <title>Cadastro - Mac Point</title>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
@@ -182,13 +182,15 @@
 </script>
   <script>
     const firebaseConfig = {
-      apiKey: "AIzaSyAkQ1CKpDewzCGrMdLZoYShiyNmGSaSQTQ",
-      authDomain: "macpoint-14ef1.firebaseapp.com",
-      projectId: "macpoint-14ef1",
-      storageBucket: "macpoint-14ef1.appspot.com",
-      messagingSenderId: "1084090304359",
-      appId: "1:1084090304359:web:a9b19aa64b3ddf56d0d94c"
+      apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
+      authDomain: "mac-projeto-4e552.firebaseapp.com",
+      databaseURL: "https://mac-projeto-4e552-default-rtdb.firebaseio.com",
+      projectId: "mac-projeto-4e552",
+      storageBucket: "mac-projeto-4e552.firebasestorage.app",
+      messagingSenderId: "537330451519",
+      appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
     };
+
     firebase.initializeApp(firebaseConfig);
 
     function cadastrar() {
@@ -199,11 +201,12 @@
       const termos = document.getElementById("termos").checked;
       const success = document.getElementById("success");
       const error = document.getElementById("error");
+
       success.textContent = "";
       error.textContent = "";
 
       if (!nome || !email || !senha || !confirmarSenha) {
-        error.textContent = "Preencha todos os campos.";
+        error.textContent = "Preencha todos os campos corretamente.";
         return;
       }
 
@@ -230,12 +233,23 @@
             nome: nome,
             email: email
           });
-          success.textContent = "Cadastro realizado com sucesso!";
+          success.textContent = "✅ Cadastro realizado com sucesso!";
+          document.getElementById("nome").value = "";
+          document.getElementById("email").value = "";
+          document.getElementById("senha").value = "";
+          document.getElementById("confirmarSenha").value = "";
+          document.getElementById("termos").checked = false;
+          grecaptcha.reset();
         })
         .catch(err => {
-          error.textContent = err.message;
+          let msg = "Algo deu errado! Tente novamente mais tarde.";
+          if (err.code === "auth/email-already-in-use") msg = "Este e-mail já está cadastrado.";
+          if (err.code === "auth/invalid-email") msg = "E-mail inválido.";
+          if (err.code === "auth/weak-password") msg = "A senha deve ter pelo menos 6 caracteres.";
+          error.textContent = msg;
         });
     }
   </script>
 </body>
 </html>
+

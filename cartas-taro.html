@@ -3,6 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <!-- Manifesto para instalação PWA --> 
+  <link rel="manifest" href="manifest.json">  
+  <!-- Ícone principal do app -->   
+  <link rel="icon" href="macpoint.png" type="image/png" sizes="512x512">   
+  <!-- Cor da barra de status do navegador no celular -->   
+  <meta name="theme-color" content="#ff6600">   
   <title>Tarô Interativo - Mac Point </title>
   <style>
     :root {
@@ -106,6 +112,11 @@
     <div class="notificacao" id="notificacao"></div>
     <div class="carta" id="cartaContainer"></div>
   </div>
+  <script>    
+  if ('serviceWorker' in navigator) {    
+    navigator.serviceWorker.register('service-worker.js');    
+  }    
+</script>   
 <script src="script.js"></script>
 <script src="proteção.js"></script>
  <script type="module">

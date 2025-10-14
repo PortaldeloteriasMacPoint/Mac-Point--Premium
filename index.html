@@ -1,72 +1,74 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Mac Point</title>
-<link rel="manifest" href="manifest.json">
-<link rel="icon" href="macpoint.png" type="image/png" sizes="512x512">
-<meta name="theme-color" content="#ff6600">
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { width: 100%; height: 100%; background: #000; font-family: 'Impact', sans-serif; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-  h1 { color: #00ff00; font-size: 5vmin; margin-bottom: 3vmin; letter-spacing: 0.5vmin; text-shadow: 2px 2px 0 #000; }
-  .container { position: relative; width: 70vmin; height: 70vmin; max-width: 80vw; max-height: 80vw; min-width: 250px; min-height: 250px; margin-bottom: 6vmin; }
-  .icon { width: 100%; height: 100%; border-radius: 50%; border: 6px solid black; box-shadow: 0 0 30px 15px rgba(0, 255, 0, 0.4); background: black; display: flex; align-items: center; justify-content: center; font-size: 12vmin; color: white; position: relative; overflow: hidden; transition: opacity 0.5s ease-in-out; }
-  .icon img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; opacity: 0; transition: opacity 0.5s ease-in-out; }
-  .icon.loaded img { opacity: 1; }
-  .icon.loaded .placeholder { display: none; }
-  .placeholder { position: absolute; font-size: 20vmin; color: #00ff00; }
-  .particle { position: absolute; width: 6vmin; height: 6vmin; border-radius: 50%; font-size: 2vmin; font-weight: bold; display: flex; justify-content: center; align-items: center; border: 2px solid black; animation: explode 2s ease-out infinite; top: 50%; left: 50%; transform: translate(-50%, -50%); }
-  @keyframes explode { 0% { transform: translate(-50%, -50%) scale(1); opacity: 1; } 100% { transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0.4); opacity: 0; } }
-  #openApp { padding: 3vmin 6vmin; font-size: 3vmin; cursor: pointer; border-radius: 1vmin; border: none; background: #ff6600; color: #fff; box-shadow: 0 0 20px rgba(255,102,0,0.8); transition: transform 0.2s; display: none; }
-  #openApp:hover { transform: scale(1.05); }
-  @media (max-width: 768px) { h1 { font-size: 6vmin; } .container { width: 80vmin; height: 80vmin; } #openApp { font-size: 3.5vmin; padding: 3.5vmin 7vmin; } }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mac Point</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="macpoint.png" type="image/png" sizes="512x512">
+  <meta name="theme-color" content="#ff6600">
+  <style>
+    /* Estilos para centralizar o conteúdo */
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    /* Estilos para o botão */
+    #openApp {
+      display: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #ff6600;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    #openApp:hover {
+      background-color: #e65c00;
+    }
+  </style>
 </head>
 <body>
-  <h1>MAC POINT</h1>
-
-  <div class="container">
-    <div class="icon" id="circleIcon">
-      <div class="placeholder">🍀</div>
-      <img src="Screenshot_20250123-232747-1.jpg" alt="Imagem" onload="document.getElementById('circleIcon').classList.add('loaded')">
-    </div>
-    <div class="particle" style="--x:-20vmin; --y:-18vmin;">01</div>
-    <div class="particle" style="--x:23vmin; --y:-15vmin;">12</div>
-    <div class="particle" style="--x:-21vmin; --y:16vmin;">23</div>
-    <div class="particle" style="--x:20vmin; --y:18vmin;">34</div>
-    <div class="particle" style="--x:-24vmin; --y:4vmin;">45</div>
-    <div class="particle" style="--x:18vmin; --y:-20vmin;">26</div>
-    <div class="particle" style="--x:0vmin; --y:-23vmin;">37</div>
-    <div class="particle" style="--x:-18vmin; --y:20vmin;">48</div>
-    <div class="particle" style="--x:23vmin; --y:-22vmin;">59</div>
-    <div class="particle" style="--x:-24vmin; --y:-20vmin;">60</div>
+  <div>
+    <h1>Mac Point</h1>
+    <button id="openApp">Abrir App</button>
   </div>
 
-  <button id="openApp">Abrir App</button>
-
   <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./service-worker.js');
-    }
-
     let deferredPrompt;
     const openAppBtn = document.getElementById('openApp');
 
+    // Detecta o evento de instalação do PWA
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      openAppBtn.style.display = 'inline-block';
+      openAppBtn.style.display = 'inline-block'; // Exibe o botão
     });
 
-    openAppBtn.addEventListener('click', async () => {
+    // Lida com o clique no botão "Abrir App"
+    openAppBtn.addEventListener('click', () => {
       if (deferredPrompt) {
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        deferredPrompt = null;
+        deferredPrompt.prompt(); // Exibe o prompt de instalação
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('Usuário aceitou a instalação do PWA');
+          } else {
+            console.log('Usuário rejeitou a instalação do PWA');
+          }
+          deferredPrompt = null;
+        });
       } else {
-        window.location.href = 'index3.html';
+        window.location.href = 'index3.html'; // Redireciona para o app após a instalação
       }
     });
   </script>

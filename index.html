@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Portal de Loterias Mac Point</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="macpoint.png" type="image/png" sizes="512x512">
+<meta name="theme-color" content="#ff6600">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; background: #000; font-family: 'Impact', sans-serif; display: flex; justify-content: center; align-items: center; text-align: center; }
+  .container { position: relative; width: 80vmin; height: 80vmin; max-width: 90vw; max-height: 90vw; min-width: 250px; min-height: 250px; }
+  .icon { width: 100%; height: 100%; border-radius: 50%; border: 6px solid black; box-shadow: 0 0 30px 15px rgba(0, 255, 0, 0.4); background: black; display: flex; align-items: center; justify-content: center; font-size: 12vmin; color: white; position: relative; overflow: hidden; transition: opacity 0.5s ease-in-out; }
+  .icon img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; opacity: 0; transition: opacity 0.5s ease-in-out; }
+  .icon.loaded img { opacity: 1; }
+  .icon.loaded .placeholder { display: none; }
+  .placeholder { position: absolute; font-size: 20vmin; color: #00ff00; }
+  .particle { position: absolute; width: 6vmin; height: 6vmin; border-radius: 50%; font-size: 2vmin; font-weight: bold; display: flex; justify-content: center; align-items: center; border: 2px solid black; animation: explode 2s ease-out infinite; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+  @keyframes explode { 0% { transform: translate(-50%, -50%) scale(1); opacity: 1; } 100% { transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0.4); opacity: 0; } }
+  .text { margin-top: 2vmin; font-size: 3vmin; color: #fff; animation: pulse 1.4s infinite; letter-spacing: 0.3vmin; }
+  @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+  .loading-dots { display: flex; justify-content: center; margin-top: 1vmin; gap: 1vmin; }
+  .dot { width: 1.5vmin; height: 1.5vmin; background: white; border-radius: 50%; animation: blink 1.2s infinite; }
+  .dot:nth-child(1) { animation-delay: 0s; }
+  .dot:nth-child(2) { animation-delay: 0.2s; }
+  .dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes blink { 0%, 100% { transform: scale(1); opacity: 0.6; } 50% { transform: scale(1.5); opacity: 1; } }
+  button { margin-top: 3vmin; padding: 1.5vmin 3vmin; font-size: 2vmin; cursor: pointer; border-radius: 1vmin; border: none; background: #ff6600; color: #fff; }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="icon" id="circleIcon">
+      <div class="placeholder">🍀</div>
+      <img src="Screenshot_20250123-232747-1.jpg" alt="Imagem" onload="document.getElementById('circleIcon').classList.add('loaded')" />
+    </div>
+    <div class="particle" style="--x:-20vmin; --y:-18vmin;">01</div>
+    <div class="particle" style="--x:23vmin; --y:-15vmin;">12</div>
+    <div class="particle" style="--x:-21vmin; --y:16vmin;">23</div>
+    <div class="particle" style="--x:20vmin; --y:18vmin;">34</div>
+    <div class="particle" style="--x:-24vmin; --y:4vmin;">45</div>
+    <div class="particle" style="--x:18vmin; --y:-20vmin;">26</div>
+    <div class="particle" style="--x:0vmin; --y:-23vmin;">37</div>
+    <div class="particle" style="--x:-18vmin; --y:20vmin;">48</div>
+    <div class="particle" style="--x:23vmin; --y:-22vmin;">59</div>
+    <div class="particle" style="--x:-24vmin; --y:-20vmin;">60</div>
+  </div>
+  <div class="text">MAC POINT</div>
+  <div class="loading-dots">
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+  </div>
+  <button id="openApp">Abrir App</button>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./service-worker.js');
+    }
+    document.getElementById('openApp').addEventListener('click', () => {
+      window.location.href = 'index3.html';
+    });
+  </script>
+</body>
+</html>
+

@@ -10,8 +10,8 @@
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body { width: 100%; height: 100%; background: #000; font-family: 'Impact', sans-serif; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-  h1 { color: #00ff00; font-size: 6vmin; margin-bottom: 4vmin; letter-spacing: 0.5vmin; text-shadow: 2px 2px 0 #000; }
-  .container { position: relative; width: 70vmin; height: 70vmin; max-width: 80vw; max-height: 80vw; min-width: 250px; min-height: 250px; margin-bottom: 5vmin; }
+  h1 { color: #00ff00; font-size: 5vmin; margin-bottom: 3vmin; letter-spacing: 0.5vmin; text-shadow: 2px 2px 0 #000; }
+  .container { position: relative; width: 70vmin; height: 70vmin; max-width: 80vw; max-height: 80vw; min-width: 250px; min-height: 250px; margin-bottom: 6vmin; }
   .icon { width: 100%; height: 100%; border-radius: 50%; border: 6px solid black; box-shadow: 0 0 30px 15px rgba(0, 255, 0, 0.4); background: black; display: flex; align-items: center; justify-content: center; font-size: 12vmin; color: white; position: relative; overflow: hidden; transition: opacity 0.5s ease-in-out; }
   .icon img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; opacity: 0; transition: opacity 0.5s ease-in-out; }
   .icon.loaded img { opacity: 1; }
@@ -19,9 +19,9 @@
   .placeholder { position: absolute; font-size: 20vmin; color: #00ff00; }
   .particle { position: absolute; width: 6vmin; height: 6vmin; border-radius: 50%; font-size: 2vmin; font-weight: bold; display: flex; justify-content: center; align-items: center; border: 2px solid black; animation: explode 2s ease-out infinite; top: 50%; left: 50%; transform: translate(-50%, -50%); }
   @keyframes explode { 0% { transform: translate(-50%, -50%) scale(1); opacity: 1; } 100% { transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0.4); opacity: 0; } }
-  button { padding: 3vmin 6vmin; font-size: 3vmin; cursor: pointer; border-radius: 1vmin; border: none; background: #ff6600; color: #fff; box-shadow: 0 0 20px rgba(255,102,0,0.7); transition: transform 0.2s; margin-top: 3vmin; }
-  button:hover { transform: scale(1.05); }
-  @media (max-width: 768px) { h1 { font-size: 8vmin; } .container { width: 80vmin; height: 80vmin; } button { font-size: 4vmin; padding: 4vmin 8vmin; } }
+  #openApp { padding: 3vmin 6vmin; font-size: 3vmin; cursor: pointer; border-radius: 1vmin; border: none; background: #ff6600; color: #fff; box-shadow: 0 0 20px rgba(255,102,0,0.8); transition: transform 0.2s; display: none; }
+  #openApp:hover { transform: scale(1.05); }
+  @media (max-width: 768px) { h1 { font-size: 6vmin; } .container { width: 80vmin; height: 80vmin; } #openApp { font-size: 3.5vmin; padding: 3.5vmin 7vmin; } }
 </style>
 </head>
 <body>
@@ -48,10 +48,26 @@
 
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./service-worker.js').then(() => console.log('Service Worker registrado'));
+      navigator.serviceWorker.register('./service-worker.js');
     }
-    document.getElementById('openApp').addEventListener('click', () => {
-      window.location.href = 'index3.html';
+
+    let deferredPrompt;
+    const openAppBtn = document.getElementById('openApp');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      openAppBtn.style.display = 'inline-block';
+    });
+
+    openAppBtn.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        deferredPrompt = null;
+      } else {
+        window.location.href = 'index3.html';
+      }
     });
   </script>
 </body>

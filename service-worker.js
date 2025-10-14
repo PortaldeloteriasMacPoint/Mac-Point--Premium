@@ -1,8 +1,10 @@
-// service-worker.js
 const cacheName = 'macpoint-cache-v1';
 const filesToCache = [
   './',
   './index.html',
+  './index1.html',
+  './index2.html',
+  './index3.html',
   './macpoint.png'
 ];
 

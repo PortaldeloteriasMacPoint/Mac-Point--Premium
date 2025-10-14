@@ -1,7 +1,8 @@
+// manifest.json
 {
   "name": "Mac Point",
   "short_name": "MacPoint",
-  "start_url": "./index.html?source=pwa",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#ff6600",
@@ -18,4 +19,3 @@
     }
   ]
 }
-

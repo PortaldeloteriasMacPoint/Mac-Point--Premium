@@ -1,0 +1,121 @@
+<!DOCTYPE html><html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Portal de Loterias - Mac Point</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="macpoint.png" type="image/png" sizes="512x512">
+<meta name="theme-color" content="#ff6600">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Arial',sans-serif;background:#0d0d0d;color:#fff;}
+  .container{max-width:1200px;margin:auto;padding:20px;}
+  .topo{display:flex;align-items:center;justify-content:center;gap:15px;background:linear-gradient(90deg,#355E3B,#00ff99);border-radius:12px;padding:15px;flex-wrap:wrap;}
+  .topo img{width:70px;height:70px;border-radius:50%;border:2px solid #000;}
+  .topo h1{font-size:28px;font-family:Impact, sans-serif;text-shadow:2px 2px #000;}
+  .capa{width:100%;border-radius:15px;border:3px solid #355E3B;margin:25px 0;box-shadow:0 5px 15px rgba(0,0,0,0.5);}
+  .apresentacao{text-align:center;font-size:16px;color:#ccc;margin-bottom:30px;line-height:1.6;}
+  .filtro{display:flex;justify-content:center;gap:15px;flex-wrap:wrap;margin-bottom:40px;}
+  .plan-btn{padding:15px 25px;font-size:18px;font-weight:bold;border-radius:12px;cursor:pointer;transition:all 0.3s ease;border:2px solid #000;text-shadow:1px 1px #000;}
+  .plan-btn:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,255,153,0.6);}
+  .plan-btn#btnPro{background:linear-gradient(90deg,#355E3B,#00ff99);animation:pulse 2s infinite;color:#fff;}
+  @keyframes pulse{0%,100%{transform:scale(1);box-shadow:0 0 10px #ffd700;}50%{transform:scale(1.05);box-shadow:0 0 25px #ffd700;}}
+  .modalidade-card{display:none;background:#111;border:3px solid #355E3B;border-radius:15px;padding:25px;margin-bottom:40px;}
+  .modalidade-header{display:flex;align-items:center;justify-content:center;gap:15px;margin-bottom:20px;}
+  .modalidade-header img{width:50px;height:50px;border-radius:50%;border:2px solid #000;}
+  .modalidade-header h2{font-size:22px;font-family:Impact, sans-serif;}
+  .descricao{text-align:center;color:#ccc;margin-bottom:20px;line-height:1.6;}
+  .topicos{text-align:left;font-weight:bold;margin-bottom:20px;line-height:1.5;padding-left:15px;}
+  .btn-ilimitado{display:block;width:100%;max-width:300px;margin:0 auto;padding:15px;font-size:18px;font-weight:bold;border-radius:12px;background:linear-gradient(45deg,#355E3B,#00ff99);border:2px solid #000;text-shadow:1px 1px #000;cursor:pointer;transition:transform 0.3s;}
+  .btn-ilimitado:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,255,153,0.5);}
+  .aviso{background:#111;border:2px solid #355E3B;padding:20px;border-radius:12px;text-align:center;margin-bottom:40px;}
+  .aviso h3{color:#00ff99;text-shadow:1px 1px #000;margin-bottom:10px;}
+  .aviso p{color:#ccc;line-height:1.6;}
+  .login-container{display:flex;justify-content:center;margin-bottom:50px;}
+  .login-btn{display:flex;align-items:center;gap:10px;padding:12px 20px;font-size:18px;font-weight:bold;border-radius:12px;border:2px solid #000;background:linear-gradient(90deg,#00ff99,#355E3B);text-shadow:1px 1px #000;cursor:pointer;transition:transform 0.3s;}
+  .login-btn:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,255,153,0.5);}
+  .login-icon{width:30px;height:30px;}
+  footer{text-align:center;padding:15px;border-top:3px solid #355E3B;background:#0d0d0d;}
+  footer a{color:#00ff99;text-decoration:none;margin:0 15px;font-weight:bold;}
+  .copy{color:#aaa;font-size:13px;margin-top:5px;}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="topo">
+    <img src="Screenshot_20250123-232747-1.jpg" alt="Logo Mac Point">
+    <h1>MAC POINT 🍀</h1>
+  </div>
+  <img src="Screenshot_20250112-173043-1.jpg" class="capa" alt="Capa Portal Mac Point">
+  <div class="apresentacao">
+    Bem-vindo ao Portal de Loterias Mac Point! Descubra todas as funcionalidades do Plano Gratuito com ferramentas completas para gerar, organizar e analisar seus jogos, de forma detalhada, limpa e sem anúncios.
+  </div>
+  <div class="filtro">
+    <button class="plan-btn" onclick="mostrarPlano('gratuito')">Plano Gratuito</button>
+    <button class="plan-btn" id="btnPro" onclick="mostrarPlano('pro')">Plano Pro</button>
+  </div>
+  <div id="gratuito" class="modalidade-card"></div>
+  <div id="pro" class="modalidade-card"></div>
+  <div class="aviso">
+    <h3>📢 AVISO LEGAL</h3>
+    <p>O site <strong style="color:#00ff99;">Mac Point</strong> é totalmente independente e <strong>não possui vínculo com a Caixa Econômica Federal</strong>. Todas as ferramentas têm caráter educativo, estatístico e de entretenimento, oferecendo acesso seguro e transparente aos usuários.</p>
+  </div>
+  <div class="login-container">
+    <button class="login-btn" onclick="window.location.href='cadastro.html'">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 24 24" class="login-icon"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.1 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
+      Começar Grátis
+    </button>
+  </div>
+</div>
+<footer>
+  <div>
+    <a href="politica.html" target="_blank">Política de Privacidade</a>
+    <a href="termos.html" target="_blank">Termos de Uso</a>
+  </div>
+  <div class="copy">&copy; 2025 Portal de Loterias - Mac Point. Todos os direitos reservados.</div>
+</footer>
+<script>
+const planos={
+gratuito:{
+titulo:"Plano Gratuito",
+descricao:"O Plano Gratuito oferece acesso completo às ferramentas essenciais do Mac Point, detalhadas abaixo:",
+topicos:[
+"Geradores de jogos com filtros de modalidades",
+"Função de editar, copiar e remover jogos",
+"Conferidor de resultados incluso",
+"Tutorial explicativo das ferramentas automatizadas",
+"Desdobramentos de jogos com volante personalizado",
+"Função de gerar probabilidades",
+"Calculadora de probabilidade com notificações automáticas",
+"Busca automatizada de resultados do histórico da Mega-Sena",
+"API própria de resultados exclusiva do site",
+"Ferramentas para fornecer dados estatísticos básicos",
+"Dados de atrasos do ciclo, frequência e ocorrência",
+"Palpite da Sorte personalizado",
+"Feed de notícias de outras modalidades e notificações",
+"Oráculos, horóscopo do dia, cartas de tarô e numerologia",
+"Personalização com criação do seu avatar",
+"Site limpo, livre de propagandas e anúncios",
+"Segurança contra acessos indevidos",
+"Expansão com novas atualizações e melhorias futuras"
+],
+imagens:[]
+},
+pro:{
+titulo:"Plano Pro",
+descricao:"Ferramentas avançadas Tech SaaS Pro com relatórios e análises exclusivas.",
+topicos:[],
+imagens:[]
+}
+};
+function mostrarPlano(plano){
+document.querySelectorAll('.modalidade-card').forEach(el=>el.style.display="none");
+const data=planos[plano];
+const card=document.getElementById(plano);
+card.innerHTML=`<div class="modalidade-header"><img src="Screenshot_20250123-232747-1.jpg" alt="Ícone Plano"><h2>${data.titulo}</h2></div><div class="descricao">${data.descricao}</div><div class="topicos">${data.topicos.map(t=>"• "+t).join("<br>")}</div><button class="btn-ilimitado" onclick="window.location.href='cadastro.html'">🔐 Acesso ${plano==='pro'?'Ilimitado':'Gratuito'}</button>`;
+card.style.display="block";
+}
+</script>
+</body>
+</html>
+

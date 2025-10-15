@@ -17,7 +17,11 @@
 <body>
   <div id="overlay"></div>
   <iframe src="https://readyplayer.me/avatar?frameApi" allow="camera *; microphone *"></iframe>
-
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js');
+  }
+</script>
 <script src="script.js"></script>
 <script src="proteção.js"></script>
 <script>
@@ -57,7 +61,7 @@ window.onload = () => {
         if (!user) { window.location.href = "index.html"; }
     });
 };
-</script>
+</script>  
 </body>
 </html>
 

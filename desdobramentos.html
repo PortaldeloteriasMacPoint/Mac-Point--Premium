@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Desdobramentos</title>
+<link rel="manifest" href="manifest.json">
+  <link rel="icon" href="macpoint.png" type="image/png" sizes="512x512">
+  <meta name="theme-color" content="#ff6600">  
   <style>
     * {margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif;}
     body {
@@ -237,20 +240,19 @@
   <li>Ferramenta criada para fins estatísticos, estudos e simulações.</li>
 </ul>     
   </div>
+   <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js');
+  }
+</script> 
 <script src="script.js"></script>
 <script src="proteção.js"></script>
  <script type="module">
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",
-        authDomain: "mac-projeto-4e552.firebaseapp.com",
-        projectId: "mac-projeto-4e552",
-        storageBucket: "mac-projeto-4e552.appspot.com",
-        messagingSenderId: "537330451519",
-        appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"
-    };
+  
+   const firebaseConfig = { apiKey: "AIzaSyB9K6h0J5GmT88RGWDY78h6JytijJqpIcc", authDomain: "mac-projeto.firebaseapp.com", databaseURL: "https://mac-projeto-default-rtdb.firebaseio.com", projectId: "mac-projeto", storageBucket: "mac-projeto.firebasestorage.app", messagingSenderId: "87013842815", appId: "1:87013842815:web:f4f6686ce2ce027da9c44a" };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);

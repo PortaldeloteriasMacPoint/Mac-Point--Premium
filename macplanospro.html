@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planos Mac Point - Portal de Loterias</title>
+<link rel="icon" href="macpoint.png" type="image/png" sizes="512x512">
+<meta name="theme-color" content="#ff6600">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:'Arial',sans-serif;
+    background:#0d0d0d;
+    color:#fff;
+    overflow-y:scroll;
+    scrollbar-width:none; /* Firefox */
+    -ms-overflow-style:none; /* IE 10+ */
+  }
+  body::-webkit-scrollbar{
+    width:0;
+    height:0;
+    background:transparent;
+  }
+  .container{max-width:1200px;margin:auto;padding:20px;}
+  .topo{display:flex;align-items:center;justify-content:center;gap:15px;background:linear-gradient(90deg,#355E3B,#00ff99);border-radius:12px;padding:15px;flex-wrap:wrap;margin-bottom:30px;}
+  .topo img{width:70px;height:70px;border-radius:50%;border:2px solid #000;}
+  .topo h1{font-size:28px;font-family:Impact, sans-serif;text-shadow:2px 2px #000;}
+  .apresentacao{text-align:center;font-size:16px;color:#ccc;margin-bottom:50px;line-height:1.6;}
+  .planos{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:30px;margin-bottom:50px;}
+  .plano-card{background:#111;border:3px solid #355E3B;border-radius:15px;padding:25px;text-align:center;transition:transform 0.3s, box-shadow 0.3s;}
+  .plano-card:hover{transform:translateY(-5px);box-shadow:0 10px 25px rgba(0,255,153,0.5);}
+  .plano-card h2{font-family:Impact,sans-serif;font-size:22px;margin-bottom:15px;color:#00ff99;text-shadow:1px 1px #000;}
+  .preco{font-size:28px;font-weight:bold;margin-bottom:5px;color:#fff;}
+  .preco-antigo{font-size:18px;color:#ff3300;text-decoration:line-through;margin-bottom:10px;}
+  .duracao{font-size:14px;color:#ccc;margin-bottom:15px;}
+  .descricao{color:#ccc;margin-bottom:25px;line-height:1.5;}
+  .observacao{color:#00ff99;font-size:14px;margin-bottom:15px;text-align:center;}
+  .btn-ilimitado{display:inline-block;padding:15px 25px;font-size:18px;font-weight:bold;border-radius:12px;background:linear-gradient(45deg,#355E3B,#00ff99);border:2px solid #000;text-shadow:1px 1px #000;color:#fff;cursor:pointer;transition:transform 0.3s;}
+  .btn-ilimitado:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,255,153,0.5);}
+  footer{text-align:center;padding:20px;border-top:3px solid #355E3B;background:#0d0d0d;}
+  footer a{color:#00ff99;text-decoration:none;margin:0 15px;font-weight:bold;}
+  .copy{color:#aaa;font-size:13px;margin-top:5px;}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="topo">
+    <img src="Screenshot_20250123-232747-1.jpg" alt="Logo Mac Point">
+    <h1>MAC POINT 🍀</h1>
+  </div>
+  <div class="apresentacao">
+    Escolha o plano perfeito para ter acesso completo às ferramentas avançadas do Mac Point. Aproveite geradores de jogos, desdobramentos, análises completas, feed de notícias e muito mais.
+  </div>
+  <div class="planos">
+    <div class="plano-card">
+      <h2>Plano Mensal</h2>
+      <div class="preco-antigo">R$ 29,90</div>
+      <div class="preco">R$ 19,90</div>
+      <div class="duracao">30 dias</div>
+      <div class="descricao">Acesso total por 30 dias. Ideal para experimentar todas as funcionalidades do Mac Point e se familiarizar com nossas ferramentas avançadas.</div>
+      <div class="observacao">Após o pagamento efetuado, aguarde até 24h para liberação do acesso. Você receberá uma senha exclusiva para usar os serviços Pro.</div>
+      <button class="btn-ilimitado" onclick="window.open('checkout.html?plano=mensal','_blank')">🔐 Acesso Ilimitado</button>
+    </div>
+    <div class="plano-card">
+      <h2>Plano Trimestral</h2>
+      <div class="preco-antigo">R$ 79,90</div>
+      <div class="preco">R$ 54,90</div>
+      <div class="duracao">90 dias</div>
+      <div class="descricao">Assinatura completa por 90 dias com todas as ferramentas disponíveis. Economize e tenha mais tempo para aproveitar análises, geradores e funcionalidades exclusivas.</div>
+      <div class="observacao">Após o pagamento efetuado, aguarde até 24h para liberação do acesso. Você receberá uma senha exclusiva para usar os serviços Pro.</div>
+      <button class="btn-ilimitado" onclick="window.open('checkout.html?plano=trimestral','_blank')">🔐 Acesso Ilimitado</button>
+    </div>
+    <div class="plano-card">
+      <h2>Plano Anual</h2>
+      <div class="preco-antigo">R$ 299,90</div>
+      <div class="preco">R$ 199,90</div>
+      <div class="duracao">365 dias</div>
+      <div class="descricao">O melhor custo-benefício! Acesso completo por 12 meses com todas as ferramentas, atualizações futuras e conteúdo exclusivo liberado durante todo o ano.</div>
+      <div class="observacao">Após o pagamento efetuado, aguarde até 24h para liberação do acesso. Você receberá uma senha exclusiva para usar os serviços Pro.</div>
+      <button class="btn-ilimitado" onclick="window.open('checkout.html?plano=anual','_blank')">🔐 Acesso Ilimitado</button>
+    </div>
+  </div>
+</div>
+<footer>
+  <div>
+    <a href="politica.txt" target="_blank">Política de Privacidade</a>
+    <a href="termos.txt" target="_blank">Termos de Uso</a>
+  </div>
+  <div class="copy">Portaldeloteriasmacpoint@gmail.com</div>
+  <div class="copy">&copy; 2025 Portal de Loterias - Mac Point. Todos os direitos reservados.</div>
+</footer>
+</body>
+</html>
+

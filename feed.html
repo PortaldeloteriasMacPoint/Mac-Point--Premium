@@ -1,398 +1,184 @@
-<!DOCTYPE html>  <html lang="pt-BR">  
-<head>  
-<meta charset="UTF-8" />  
-<meta name="viewport" content="width=device-width, initial-scale=1" />  
-<title>Feed Loterias </title>  
-<link rel="manifest" href="manifest.json">
-  <link rel="icon" href="macpoint.png" type="image/png" sizes="512x512">
-  <meta name="theme-color" content="#ff6600">
-  
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />  
-<style>  
-  :root {  
-    --verde-escuro: #355E3B;  
-    --verde-claro: #4CAF50;  
-    --preto: #000000;  
-    --branco: #FFFFFF;  
-  }  
-  * {  
-    margin: 0; padding: 0; box-sizing: border-box;  
-  }  
-  body {  
-    background: var(--preto);  
-    color: var(--branco);  
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  
-    padding: 20px 15px;  
-    display: flex;  
-    justify-content: center;  
-    min-height: 100vh;  
-  }  
-  .feed-wrapper {  
-    width: 100%;  
-    max-width: 720px;  
-  }  
-  header.feed-header {  
-    text-align: center;  
-    padding: 15px 10px;  
-    background: linear-gradient(90deg, var(--verde-escuro), var(--verde-claro));  
-    border-radius: 12px;  
-    margin-bottom: 25px;  
-    font-size: 2rem;  
-    font-weight: 700;  
-    letter-spacing: 1px;  
-    user-select: none;  
-  }  
-  .feed-list {  
-    display: flex;  
-    flex-direction: column;  
-    gap: 25px;  
-  }  
-  .post-card {  
-    background: #121212;  
-    border: 2px solid var(--verde-escuro);  
-    border-radius: 14px;  
-    box-shadow: 0 0 15px rgba(53, 94, 59, 0.6);  
-    padding: 18px 20px;  
-    transition: border-color 0.3s ease;  
-  }  
-  .post-card:hover {  
-    border-color: var(--verde-claro);  
-    box-shadow: 0 0 22px rgba(76, 175, 80, 0.9);  
-  }  
-  .post-header {  
-    display: flex;  
-    align-items: center;  
-    gap: 15px;  
-    margin-bottom: 12px;  
-  }  
-  .post-header img.icon {  
-    width: 54px;  
-    height: 54px;  
-    border-radius: 10px;  
-    object-fit: contain;  
-  }  
-  .post-title-date {  
-    display: flex;  
-    flex-direction: column;  
-  }  
-  .post-title {  
-    font-size: 1.25rem;  
-    font-weight: 700;  
-    color: var(--verde-claro);  
-    user-select: text;  
-  }  
-  .post-date {  
-    font-size: 0.85rem;  
-    color: #bbb;  
-    user-select: text;  
-  }  
-  .post-content {  
-    margin: 12px 0 15px;  
-    font-size: 1rem;  
-    line-height: 1.4;  
-    color: #ddd;  
-    user-select: text;  
-  }  
-  .post-media {  
-    margin-bottom: 15px;  
-    max-height: 300px;  
-    overflow: hidden;  
-    border-radius: 12px;  
-  }  
-  .post-media img,  
-  .post-media video {  
-    width: 100%;  
-    height: auto;  
-    border-radius: 12px;  
-    object-fit: cover;  
-  }  
-  .post-actions {  
-    display: flex;  
-    gap: 25px;  
-    font-size: 1.2rem;  
-    color: #ccc;  
-    user-select: none;  
-  }  
-  .post-actions span {  
-    cursor: pointer;  
-    display: flex;  
-    align-items: center;  
-    gap: 6px;  
-    transition: color 0.25s ease;  
-  }  
-  .post-actions span:hover {  
-    color: var(--verde-claro);  
-  }  
-  .post-actions .liked {  
-    color: #ff4d4d;  
-  }  
-  .post-actions .starred {  
-    color: gold;  
-  }  
-  @media (max-width: 600px) {  
-    body {  
-      padding: 15px 10px;  
-    }  
-    header.feed-header {  
-      font-size: 1.7rem;  
-      margin-bottom: 18px;  
-    }  
-    .post-header img.icon {  
-      width: 44px;  
-      height: 44px;  
-    }  
-    .post-title {  
-      font-size: 1.1rem;  
-    }  
-    .post-content {  
-      font-size: 0.95rem;  
-    }  
-    .post-actions {  
-      font-size: 1rem;  
-      gap: 18px;  
-    }  
-  }  
-</style>  
-</head>  
-<body>  
-  <main class="feed-wrapper">  
-    <header class="feed-header"> Feed de Loterias</header>  <section class="feed-list" id="feedList">  
-  <!-- Posts serão injetados aqui via JS -->  
-</section>
-
-  </main> 
-  <script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js');
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feed de Loterias</title>
+<link rel="icon" href="macpoint.png" type="image/png" sizes="512x512">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  :root {
+    --verde-escuro: #355E3B;
+    --verde-claro: #4CAF50;
+    --preto: #000;
+    --branco: #fff;
+    --cinza: #222;
   }
-</script>
-<script src="script.js"></script>
-<script src="proteção.js"></script>
 
-<script type="module">  
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";  
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";  
-  
-    const firebaseConfig = {  
-        apiKey: "AIzaSyAO3As6jMMmENtzaK9zlDADbpS9UlNxx8o",  
-        authDomain: "mac-projeto-4e552.firebaseapp.com",  
-        projectId: "mac-projeto-4e552",  
-        storageBucket: "mac-projeto-4e552.appspot.com",  
-        messagingSenderId: "537330451519",  
-        appId: "1:537330451519:web:5a1b4c921119b5ee98e48a"  
-    };  
-  
-    const app = initializeApp(firebaseConfig);  
-    const auth = getAuth(app);  
-  
-    // Verifica o status de autenticação ao carregar a página  
-    window.onload = () => {  
-        onAuthStateChanged(auth, user => {  
-            if (user) {  
-                // Usuário autenticado, exibe o conteúdo protegido  
-                document.getElementById("protectedContent").style.display = "block";  
-            } else {  
-                // Redireciona para a página de login se não estiver autenticado  
-                window.location.href = "index.html";  
-            }  
-        });  
-    };  
-</script>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--preto);
+    color: var(--branco);
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .feed-wrapper { width: 100%; max-width: 720px; }
+
+  .feed-header {
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(90deg, var(--verde-escuro), var(--verde-claro));
+    border-radius: 12px;
+    margin-bottom: 30px;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--branco);
+  }
+
+  .post-card {
+    background: var(--cinza);
+    border: 2px solid var(--verde-escuro);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+  }
+
+  .post-card:hover {
+    border-color: var(--verde-claro);
+    box-shadow: 0 0 20px rgba(76,175,80,0.7);
+  }
+
+  .post-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+  }
+
+  .post-header img.icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    object-fit: cover;
+  }
+
+  .post-title { font-size: 1.3rem; font-weight: 700; color: var(--verde-claro); }
+  .post-date { font-size: 0.9rem; color: #ccc; }
+
+  .post-content { font-size: 1rem; line-height: 1.5; margin-bottom: 15px; }
+
+  .post-media img {
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    object-fit: cover;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  }
+
+  .post-actions {
+    display: flex;
+    gap: 25px;
+    font-size: 1.2rem;
+    color: #ccc;
+    user-select: none;
+  }
+
+  .post-actions span {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.25s;
+  }
+
+  .post-actions span:hover { color: var(--verde-claro); }
+  .liked { color: #ff4d4d; }
+
+  @media (max-width: 600px) {
+    .post-header img.icon { width: 50px; height: 50px; }
+    .post-title { font-size: 1.1rem; }
+    .post-content { font-size: 0.95rem; }
+    .post-actions { font-size: 1rem; gap: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<main class="feed-wrapper">
+  <header class="feed-header">Feed de Loterias</header>
+
+  <section class="feed-list">
+    <article class="post-card">
+      <div class="post-header">
+        <img class="icon" src="Screenshot_20250123-232747-1.jpg" alt="Mega-Sena">
+        <div>
+          <h3 class="post-title">Mega-Sena Resultado</h3>
+          <span class="post-date">16/10/2025</span>
+        </div>
+      </div>
+      <div class="post-content">Números sorteados: 11 - 27 - 34 - 55 - 56 - 58</div>
+      <div class="post-media">
+        <img src="https://images.unsplash.com/photo-1611538715689-c74dd3449966?auto=format&fit=crop&w=700&q=60" alt="Mega-Sena">
+      </div>
+      <div class="post-actions">
+        <span class="like"><i class="fa-solid fa-heart"></i> <span class="count">34</span></span>
+        <span class="share" onclick="sharePost('Mega-Sena Resultado','Números sorteados: 11 - 27 - 34 - 55 - 56 - 58')"><i class="fa-solid fa-share-nodes"></i></span>
+      </div>
+    </article>
+
+    <article class="post-card">
+      <div class="post-header">
+        <img class="icon" src="Screenshot_20250123-232747-1.jpg" alt="Quina">
+        <div>
+          <h3 class="post-title">Quina Resultado</h3>
+          <span class="post-date">16/10/2025</span>
+        </div>
+      </div>
+      <div class="post-content">Números sorteados: 05 - 12 - 18 - 33 - 44</div>
+      <div class="post-media">
+        <img src="https://images.unsplash.com/photo-1611538715689-c74dd3449966?auto=format&fit=crop&w=700&q=60" alt="Quina">
+      </div>
+      <div class="post-actions">
+        <span class="like"><i class="fa-solid fa-heart"></i> <span class="count">20</span></span>
+        <span class="share" onclick="sharePost('Quina Resultado','Números sorteados: 05 - 12 - 18 - 33 - 44')"><i class="fa-solid fa-share-nodes"></i></span>
+      </div>
+    </article>
+  </section>
+</main>
+
 <script>
-function checkConsoleAccess() {
-    fetch('verifica_email.php')
-        .then(response => response.json())
-        .then(data => {
-            if (!data.autorizado) {
-                document.body.innerHTML = `
-                    <div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.9); display: flex; justify-content: center; align-items: center; text-align: center; z-index: 9999;">
-                        <div style="background: red; color: white; padding: 20px; border-radius: 10px; border: 2px solid black; font-family: Arial, sans-serif; max-width: 80%; box-shadow: 0 0 10px black;">
-                            <h1 style="color: white; text-shadow: 2px 2px 0 black;">⚠️ Console Detectado! 🔒</h1>
-                            <p style="color: yellow; text-shadow: 1px 1px 0 black; font-weight: bold;">Acesso Negado!</p>
-                            <p>O sistema detectou uma tentativa de acesso não autorizado.</p>
-                            <p style="font-weight: bold; color: white;">Sua conta está bloqueada.</p>
-                            <p>Você será redirecionado...</p>
-                        </div>
-                    </div>
-                `;
-                setTimeout(() => {
-                    window.location.href = "login.html";
-                }, 3000);
-            }
-        })
-        .catch(error => console.error('Erro ao verificar acesso:', error));
-}
-
-window.addEventListener("keydown", (e) => {
-    if (e.key === "F12" || (e.ctrlKey && e.shiftKey && e.key === "I")) {
-        e.preventDefault();
-        checkConsoleAccess();
+document.querySelectorAll('.like').forEach(btn => {
+  btn.onclick = () => {
+    const icon = btn.querySelector('i');
+    const countEl = btn.querySelector('.count');
+    let count = parseInt(countEl.textContent);
+    if(icon.classList.contains('liked')) {
+      icon.classList.remove('liked');
+      count--;
+    } else {
+      icon.classList.add('liked');
+      count++;
     }
+    countEl.textContent = count;
+  };
 });
 
-window.addEventListener("contextmenu", (e) => {
-    e.preventDefault();
-    checkConsoleAccess();
-});
+function sharePost(title, content) {
+  const siteUrl = window.location.href;
+  if(navigator.share) {
+    navigator.share({ title, text: content, url: siteUrl }).catch(()=>{});
+  } else {
+    prompt("Copie este link para compartilhar:", siteUrl);
+  }
+}
 </script>
-  <script>  
-  const posts = [  
-    {  
-      id: 1,  
-      icon: "Screenshot_20250123-232747-1.jpg",  
-  
-      title: "Mega-Sena Resultado Concurso 2735",  
-      date: "22/06/2025",  
-      content: "Números sorteados: 04 - 12 - 23 - 33 - 47 - 59. Acumulou! Próximo prêmio estimado em R$ 90 milhões.",  
-      likes: 34,  
-      stars: 12,  
-      mediaType: "image",  
-      mediaSrc: "https://images.unsplash.com/photo-1611538715689-c74dd3449966?auto=format&fit=crop&w=700&q=60"  
-    },  
-    {  
-      id: 2,  
-      icon: "Screenshot_20250123-232747-1.jpg",  
-      title: "Dica da Semana - Fechamento 6-9",  
-      date: "21/06/2025",  
-      content: "Utilize fechamento 6-9 para aumentar suas chances nas loterias múltiplas como Quina e Lotofácil. Experimente nosso simulador gratuito!",  
-      likes: 19,  
-      stars: 7,  
-      mediaType: "video",  
-      mediaSrc: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm"  
-    },  
-    {  
-      id: 3,  
-      icon: "Screenshot_20250123-232747-1.jpg",  
-  
-      title: "Novidade: Planilhas Automáticas",  
-      date: "18/06/2025",  
-      content: "Lançamos planilhas automatizadas para organizar seus jogos e apostas com facilidade. Veja o vídeo explicativo e saiba como adquirir!",  
-      likes: 25,  
-      stars: 18,  
-      mediaType: "image",  
-      mediaSrc: "https://images.unsplash.com/photo-1556740738-b6a63e27c4df?auto=format&fit=crop&w=700&q=60"  
-    },  
-    {  
-      id: 4,  
-      icon: "Screenshot_20250123-232747-1.jpg",  
-  
-      title: "Estudo Estatístico - Números Quentes",  
-      date: "15/06/2025",  
-      content: "Confira os números mais sorteados da Mega-Sena nos últimos 6 meses e aprenda a montar suas combinações com base em dados.",  
-      likes: 45,  
-      stars: 32,  
-      mediaType: null,  
-      mediaSrc: null  
-    }  
-  ];  
-  
-  function createPost(post) {  
-    const postEl = document.createElement('article');  
-    postEl.className = 'post-card';  
-  
-    postEl.innerHTML = `  
-      <div class="post-header">  
-        <img class="icon" src="${post.icon}" alt="Ícone do post" />  
-        <div class="post-title-date">  
-          <h3 class="post-title">${post.title}</h3>  
-          <span class="post-date">${post.date}</span>  
-        </div>  
-      </div>  
-      <div class="post-content">${post.content}</div>  
-      ${post.mediaType ? `<div class="post-media">  
-        ${post.mediaType === 'video'   
-          ? `<video controls preload="metadata" muted playsinline>  
-              <source src="${post.mediaSrc}" type="video/webm" />  
-              Seu navegador não suporta vídeos.  
-            </video>`  
-          : `<img src="${post.mediaSrc}" alt="Imagem do post" />`  
-        }  
-      </div>` : ''}  
-      <div class="post-actions">  
-        <span class="like" data-id="${post.id}"><i class="fa-solid fa-heart"></i> <span class="count">${post.likes}</span></span>  
-        <span class="star" data-id="${post.id}"><i class="fa-solid fa-star"></i> <span class="count">${post.stars}</span></span>  
-        <span class="share" data-id="${post.id}"><i class="fa-solid fa-share-nodes"></i></span>  
-      </div>  
-    `;  
-    return postEl;  
-  }  
-  
-  function renderFeed() {  
-    const feedList = document.getElementById('feedList');  
-    feedList.innerHTML = '';  
-    posts.forEach(post => {  
-      feedList.appendChild(createPost(post));  
-    });  
-    addEventListeners();  
-  }  
-  
-  function addEventListeners() {  
-    document.querySelectorAll('.like').forEach(btn => {  
-      btn.onclick = () => {  
-        const postId = +btn.dataset.id;  
-        const post = posts.find(p => p.id === postId);  
-        const icon = btn.querySelector('i');  
-        const countEl = btn.querySelector('.count');  
-        if(icon.classList.contains('liked')) {  
-          icon.classList.remove('liked');  
-          post.likes--;  
-        } else {  
-          icon.classList.add('liked');  
-          post.likes++;  
-          // Optional: Remove star if liked  
-          const starBtn = document.querySelector(`.star[data-id="${postId}"] i`);  
-          if(starBtn && starBtn.classList.contains('starred')) {  
-            starBtn.classList.remove('starred');  
-            const starCount = document.querySelector(`.star[data-id="${postId}"] .count`);  
-            post.stars--;  
-            starCount.textContent = post.stars;  
-          }  
-        }  
-        countEl.textContent = post.likes;  
-      };  
-    });  
-  
-    document.querySelectorAll('.star').forEach(btn => {  
-      btn.onclick = () => {  
-        const postId = +btn.dataset.id;  
-        const post = posts.find(p => p.id === postId);  
-        const icon = btn.querySelector('i');  
-        const countEl = btn.querySelector('.count');  
-        if(icon.classList.contains('starred')) {  
-          icon.classList.remove('starred');  
-          post.stars--;  
-        } else {  
-          icon.classList.add('starred');  
-          post.stars++;  
-          // Optional: Remove like if starred  
-          const likeBtn = document.querySelector(`.like[data-id="${postId}"] i`);  
-          if(likeBtn && likeBtn.classList.contains('liked')) {  
-            likeBtn.classList.remove('liked');  
-            const likeCount = document.querySelector(`.like[data-id="${postId}"] .count`);  
-            post.likes--;  
-            likeCount.textContent = post.likes;  
-          }  
-        }  
-        countEl.textContent = post.stars;  
-      };  
-    });  
-  
-    document.querySelectorAll('.share').forEach(btn => {  
-      btn.onclick = () => {  
-        const postId = +btn.dataset.id;  
-        const post = posts.find(p => p.id === postId);  
-        if(navigator.share) {  
-          navigator.share({  
-            title: post.title,  
-            text: post.content,  
-          }).catch(() => {});  
-        } else {  
-          alert('Compartilhamento não suportado nesse navegador.');  
-        }  
-      };  
-    });  
-  }  
-  
-  renderFeed();  
-</script>  </body>  
-</html>  
+
+</body>
+</html>
+

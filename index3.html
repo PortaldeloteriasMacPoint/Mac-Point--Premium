@@ -203,22 +203,22 @@ window.addEventListener("contextmenu", (e) => {
     const waitVideosLoaded = async () => {
       setTimeout(async () => {
         try {
-          const res = await fetch("index2.html", { method: "HEAD" });
+          const res = await fetch("macpoint-principal1.html", { method: "HEAD" });
           if (res.ok) {
             const iframe = document.createElement("iframe");
-            iframe.src = "index2.html";
+            iframe.src = "macpoint-principal1.html";
             iframe.style.display = "none";
             document.body.appendChild(iframe);
-            iframe.onload = () => location.href = "index2.html";
+            iframe.onload = () => location.href = "macpoint-principal1.html";
           } else {
             const iframe = document.createElement("iframe");
             iframe.src = "reels1.html";
             iframe.style.display = "none";
             document.body.appendChild(iframe);
-            iframe.onload = () => location.href = "index1.html";
+            iframe.onload = () => location.href = "macpoint-principal.html";
           }
         } catch {
-          location.href = "reels1.html";
+          location.href = "cadastro.html";
         }
       }, 3000);
     };

@@ -75,24 +75,50 @@ footer a{color:#00ff99;text-decoration:none;margin:0 15px;font-weight:bold;}
 </footer>
 <script>
 const planos={
-gratuito:{titulo:"Plano Gratuito",descricao:"O Plano Gratuito oferece acesso completo às ferramentas essenciais do Mac Point, detalhadas abaixo:",topicos:["Geradores de jogos com filtros de modalidades","Função de editar, copiar e remover jogos","Conferidor de resultados incluso","Tutorial explicativo das ferramentas automatizadas","Desdobramentos de jogos com volante personalizado","Função de gerar probabilidades","Calculadora de probabilidade com notificações automáticas","Busca automatizada de resultados do histórico da Mega-Sena","API própria de resultados exclusiva do site","Ferramentas para fornecer dados estatísticos básicos","Dados de atrasos do ciclo, frequência e ocorrência","Palpite da Sorte personalizado","Feed de notícias de outras modalidades e notificações","Oráculos, horóscopo do dia, cartas de tarô e numerologia","Personalização com criação do seu avatar","Site limpo, livre de propagandas e anúncios","Segurança contra acessos indevidos","Expansão com novas atualizações e melhorias futuras"]},
-pro:{titulo:"Plano Pro",descricao:"Ferramentas avançadas Tech SaaS Pro com relatórios e análises exclusivas.",topicos:[]}
+gratuito:{
+  titulo:"Plano Gratuito",
+  descricao:"O Plano Gratuito oferece acesso completo às ferramentas essenciais do Mac Point, detalhadas abaixo:",
+  topicos:["Geradores de jogos com filtros de modalidades","Função de editar, copiar e remover jogos","Conferidor de resultados incluso","Tutorial explicativo das ferramentas automatizadas","Desdobramentos de jogos com volante personalizado","Função de gerar probabilidades","Calculadora de probabilidade com notificações automáticas","Busca automatizada de resultados do histórico da Mega-Sena","API própria de resultados exclusiva do site","Ferramentas para fornecer dados estatísticos básicos","Dados de atrasos do ciclo, frequência e ocorrência","Palpite da Sorte personalizado","Feed de notícias de outras modalidades e notificações","Oráculos, horóscopo do dia, cartas de tarô e numerologia","Personalização com criação do seu avatar","Site limpo, livre de propagandas e anúncios","Segurança contra acessos indevidos","Expansão com novas atualizações e melhorias futuras"]
+},
+pro:{
+  titulo:"Plano Pro",
+  descricao:"Ferramentas avançadas Tech SaaS Pro com relatórios e análises exclusivas.",
+  topicos:["Relatórios detalhados","Análises avançadas","Funcionalidades exclusivas","Feed de notícias premium"]
+}
 };
+
 function mostrarPlano(plano){
   document.querySelectorAll('.modalidade-card').forEach(el=>el.style.display="none");
   const data=planos[plano];
   const card=document.getElementById(plano);
   card.innerHTML='';
-  const header=document.createElement('div'); header.className='modalidade-header';
+
+  const header=document.createElement('div');
+  header.className='modalidade-header';
   header.innerHTML=`<img src="Screenshot_20250123-232747-1.jpg" alt="Ícone Plano"><h2>${data.titulo}</h2>`;
   card.appendChild(header);
-  const desc=document.createElement('div'); desc.className='descricao'; desc.textContent=data.descricao;
+
+  const desc=document.createElement('div');
+  desc.className='descricao';
+  desc.textContent=data.descricao;
   card.appendChild(desc);
-  const lista=document.createElement('div'); lista.className='topicos'; lista.innerHTML=data.topicos.map(t=>"• "+t).join('<br>');
+
+  const lista=document.createElement('div');
+  lista.className='topicos';
+  lista.innerHTML=data.topicos.map(t=>"• "+t).join('<br>');
   card.appendChild(lista);
-  const btn=document.createElement('button'); btn.className='btn-ilimitado';
-  if(plano==='pro'){btn.textContent='🔐 Acesso Ilimitado'; btn.addEventListener('click',()=>{window.location.href='macplanospro.html'});}
-  else{btn.textContent='🔓 Acesso Gratuito'; btn.addEventListener('click',()=>{window.location.href='cadastro.html'});}
+
+  const btn=document.createElement('button');
+  btn.className='btn-ilimitado';
+
+  if(plano==='pro'){
+    btn.textContent='🔐 Acesso Ilimitado';
+    btn.onclick = function(){ window.location.href='macplanospro.html'; };
+  } else {
+    btn.textContent='🔓 Acesso Gratuito';
+    btn.onclick = function(){ window.location.href='cadastro.html'; };
+  }
+
   card.appendChild(btn);
   card.style.display='block';
 }

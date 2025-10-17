@@ -19,8 +19,6 @@ body{font-family:'Arial',sans-serif;background:#0d0d0d;color:#fff;}
 .filtro{display:flex;justify-content:center;gap:15px;flex-wrap:wrap;margin-bottom:40px;}
 .plan-btn{padding:15px 25px;font-size:18px;font-weight:bold;border-radius:12px;cursor:pointer;transition:all 0.3s ease;border:2px solid #000;text-shadow:1px 1px #000;}
 .plan-btn:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,255,153,0.6);}
-.plan-btn#btnPro{background:linear-gradient(90deg,#355E3B,#00ff99);animation:pulse 2s infinite;color:#fff;}
-@keyframes pulse{0%,100%{transform:scale(1);box-shadow:0 0 10px #ffd700;}50%{transform:scale(1.05);box-shadow:0 0 25px #ffd700;}}
 .modalidade-card{display:none;background:#111;border:3px solid #355E3B;border-radius:15px;padding:25px;margin-bottom:40px;}
 .modalidade-header{display:flex;align-items:center;justify-content:center;gap:15px;margin-bottom:20px;}
 .modalidade-header img{width:50px;height:50px;border-radius:50%;border:2px solid #000;}
@@ -53,7 +51,7 @@ footer a{color:#00ff99;text-decoration:none;margin:0 15px;font-weight:bold;}
   </div>
   <div class="filtro">
     <button class="plan-btn" onclick="mostrarPlano('gratuito')">Plano Gratuito</button>
-    <button class="plan-btn" id="btnPro" onclick="mostrarPlano('pro')">Plano Pro</button>
+    <button class="plan-btn" onclick="mostrarPlano('pro')">Plano Pro</button>
   </div>
   <div id="gratuito" class="modalidade-card"></div>
   <div id="pro" class="modalidade-card"></div>
@@ -77,50 +75,26 @@ footer a{color:#00ff99;text-decoration:none;margin:0 15px;font-weight:bold;}
 </footer>
 <script>
 const planos={
-gratuito:{
-titulo:"Plano Gratuito",
-descricao:"O Plano Gratuito oferece acesso completo às ferramentas essenciais do Mac Point, detalhadas abaixo:",
-topicos:[
-"Geradores de jogos com filtros de modalidades",
-"Função de editar, copiar e remover jogos",
-"Conferidor de resultados incluso",
-"Tutorial explicativo das ferramentas automatizadas",
-"Desdobramentos de jogos com volante personalizado",
-"Função de gerar probabilidades",
-"Calculadora de probabilidade com notificações automáticas",
-"Busca automatizada de resultados do histórico da Mega-Sena",
-"API própria de resultados exclusiva do site",
-"Ferramentas para fornecer dados estatísticos básicos",
-"Dados de atrasos do ciclo, frequência e ocorrência",
-"Palpite da Sorte personalizado",
-"Feed de notícias de outras modalidades e notificações",
-"Oráculos, horóscopo do dia, cartas de tarô e numerologia",
-"Personalização com criação do seu avatar",
-"Site limpo, livre de propagandas e anúncios",
-"Segurança contra acessos indevidos",
-"Expansão com novas atualizações e melhorias futuras"
-]
-},
-pro:{
-titulo:"Plano Pro",
-descricao:"Ferramentas avançadas Tech SaaS Pro com relatórios e análises exclusivas.",
-topicos:[]
-}
+gratuito:{titulo:"Plano Gratuito",descricao:"O Plano Gratuito oferece acesso completo às ferramentas essenciais do Mac Point, detalhadas abaixo:",topicos:["Geradores de jogos com filtros de modalidades","Função de editar, copiar e remover jogos","Conferidor de resultados incluso","Tutorial explicativo das ferramentas automatizadas","Desdobramentos de jogos com volante personalizado","Função de gerar probabilidades","Calculadora de probabilidade com notificações automáticas","Busca automatizada de resultados do histórico da Mega-Sena","API própria de resultados exclusiva do site","Ferramentas para fornecer dados estatísticos básicos","Dados de atrasos do ciclo, frequência e ocorrência","Palpite da Sorte personalizado","Feed de notícias de outras modalidades e notificações","Oráculos, horóscopo do dia, cartas de tarô e numerologia","Personalização com criação do seu avatar","Site limpo, livre de propagandas e anúncios","Segurança contra acessos indevidos","Expansão com novas atualizações e melhorias futuras"]},
+pro:{titulo:"Plano Pro",descricao:"Ferramentas avançadas Tech SaaS Pro com relatórios e análises exclusivas.",topicos:[]}
 };
-
 function mostrarPlano(plano){
-document.querySelectorAll('.modalidade-card').forEach(el=>el.style.display="none");
-const data=planos[plano];
-const card=document.getElementById(plano);
-card.innerHTML=`<div class="modalidade-header"><img src="Screenshot_20250123-232747-1.jpg" alt="Ícone Plano"><h2>${data.titulo}</h2></div>
-<div class="descricao">${data.descricao}</div>
-<div class="topicos">${data.topicos.map(t=>"• "+t).join("<br>")}</div>
-${plano==='pro'
-  ? '<button class="btn-ilimitado" onclick="window.location.href=\'macplanospro.html\'">🔐 Acesso Ilimitado</button>'
-  : '<button class="btn-ilimitado" onclick="window.location.href=\'cadastro.html\'">🔓 Acesso Gratuito</button>'
-}
-`;
-card.style.display="block";
+  document.querySelectorAll('.modalidade-card').forEach(el=>el.style.display="none");
+  const data=planos[plano];
+  const card=document.getElementById(plano);
+  card.innerHTML='';
+  const header=document.createElement('div'); header.className='modalidade-header';
+  header.innerHTML=`<img src="Screenshot_20250123-232747-1.jpg" alt="Ícone Plano"><h2>${data.titulo}</h2>`;
+  card.appendChild(header);
+  const desc=document.createElement('div'); desc.className='descricao'; desc.textContent=data.descricao;
+  card.appendChild(desc);
+  const lista=document.createElement('div'); lista.className='topicos'; lista.innerHTML=data.topicos.map(t=>"• "+t).join('<br>');
+  card.appendChild(lista);
+  const btn=document.createElement('button'); btn.className='btn-ilimitado';
+  if(plano==='pro'){btn.textContent='🔐 Acesso Ilimitado'; btn.addEventListener('click',()=>{window.location.href='macplanospro.html'});}
+  else{btn.textContent='🔓 Acesso Gratuito'; btn.addEventListener('click',()=>{window.location.href='cadastro.html'});}
+  card.appendChild(btn);
+  card.style.display='block';
 }
 </script>
 </body>

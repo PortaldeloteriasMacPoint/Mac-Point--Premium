@@ -1,111 +1,102 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🍀 Mac Point - Portal de Loterias 🍀</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Portal de Loterias Mac Point</title>
 <link rel="icon" href="macpoint.png" type="image/png" sizes="512x512">
 <meta name="theme-color" content="#ff6600">
-<meta property="og:title" content="🍀 Mac Point - Portal de Loterias 🍀" />
-<meta property="og:description" content="Ferramentas, Simuladores e Relatórios Exclusivos para Loterias" />
-<meta property="og:image" content="https://i.postimg.cc/Bv7jXLz1/Screenshot-20250112-173043-1.jpg" />
-<meta property="og:url" content="https://portaldeloteriasmacpoint.github.io/Mac-Point--Premium/index.html" />
-<meta property="og:type" content="website" />
-<meta property="og:image:alt" content="Logo do Mac Point" />
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
-html, body { height:100%; width:100%; font-family:'Arial Black', Arial, sans-serif; overflow:hidden; background: linear-gradient(135deg,#000,#111,#222); display:flex; justify-content:center; align-items:center; text-align:center; color:#fff; }
-
-.container { display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:2; }
-
-.logo-circle {
-    width:36vmin;
-    height:36vmin;
-    max-width:280px;
-    max-height:280px;
-    border-radius:50%;
-    background: radial-gradient(circle at 30% 30%, #222,#000);
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body {
+    height:100%;
+    width:100%;
+    background:#000;
+    font-family:'Impact', sans-serif;
     display:flex;
     justify-content:center;
     align-items:center;
-    margin-bottom:5vmin;
-    border:5px solid #000;
-    box-shadow: 0 0 25px #ffcc00, inset 0 0 20px #000, inset 0 0 15px #ffcc00;
-}
-
-.logo-circle img {
-    width:85%;
-    height:85%;
-    object-fit:contain;
-    filter: drop-shadow(0 0 12px #ffcc00);
-}
-
-.access-button {
-    padding:1.2rem 2.5rem;
-    font-size:2.5vmin;
-    font-weight:bold;
-    background: linear-gradient(145deg,#ff6600,#ffcc00);
-    color:#fff;
-    border:2px solid #000;
-    border-radius:25px;
+    text-align:center;
+    overflow:hidden;
+  }
+  .container {
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    z-index:1;
+  }
+  .icon {
+    width:30vmin;
+    height:30vmin;
+    max-width:300px;
+    max-height:300px;
+    border-radius:50%;
+    border:6px solid black;
+    box-shadow: 0 0 20px rgba(0,255,0,0.6), inset 0 0 10px rgba(0,255,0,0.5);
+    background: black;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
     cursor:pointer;
-    text-shadow:3px 3px 5px #000;
-    box-shadow:0 8px 20px rgba(0,0,0,0.7);
-    transition: all 0.4s ease-in-out;
-}
-
-.access-button:hover {
-    background: linear-gradient(145deg,#00cc00,#66ff33);
-    transform: scale(1.1) rotate(-1deg);
-    text-shadow:4px 4px 6px #000;
-    box-shadow:0 12px 25px rgba(0,0,0,0.8);
-}
-
-.falling-luck { position:absolute; top:0; width:100%; height:100%; pointer-events:none; overflow:hidden; z-index:1; }
-.falling-luck span { position:absolute; font-size:1.5rem; opacity:0.7; animation:fallLuck linear infinite; }
-@keyframes fallLuck { 0% { transform:translateY(-10%) rotate(0deg); opacity:0; } 50% { opacity:1; } 100% { transform:translateY(110vh) rotate(360deg); opacity:0; } }
-
-@media(max-width:768px){ .access-button{font-size:3.5vmin; padding:1rem 2rem;} .logo-circle{width:38vmin;height:38vmin;} }
-@media(max-width:480px){ .access-button{font-size:4.5vmin; padding:0.8rem 1.8rem;} .logo-circle{width:42vmin;height:42vmin;} }
+    position:relative;
+    animation:pulse 1.5s infinite;
+  }
+  .icon img {
+    width:90%;
+    height:90%;
+    object-fit:cover;
+    border-radius:50%;
+  }
+  @keyframes pulse {
+    0% { transform: scale(1); box-shadow: 0 0 20px rgba(0,255,0,0.6), inset 0 0 10px rgba(0,255,0,0.5);}
+    50% { transform: scale(1.1); box-shadow: 0 0 35px rgba(0,255,0,0.8), inset 0 0 20px rgba(0,255,0,0.7);}
+    100% { transform: scale(1); box-shadow: 0 0 20px rgba(0,255,0,0.6), inset 0 0 10px rgba(0,255,0,0.5);}
+  }
+  .click-hint {
+    margin-top:1.5rem;
+    font-size:2.5vmin;
+    color:#fff;
+    text-shadow:2px 2px 4px #000;
+    animation:pulseHint 1.5s infinite;
+  }
+  @keyframes pulseHint {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
+  .notification {
+    position: fixed;
+    bottom:20px;
+    right:20px;
+    background: rgba(0,255,0,0.9);
+    color: #000;
+    padding: 15px 25px;
+    border-radius:12px;
+    font-weight:bold;
+    font-family:Arial,sans-serif;
+    box-shadow:0 0 15px #0f0;
+    display:none;
+    z-index:10;
+  }
 </style>
 </head>
 <body>
 <div class="container">
-  <div class="logo-circle">
-    <img src="macpoint.png" alt="Logo Mac Point">
+  <div class="icon" id="circleIcon" onclick="openPortal()">
+    <img src="Screenshot_20250123-232747-1.jpg" alt="Logo Mac Point">
   </div>
-  <button class="access-button" onclick="window.location.href='macmac.html'">🍀 ACESSAR PORTAL 🍀</button>
+  <div class="click-hint">👈🏻 Clique aqui</div>
 </div>
+<div class="notification" id="notification">Bem-vindo ao Portal de Loterias Mac Point!</div>
 
-<div class="falling-luck">
-  <span style="left:5%; animation-duration:10s;">🍀</span>
-  <span style="left:15%; animation-duration:12s;">🍀</span>
-  <span style="left:25%; animation-duration:14s;">🍀</span>
-  <span style="left:35%; animation-duration:16s;">🍀</span>
-  <span style="left:45%; animation-duration:18s;">🍀</span>
-  <span style="left:55%; animation-duration:20s;">🍀</span>
-  <span style="left:65%; animation-duration:22s;">🍀</span>
-  <span style="left:75%; animation-duration:24s;">🍀</span>
-  <span style="left:85%; animation-duration:26s;">🍀</span>
-  <span style="left:95%; animation-duration:28s;">🍀</span>
-  <span style="left:10%; animation-duration:15s;">🍀</span>
-  <span style="left:20%; animation-duration:17s;">🍀</span>
-  <span style="left:30%; animation-duration:19s;">🍀</span>
-  <span style="left:40%; animation-duration:21s;">🍀</span>
-  <span style="left:50%; animation-duration:23s;">🍀</span>
-</div>
-
-<script src="script.js"></script>
-<script src="proteção.js"></script>
 <script>
-function checkConsoleAccess() {
-    fetch('verifica_email.php')
-        .then(r=>r.json())
-        .then(d=>{if(!d.autorizado){document.body.innerHTML=`<div style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.95);display:flex;justify-content:center;align-items:center;z-index:9999;"><div style="background:#ff0000;color:#fff;padding:30px;border-radius:15px;border:2px solid #000;text-align:center;font-family:Arial,sans-serif;box-shadow:0 0 20px black;"><h1 style="text-shadow:2px 2px #000;">⚠️ Console Detectado! 🔒</h1><p style="color:yellow;text-shadow:1px 1px #000;font-weight:bold;">Acesso Negado!</p><p>O sistema detectou tentativa de acesso não autorizado.</p><p style="font-weight:bold;">Sua conta está bloqueada.</p><p>Redirecionando...</p></div></div>`;setTimeout(()=>{window.location.href="login.html";},3000);}});
+function openPortal(){
+  const notif = document.getElementById('notification');
+  notif.style.display = 'block';
+  setTimeout(()=>{ notif.style.display='none'; }, 3000);
+  setTimeout(()=>{ window.location.href='macmac.html'; }, 500);
 }
-window.addEventListener("keydown",(e)=>{if(e.key==="F12"||(e.ctrlKey&&e.shiftKey&&e.key==="I")){e.preventDefault();checkConsoleAccess();}});
-window.addEventListener("contextmenu",(e)=>{e.preventDefault();checkConsoleAccess();});
-window.addEventListener('load',()=>{if(performance&&performance.getEntriesByType){performance.getEntriesByType("navigation").forEach(nav=>{if(nav.type==="back_forward"){window.location.reload(true);}});}});
 </script>
 </body>
 </html>

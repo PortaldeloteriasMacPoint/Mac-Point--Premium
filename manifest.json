@@ -1,7 +1,7 @@
 {
   "name": "Mac Point",
   "short_name": "MacPoint",
-  "start_url": "./index.html?v=2",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#ff6600",

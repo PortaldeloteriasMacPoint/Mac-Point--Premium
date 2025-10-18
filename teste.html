@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal de Loterias Mac Point</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="macpoint.png" type="image/png" sizes="512x512">
+<meta name="theme-color" content="#ff6600">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta property="og:title" content="Portal de Loterias Mac Point" />
+<meta property="og:description" content="Portal de Loterias Mac Point: Ferramentas Automáticas e Relatórios Exclusivos" />
+<meta property="og:image" content="https://i.postimg.cc/Bv7jXLz1/Screenshot-20250112-173043-1.jpg" />
+<meta property="og:url" content="https://portaldeloteriasmacpoint.github.io/Mac-Point--Premium/index.html" />
+<meta property="og:type" content="website" />
+<meta property="og:image:alt" content="Logo do Mac Point" />
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: linear-gradient(135deg, #000, #111, #1a1a1a); font-family: 'Arial Black', Arial, sans-serif; text-align: center; color: #fff; }
+.logo-circle { width: 25vmin; height: 25vmin; max-width: 200px; max-height: 200px; border-radius: 50%; border: 4px solid #ff6600; background: radial-gradient(circle at 30% 30%, #222, #000); display: flex; justify-content: center; align-items: center; overflow: hidden; margin-bottom: 4vmin; box-shadow: 0 0 20px #ff6600, 0 0 40px #ff6600 inset; }
+.logo-circle img { width: 80%; height: 80%; object-fit: contain; filter: drop-shadow(0 0 5px #ff6600); }
+.access-button { padding: 1.5rem 3rem; font-size: 2.5vmin; font-weight: bold; background: linear-gradient(145deg, #ff6600, #ff9900); color: #fff; border: 2px solid #000; border-radius: 20px; cursor: pointer; text-shadow: 2px 2px 4px #000; box-shadow: 0 5px 15px rgba(0,0,0,0.5); transition: all 0.3s ease-in-out; }
+.access-button:hover { background: linear-gradient(145deg, #00cc00, #33ff33); transform: scale(1.1) rotate(-1deg); text-shadow: 3px 3px 6px #000; }
+@media (max-width: 768px) { .access-button { font-size: 3.5vmin; padding: 1.2rem 2.5rem; } .logo-circle { width: 30vmin; height: 30vmin; } }
+@media (max-width: 480px) { .access-button { font-size: 4.5vmin; padding: 1rem 2rem; } .logo-circle { width: 35vmin; height: 35vmin; } }
+</style>
+</head>
+<body>
+<div class="logo-circle">
+    <img src="macpoint.png" alt="Logo Mac Point">
+</div>
+<button class="access-button" onclick="window.location.href='macmac.html'">ACESSAR SITE</button>
+<script src="script.js"></script>
+<script src="proteção.js"></script>
+<script>
+function checkConsoleAccess() {
+    fetch('verifica_email.php')
+        .then(response => response.json())
+        .then(data => {
+            if (!data.autorizado) {
+                document.body.innerHTML = `<div style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.95);display:flex;justify-content:center;align-items:center;z-index:9999;"><div style="background:#ff0000;color:#fff;padding:30px;border-radius:15px;border:2px solid #000;text-align:center;font-family:Arial,sans-serif;box-shadow:0 0 20px black;"><h1 style="text-shadow:2px 2px #000;">⚠️ Console Detectado! 🔒</h1><p style="color:yellow;text-shadow:1px 1px #000;font-weight:bold;">Acesso Negado!</p><p>O sistema detectou tentativa de acesso não autorizado.</p><p style="font-weight:bold;">Sua conta está bloqueada.</p><p>Redirecionando...</p></div></div>`;
+                setTimeout(()=>{window.location.href="login.html";},3000);
+            }
+        })
+        .catch(error=>console.error('Erro ao verificar acesso:',error));
+}
+window.addEventListener("keydown",(e)=>{if(e.key==="F12"||(e.ctrlKey&&e.shiftKey&&e.key==="I")){e.preventDefault();checkConsoleAccess();}});
+window.addEventListener("contextmenu",(e)=>{e.preventDefault();checkConsoleAccess();});
+window.addEventListener('load',()=>{if(performance&&performance.getEntriesByType){performance.getEntriesByType("navigation").forEach(nav=>{if(nav.type==="back_forward"){window.location.reload(true);}});}});
+</script>
+</body>
+</html>
+

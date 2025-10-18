@@ -1,11 +1,12 @@
-const cacheName = 'macpoint-cache-v4';
+const cacheName = 'macpoint-cache-v5'; // Atualize esse número sempre que fizer mudanças
 const filesToCache = [
   './index.html',
-  './macmac.html',
+  './mac.html',
   './macpoint-principal.html'
 ];
 
 self.addEventListener('install', e => {
+  self.skipWaiting(); // força ativação imediata do SW novo
   e.waitUntil(
     caches.open(cacheName).then(cache => cache.addAll(filesToCache))
   );
@@ -17,6 +18,7 @@ self.addEventListener('activate', e => {
       Promise.all(keys.filter(key => key !== cacheName).map(key => caches.delete(key)))
     )
   );
+  self.clients.claim(); // força atualização nas abas abertas
 });
 
 self.addEventListener('fetch', e => {
@@ -29,4 +31,3 @@ self.addEventListener('fetch', e => {
       .catch(() => caches.match(e.request))
   );
 });
-
